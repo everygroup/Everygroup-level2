@@ -26,9 +26,10 @@ const SignIn = () => {
           size={30}
           color="#205072"
           style={{paddingLeft: '4%'}}
+          onPress={() => navigation.goBack()}
         />
         <Image
-          source={require('../../Assets/Images/blueLogo.png')}
+          source={require('../../Assets/Images/orangeLogo.png')}
           style={{
             height: 31,
             width: 33,
@@ -47,9 +48,10 @@ const SignIn = () => {
           height: '30%',
           justifyContent: 'center',
         }}>
-        <Input placeholder="E-Mail" />
+        <Input placeholder="E-Mail" placeholderTextColor="#205072" />
         <Input
           placeholder="Passwort"
+          placeholderTextColor="#205072"
           iconName={showPassword ? 'eye-slash' : 'eye'}
           showPassword={showPassword}
           iconPress={iconPress}

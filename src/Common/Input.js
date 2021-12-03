@@ -1,76 +1,62 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
-import {TextInput} from 'react-native-paper';
-// import {FONT} from '../config/theme';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {StyleSheet, View, TextInput} from 'react-native';
+import FontStyle from '../Assets/Fonts/FontStyle';
+
 const Input = ({
   placeholder,
   maxLength,
-  iconName,
+  placeholderTextColor,
   keyboardType,
   height,
   multiline,
   secureTextEntry,
-  iconPress,
+
   onChangeText,
   value,
-  editable,
+
   marginTop,
-  showPassword,
 }) => {
   return (
-    <TextInput
-      multiline={multiline ? multiline : false}
-      onChangeText={onChangeText}
-      value={value}
-      // label={placeholder}
-      placeholder={placeholder}
-      keyboardType={keyboardType}
-      mode="outlined"
-      outlineColor="#205072"
-      maxLength={maxLength || 55}
-      secureTextEntry={secureTextEntry}
-      autoCorrect={false}
-      editable={editable}
-      theme={{
-        colors: {
-          placeholder: '#205072',
-          text: '#205072',
-          primary: '#205072',
-          background: '#fff',
-        },
-      }}
-      style={[
-        styles.textStyle,
-        {
-          height: height || 40,
-
-          textAlignVertical: 'top',
-          marginTop: marginTop,
-        },
-      ]}
-      right={
-        <TextInput.Icon
-          name={() => (
-            <Icon
-              name={iconName}
-              size={showPassword ? 24 : 20}
-              color={'#205072'}
-              onPress={iconPress}
-            />
-          )}
-        />
-      }
-    />
+    <View style={styles.inputContainer}>
+      <TextInput
+        placeholderTextColor={placeholderTextColor || 'grey'}
+        multiline={multiline ? multiline : false}
+        onChangeText={onChangeText}
+        value={value}
+        placeholder={placeholder}
+        keyboardType={keyboardType}
+        maxLength={maxLength || 55}
+        secureTextEntry={secureTextEntry}
+        autoCorrect={false}
+        style={[
+          styles.textStyle,
+          {
+            fontFamily: FontStyle.poppinsMedium,
+            height: height || 39,
+            textAlignVertical: 'top',
+          },
+        ]}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   textStyle: {
-    fontSize: 20,
-    // fontFamily: FONT.bold,
-    width: '70%',
-    marginVertical: '2.5%',
+    fontSize: 14,
+    width: '80%',
+    color: '#205072',
+  },
+  inputContainer: {
+    width: '80%',
+    alignItems: 'center',
+    borderWidth: 1,
+    height: 39,
+    borderRadius: 6,
+    borderColor: '#205072',
+    borderWidth: 2,
+    marginVertical: 10,
+    alignItems: 'center',
   },
 });
 

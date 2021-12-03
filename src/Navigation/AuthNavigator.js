@@ -1,5 +1,8 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
+import {
+  CardStyleInterpolators,
+  createStackNavigator,
+} from '@react-navigation/stack';
 import SignIn from '../Screens/AuthScreens/SignIn';
 import SingUp from '../Screens/AuthScreens/SignUp';
 import VerifyMail from '../Screens/AuthScreens/VerifyMail';
@@ -14,12 +17,36 @@ export const AuthNavigator = () => {
     <AuthStackScreen.Navigator
       screenOptions={{
         headerShown: false,
+        cardStyleInterpolator: CardStyleInterpolators.forBottomSheetAndroid,
       }}
       initialRouteName="SplashScreen">
       <AuthStackScreen.Screen
         name="SignIn"
         component={SignIn}
-        options={{gestureEnabled: false}}
+        options={{
+          gestureEnabled: false,
+
+          transitionSpec: {
+            open: {
+              animation: 'timing',
+              stiffness: 1000,
+              damping: 500,
+              mass: 3,
+              overshootClamping: true,
+              restDisplacementThreshold: 0.01,
+              restSpeedThreshold: 0.01,
+            },
+            close: {
+              animation: 'timing',
+              stiffness: 1000,
+              damping: 500,
+              mass: 3,
+              overshootClamping: true,
+              restDisplacementThreshold: 0.01,
+              restSpeedThreshold: 0.01,
+            },
+          },
+        }}
       />
       <AuthStackScreen.Screen
         name="SplashScreen"
