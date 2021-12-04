@@ -17,10 +17,10 @@ const Header = ({
           selectedOption == 'menu'
             ? '48%'
             : selectedOption == 'search'
-            ? 300
+            ? '50%'
             : selectedOption == 'plus'
             ? '100%'
-            : 60,
+            : '8%',
         width: '100%',
         backgroundColor: '#FF9700',
       }}>
@@ -28,7 +28,7 @@ const Header = ({
         style={{
           backgroundColor: '#FF9700',
           flexDirection: 'row',
-          paddingLeft: '2%',
+          paddingHorizontal: '2.5%',
           borderBottomLeftRadius: 10,
           borderBottomRightRadius: 10,
         }}>
@@ -38,8 +38,8 @@ const Header = ({
             height: '100%',
           }}>
           <Image
-            source={require('../Assets/Images/blueLogo.png')}
-            style={{height: 50, width: 50, resizeMode: 'contain'}}
+            source={require('../Assets/Images/whiteLogo.png')}
+            style={{height: 25, width: 26, top: 12}}
           />
         </View>
 

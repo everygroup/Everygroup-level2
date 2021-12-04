@@ -1,13 +1,14 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import FontStyle from '../Assets/Fonts/FontStyle';
 
-const Button = ({onPress, buttonText}) => {
+const Button = ({onPress, buttonText, width}) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <LinearGradient
         colors={['#FFA420', '#FE7027']}
-        style={styles.linearGradient}>
+        style={[styles.linearGradient, {width: width || 206}]}>
         <Text style={styles.buttonText}>{buttonText}</Text>
       </LinearGradient>
     </TouchableOpacity>
@@ -17,17 +18,15 @@ const Button = ({onPress, buttonText}) => {
 var styles = StyleSheet.create({
   linearGradient: {
     borderRadius: 20,
-    width: 206,
+
     height: 35,
     justifyContent: 'center',
     alignItems: 'center',
-    opacity: 1,
   },
   buttonText: {
     fontSize: 18,
-    fontFamily: 'Gill Sans',
+    fontFamily: FontStyle.MontExtBold,
     textAlign: 'center',
-    margin: 10,
     color: '#ffffff',
     backgroundColor: 'transparent',
   },

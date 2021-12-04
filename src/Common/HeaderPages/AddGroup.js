@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import Input from '../Input';
 import Icon from 'react-native-vector-icons/Feather';
 

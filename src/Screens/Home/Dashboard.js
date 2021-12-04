@@ -10,6 +10,7 @@ import {
 import Header from '../../Common/Header';
 import GroupCard from '../../Common/GroupCard';
 import GradientCard from '../../Common/GradientCard';
+import FontStyle from '../../Assets/Fonts/FontStyle';
 
 const Dashboard = () => {
   const [selectedOption, setSelectedOption] = useState('');
@@ -70,30 +71,71 @@ const Dashboard = () => {
     }
   };
   return (
-    <View style={{backgroundColor: '#fff'}}>
-      <SafeAreaView />
+    <View style={{paddingTop: '9%', height: '90%'}}>
       <Header
         menuIconPress={() => menuIconPress('menu')}
         selectedOption={selectedOption}
         searchIconPress={() => menuIconPress('search')}
         plusIconPress={() => menuIconPress('plus')}
       />
-      <FlatList
-        horizontal={true}
-        data={trendingGroup}
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{backgroundColor: '#fff'}}
-        renderItem={({item: trending}) => {
-          return <GradientCard group={trending} />;
-        }}
-      />
-      <FlatList
-        data={groupArray}
-        contentContainerStyle={{backgroundColor: '#fff'}}
-        renderItem={({item: group}) => {
-          return <GroupCard group={group} />;
-        }}
-      />
+      <View style={{height: '34%', backgroundColor: '#fff'}}>
+        <View style={{width: '100%', alignItems: 'center'}}>
+          <Text
+            style={{
+              fontFamily: FontStyle.MontBold,
+              fontSize: 36,
+              color: '#205072',
+            }}>
+            Trends
+          </Text>
+          <Text
+            style={{
+              fontFamily: FontStyle.MontBold,
+              fontSize: 16,
+              color: '#205072',
+            }}>
+            Die beliebtesten Gruppen
+          </Text>
+        </View>
+        <FlatList
+          horizontal={true}
+          data={trendingGroup}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{
+            backgroundColor: '#fff',
+          }}
+          renderItem={({item: trending}) => {
+            return <GradientCard group={trending} />;
+          }}
+        />
+        <View
+          style={{
+            backgroundColor: '#FFA420',
+            height: 2,
+            width: '50%',
+            alignSelf: 'center',
+          }}
+        />
+      </View>
+      <View style={{height: '68%', backgroundColor: '#fff'}}>
+        <Text
+          style={{
+            fontSize: 24,
+            color: '#205072',
+            fontFamily: FontStyle.MontBold,
+            alignSelf: 'center',
+            marginTop: 10,
+          }}>
+          Neu hinzugefügt
+        </Text>
+        <FlatList
+          data={groupArray}
+          contentContainerStyle={{backgroundColor: '#fff'}}
+          renderItem={({item: group}) => {
+            return <GroupCard group={group} />;
+          }}
+        />
+      </View>
     </View>
   );
 };
