@@ -3,42 +3,34 @@ import {View, Text, FlatList, TouchableOpacity, Image} from 'react-native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import Header from '../../Common/Header';
 import Styles from './Style';
+import {useNavigation} from '@react-navigation/native';
 
 const Help = () => {
-  const [selectedOption, setSelectedOption] = useState('');
+  const navigation = useNavigation();
   const [pageOption, setPageOption] = useState([
-    {displayName: 'FAQ', navigationName: 'FAQ'},
-    {displayName: 'BLOG', navigationName: 'BLOG'},
-    {displayName: 'Kontakt', navigationName: 'Kontakt'},
+    // {displayName: 'FAQ', navigationName: 'FAQ'},
+    // {displayName: 'BLOG', navigationName: 'BLOG'},
+    {displayName: 'Kontakt', navigationName: 'Contact'},
     {displayName: 'Verhaltensregeln', navigationName: 'Verhaltensregeln'},
-    {displayName: 'Impressum', navigationName: 'Impressum'},
-    {displayName: 'Datenschutz', navigationName: 'Datenschutz'},
+    {displayName: 'Impressum', navigationName: 'Imprint'},
+    {displayName: 'Datenschutz', navigationName: 'Privacy'},
     {
       displayName: 'Allgemeine Geschäftsbedingungen',
-      navigationName: 'Allgemeine Geschäftsbedingungen',
+      navigationName: 'TermsCondition',
     },
   ]);
-  const menuIconPress = value => {
-    if (selectedOption == value) {
-      setSelectedOption('');
-    } else {
-      setSelectedOption(value);
-    }
-  };
+
   return (
-    <View style={Styles.mainContainer}>
-      <Header
-        menuIconPress={() => menuIconPress('menu')}
-        selectedOption={selectedOption}
-        searchIconPress={() => menuIconPress('search')}
-        plusIconPress={() => menuIconPress('plus')}
-      />
+    <View style={[Styles.mainContainer, {paddingTop: '25%'}]}>
+      <Header />
       <Text style={Styles.headingText}>Hilfe</Text>
       <FlatList
         data={pageOption}
         renderItem={({item}) => {
           return (
-            <TouchableOpacity style={Styles.textContainer}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate(item.navigationName)}
+              style={Styles.textContainer}>
               <Text style={[Styles.textStyle, {width: '80%'}]}>
                 {item.displayName}
               </Text>

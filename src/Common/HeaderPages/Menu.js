@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import {useNavigation} from '@react-navigation/native';
-const Menu = () => {
+const Menu = ({onPressMenu}) => {
   const [pages, setPages] = useState([
     {displayName: 'Profil', navigationName: 'Profile'},
     {displayName: 'Meine Gruppen', navigationName: 'MyGroup'},
@@ -19,7 +19,10 @@ const Menu = () => {
       renderItem={({item}) => {
         return (
           <TouchableOpacity
-            onPress={() => navigation.navigate(item.navigationName)}
+            onPress={() => {
+              onPressMenu();
+              navigation.navigate(item.navigationName);
+            }}
             style={{width: '100%', alignItems: 'center', height: 50}}>
             <Text style={styles.textStyle}>{item.displayName}</Text>
             <View

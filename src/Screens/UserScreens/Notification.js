@@ -12,30 +12,19 @@ import Header from '../../Common/Header';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import {Switch} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import {useNavigation} from '@react-navigation/native';
 
 const Notification = () => {
-  const [selectedOption, setSelectedOption] = useState('');
   const [generallySwitch, setGenerallySwitch] = useState(true);
   const [personSwitch, setPersonSwitch] = useState(true);
   const [searchSwitch, setSearchSwitch] = useState(true);
   const [emailSwitch, setEmailSwitch] = useState(true);
 
-  const menuIconPress = value => {
-    if (selectedOption == value) {
-      setSelectedOption('');
-    } else {
-      setSelectedOption(value);
-    }
-  };
+  const navigation = useNavigation();
 
   return (
-    <View style={Styles.mainContainer}>
-      <Header
-        menuIconPress={() => menuIconPress('menu')}
-        selectedOption={selectedOption}
-        searchIconPress={() => menuIconPress('search')}
-        plusIconPress={() => menuIconPress('plus')}
-      />
+    <View style={[Styles.mainContainer, {paddingTop: '25%'}]}>
+      <Header />
       <View
         style={{
           flexDirection: 'row',
@@ -43,10 +32,12 @@ const Notification = () => {
           alignItems: 'center',
           paddingHorizontal: '5%',
         }}>
-        <Image
-          source={require('../../Assets/Images/back.png')}
-          style={{width: 23, height: 23, resizeMode: 'contain'}}
-        />
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Image
+            source={require('../../Assets/Images/back.png')}
+            style={{width: 23, height: 23, resizeMode: 'contain'}}
+          />
+        </TouchableOpacity>
         <Text style={Styles.headingText}>Benachrichtigungen</Text>
         <View />
       </View>

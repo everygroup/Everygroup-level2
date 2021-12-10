@@ -8,6 +8,15 @@ import Help from '../Screens/UserScreens/Help';
 import Language from '../Screens/UserScreens/Language';
 import AccountData from '../Screens/UserScreens/AccountData';
 import Notification from '../Screens/UserScreens/Notification';
+import Interface from '../Screens/Home/InterFace';
+import Coupon from '../Screens/UserScreens/Coupon';
+import Imprint from '../Screens/HelpScreens/Imprint';
+import Privacy from '../Screens/HelpScreens/Privacy';
+import TermsCondition from '../Screens/HelpScreens/TermsCondition';
+import Contact from '../Screens/HelpScreens/Contact';
+import GroupDetail from '../Screens/Home/GroupDetail';
+import OtherUserScreen from '../Screens/Home/OtherUserScreen';
+import EditGroup from '../Screens/UserScreens/EditGroup';
 const HomeStackScreen = createStackNavigator();
 
 export const HomeNavigator = () => {
@@ -55,6 +64,51 @@ export const HomeNavigator = () => {
       <HomeStackScreen.Screen
         name="Notification"
         component={Notification}
+        options={{gestureEnabled: false}}
+      />
+      <HomeStackScreen.Screen
+        name="Interface"
+        component={Interface}
+        options={{gestureEnabled: false}}
+      />
+      <HomeStackScreen.Screen
+        name="Coupon"
+        component={Coupon}
+        options={{gestureEnabled: false}}
+      />
+      <HomeStackScreen.Screen
+        name="Imprint"
+        component={Imprint}
+        options={{gestureEnabled: false}}
+      />
+      <HomeStackScreen.Screen
+        name="Privacy"
+        component={Privacy}
+        options={{gestureEnabled: false}}
+      />
+      <HomeStackScreen.Screen
+        name="TermsCondition"
+        component={TermsCondition}
+        options={{gestureEnabled: false}}
+      />
+      <HomeStackScreen.Screen
+        name="Contact"
+        component={Contact}
+        options={{gestureEnabled: false}}
+      />
+      <HomeStackScreen.Screen
+        name="GroupDetail"
+        component={GroupDetail}
+        options={{gestureEnabled: false}}
+      />
+      <HomeStackScreen.Screen
+        name="OtherUserScreen"
+        component={OtherUserScreen}
+        options={{gestureEnabled: false}}
+      />
+      <HomeStackScreen.Screen
+        name="EditGroup"
+        component={EditGroup}
         options={{gestureEnabled: false}}
       />
     </HomeStackScreen.Navigator>

@@ -6,28 +6,17 @@ import {useNavigation} from '@react-navigation/native';
 
 const Profile = () => {
   const navigation = useNavigation();
-  const [selectedOption, setSelectedOption] = useState('');
+
   const [pageOption, setPageOption] = useState([
     {displayName: 'Accountdaten', navigationName: 'AccountData'},
     {displayName: 'Benachrichtigungen', navigationName: 'Notification'},
     {displayName: 'Gutschein', navigationName: 'Coupon'},
     {displayName: 'Abmelden', navigationName: 'SignOut'},
   ]);
-  const menuIconPress = value => {
-    if (selectedOption == value) {
-      setSelectedOption('');
-    } else {
-      setSelectedOption(value);
-    }
-  };
+
   return (
-    <View style={Styles.mainContainer}>
-      <Header
-        menuIconPress={() => menuIconPress('menu')}
-        selectedOption={selectedOption}
-        searchIconPress={() => menuIconPress('search')}
-        plusIconPress={() => menuIconPress('plus')}
-      />
+    <View style={[Styles.mainContainer, {paddingTop: '25%'}]}>
+      <Header />
       <Text style={Styles.headingText}>Profil</Text>
       <FlatList
         data={pageOption}

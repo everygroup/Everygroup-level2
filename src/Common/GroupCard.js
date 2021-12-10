@@ -10,6 +10,7 @@ import {
 import FontStyle from '../Assets/Fonts/FontStyle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Button from './Button';
+import {useNavigation} from '@react-navigation/native';
 const GroupCard = ({
   group,
   boosterValue,
@@ -20,6 +21,7 @@ const GroupCard = ({
   eyeValue,
   bellValue,
 }) => {
+  const navigation = useNavigation();
   return (
     <View>
       <View style={styles.containerStyle}>
@@ -38,23 +40,52 @@ const GroupCard = ({
             height: 30,
             width: 30,
             borderTopLeftRadius: 7,
-            left: '-6%',
-            top: '-14%',
-          }}></View>
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          {group.socialGroup == 'snapchat' ? (
+            <Image
+              source={require('../Assets/Images/snapchatLine.png')}
+              style={styles.imageStyle}
+            />
+          ) : group.socialGroup == 'line' ? (
+            <Image
+              source={require('../Assets/Images/lineLine.png')}
+              style={styles.imageStyle}
+            />
+          ) : group.socialGroup == 'telegram' ? (
+            <Image
+              source={require('../Assets/Images/telegramLine.png')}
+              style={styles.imageStyle}
+            />
+          ) : group.socialGroup == 'whatsapp' ? (
+            <Image
+              source={require('../Assets/Images/whatsappLine.png')}
+              style={styles.imageStyle}
+            />
+          ) : (
+            <Image
+              source={require('../Assets/Images/orangeLogo.png')}
+              style={styles.imageStyle}
+            />
+          )}
+        </View>
         <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
-
             height: 30,
+            paddingHorizontal: '5%',
           }}>
-          <Text style={{fontSize: 16, color: '#205072'}}>
+          <Text
+            style={{
+              fontSize: 16,
+              color: '#205072',
+              fontFamily: FontStyle.MontExtBold,
+            }}>
             {group.groupName}
           </Text>
-          <Image
-            source={require('../Assets/Images/back.png')}
-            style={{width: 15, height: 19}}
-          />
+          <Icon name="bookmark" color="#B9B9B9" size={22} />
         </View>
 
         <FlatList
@@ -62,6 +93,7 @@ const GroupCard = ({
           contentContainerStyle={{
             height: 22,
             width: '90%',
+            paddingHorizontal: '5%',
           }}
           data={group.category}
           renderItem={({item}) => {
@@ -78,7 +110,14 @@ const GroupCard = ({
                   borderRadius: 5,
                   paddingHorizontal: 5,
                 }}>
-                <Text style={{color: '#fff', fontSize: 9}}>{item}</Text>
+                <Text
+                  style={{
+                    color: '#fff',
+                    fontSize: 9,
+                    fontFamily: FontStyle.MontBold,
+                  }}>
+                  {item}
+                </Text>
               </View>
             );
           }}
@@ -87,22 +126,39 @@ const GroupCard = ({
         <FlatList
           horizontal={true}
           contentContainerStyle={{
-            width: '90%',
+            width: '95%',
             height: 22,
             minHeight: 20,
             maxHeight: 40,
+            paddingHorizontal: '8%',
           }}
           data={group.hashtagData}
           renderItem={({item}) => {
             return (
               <View style={{minWidth: 40, maxWidth: 'auto'}}>
-                <Text style={{color: '#FFA420', fontSize: 11}}>{item}</Text>
+                <Text
+                  style={{
+                    color: '#FFA420',
+                    fontSize: 11,
+                    fontFamily: FontStyle.MontMedium,
+                  }}>
+                  {item}
+                </Text>
               </View>
             );
           }}
         />
-        <Text>{group.description}</Text>
-        <View
+        <Text
+          style={{
+            fontFamily: FontStyle.MontSemiBold,
+            fontSize: 13,
+            color: '#205072',
+            paddingHorizontal: '8%',
+          }}>
+          {group.description}
+        </Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('GroupDetail')}
           style={{
             backgroundColor:
               group.socialGroup == 'snapchat'
@@ -114,7 +170,7 @@ const GroupCard = ({
                 : group.socialGroup == 'telegram'
                 ? '#0088CC'
                 : 'black',
-            width: '100%',
+            width: '90%',
             height: 29,
             alignSelf: 'center',
             borderRadius: 15,
@@ -130,7 +186,7 @@ const GroupCard = ({
             }}>
             BEITRETEN
           </Text>
-        </View>
+        </TouchableOpacity>
       </View>
       {boosterValue ? (
         <View
@@ -155,7 +211,12 @@ const GroupCard = ({
                   onPress={eyePress}
                 />
 
-                <Icon name={'pencil-alt'} size={30} color="#205072" />
+                <Icon
+                  name={'pencil-alt'}
+                  size={30}
+                  color="#205072"
+                  onPress={() => navigation.navigate('EditGroup')}
+                />
                 <Icon
                   name={bellValue ? 'bell' : 'bell-slash'}
                   size={30}
@@ -201,7 +262,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 7,
     shadowColor: 'grey',
-    padding: '5%',
     shadowOffset: {
       width: 0,
       height: 1,
@@ -220,7 +280,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 7,
     shadowColor: '#F3F3F3',
-    // padding: '5%',
     shadowOffset: {
       width: 0,
       height: 1,
@@ -229,6 +288,11 @@ const styles = StyleSheet.create({
     shadowRadius: 2.65,
 
     elevation: 2,
+  },
+  imageStyle: {
+    height: 24,
+    width: 24,
+    alignSelf: 'flex-start',
   },
 });
 

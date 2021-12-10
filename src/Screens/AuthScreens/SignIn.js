@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
-import {View, Text, Image, SafeAreaView} from 'react-native';
+import {View, Text, Image, SafeAreaView, TouchableOpacity} from 'react-native';
 import Button from '../../Common/Button';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Input from '../../Common/Input';
 import {useNavigation} from '@react-navigation/native';
+import FontStyle from '../../Assets/Fonts/FontStyle';
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(true);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
@@ -39,7 +40,14 @@ const SignIn = () => {
         />
         <View style={{width: '4%'}} />
       </View>
-      <Text style={{color: '#FFA420', fontSize: 32}}>everygroup</Text>
+      <Text
+        style={{
+          color: '#FFA420',
+          fontSize: 32,
+          fontFamily: FontStyle.FuturaPTBold,
+        }}>
+        everygroup
+      </Text>
 
       <View
         style={{
@@ -62,9 +70,11 @@ const SignIn = () => {
         onPress={() => navigation.navigate('HomeNavigator')}
         buttonText="Anmelden"
       />
-      <Text style={{fontSize: 15, color: '#0A49E0', marginVertical: '5%'}}>
-        Passwort vergessen
-      </Text>
+      <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+        <Text style={{fontSize: 15, color: '#0A49E0', marginVertical: '5%'}}>
+          Passwort vergessen
+        </Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };

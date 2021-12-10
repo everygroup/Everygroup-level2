@@ -19,7 +19,8 @@ var styles = StyleSheet.create({
   linearGradient: {
     borderRadius: 20,
 
-    height: 35,
+    minHeight: 35,
+    maxHeight: 'auto',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -29,6 +30,8 @@ var styles = StyleSheet.create({
     textAlign: 'center',
     color: '#ffffff',
     backgroundColor: 'transparent',
+    width: '95%',
+    paddingVertical: '1%',
   },
 });
 

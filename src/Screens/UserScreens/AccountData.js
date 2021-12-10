@@ -3,29 +3,19 @@ import {View, Text, FlatList, TouchableOpacity, Image} from 'react-native';
 import Styles from './Style';
 import Header from '../../Common/Header';
 import FontStyle from '../../Assets/Fonts/FontStyle';
-
+import {useNavigation} from '@react-navigation/native';
 const AccountData = () => {
-  const [selectedOption, setSelectedOption] = useState('');
+  const navigation = useNavigation();
+
   const [pageOption, setPageOption] = useState([
     {displayName: 'Passwort ändern', navigationName: 'ChangePassword'},
-    {displayName: 'E-Mail ändern', navigationName: 'Notification'},
-    {displayName: 'Benutzername ändern', navigationName: 'Coupon'},
+    {displayName: 'E-Mail ändern', navigationName: 'ChangeEmail'},
+    {displayName: 'Nutzername ändern', navigationName: 'ChangeUserName'},
   ]);
-  const menuIconPress = value => {
-    if (selectedOption == value) {
-      setSelectedOption('');
-    } else {
-      setSelectedOption(value);
-    }
-  };
+
   return (
-    <View style={{paddingTop: '9%', height: '100%', backgroundColor: '#fff'}}>
-      <Header
-        menuIconPress={() => menuIconPress('menu')}
-        selectedOption={selectedOption}
-        searchIconPress={() => menuIconPress('search')}
-        plusIconPress={() => menuIconPress('plus')}
-      />
+    <View style={{paddingTop: '25%', height: '100%', backgroundColor: '#fff'}}>
+      <Header />
       <View
         style={{
           flexDirection: 'row',
@@ -33,10 +23,12 @@ const AccountData = () => {
           alignItems: 'center',
           paddingHorizontal: '5%',
         }}>
-        <Image
-          source={require('../../Assets/Images/back.png')}
-          style={{width: 23, height: 23, resizeMode: 'contain'}}
-        />
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Image
+            source={require('../../Assets/Images/back.png')}
+            style={{width: 23, height: 23, resizeMode: 'contain'}}
+          />
+        </TouchableOpacity>
         <Text style={Styles.headingText}>Accountdaten</Text>
         <View />
       </View>
@@ -45,7 +37,9 @@ const AccountData = () => {
           data={pageOption}
           renderItem={({item}) => {
             return (
-              <TouchableOpacity style={Styles.textContainer}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate(item.navigationName)}
+                style={Styles.textContainer}>
                 <Text style={Styles.textStyle}>{item.displayName}</Text>
               </TouchableOpacity>
             );

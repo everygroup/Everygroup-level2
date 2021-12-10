@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, View, TextInput} from 'react-native';
 import FontStyle from '../Assets/Fonts/FontStyle';
-
+import Icon from 'react-native-vector-icons/FontAwesome5';
 const Input = ({
   placeholder,
   maxLength,
@@ -10,14 +10,23 @@ const Input = ({
   height,
   multiline,
   secureTextEntry,
-
+  showPassword,
   onChangeText,
   value,
-
-  marginTop,
+  iconName,
+  iconPress,
+  bgColor,
+  bdWidth,
 }) => {
   return (
-    <View style={styles.inputContainer}>
+    <View
+      style={[
+        styles.inputContainer,
+        {
+          backgroundColor: bgColor || null,
+          borderWidth: bdWidth || 2,
+        },
+      ]}>
       <TextInput
         placeholderTextColor={placeholderTextColor || 'grey'}
         multiline={multiline ? multiline : false}
@@ -37,6 +46,14 @@ const Input = ({
           },
         ]}
       />
+      {iconName ? (
+        <Icon
+          name={iconName}
+          size={showPassword ? 24 : 20}
+          color="#205072"
+          onPress={iconPress}
+        />
+      ) : null}
     </View>
   );
 };
@@ -44,17 +61,18 @@ const Input = ({
 const styles = StyleSheet.create({
   textStyle: {
     fontSize: 14,
-    width: '80%',
+    width: '85%',
     color: '#205072',
+    paddingLeft: 10,
+    fontFamily: FontStyle.MontSemiBold,
   },
   inputContainer: {
     width: '80%',
+    flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1,
     height: 39,
     borderRadius: 6,
     borderColor: '#205072',
-    borderWidth: 2,
     marginVertical: 10,
     alignItems: 'center',
   },

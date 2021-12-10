@@ -19,22 +19,22 @@ const GradientCard = ({group}) => {
       style={[styles.containerStyle]}>
       {group.socialGroup == 'snapchat' ? (
         <Image
-          source={require('../Assets/Images/snapchat.png')}
+          source={require('../Assets/Images/snapchatLine.png')}
           style={styles.imageStyle}
         />
       ) : group.socialGroup == 'line' ? (
         <Image
-          source={require('../Assets/Images/line.png')}
+          source={require('../Assets/Images/lineLine.png')}
           style={styles.imageStyle}
         />
       ) : group.socialGroup == 'telegram' ? (
         <Image
-          source={require('../Assets/Images/telegram.png')}
+          source={require('../Assets/Images/telegramLine.png')}
           style={styles.imageStyle}
         />
       ) : group.socialGroup == 'whatsapp' ? (
         <Image
-          source={require('../Assets/Images/whatsapp.png')}
+          source={require('../Assets/Images/whatsappLine.png')}
           style={styles.imageStyle}
         />
       ) : (

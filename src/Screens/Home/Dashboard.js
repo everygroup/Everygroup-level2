@@ -1,19 +1,21 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
-  SafeAreaView,
   FlatList,
+  ScrollView,
   Image,
-  StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
 import Header from '../../Common/Header';
 import GroupCard from '../../Common/GroupCard';
 import GradientCard from '../../Common/GradientCard';
 import FontStyle from '../../Assets/Fonts/FontStyle';
+import {useNavigation} from '@react-navigation/native';
 
 const Dashboard = () => {
-  const [selectedOption, setSelectedOption] = useState('');
+  const navigation = useNavigation();
+
   const [groupArray] = useState([
     {
       groupName: 'Nordsee Gruppe',
@@ -63,79 +65,107 @@ const Dashboard = () => {
     },
   ]);
 
-  const menuIconPress = value => {
-    if (selectedOption == value) {
-      setSelectedOption('');
-    } else {
-      setSelectedOption(value);
-    }
-  };
   return (
-    <View style={{paddingTop: '9%', height: '90%'}}>
-      <Header
-        menuIconPress={() => menuIconPress('menu')}
-        selectedOption={selectedOption}
-        searchIconPress={() => menuIconPress('search')}
-        plusIconPress={() => menuIconPress('plus')}
-      />
-      <View style={{height: '34%', backgroundColor: '#fff'}}>
-        <View style={{width: '100%', alignItems: 'center'}}>
-          <Text
+    <View
+      style={{
+        paddingTop: '25%',
+        height: '100%',
+        backgroundColor: '#fff',
+      }}>
+      <Header />
+
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{paddingBottom: '10%'}}>
+        <View style={{height: '24%', backgroundColor: '#fff'}}>
+          <View style={{width: '100%', alignItems: 'center'}}>
+            <Text
+              style={{
+                fontFamily: FontStyle.MontBold,
+                fontSize: 36,
+                color: '#205072',
+              }}>
+              Trends
+            </Text>
+            <Text
+              style={{
+                fontFamily: FontStyle.MontBold,
+                fontSize: 16,
+                color: '#205072',
+              }}>
+              Die beliebtesten Gruppen
+            </Text>
+          </View>
+          <FlatList
+            horizontal={true}
+            data={trendingGroup}
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{
+              backgroundColor: '#fff',
+            }}
+            renderItem={({item: trending}) => {
+              return <GradientCard group={trending} />;
+            }}
+          />
+          {/* <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            style={{backgroundColor: '#fff'}}>
+            {trendingGroup.map(group => {
+              return <GradientCard group={group} />;
+            })}
+          </ScrollView> */}
+          <View
             style={{
-              fontFamily: FontStyle.MontBold,
-              fontSize: 36,
-              color: '#205072',
-            }}>
-            Trends
-          </Text>
-          <Text
-            style={{
-              fontFamily: FontStyle.MontBold,
-              fontSize: 16,
-              color: '#205072',
-            }}>
-            Die beliebtesten Gruppen
-          </Text>
+              backgroundColor: '#FFA420',
+              height: 2,
+              width: '50%',
+              alignSelf: 'center',
+            }}
+          />
         </View>
-        <FlatList
-          horizontal={true}
-          data={trendingGroup}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{
-            backgroundColor: '#fff',
-          }}
-          renderItem={({item: trending}) => {
-            return <GradientCard group={trending} />;
-          }}
-        />
-        <View
+        <View style={{backgroundColor: '#fff'}}>
+          <Text
+            style={{
+              fontSize: 24,
+              color: '#205072',
+              fontFamily: FontStyle.MontBold,
+              alignSelf: 'center',
+              marginTop: 10,
+            }}>
+            Neu hinzugefügt
+          </Text>
+          {/* <FlatList
+            data={groupArray}
+            contentContainerStyle={{backgroundColor: '#fff'}}
+            renderItem={({item: group}) => {
+              return <GroupCard group={group} />;
+            }}
+          /> */}
+          <ScrollView>
+            {groupArray.map(group => {
+              return <GroupCard group={group} />;
+            })}
+          </ScrollView>
+        </View>
+      </ScrollView>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('Interface')}
+        style={{
+          position: 'absolute',
+          bottom: '10%',
+          alignSelf: 'flex-end',
+          right: '8%',
+        }}>
+        <Image
+          source={require('../../Assets/Images/group.png')}
           style={{
-            backgroundColor: '#FFA420',
-            height: 2,
-            width: '50%',
-            alignSelf: 'center',
+            width: 40,
+            height: 40,
+            resizeMode: 'contain',
           }}
         />
-      </View>
-      <View style={{height: '68%', backgroundColor: '#fff'}}>
-        <Text
-          style={{
-            fontSize: 24,
-            color: '#205072',
-            fontFamily: FontStyle.MontBold,
-            alignSelf: 'center',
-            marginTop: 10,
-          }}>
-          Neu hinzugefügt
-        </Text>
-        <FlatList
-          data={groupArray}
-          contentContainerStyle={{backgroundColor: '#fff'}}
-          renderItem={({item: group}) => {
-            return <GroupCard group={group} />;
-          }}
-        />
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };

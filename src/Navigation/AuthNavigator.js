@@ -9,6 +9,14 @@ import VerifyMail from '../Screens/AuthScreens/VerifyMail';
 import SplashScreen from '../Screens/AuthScreens/SplashScreen';
 import {HomeNavigator} from './HomeNavigator';
 import ConfirmationScreen from '../Screens/AuthScreens/ConfirmationScreen';
+import BehaviourRules from '../Screens/AuthScreens/BehaviourRules';
+import ForgotPassword from '../Screens/AuthScreens/ForgotPassword';
+import ChangePassword from '../Screens/AuthScreens/ChangePassword';
+import UpdatePassword from '../Screens/AuthScreens/UpdatePassword';
+import ChangeUserName from '../Screens/AuthScreens/ChangeUserName';
+import UpdateUserName from '../Screens/AuthScreens/UpdateUserName';
+import ChangeEmail from '../Screens/AuthScreens/ChangeEmail';
+import UpdateEmail from '../Screens/AuthScreens/UpdateEmail';
 
 const AuthStackScreen = createStackNavigator();
 
@@ -19,7 +27,7 @@ export const AuthNavigator = () => {
         headerShown: false,
         cardStyleInterpolator: CardStyleInterpolators.forBottomSheetAndroid,
       }}
-      initialRouteName="SplashScreen">
+      initialRouteName="HomeNavigator">
       <AuthStackScreen.Screen
         name="SignIn"
         component={SignIn}
@@ -68,6 +76,54 @@ export const AuthNavigator = () => {
         component={ConfirmationScreen}
         options={{gestureEnabled: false}}
       />
+      <AuthStackScreen.Screen
+        name="BehaviourRules"
+        component={BehaviourRules}
+        options={{gestureEnabled: false}}
+      />
+      <AuthStackScreen.Screen
+        name="ForgotPassword"
+        component={ForgotPassword}
+        options={{gestureEnabled: false}}
+      />
+
+      <AuthStackScreen.Screen
+        name="ChangePassword"
+        component={ChangePassword}
+        options={{gestureEnabled: false}}
+      />
+
+      <AuthStackScreen.Screen
+        name="UpdatePassword"
+        component={UpdatePassword}
+        options={{gestureEnabled: false}}
+      />
+      <AuthStackScreen.Screen
+        name="ChangeUserName"
+        component={ChangeUserName}
+        options={{gestureEnabled: false}}
+      />
+      <AuthStackScreen.Screen
+        name="UpdateUserName"
+        component={UpdateUserName}
+        options={{gestureEnabled: false}}
+      />
+      <AuthStackScreen.Screen
+        name="ChangeEmail"
+        component={ChangeEmail}
+        options={{gestureEnabled: false}}
+      />
+      <AuthStackScreen.Screen
+        name="UpdateEmail"
+        component={UpdateEmail}
+        options={{gestureEnabled: false}}
+      />
+      <AuthStackScreen.Screen
+        name="SignOut"
+        component={SignIn}
+        options={{gestureEnabled: false}}
+      />
+
       <AuthStackScreen.Screen name="HomeNavigator" component={HomeNavigator} />
     </AuthStackScreen.Navigator>
   );
