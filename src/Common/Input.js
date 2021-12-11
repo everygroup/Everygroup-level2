@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, View, TextInput} from 'react-native';
 import FontStyle from '../Assets/Fonts/FontStyle';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import Icon from 'react-native-vector-icons/Entypo';
 const Input = ({
   placeholder,
   maxLength,
@@ -17,6 +17,7 @@ const Input = ({
   iconPress,
   bgColor,
   bdWidth,
+  borderColor,
 }) => {
   return (
     <View
@@ -25,6 +26,7 @@ const Input = ({
         {
           backgroundColor: bgColor || null,
           borderWidth: bdWidth || 2,
+          borderColor: borderColor || '#205072',
         },
       ]}>
       <TextInput
@@ -72,8 +74,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 39,
     borderRadius: 6,
-    borderColor: '#205072',
-    marginVertical: 10,
+    marginBottom: 10,
     alignItems: 'center',
   },
 });

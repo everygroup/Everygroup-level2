@@ -6,10 +6,23 @@ import Styles from '../UserScreens/Style';
 import {useNavigation} from '@react-navigation/core';
 import Input from '../../Common/Input';
 import Button from '../../Common/Button';
+import {HelperText} from 'react-native-paper';
 
 const ChangeUserName = () => {
   const navigation = useNavigation();
   const [showPassword, setShowPassword] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [passwordText, setPasswordText] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const submit = () => {
+    if (passwordText == '') {
+      setPasswordError(true);
+      setErrorMessage('Passwort wird benötigt');
+    } else {
+      navigation.navigate('UpdateUserName');
+    }
+  };
 
   return (
     <View
@@ -39,22 +52,33 @@ const ChangeUserName = () => {
           color: '#205072',
           width: '75%',
           textAlign: 'center',
-          marginVertical: '5%',
+          marginVertical: '10%',
         }}>
         Gib dein Passwort ein, um deinen Nutzernamen zu ändern
       </Text>
-      <Input
-        placeholder="passwort"
-        placeholderTextColor="#205072"
-        iconName={showPassword ? 'eye' : 'eye-slash'}
-        iconPress={() => setShowPassword(!showPassword)}
-        secureTextEntry={!showPassword}
-      />
-      <View style={{marginVertical: '5%', width: '100%', alignItems: 'center'}}>
-        <Button
-          buttonText="Weiter"
-          onPress={() => navigation.navigate('UpdateUserName')}
+      <View style={{width: '100%', alignItems: 'center'}}>
+        {passwordError == true ? (
+          <HelperText
+            style={[Styles.helperText, {paddingLeft: '10%'}]}
+            type="error">
+            {errorMessage}
+          </HelperText>
+        ) : null}
+        <Input
+          placeholder="passwort"
+          placeholderTextColor="#205072"
+          iconName={showPassword ? 'eye' : 'eye-with-line'}
+          iconPress={() => setShowPassword(!showPassword)}
+          secureTextEntry={!showPassword}
+          onChangeText={text => {
+            setPasswordText(text);
+            setPasswordError(false);
+          }}
         />
+      </View>
+      <View
+        style={{marginVertical: '10%', width: '100%', alignItems: 'center'}}>
+        <Button buttonText="Weiter" onPress={submit} />
         <Text style={{fontSize: 15, color: '#0A49E0', marginVertical: '2.5%'}}>
           Passwort vergessen
         </Text>

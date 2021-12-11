@@ -1,18 +1,26 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   Image,
   StyleSheet,
-  Button,
+  TextInput,
+  FlatList,
+  ScrollView,
 } from 'react-native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import Header from '../../Common/Header';
 import Input from '../../Common/Input';
 import Styles from './Style';
+import EditInput from '../../Common/EditInput';
+import Icon from 'react-native-vector-icons/AntDesign';
+import {useNavigation} from '@react-navigation/native';
 
 const EditGroup = () => {
+  const navigation = useNavigation();
+  const [groupName, setGroupName] = useState('Nordsee Gruppe');
+  const [category] = useState(['Dienstleistungen', 'Interessen', 'Unt']);
   return (
     <View style={{paddingTop: '25%', height: '100%', backgroundColor: '#fff'}}>
       <Header />
@@ -32,13 +40,54 @@ const EditGroup = () => {
         <Text style={Styles.headingText}>Gruppe bearbeiten</Text>
         <View />
       </View>
-      <View style={{alignItems: 'center'}}>
-        <Input bdWidth={0.25} placeholder="Nordsee Gruppe" />
-        <Input bdWidth={0.25} placeholder="Nordsee Gruppe" />
-        <Input bdWidth={0.25} placeholder="Nordsee Gruppe" />
-        <Input bdWidth={0.25} placeholder="Nordsee Gruppe" height={200} />
-        <Input bdWidth={0.25} placeholder="#test #test #test #test #test" />
+      <ScrollView contentContainerStyle={{alignItems: 'center'}}>
+        <EditInput
+          onChangeText={text => setGroupName(text)}
+          value={groupName}
+        />
+        <EditInput
+          onChangeText={text => setGroupName(text)}
+          value={'https://chat.whatsapp.com/HpcDd6s'}
+          editable={true}
+        />
 
+        <View
+          style={[
+            styles.inputContainer,
+            {flexDirection: 'row', alignItems: 'center'},
+          ]}>
+          <FlatList
+            data={category}
+            horizontal={true}
+            showsVerticalScrollIndicator={false}
+            renderItem={({item}) => {
+              return (
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    height: '100%',
+                    marginRight: 5,
+                  }}>
+                  <Text
+                    style={{
+                      fontFamily: FontStyle.MontBold,
+                      fontSize: 15,
+                      color: '#FFA420',
+                    }}>
+                    {item},
+                  </Text>
+                </View>
+              );
+            }}
+          />
+          <Icon name={'caretdown'} size={20} color="#205072" />
+        </View>
+        <EditInput
+          height={140}
+          multiline={true}
+          placeholder="Hey, wir sind ein nette Gruppe"
+        />
+        <EditInput placeholder="#test #test1 #test2 #test3 #test4" />
         <Text
           style={{
             fontSize: 15,
@@ -49,7 +98,25 @@ const EditGroup = () => {
           }}>
           Welche Sprache wird in dieser Gruppe gesprochen?
         </Text>
-        <Input bdWidth={0.25} placeholder="Nordsee Gruppe" />
+        <View
+          style={[
+            styles.inputContainer,
+            {
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            },
+          ]}>
+          <Text
+            style={{
+              fontFamily: FontStyle.MontBold,
+              fontSize: 15,
+              color: '#BECCD6',
+            }}>
+            Sprache auswählen..
+          </Text>
+          <Icon name={'plus'} size={20} color="#BECCD6" />
+        </View>
         <Text
           style={{
             fontSize: 15,
@@ -83,7 +150,44 @@ const EditGroup = () => {
             </Text>
           </View>
         </View>
-      </View>
+        <View
+          style={[
+            styles.inputContainer,
+            {
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            },
+          ]}>
+          <Text
+            style={{
+              fontFamily: FontStyle.MontBold,
+              fontSize: 15,
+              color: '#BECCD6',
+            }}>
+            Sprache auswählen..
+          </Text>
+          <Icon name={'plus'} size={20} color="#BECCD6" />
+        </View>
+        <View
+          style={{
+            backgroundColor: '#205072',
+            height: 43,
+            width: '50%',
+            borderRadius: 11,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Text
+            style={{
+              fontFamily: FontStyle.MontSemiBold,
+              color: '#fff',
+              fontSize: 17,
+            }}>
+            Gruppe ändern
+          </Text>
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -97,6 +201,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginHorizontal: '2.5%',
     borderRadius: 10,
+  },
+  inputContainer: {
+    height: 40,
+    width: '80%',
+    backgroundColor: '#fff',
+    borderRadius: 7,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.27,
+    shadowRadius: 2.65,
+    elevation: 2,
+    paddingHorizontal: '2.5%',
+    marginVertical: '2.5%',
   },
 });
 

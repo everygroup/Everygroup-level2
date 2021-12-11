@@ -7,11 +7,24 @@ import {useNavigation} from '@react-navigation/core';
 import Input from '../../Common/Input';
 import Button from '../../Common/Button';
 import AlertModal from '../../Common/AlertModal';
+import {HelperText} from 'react-native-paper';
 
 const UpdateUserName = () => {
   const navigation = useNavigation();
   const [showPassword, setShowPassword] = useState(false);
   const [modalValue, setModalValue] = useState(false);
+  const [userNameText, setUserNameText] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [userError, setUserError] = useState(false);
+
+  const submit = () => {
+    if (userNameText == '') {
+      setUserError(true);
+      setErrorMessage('Username wird benötigt');
+    } else {
+      setModalValue(true);
+    }
+  };
 
   const closeModal = () => {
     setModalValue(false);
@@ -45,11 +58,25 @@ const UpdateUserName = () => {
           color: '#205072',
           width: '60%',
           textAlign: 'center',
-          marginVertical: '5%',
+          marginVertical: '10%',
         }}>
         Gib deinen neuen Nutzernamen ein
       </Text>
-      <Input placeholder="SuperMan98" placeholderTextColor="#205072" />
+      {userError == true ? (
+        <HelperText
+          style={[Styles.helperText, {paddingLeft: '10%'}]}
+          type="error">
+          {errorMessage}
+        </HelperText>
+      ) : null}
+      <Input
+        placeholder="SuperMan98"
+        placeholderTextColor="#205072"
+        onChangeText={text => {
+          setUserNameText(text);
+          setUserError(false);
+        }}
+      />
       <Text
         style={{
           fontFamily: FontStyle.MontMedium,
@@ -59,11 +86,9 @@ const UpdateUserName = () => {
         }}>
         Du kannst deinen Nutzernamen nur einmal ändern.
       </Text>
-      <View style={{marginVertical: '5%', width: '100%', alignItems: 'center'}}>
-        <Button
-          buttonText="Nutzernamen ändern"
-          onPress={() => setModalValue(!modalValue)}
-        />
+      <View
+        style={{marginVertical: '10%', width: '100%', alignItems: 'center'}}>
+        <Button buttonText="Nutzernamen ändern" onPress={submit} />
       </View>
       <View
         style={{

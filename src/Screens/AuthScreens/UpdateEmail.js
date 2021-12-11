@@ -6,15 +6,26 @@ import Styles from '../UserScreens/Style';
 import {useNavigation} from '@react-navigation/core';
 import Input from '../../Common/Input';
 import Button from '../../Common/Button';
-import AlertModal from '../../Common/AlertModal';
+import {HelperText} from 'react-native-paper';
 
 const UpdateEmail = () => {
   const navigation = useNavigation();
   const [showPassword, setShowPassword] = useState(false);
-  const [modalValue, setModalValue] = useState(false);
+  const [emailText, setEmailText] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [emailError, setEmailError] = useState(false);
 
-  const closeModal = () => {
-    setModalValue(false);
+  const submit = () => {
+    let emailValidation = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+    if (emailText == '') {
+      setEmailError(true);
+      setErrorMessage('Bitte gib eine E-Mail ein');
+    } else if (emailValidation.test(emailText) === false) {
+      setEmailError(true);
+      setErrorMessage('E-Mail nicht gültig');
+    } else {
+      navigation.navigate('SentEmail');
+    }
   };
 
   return (
@@ -25,7 +36,6 @@ const UpdateEmail = () => {
         backgroundColor: '#fff',
         alignItems: 'center',
       }}>
-      <AlertModal modalValue={modalValue} closeModal={closeModal} />
       <Header />
       <TouchableOpacity
         style={{alignSelf: 'flex-start', paddingHorizontal: '2.5%'}}
@@ -46,25 +56,29 @@ const UpdateEmail = () => {
           color: '#205072',
           width: '60%',
           textAlign: 'center',
-          marginVertical: '5%',
+          marginVertical: '10%',
         }}>
-        Gib deinen neuen Nutzernamen ein
+        Gib deine neue E-Mail ein
       </Text>
-      <Input placeholder="SuperMan98" placeholderTextColor="#205072" />
-      <Text
-        style={{
-          fontFamily: FontStyle.MontMedium,
-          fontSize: 13,
-          color: '#205072',
-          width: '75%',
-        }}>
-        Du kannst deinen Nutzernamen nur einmal ändern.
-      </Text>
-      <View style={{marginVertical: '5%', width: '100%', alignItems: 'center'}}>
-        <Button
-          buttonText="Nutzernamen ändern"
-          onPress={() => setModalValue(!modalValue)}
-        />
+      {emailError == true ? (
+        <HelperText
+          style={[Styles.helperText, {paddingLeft: '10%'}]}
+          type="error">
+          {errorMessage}
+        </HelperText>
+      ) : null}
+      <Input
+        placeholder="E-mail"
+        placeholderTextColor="#205072"
+        onChangeText={text => {
+          setEmailText(text);
+          setEmailError(false);
+        }}
+      />
+
+      <View
+        style={{marginVertical: '10%', width: '100%', alignItems: 'center'}}>
+        <Button buttonText="E-Mail ändern" onPress={submit} />
       </View>
       <View
         style={{

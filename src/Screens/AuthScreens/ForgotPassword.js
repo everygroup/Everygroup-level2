@@ -63,7 +63,7 @@ const ForgotPassword = () => {
         <Input placeholder="E-Mail" placeholderTextColor="#205072" />
       </View>
       <Button
-        onPress={() => navigation.navigate('HomeNavigator')}
+        onPress={() => navigation.navigate('UpdatePassword')}
         buttonText="E-Mail senden"
       />
     </SafeAreaView>

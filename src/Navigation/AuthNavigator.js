@@ -17,6 +17,7 @@ import ChangeUserName from '../Screens/AuthScreens/ChangeUserName';
 import UpdateUserName from '../Screens/AuthScreens/UpdateUserName';
 import ChangeEmail from '../Screens/AuthScreens/ChangeEmail';
 import UpdateEmail from '../Screens/AuthScreens/UpdateEmail';
+import SentEmail from '../Screens/AuthScreens/SentEmail';
 
 const AuthStackScreen = createStackNavigator();
 
@@ -121,6 +122,11 @@ export const AuthNavigator = () => {
       <AuthStackScreen.Screen
         name="SignOut"
         component={SignIn}
+        options={{gestureEnabled: false}}
+      />
+      <AuthStackScreen.Screen
+        name="SentEmail"
+        component={SentEmail}
         options={{gestureEnabled: false}}
       />
 

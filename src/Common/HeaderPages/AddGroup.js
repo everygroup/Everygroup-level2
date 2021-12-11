@@ -10,13 +10,50 @@ import {
 import Input from '../Input';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import FontStyle from '../../Assets/Fonts/FontStyle';
+import InfoModal from '../InfoModal';
+import {HelperText} from 'react-native-paper';
+import Styles from '../../Screens/UserScreens/Style';
 
 const AddGroup = () => {
+  const [selectedInfo, setSelectInfo] = useState('');
+  const [modalValue, setModalValue] = useState(false);
+  const [titel, setTitel] = useState('');
+  const [titelError, setTitelError] = useState(false);
+  const [groupLink, setGroupLink] = useState('');
+  const [groupLinkError, setGroupLinkError] = useState(false);
+  const [hashValue, setHashValue] = useState('');
+  const [hashError, setHashError] = useState(false);
   const [checkedTerms, setCheckedTerms] = useState(false);
   const [checkedConductRules, setConductRules] = useState(false);
+
+  const pressInfo = message => {
+    setSelectInfo(message);
+    setModalValue(true);
+  };
+
+  const submitButton = () => {
+    if (titel == '') {
+      setTitelError(true);
+    } else if (groupLink == '') {
+      setGroupLinkError(true);
+    } else {
+      alert('Submitted Successfully');
+    }
+  };
+
   return (
     <ScrollView
-      contentContainerStyle={{alignItems: 'center', alignSelf: 'center'}}>
+      contentContainerStyle={{
+        alignItems: 'center',
+        alignSelf: 'center',
+        paddingBottom: '10%',
+      }}>
+      <InfoModal
+        modalValue={modalValue}
+        message={selectedInfo}
+        closeModal={() => setModalValue(false)}
+        closeModal={() => setModalValue(false)}
+      />
       <Text
         style={{
           color: '#fff',
@@ -27,36 +64,98 @@ const AddGroup = () => {
         }}>
         Gruppe hinzufügen
       </Text>
-      <View style={styles.container}>
-        <Image
-          source={require('../../Assets/Images/info.png')}
-          style={{width: 20, height: 20, resizeMode: 'cover', right: 10}}
-        />
-        <Input
-          placeholder="Titel"
-          placeholderTextColor="#BECCD6"
-          bgColor="#fff"
-          bdWidth={0.1}
-        />
+      <View>
+        {titelError == true ? (
+          <HelperText style={[Styles.helperText, {left: '5%'}]} type="error">
+            Gruppentitel eingeben
+          </HelperText>
+        ) : null}
+        <View style={styles.container}>
+          <TouchableOpacity
+            onPress={() =>
+              pressInfo(
+                'Wähle einen aussagekräftigen Titel, damit jeder sofort auf einen Blick weiß, worum es in deiner Gruppe geht.',
+              )
+            }>
+            <Image
+              source={require('../../Assets/Images/info.png')}
+              style={{
+                width: 20,
+                height: 20,
+                resizeMode: 'cover',
+                right: 10,
+                bottom: 5,
+              }}
+            />
+          </TouchableOpacity>
+          <Input
+            placeholder="Titel"
+            placeholderTextColor="#BECCD6"
+            bgColor="#fff"
+            bdWidth={titelError ? 2 : 0.1}
+            borderColor={titelError ? 'red' : null}
+            onChangeText={text => {
+              setTitel(text);
+              setTitelError(false);
+            }}
+          />
+        </View>
+      </View>
+      <View>
+        {groupLinkError == true ? (
+          <HelperText style={[Styles.helperText, {left: '5%'}]} type="error">
+            Gruppentitel eingeben
+          </HelperText>
+        ) : null}
+        <View style={styles.container}>
+          <TouchableOpacity
+            onPress={() =>
+              pressInfo(
+                `Mit dem Gruppenlink können andere deiner Gruppe beitreten. Durch den Link erkennen wir auch automatisch um welchen Messanger es sich handelt und ordnen den passenden Messanger deiner Gruppe zu. Du kannst bei uns Gruppen von WhatsApp, Discord, Snapchat, Telegram, Viber, Line und hochladen \n   \n In unseren FAQ zeigen wir dir für jeden Messanger jeweils, wo dieser Link zu finden ist :)`,
+              )
+            }>
+            <Image
+              source={require('../../Assets/Images/info.png')}
+              style={{
+                width: 20,
+                height: 20,
+                resizeMode: 'cover',
+                right: 10,
+                bottom: 5,
+              }}
+            />
+          </TouchableOpacity>
+          <Input
+            placeholder="Gruppenlink"
+            placeholderTextColor="#BECCD6"
+            bgColor="#fff"
+            bdWidth={groupLinkError ? 2 : 0.1}
+            borderColor={groupLinkError ? 'red' : null}
+            onChangeText={text => {
+              setGroupLink(text);
+              setGroupLinkError(false);
+            }}
+          />
+        </View>
       </View>
       <View style={styles.container}>
-        <Image
-          source={require('../../Assets/Images/info.png')}
-          style={{width: 20, height: 20, resizeMode: 'cover', right: 10}}
-        />
-
-        <Input
-          placeholder="Gruppenlink"
-          placeholderTextColor="#BECCD6"
-          bgColor="#fff"
-          bdWidth={0.1}
-        />
-      </View>
-      <View style={styles.container}>
-        <Image
-          source={require('../../Assets/Images/info.png')}
-          style={{width: 20, height: 20, resizeMode: 'cover', right: 10}}
-        />
+        <TouchableOpacity
+          onPress={() =>
+            pressInfo(
+              'Mit der Kategorie kannst du passende Themen deiner Gruppe zuordnen. Tipp: So mehr Kategorien du deiner Gruppe zuordnest, desto besser kann sie gefunden werden.',
+            )
+          }>
+          <Image
+            source={require('../../Assets/Images/info.png')}
+            style={{
+              width: 20,
+              height: 20,
+              resizeMode: 'cover',
+              right: 10,
+              bottom: 5,
+            }}
+          />
+        </TouchableOpacity>
         <View
           style={{
             backgroundColor: '#fff',
@@ -79,11 +178,23 @@ const AddGroup = () => {
         </View>
       </View>
       <View style={[styles.container]}>
-        <Image
-          source={require('../../Assets/Images/info.png')}
-          style={{width: 20, height: 20, resizeMode: 'cover', right: 10}}
-        />
-
+        <TouchableOpacity
+          onPress={() =>
+            pressInfo(
+              'Durch die Beschreibung hast du die Möglichkeit deine Gruppe detaillierter zu beschreiben \n \n Tipp: Mit einer ansprechenden Beschreibung, kannst du deine Chancen erhöhen, dass mehr Leute deiner Gruppe beitreten.',
+            )
+          }>
+          <Image
+            source={require('../../Assets/Images/info.png')}
+            style={{
+              width: 20,
+              height: 20,
+              resizeMode: 'cover',
+              right: 10,
+              bottom: 5,
+            }}
+          />
+        </TouchableOpacity>
         <Input
           placeholder="Beschreibung"
           placeholderTextColor="#BECCD6"
@@ -91,18 +202,42 @@ const AddGroup = () => {
           bdWidth={0.1}
         />
       </View>
-      <View style={styles.container}>
-        <Image
-          source={require('../../Assets/Images/info.png')}
-          style={{width: 20, height: 20, resizeMode: 'cover', right: 10}}
-        />
+      <View>
+        {hashError == true ? (
+          <HelperText style={[Styles.helperText, {left: '5%'}]} type="error">
+            Gruppentitel eingeben
+          </HelperText>
+        ) : null}
+        <View style={styles.container}>
+          <TouchableOpacity
+            onPress={() =>
+              pressInfo(
+                'Durch Hashtags kannst du deiner Gruppe passende Schlagwörter zuordnen. \n \n  Tipp: Du kannst bis zu 5 Hashtags deiner Gruppe zuordnen. So mehr Hashtags deine Gruppe hat, umso besser kann sie gefunden werden',
+              )
+            }>
+            <Image
+              source={require('../../Assets/Images/info.png')}
+              style={{
+                width: 20,
+                height: 20,
+                resizeMode: 'cover',
+                right: 10,
+                bottom: 5,
+              }}
+            />
+          </TouchableOpacity>
 
-        <Input
-          placeholder="#hashtag #nur #wenn #du #willst"
-          placeholderTextColor="#BECCD6"
-          bgColor="#fff"
-          bdWidth={0.1}
-        />
+          <Input
+            placeholder="#hashtag #nur #wenn #du #willst"
+            placeholderTextColor="#BECCD6"
+            bgColor="#fff"
+            bdWidth={0.1}
+            onChangeText={text => {
+              setHashValue(text);
+              setHashError(false);
+            }}
+          />
+        </View>
       </View>
       <View style={{width: '70%', alignSelf: 'center', marginVertical: '5%'}}>
         <Text
@@ -116,11 +251,23 @@ const AddGroup = () => {
         </Text>
       </View>
       <View style={styles.container}>
-        <Image
-          source={require('../../Assets/Images/info.png')}
-          style={{width: 20, height: 20, resizeMode: 'cover', right: 10}}
-        />
-
+        <TouchableOpacity
+          onPress={() =>
+            pressInfo(
+              'Hier kannst du angeben welche Sprache oder Sprachen in deiner Gruppe überwiegend gesprochen werden.',
+            )
+          }>
+          <Image
+            source={require('../../Assets/Images/info.png')}
+            style={{
+              width: 20,
+              height: 20,
+              resizeMode: 'cover',
+              right: 10,
+              bottom: 5,
+            }}
+          />
+        </TouchableOpacity>
         <Input
           placeholder="sprache auswählen"
           placeholderTextColor="#BECCD6"
@@ -163,11 +310,23 @@ const AddGroup = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.container}>
-        <Image
-          source={require('../../Assets/Images/info.png')}
-          style={{width: 20, height: 20, resizeMode: 'cover', right: 10}}
-        />
-
+        <TouchableOpacity
+          onPress={() =>
+            pressInfo(
+              'Wenn du nicht willst, dass Personen mit anderen Sprachen deiner Gruppe beitreten können dann kannst du dir hier Sprachen auswählen und nur Personen die deine ausgewählte Sprache sprechen, können deiner Gruppe beitreten. Alle anderen, die nicht die ausgewählte Sprache sprechen, wird diese Gruppe nicht angezeigt.',
+            )
+          }>
+          <Image
+            source={require('../../Assets/Images/info.png')}
+            style={{
+              width: 20,
+              height: 20,
+              resizeMode: 'cover',
+              right: 10,
+              bottom: 5,
+            }}
+          />
+        </TouchableOpacity>
         <Input
           placeholder="Sprache auswählen..."
           placeholderTextColor="#BECCD6"
@@ -275,12 +434,12 @@ const AddGroup = () => {
           everygroup hält
         </Text>
       </View>
-      <View style={styles.submitButton}>
+      <TouchableOpacity onPress={submitButton} style={styles.submitButton}>
         <Text
           style={{fontFamily: FontStyle.MontBold, color: '#fff', fontSize: 16}}>
           Gruppe posten
         </Text>
-      </View>
+      </TouchableOpacity>
     </ScrollView>
   );
 };

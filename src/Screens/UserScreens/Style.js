@@ -24,6 +24,12 @@ const Styles = StyleSheet.create({
     fontSize: 18,
     color: '#FFA420',
   },
+  helperText: {
+    fontFamily: FontStyle.MontBold,
+    color: 'red',
+    fontSize: 12,
+    alignSelf: 'flex-start',
+  },
 });
 
 export default Styles;

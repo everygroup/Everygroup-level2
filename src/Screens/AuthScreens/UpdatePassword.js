@@ -47,14 +47,14 @@ const UpdatePassword = () => {
       <Input
         placeholder="Neues Passwort"
         placeholderTextColor="#205072"
-        iconName={showPassword ? 'eye' : 'eye-slash'}
+        iconName={showPassword ? 'eye' : 'eye-with-line'}
         iconPress={() => setShowPassword(!showPassword)}
         secureTextEntry={!showPassword}
       />
       <Input
         placeholder="Passwort wiederholen"
         placeholderTextColor="#205072"
-        iconName={showConfirmPassword ? 'eye' : 'eye-slash'}
+        iconName={showConfirmPassword ? 'eye' : 'eye-with-line'}
         iconPress={() => setShowConfirmPassword(!showConfirmPassword)}
         secureTextEntry={!showConfirmPassword}
       />

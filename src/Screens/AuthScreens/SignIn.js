@@ -14,7 +14,8 @@ const SignIn = () => {
   };
   const navigation = useNavigation();
   return (
-    <SafeAreaView style={{flex: 1, alignItems: 'center'}}>
+    <SafeAreaView
+      style={{flex: 1, alignItems: 'center', backgroundColor: '#fff'}}>
       <View
         style={{
           flexDirection: 'row',
@@ -27,7 +28,7 @@ const SignIn = () => {
           size={30}
           color="#205072"
           style={{paddingLeft: '4%'}}
-          onPress={() => navigation.goBack()}
+          onPress={() => navigation.navigate('SplashScreen')}
         />
         <Image
           source={require('../../Assets/Images/orangeLogo.png')}
@@ -60,7 +61,7 @@ const SignIn = () => {
         <Input
           placeholder="Passwort"
           placeholderTextColor="#205072"
-          iconName={showPassword ? 'eye-slash' : 'eye'}
+          iconName={showPassword ? 'eye-with-line' : 'eye'}
           showPassword={showPassword}
           iconPress={iconPress}
           secureTextEntry={secureTextEntry}
