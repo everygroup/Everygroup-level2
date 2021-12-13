@@ -3,12 +3,15 @@ import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import FontStyle from '../Assets/Fonts/FontStyle';
 
-const Button = ({onPress, buttonText, width}) => {
+const Button = ({onPress, buttonText, width, borderRadius}) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <LinearGradient
         colors={['#FFA420', '#FE7027']}
-        style={[styles.linearGradient, {width: width || 206}]}>
+        style={[
+          styles.linearGradient,
+          {width: width || 206, borderRadius: borderRadius || 20},
+        ]}>
         <Text style={styles.buttonText}>{buttonText}</Text>
       </LinearGradient>
     </TouchableOpacity>
@@ -17,8 +20,6 @@ const Button = ({onPress, buttonText, width}) => {
 
 var styles = StyleSheet.create({
   linearGradient: {
-    borderRadius: 20,
-
     minHeight: 35,
     maxHeight: 'auto',
     justifyContent: 'center',

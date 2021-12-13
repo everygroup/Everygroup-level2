@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, Image, SafeAreaView, TouchableOpacity} from 'react-native';
 import Button from '../../Common/Button';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Input from '../../Common/Input';
 import {useNavigation} from '@react-navigation/native';
-import FontStyle from '../../Assets/Fonts/FontStyle';
+// import FontStyle from '../../Assets/Fonts/FontStyle';
+// import HeaderAuth from './HeaderAuth';
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(true);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
@@ -13,10 +14,12 @@ const SignIn = () => {
     setShowPassword(!showPassword), setSecureTextEntry(!secureTextEntry);
   };
   const navigation = useNavigation();
+
   return (
     <SafeAreaView
-      style={{flex: 1, alignItems: 'center', backgroundColor: '#fff'}}>
-      <View
+      style={{backgroundColor: '#fff', flex: 1, alignItems: 'center'}}>
+      {/* <HeaderAuth /> */}
+      {/* <View
         style={{
           flexDirection: 'row',
           width: '100%',
@@ -48,7 +51,7 @@ const SignIn = () => {
           fontFamily: FontStyle.FuturaPTBold,
         }}>
         everygroup
-      </Text>
+      </Text> */}
 
       <View
         style={{

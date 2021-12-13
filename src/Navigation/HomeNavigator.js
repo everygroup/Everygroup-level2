@@ -17,6 +17,8 @@ import Contact from '../Screens/HelpScreens/Contact';
 import GroupDetail from '../Screens/Home/GroupDetail';
 import OtherUserScreen from '../Screens/Home/OtherUserScreen';
 import EditGroup from '../Screens/UserScreens/EditGroup';
+import NotificationOwnGroup from '../Screens/UserScreens/NotificationOwnGroup';
+import NotificationGroupBooster from '../Screens/UserScreens/NotificationGroupBooster';
 const HomeStackScreen = createStackNavigator();
 
 export const HomeNavigator = () => {
@@ -109,6 +111,16 @@ export const HomeNavigator = () => {
       <HomeStackScreen.Screen
         name="EditGroup"
         component={EditGroup}
+        options={{gestureEnabled: false}}
+      />
+      <HomeStackScreen.Screen
+        name="NotificationOwnGroup"
+        component={NotificationOwnGroup}
+        options={{gestureEnabled: false}}
+      />
+      <HomeStackScreen.Screen
+        name="NotificationGroupBooster"
+        component={NotificationGroupBooster}
         options={{gestureEnabled: false}}
       />
     </HomeStackScreen.Navigator>

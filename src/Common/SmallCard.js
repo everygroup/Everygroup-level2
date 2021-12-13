@@ -77,7 +77,12 @@ const SmallCard = ({group}) => {
                 ? '#0088CC'
                 : 'red',
           },
-        ]}></View>
+        ]}>
+        <Text
+          style={{fontFamily: FontStyle.MontBold, color: '#fff', fontSize: 10}}>
+          Mehr Sehen
+        </Text>
+      </View>
     </View>
   );
 };

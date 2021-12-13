@@ -6,13 +6,30 @@ import {useNavigation} from '@react-navigation/native';
 import Input from '../../Common/Input';
 import Button from '../../Common/Button';
 import FontStyle from '../../Assets/Fonts/FontStyle';
+import {HelperText} from 'react-native-paper';
+import SuccessModal from '../../Common/SuccessModal';
 
 const Coupon = () => {
+  const [coupon, setCoupon] = useState('');
+  const [couponError, setCouponError] = useState(false);
+  const [modalValue, setModalValue] = useState(false);
   const navigation = useNavigation();
+
+  const submitButton = () => {
+    if (coupon == '') {
+      setCouponError(true);
+    } else {
+      setModalValue(true);
+    }
+  };
 
   return (
     <View style={[Styles.mainContainer, {paddingTop: '25%'}]}>
       <Header />
+      <SuccessModal
+        modalValue={modalValue}
+        closeModal={() => setModalValue(false)}
+      />
       <View
         style={{
           flexDirection: 'row',
@@ -30,7 +47,21 @@ const Coupon = () => {
         <View />
       </View>
       <View style={{alignItems: 'center'}}>
-        <Input placeholder="Gutschein" placeholderTextColor="#205072" />
+        {couponError == true ? (
+          <HelperText style={[Styles.helperText, {left: '8%'}]} type="error">
+            Gruppentitel eingeben
+          </HelperText>
+        ) : null}
+        <Input
+          placeholder="Gutschein"
+          placeholderTextColor="#205072"
+          bdWidth={couponError ? 2 : 2}
+          borderColor={couponError ? 'red' : null}
+          onChangeText={text => {
+            setCoupon(text);
+            setCouponError(false);
+          }}
+        />
         <Text
           style={{
             fontFamily: FontStyle.MontBold,
@@ -43,7 +74,7 @@ const Coupon = () => {
           Geschenkgutscheine und vieles mehr!
         </Text>
         <View style={{marginVertical: '10%'}}>
-          <Button buttonText="Einlösen" />
+          <Button buttonText="Einlösen" onPress={submitButton} />
         </View>
         <View
           style={{

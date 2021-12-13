@@ -9,6 +9,7 @@ const EditInput = ({
   height,
   multiline,
   placeholder,
+  placeholderTextColor,
 }) => {
   return (
     <View
@@ -18,7 +19,7 @@ const EditInput = ({
       ]}>
       <TextInput
         placeholder={placeholder}
-        placeholderTextColor="#205072"
+        placeholderTextColor={placeholderTextColor || '#205072'}
         value={value}
         style={[styles.textInputStyle, {height: height || 40}]}
         onChangeText={onChangeText}

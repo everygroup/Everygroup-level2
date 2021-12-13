@@ -8,8 +8,9 @@ import FontStyle from '../../Assets/Fonts/FontStyle';
 const ForgotPassword = () => {
   const navigation = useNavigation();
   return (
-    <SafeAreaView style={{flex: 1, alignItems: 'center'}}>
-      <View
+    <SafeAreaView
+      style={{flex: 1, alignItems: 'center', backgroundColor: '#fff'}}>
+      {/* <View
         style={{
           flexDirection: 'row',
           width: '100%',
@@ -33,15 +34,15 @@ const ForgotPassword = () => {
           }}
         />
         <View style={{width: '4%'}} />
-      </View>
-      <Text
+      </View> */}
+      {/* <Text
         style={{
           color: '#FFA420',
           fontSize: 32,
           fontFamily: FontStyle.FuturaPTBold,
         }}>
         everygroup
-      </Text>
+      </Text> */}
 
       <View
         style={{

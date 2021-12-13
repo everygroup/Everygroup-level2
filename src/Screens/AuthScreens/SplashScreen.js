@@ -12,6 +12,7 @@ import Button from '../../Common/Button';
 import {useNavigation} from '@react-navigation/native';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import FontStyle from '../../Assets/Fonts/FontStyle';
+import HeaderAuth from './HeaderAuth';
 const {width, height} = Dimensions.get('window');
 const SplashScreen = () => {
   const navigation = useNavigation();
@@ -36,11 +37,12 @@ const SplashScreen = () => {
   return (
     <View style={{flex: 1, alignItems: 'center', backgroundColor: '#fff'}}>
       <SafeAreaView />
-      <Image
+      {/* <Image
         source={require('../../Assets/Images/orangeLogo.png')}
         style={{width: 33, height: 31}}
       />
-      <Text style={styles.logoText}>everygroup</Text>
+      <Text style={styles.logoText}>everygroup</Text> */}
+      {/* <HeaderAuth /> */}
       <View style={{height: height / 1.7}}>
         <SwiperFlatList
           autoplay

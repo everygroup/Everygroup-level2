@@ -60,7 +60,12 @@ const Notification = () => {
       <View style={styles.container}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Text style={styles.titleText}>Eigene Gruppen</Text>
-          <Icon name="chevron-right" size={30} color="#FFA420" />
+          <Icon
+            name="chevron-right"
+            size={30}
+            color="#FFA420"
+            onPress={() => navigation.navigate('NotificationOwnGroup')}
+          />
         </View>
 
         <Text style={styles.descriptionText}>
@@ -103,7 +108,12 @@ const Notification = () => {
       <View style={styles.container}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Text style={styles.titleText}>Gruppenbooster</Text>
-          <Icon name="chevron-right" size={30} color="#FFA420" />
+          <Icon
+            name="chevron-right"
+            size={30}
+            color="#FFA420"
+            onPress={() => navigation.navigate('NotificationGroupBooster')}
+          />
         </View>
 
         <Text style={styles.descriptionText}>
