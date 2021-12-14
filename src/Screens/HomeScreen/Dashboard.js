@@ -107,14 +107,7 @@ const Dashboard = () => {
               return <GradientCard group={trending} />;
             }}
           />
-          {/* <ScrollView
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            style={{backgroundColor: '#fff'}}>
-            {trendingGroup.map(group => {
-              return <GradientCard group={group} />;
-            })}
-          </ScrollView> */}
+
           <View
             style={{
               backgroundColor: '#FFA420',
@@ -135,13 +128,6 @@ const Dashboard = () => {
             }}>
             Neu hinzugefügt
           </Text>
-          {/* <FlatList
-            data={groupArray}
-            contentContainerStyle={{backgroundColor: '#fff'}}
-            renderItem={({item: group}) => {
-              return <GroupCard group={group} />;
-            }}
-          /> */}
           <ScrollView>
             {groupArray.map(group => {
               return <GroupCard group={group} />;

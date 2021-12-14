@@ -21,26 +21,8 @@ const ConfirmationScreen = () => {
         style={{
           width: '100%',
           alignItems: 'center',
-          height: '15%',
+          height: '75%',
         }}>
-        <Image
-          source={require('../../Assets/Images/orangeLogo.png')}
-          style={{
-            height: 31,
-            width: 33,
-            alignSelf: 'center',
-          }}
-        />
-        <Text
-          style={{
-            color: '#FFA420',
-            fontSize: 32,
-            fontFamily: FontStyle.FuturaPTBold,
-          }}>
-          everygroup
-        </Text>
-      </View>
-      <View style={{width: '100%', alignItems: 'center', height: '60%'}}>
         <Image source={require('../../Assets/Images/everyoneBanner.png')} />
         <Text
           style={{

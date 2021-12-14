@@ -1,18 +1,39 @@
 import React from 'react';
-import {View, Text, StyleSheet, ScrollView, Image} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
-import Header from '../../Common/Header';
 import Styles from '../UserScreens/Style';
 import HelpBottom from './HelpBottom';
-
+import {useNavigation} from '@react-navigation/native';
 const Imprint = () => {
+  const navigation = useNavigation();
   return (
     <View style={{paddingTop: '25%', height: '100%', backgroundColor: '#fff'}}>
-      <Header />
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingHorizontal: '5%', paddingBottom: '20%'}}>
-        <Text style={Styles.headingText}>Impressum</Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            width: '100%',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Image
+              source={require('../../Assets/Images/back.png')}
+              style={{width: 23, height: 23, resizeMode: 'contain'}}
+            />
+          </TouchableOpacity>
+          <Text style={Styles.headingText}>Impressum</Text>
+          <View />
+        </View>
         <Text style={styles.descriptionText}>
           ImpressumAIONETY UG (haftungsbeschränkt)Geschäftsführer: Thomas
           Swiniarski und Timur DöndürmezAm Wiesenplätzchen 1153639 Königswinter

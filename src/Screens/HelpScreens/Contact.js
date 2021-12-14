@@ -1,15 +1,15 @@
 import React from 'react';
-import {View, Text, ScrollView, StyleSheet, Image} from 'react-native';
-import Header from '../../Common/Header';
+import {View, Text, ScrollView, Image, TouchableOpacity} from 'react-native';
 import Styles from '../UserScreens/Style';
 import Button from '../../Common/Button';
 import EditInput from '../../Common/EditInput';
 import FontStyle from '../../Assets/Fonts/FontStyle';
+import {useNavigation} from '@react-navigation/native';
 
 const Contact = () => {
+  const navigation = useNavigation();
   return (
     <View style={{paddingTop: '25%', height: '100%', backgroundColor: '#fff'}}>
-      <Header />
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
@@ -17,7 +17,22 @@ const Contact = () => {
           paddingBottom: '20%',
           alignItems: 'center',
         }}>
-        <Text style={Styles.headingText}>Kontakt</Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            width: '100%',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Image
+              source={require('../../Assets/Images/back.png')}
+              style={{width: 23, height: 23, resizeMode: 'contain'}}
+            />
+          </TouchableOpacity>
+          <Text style={Styles.headingText}>Kontakt</Text>
+          <View />
+        </View>
         <EditInput
           placeholder="Name (optional)"
           placeholderTextColor="#B5B5B5"

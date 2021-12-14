@@ -1,26 +1,25 @@
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
-import Header from '../../Common/Header';
-import Styles from '../UserScreens/Style';
+import Styles from './Style';
 import {useNavigation} from '@react-navigation/core';
 import Input from '../../Common/Input';
 import Button from '../../Common/Button';
 import {HelperText} from 'react-native-paper';
 
-const ChangeEmail = () => {
+const ChangeUserName = () => {
   const navigation = useNavigation();
   const [showPassword, setShowPassword] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
   const [passwordText, setPasswordText] = useState('');
-  const [emailError, setEmailError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
   const submit = () => {
     if (passwordText == '') {
-      setEmailError(true);
+      setPasswordError(true);
       setErrorMessage('Passwort wird benötigt');
     } else {
-      navigation.navigate('UpdateEmail');
+      navigation.navigate('UpdateUserName');
     }
   };
 
@@ -32,7 +31,6 @@ const ChangeEmail = () => {
         backgroundColor: '#fff',
         alignItems: 'center',
       }}>
-      <Header />
       <TouchableOpacity
         style={{alignSelf: 'flex-start', paddingHorizontal: '2.5%'}}
         onPress={() => navigation.goBack()}>
@@ -54,10 +52,10 @@ const ChangeEmail = () => {
           textAlign: 'center',
           marginVertical: '10%',
         }}>
-        Gib dein Passwort ein, um deine E-Mail zu ändern
+        Gib dein Passwort ein, um deinen Nutzernamen zu ändern
       </Text>
       <View style={{width: '100%', alignItems: 'center'}}>
-        {emailError == true ? (
+        {passwordError == true ? (
           <HelperText
             style={[Styles.helperText, {paddingLeft: '10%'}]}
             type="error">
@@ -72,7 +70,7 @@ const ChangeEmail = () => {
           secureTextEntry={!showPassword}
           onChangeText={text => {
             setPasswordText(text);
-            setEmailError(false);
+            setPasswordError(false);
           }}
         />
       </View>
@@ -103,4 +101,4 @@ const ChangeEmail = () => {
   );
 };
 
-export default ChangeEmail;
+export default ChangeUserName;

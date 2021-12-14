@@ -1,18 +1,43 @@
 import React from 'react';
-import {View, Text, ScrollView, StyleSheet} from 'react-native';
-import Header from '../../Common/Header';
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import Styles from '../UserScreens/Style';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import HelpBottom from './HelpBottom';
+import {useNavigation} from '@react-navigation/native';
 
 const TermsCondition = () => {
+  const navigation = useNavigation();
   return (
     <View style={{paddingTop: '25%', height: '100%', backgroundColor: '#fff'}}>
-      <Header />
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingHorizontal: '5%', paddingBottom: '20%'}}>
-        <Text style={Styles.headingText}>Allgemeine Geschfätsbedingungen</Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            width: '100%',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Image
+              source={require('../../Assets/Images/back.png')}
+              style={{width: 23, height: 23, resizeMode: 'contain'}}
+            />
+          </TouchableOpacity>
+          <Text style={Styles.headingText}>
+            Allgemeine Geschfätsbedingungen
+          </Text>
+          <View />
+        </View>
+
         <Text style={styles.descriptionText}>
           Nutzungsbedingungen Webportal-Nutzungsbedingungen Vertragsgegenstand,
           Änderungen 1 Gegenstand der Teilnahme- und Nutzungsbedingungen (1) Die

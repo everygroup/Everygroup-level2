@@ -1,10 +1,11 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
+import {View, Image, TouchableOpacity, Dimensions} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AddGroup from './HeaderPages/AddGroup';
 import Menu from './HeaderPages/Menu';
 import Search from './HeaderPages/Search';
 import {useNavigation} from '@react-navigation/native';
+const {width, height} = Dimensions.get('window');
 
 const Header = () => {
   const navigation = useNavigation();
@@ -27,14 +28,14 @@ const Header = () => {
       style={{
         height:
           currentSelectedOption == 'menu'
-            ? '40%'
+            ? height / 2
             : currentSelectedOption == 'search' && filterValue
-            ? '110%'
+            ? height
             : currentSelectedOption == 'search'
-            ? '15%'
+            ? height / 6
             : currentSelectedOption == 'plus'
-            ? '110%'
-            : '7%',
+            ? height
+            : height / 12,
         width: '100%',
         alignSelf: 'center',
         backgroundColor: '#FF9700',

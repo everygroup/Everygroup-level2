@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
-import Header from '../../Common/Header';
+
 import Styles from '../UserScreens/Style';
 import {useNavigation} from '@react-navigation/core';
 import Input from '../../Common/Input';
@@ -36,7 +36,6 @@ const UpdateEmail = () => {
         backgroundColor: '#fff',
         alignItems: 'center',
       }}>
-      <Header />
       <TouchableOpacity
         style={{alignSelf: 'flex-start', paddingHorizontal: '2.5%'}}
         onPress={() => navigation.goBack()}>

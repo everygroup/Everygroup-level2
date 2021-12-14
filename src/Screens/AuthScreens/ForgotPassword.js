@@ -53,10 +53,11 @@ const ForgotPassword = () => {
         }}>
         <Text
           style={{
-            fontSize: 13,
+            fontSize: 12,
             fontFamily: FontStyle.MontMedium,
-            width: '70%',
+            width: '78%',
             color: '#205072',
+            marginVertical: '2.5%',
           }}>
           Gib deine E-Mail ein und wir senden Dir eine Nachricht mit der du dein
           Passwort zurücksetzen kannst.
@@ -64,7 +65,7 @@ const ForgotPassword = () => {
         <Input placeholder="E-Mail" placeholderTextColor="#205072" />
       </View>
       <Button
-        onPress={() => navigation.navigate('UpdatePassword')}
+        // onPress={() => navigation.navigate('UpdatePassword')}
         buttonText="E-Mail senden"
       />
     </SafeAreaView>

@@ -15,30 +15,40 @@ import SingUp from '../Screens/AuthScreens/SignUp';
 import VerifyMail from '../Screens/AuthScreens/VerifyMail';
 import SplashScreen from '../Screens/AuthScreens/SplashScreen';
 import {HomeNavigator} from './HomeNavigator';
+import {UserNavigator} from './UserNavigator';
+import {HelpNavigator} from './HelpNavigator';
 import ConfirmationScreen from '../Screens/AuthScreens/ConfirmationScreen';
-import BehaviourRules from '../Screens/AuthScreens/BehaviourRules';
+import BehaviourRules from '../Screens/RulesPages/BehaviourRules';
 import ForgotPassword from '../Screens/AuthScreens/ForgotPassword';
-import ChangePassword from '../Screens/AuthScreens/ChangePassword';
-import UpdatePassword from '../Screens/AuthScreens/UpdatePassword';
-import ChangeUserName from '../Screens/AuthScreens/ChangeUserName';
-import UpdateUserName from '../Screens/AuthScreens/UpdateUserName';
-import ChangeEmail from '../Screens/AuthScreens/ChangeEmail';
-import UpdateEmail from '../Screens/AuthScreens/UpdateEmail';
-import SentEmail from '../Screens/AuthScreens/SentEmail';
 import HeaderAuth from '../Screens/AuthScreens/HeaderAuth';
 
 const AuthStackScreen = createStackNavigator();
 
 export const AuthNavigator = () => {
-  const currentRoute = useNavigationState(state => state);
+  const navigation = useNavigation();
+  const current = useNavigationState(state => state);
 
+  const routes = navigation.getState()?.routes
+    ? navigation.getState()?.routes
+    : [];
+  const currentRoute = routes[routes.length - 1];
+  const prevRoute = routes[routes.length - 2];
+  console.log(currentRoute, 'current');
   return (
     <View style={{flex: 1}}>
-      <HeaderAuth currentRoute={currentRoute} />
+      {currentRoute ? (
+        currentRoute.name == 'BehaviourRules' ||
+        currentRoute.name == 'HomeNavigator' ||
+        currentRoute.name == 'UserNavigator' ||
+        currentRoute.name == 'HelpNavigator' ? null : (
+          <HeaderAuth currentRoute={currentRoute} prevRoute={prevRoute} />
+        )
+      ) : (
+        <HeaderAuth currentRoute={currentRoute} prevRoute={prevRoute} />
+      )}
       <AuthStackScreen.Navigator
         screenOptions={{
           headerShown: false,
-          cardStyleInterpolator: CardStyleInterpolators.forBottomSheetAndroid,
         }}
         initialRouteName="SplashScreen">
         <AuthStackScreen.Screen
@@ -46,27 +56,8 @@ export const AuthNavigator = () => {
           component={SignIn}
           options={{
             gestureEnabled: false,
-
-            transitionSpec: {
-              open: {
-                animation: 'timing',
-                stiffness: 1000,
-                damping: 500,
-                mass: 3,
-                overshootClamping: true,
-                restDisplacementThreshold: 0.01,
-                restSpeedThreshold: 0.01,
-              },
-              close: {
-                animation: 'timing',
-                stiffness: 1000,
-                damping: 500,
-                mass: 3,
-                overshootClamping: true,
-                restDisplacementThreshold: 0.01,
-                restSpeedThreshold: 0.01,
-              },
-            },
+            cardStyleInterpolator:
+              CardStyleInterpolators.forFadeFromBottomAndroid,
           }}
         />
         <AuthStackScreen.Screen
@@ -77,7 +68,11 @@ export const AuthNavigator = () => {
         <AuthStackScreen.Screen
           name="SignUp"
           component={SingUp}
-          options={{gestureEnabled: false}}
+          options={{
+            gestureEnabled: false,
+            cardStyleInterpolator:
+              CardStyleInterpolators.forFadeFromBottomAndroid,
+          }}
         />
         <AuthStackScreen.Screen
           name="VerifyMail"
@@ -101,50 +96,22 @@ export const AuthNavigator = () => {
         />
 
         <AuthStackScreen.Screen
-          name="ChangePassword"
-          component={ChangePassword}
-          options={{gestureEnabled: false}}
-        />
-
-        <AuthStackScreen.Screen
-          name="UpdatePassword"
-          component={UpdatePassword}
-          options={{gestureEnabled: false}}
-        />
-        <AuthStackScreen.Screen
-          name="ChangeUserName"
-          component={ChangeUserName}
-          options={{gestureEnabled: false}}
-        />
-        <AuthStackScreen.Screen
-          name="UpdateUserName"
-          component={UpdateUserName}
-          options={{gestureEnabled: false}}
-        />
-        <AuthStackScreen.Screen
-          name="ChangeEmail"
-          component={ChangeEmail}
-          options={{gestureEnabled: false}}
-        />
-        <AuthStackScreen.Screen
-          name="UpdateEmail"
-          component={UpdateEmail}
-          options={{gestureEnabled: false}}
-        />
-        <AuthStackScreen.Screen
           name="SignOut"
           component={SignIn}
-          options={{gestureEnabled: false}}
-        />
-        <AuthStackScreen.Screen
-          name="SentEmail"
-          component={SentEmail}
           options={{gestureEnabled: false}}
         />
 
         <AuthStackScreen.Screen
           name="HomeNavigator"
           component={HomeNavigator}
+        />
+        <AuthStackScreen.Screen
+          name="UserNavigator"
+          component={UserNavigator}
+        />
+        <AuthStackScreen.Screen
+          name="HelpNavigator"
+          component={HelpNavigator}
         />
       </AuthStackScreen.Navigator>
     </View>

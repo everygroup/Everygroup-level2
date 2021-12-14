@@ -1,16 +1,22 @@
 import React, {useState} from 'react';
-import {View, Text, SafeAreaView, Image} from 'react-native';
+import {View, Text, SafeAreaView} from 'react-native';
 import Button from '../../Common/Button';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import Input from '../../Common/Input';
 import {Switch} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
-
+import ErrorText from '../../Common/ErrorText';
 const SignUp = () => {
   const [switchOn, setSwitchOn] = useState(false);
   const [showPassword, setShowPassword] = useState(true);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState(false);
+  const [userName, setUserName] = useState('');
+  const [userNameError, setUserNameError] = useState(false);
+  const [password, setPassword] = useState('');
+  const [passwordError, setPasswordError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const iconPress = () => {
     setShowPassword(!showPassword), setSecureTextEntry(!secureTextEntry);
@@ -20,61 +26,71 @@ const SignUp = () => {
     setSwitchOn(!switchOn);
   };
 
+  const submit = () => {
+    let emailValidation = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+    if (email == '') {
+      setEmailError(true);
+      setErrorMessage('E-Mail wird benötigt');
+    } else if (emailValidation.test(email) === false) {
+      setEmailError(true);
+      setErrorMessage('E-Mail nicht gültig');
+    } else if (userName == '') {
+      setUserNameError(true);
+      setErrorMessage('Nutzername wird benötigt');
+    } else if (userName.length > 10) {
+      setUserNameError(true);
+      setErrorMessage('Maximal 10 Zeichen');
+    } else if (password == '') {
+      setPasswordError(true);
+      setErrorMessage('Passwort wird benötigt');
+    } else if (password.length < 6) {
+      setPasswordError(true);
+      setErrorMessage('Passwort muss mindestens 6 Zeichen haben');
+    } else {
+      navigation.navigate('VerifyMail');
+    }
+  };
+
   const navigation = useNavigation();
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
       <View
         style={{
-          flexDirection: 'row',
           width: '100%',
           alignItems: 'center',
-          justifyContent: 'space-between',
-        }}>
-        <Icon
-          name="chevron-left"
-          size={30}
-          color="#205072"
-          style={{paddingLeft: '4%'}}
-          onPress={() => navigation.goBack()}
-        />
-        <Image
-          source={require('../../Assets/Images/orangeLogo.png')}
-          style={{
-            height: 31,
-            width: 33,
-            alignSelf: 'center',
-            marginRight: '4%',
-          }}
-        />
-        <View style={{width: '4%'}} />
-      </View>
-      <View style={{width: '100%', alignItems: 'center'}}>
-        <Text
-          style={{
-            color: '#FFA420',
-            fontSize: 32,
-            fontFamily: FontStyle.FuturaPTBold,
-          }}>
-          everygroup
-        </Text>
-      </View>
-
-      <View
-        style={{
-          width: '100%',
-          alignItems: 'center',
-          height: '35%',
+          height: '40%',
           justifyContent: 'center',
         }}>
-        <Input placeholder="E-Mail" placeholderTextColor="#205072" />
-        <Input placeholder="Nutzername" placeholderTextColor="#205072" />
+        <ErrorText error={emailError} errorMessage={errorMessage} />
+        <Input
+          placeholder="E-Mail"
+          placeholderTextColor="#205072"
+          onChangeText={text => {
+            setEmail(text);
+            setEmailError(false);
+          }}
+        />
+        <ErrorText error={userNameError} errorMessage={errorMessage} />
+        <Input
+          placeholder="Nutzername"
+          placeholderTextColor="#205072"
+          onChangeText={text => {
+            setUserName(text);
+            setUserNameError(false);
+          }}
+        />
+        <ErrorText error={passwordError} errorMessage={errorMessage} />
         <Input
           placeholder="Passwort"
-          iconName={showPassword ? 'eye-slash' : 'eye'}
+          iconName={showPassword ? 'eye-with-line' : 'eye'}
           showPassword={showPassword}
           iconPress={iconPress}
           secureTextEntry={secureTextEntry}
           placeholderTextColor="#205072"
+          onChangeText={text => {
+            setPassword(text);
+            setPasswordError(false);
+          }}
         />
         <View style={{width: '78%', flexDirection: 'row'}}>
           <Text
@@ -98,10 +114,7 @@ const SignUp = () => {
         </View>
       </View>
       <View style={{alignItems: 'center'}}>
-        <Button
-          onPress={() => navigation.navigate('VerifyMail')}
-          buttonText="Registrieren"
-        />
+        <Button onPress={submit} buttonText="Registrieren" />
       </View>
       <View style={{width: '72%', alignSelf: 'center', flexDirection: 'row'}}>
         <Text

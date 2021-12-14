@@ -1,16 +1,27 @@
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
-import Header from '../../Common/Header';
 import Styles from '../UserScreens/Style';
 import {useNavigation} from '@react-navigation/core';
 import Input from '../../Common/Input';
 import Button from '../../Common/Button';
+import {HelperText} from 'react-native-paper';
 
-const UpdatePassword = () => {
+const ChangePassword = () => {
   const navigation = useNavigation();
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [passwordText, setPasswordText] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const submit = () => {
+    if (passwordText == '') {
+      setPasswordError(true);
+      setErrorMessage('Passwort wird benötigt');
+    } else {
+      navigation.navigate('UpdatePassword');
+    }
+  };
 
   return (
     <View
@@ -20,7 +31,6 @@ const UpdatePassword = () => {
         backgroundColor: '#fff',
         alignItems: 'center',
       }}>
-      <Header />
       <TouchableOpacity
         style={{alignSelf: 'flex-start', paddingHorizontal: '2.5%'}}
         onPress={() => navigation.goBack()}>
@@ -40,26 +50,36 @@ const UpdatePassword = () => {
           color: '#205072',
           width: '75%',
           textAlign: 'center',
-          marginVertical: '5%',
+          marginVertical: '10%',
         }}>
-        Gib dein neues Passwort ein
+        Gib dein aktuelles Passwort ein, um ein neues festzulegen
       </Text>
-      <Input
-        placeholder="Neues Passwort"
-        placeholderTextColor="#205072"
-        iconName={showPassword ? 'eye' : 'eye-with-line'}
-        iconPress={() => setShowPassword(!showPassword)}
-        secureTextEntry={!showPassword}
-      />
-      <Input
-        placeholder="Passwort wiederholen"
-        placeholderTextColor="#205072"
-        iconName={showConfirmPassword ? 'eye' : 'eye-with-line'}
-        iconPress={() => setShowConfirmPassword(!showConfirmPassword)}
-        secureTextEntry={!showConfirmPassword}
-      />
-      <View style={{marginVertical: '5%', width: '100%', alignItems: 'center'}}>
-        <Button buttonText="passwort ändern" />
+      <View style={{width: '100%', alignItems: 'center'}}>
+        {passwordError == true ? (
+          <HelperText
+            style={[Styles.helperText, {paddingLeft: '10%'}]}
+            type="error">
+            {errorMessage}
+          </HelperText>
+        ) : null}
+        <Input
+          placeholder="passwort"
+          placeholderTextColor="#205072"
+          iconName={showPassword ? 'eye' : 'eye-with-line'}
+          iconPress={() => setShowPassword(!showPassword)}
+          secureTextEntry={!showPassword}
+          onChangeText={text => {
+            setPasswordText(text);
+            setPasswordError(false);
+          }}
+        />
+      </View>
+      <View
+        style={{marginVertical: '10%', width: '100%', alignItems: 'center'}}>
+        <Button buttonText="Weiter" onPress={submit} />
+        <Text style={{fontSize: 15, color: '#0A49E0', marginVertical: '2.5%'}}>
+          Passwort vergessen
+        </Text>
       </View>
       <View
         style={{
@@ -81,4 +101,4 @@ const UpdatePassword = () => {
   );
 };
 
-export default UpdatePassword;
+export default ChangePassword;

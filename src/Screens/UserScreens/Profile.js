@@ -11,7 +11,7 @@ const Profile = () => {
     {displayName: 'Accountdaten', navigationName: 'AccountData'},
     {displayName: 'Benachrichtigungen', navigationName: 'Notification'},
     {displayName: 'Gutschein', navigationName: 'Coupon'},
-    {displayName: 'Abmelden', navigationName: 'SignOut'},
+    {displayName: 'Abmelden', navigationName: 'SplashScreen'},
   ]);
 
   return (
@@ -42,6 +42,22 @@ const Profile = () => {
           );
         }}
       />
+      <View
+        style={{
+          justifyContent: 'flex-end',
+          flex: 1,
+        }}>
+        <Image
+          source={require('../../Assets/Images/greyLogo.png')}
+          style={{
+            width: 94,
+            height: 40,
+            resizeMode: 'contain',
+            alignSelf: 'center',
+            bottom: 30,
+          }}
+        />
+      </View>
     </View>
   );
 };

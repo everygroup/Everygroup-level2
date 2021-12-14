@@ -8,22 +8,6 @@ const VerifyMail = () => {
   const navigation = useNavigation();
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
-      <View
-        style={{
-          width: '100%',
-          alignItems: 'center',
-          height: '15%',
-        }}>
-        <Image
-          source={require('../../Assets/Images/orangeLogo.png')}
-          style={{
-            height: 31,
-            width: 33,
-            alignSelf: 'center',
-          }}
-        />
-        <Text style={{color: '#FFA420', fontSize: 32}}>everygroup</Text>
-      </View>
       <View style={{alignItems: 'center', height: '70%'}}>
         <Image
           source={require('../../Assets/Images/newLetter.png')}
@@ -44,16 +28,6 @@ const VerifyMail = () => {
       <TouchableOpacity
         onPress={() => navigation.navigate('ConfirmationScreen')}
         style={{alignItems: 'center', height: '15%'}}>
-        <Text
-          style={{
-            color: '#FF2020',
-            width: '50%',
-            textAlign: 'center',
-            fontSize: 15,
-            fontFamily: FontStyle.MontSemiBold,
-          }}>
-          Link in the email leads to the next screen
-        </Text>
         <Icon name={'long-arrow-alt-right'} size={60} color="#FF3333" />
       </TouchableOpacity>
     </SafeAreaView>

@@ -8,13 +8,14 @@ import {
   Dimensions,
   Image,
 } from 'react-native';
-
+import {useNavigation} from '@react-navigation/native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 
 function Interface(props) {
+  const navigation = useNavigation();
   const [groupArray] = useState([
     {
       groupName: 'Nordsee Gruppe 1',
@@ -58,7 +59,12 @@ function Interface(props) {
             style={[styles.child, {backgroundColor: '#fff', paddingTop: 10}]}>
             <View style={styles.subContainer}>
               <View style={styles.header}>
-                <Entypo name="cross" size={35} color="#FF0000" />
+                <Entypo
+                  name="cross"
+                  size={35}
+                  color="#FF0000"
+                  onPress={() => navigation.navigate('Dashboard')}
+                />
                 <TouchableOpacity
                   style={{flexDirection: 'row', alignItems: 'center'}}>
                   <Text

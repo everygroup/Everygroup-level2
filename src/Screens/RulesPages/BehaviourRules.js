@@ -1,12 +1,12 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
-import Header from '../../Common/Header';
+
 import Styles from '../UserScreens/Style';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import AdminRule from './AdminRule';
-import MemberRule from './MemberRules';
+import AdminRule from '../AuthScreens/AdminRule';
+import MemberRule from '../AuthScreens/MemberRules';
 import FontStyle from '../../Assets/Fonts/FontStyle';
-import Groups from '../FavoriteTabs/Groups';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useNavigation} from '@react-navigation/native';
 
 const Tab = createMaterialTopTabNavigator();
@@ -16,9 +16,11 @@ const BehaviourRules = () => {
   return (
     <View style={[Styles.mainContainer]}>
       <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Image
-          source={require('../../Assets/Images/back.png')}
-          style={{width: 23, height: 23, resizeMode: 'contain'}}
+        <Icon
+          name={'chevron-left'}
+          size={30}
+          color="#205072"
+          onPress={() => navigation.goBack()}
         />
       </TouchableOpacity>
       <Tab.Navigator

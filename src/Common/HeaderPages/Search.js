@@ -102,7 +102,7 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
         </View>
       </View>
       {filterValue ? (
-        <View>
+        <ScrollView>
           <View
             style={{
               alignItems: 'center',
@@ -283,7 +283,7 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
               />
             </View>
           </View>
-        </View>
+        </ScrollView>
       ) : null}
     </View>
   );

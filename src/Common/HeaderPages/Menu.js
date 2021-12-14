@@ -4,10 +4,10 @@ import FontStyle from '../../Assets/Fonts/FontStyle';
 import {useNavigation} from '@react-navigation/native';
 const Menu = ({onPressMenu}) => {
   const [pages, setPages] = useState([
-    {displayName: 'Profil', navigationName: 'Profile'},
+    {displayName: 'Profil', navigationName: 'UserNavigator'},
     {displayName: 'Meine Gruppen', navigationName: 'MyGroup'},
     {displayName: 'Favoriten', navigationName: 'MyFavorite'},
-    {displayName: 'Hilfe', navigationName: 'Help'},
+    {displayName: 'Hilfe', navigationName: 'HelpNavigator'},
     {displayName: 'Sprache', navigationName: 'Language'},
   ]);
   const navigation = useNavigation();

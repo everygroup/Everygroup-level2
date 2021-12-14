@@ -4,8 +4,9 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import {useNavigation} from '@react-navigation/native';
 
-const HeaderAuth = ({currentRoute}) => {
+const HeaderAuth = ({currentRoute, prevRoute}) => {
   const navigation = useNavigation();
+
   return (
     <SafeAreaView
       style={{
@@ -21,12 +22,15 @@ const HeaderAuth = ({currentRoute}) => {
           justifyContent: 'space-between',
         }}>
         <View style={{width: '10%', left: 10}}>
-          {currentRoute && currentRoute.index == 0 ? null : (
+          {currentRoute == undefined ||
+          currentRoute.name == 'SplashScreen' ||
+          currentRoute.name == 'VerifyMail' ||
+          currentRoute.name == 'ConfirmationScreen' ? null : (
             <Icon
               name={'chevron-left'}
               size={30}
               color="#205072"
-              onPress={() => navigation.navigate('SplashScreen')}
+              onPress={() => navigation.navigate(prevRoute.name)}
             />
           )}
         </View>
