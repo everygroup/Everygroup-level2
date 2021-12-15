@@ -6,6 +6,8 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  LayoutAnimation,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import Input from '../Input';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -13,8 +15,29 @@ import FontStyle from '../../Assets/Fonts/FontStyle';
 import InfoModal from '../InfoModal';
 import {HelperText} from 'react-native-paper';
 import Styles from '../../Screens/UserScreens/Style';
+import {FlatList} from 'react-native-gesture-handler';
 
 const AddGroup = () => {
+  const [category] = useState([
+    'Allgemein',
+    'Meme',
+    'Gaming',
+    'Wissen',
+    'Dating',
+    'Umgebung',
+    'Interessen',
+    'Selbsthilfe',
+    'Musik',
+    'Tiere',
+    'Finanzen',
+    'LQBTQ+',
+    'RPG',
+    'Unterhaltung',
+    'Technik',
+    'Sport',
+    'Dienstleistungen',
+  ]);
+  const [selectedCategory, setSelectedCategory] = useState([]);
   const [selectedInfo, setSelectInfo] = useState('');
   const [modalValue, setModalValue] = useState(false);
   const [titel, setTitel] = useState('');
@@ -25,6 +48,7 @@ const AddGroup = () => {
   const [hashError, setHashError] = useState(false);
   const [checkedTerms, setCheckedTerms] = useState(false);
   const [checkedConductRules, setConductRules] = useState(false);
+  const [expand, setExpand] = useState(false);
 
   const pressInfo = message => {
     setSelectInfo(message);
@@ -39,6 +63,35 @@ const AddGroup = () => {
     } else {
       alert('Submitted Successfully');
     }
+  };
+
+  const expandOption = () => {
+    setExpand(!expand);
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+  };
+
+  const categroySelection = category => {
+    // const newArray = [...selectedCategory];
+    if (selectedCategory.some(el => el == category)) {
+      setSelectedCategory(selectedCategory.filter(item => item !== category));
+    } else if (selectedCategory.length >= 3) {
+      setSelectedCategory([
+        ...selectedCategory.filter((item, index) => index !== 0),
+        category,
+      ]);
+    } else {
+      setSelectedCategory(prevValue => [...prevValue, category]);
+    }
+
+    // const newArray = [...selectedCategory, category];
+    // if (selectedCategory.some(el => el == category)) {
+    //   setSelectedCategory(selectedCategory.filter(item => item !== category));
+    // } else if (newArray.length > 3) {
+    //   setSelectedCategory(newArray.filter((item, index) => index !== 0));
+    // } else {
+
+    //   setSelectedCategory(newArray);
+    // }
   };
 
   return (
@@ -138,7 +191,7 @@ const AddGroup = () => {
           />
         </View>
       </View>
-      <View style={styles.container}>
+      <View style={[styles.container, {height: expand ? 500 : 50}]}>
         <TouchableOpacity
           onPress={() =>
             pressInfo(
@@ -156,25 +209,68 @@ const AddGroup = () => {
             }}
           />
         </TouchableOpacity>
-        <View
-          style={{
-            backgroundColor: '#fff',
-            width: '80%',
-            height: 39,
-            borderRadius: 6,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            paddingHorizontal: '5%',
-          }}>
-          <Text
+        <View style={[styles.insideContainer, {height: expand ? 500 : 39}]}>
+          <TouchableOpacity
+            onPress={expandOption}
             style={{
-              fontFamily: FontStyle.MontSemiBold,
-              color: '#FFA420',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              height: 39,
             }}>
-            Kategorie
-          </Text>
-          <Icon name="caret-down" color="#000" size={20} />
+            <Text
+              style={{
+                fontFamily: FontStyle.MontSemiBold,
+                color: '#FFA420',
+                fontSize: 17,
+              }}>
+              Kategorie
+            </Text>
+            <Icon name="caret-down" color="#000" size={20} />
+          </TouchableOpacity>
+          {expand ? (
+            <ScrollView showsVerticalScrollIndicator={false}>
+              {category.map(el => {
+                return (
+                  <View>
+                    <TouchableOpacity
+                      onPress={() => categroySelection(el)}
+                      style={{
+                        height: 39,
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: FontStyle.MontSemiBold,
+                          fontSize: 17,
+                          color: '#FFA420',
+                        }}>
+                        {el}
+                      </Text>
+                      {selectedCategory.some(item => item === el) ? (
+                        <Icon
+                          name={'check-square'}
+                          size={20}
+                          color="#205072"
+                          solid
+                        />
+                      ) : (
+                        <Icon name={'square'} size={20} color="#205072" />
+                      )}
+                    </TouchableOpacity>
+                    <View
+                      style={{
+                        width: '100%',
+                        height: 1,
+                        backgroundColor: '#DDDFE7',
+                      }}
+                    />
+                  </View>
+                );
+              })}
+            </ScrollView>
+          ) : null}
         </View>
       </View>
       <View style={[styles.container]}>
@@ -470,6 +566,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 10,
     marginVertical: '5%',
+  },
+  insideContainer: {
+    backgroundColor: '#fff',
+    width: '80%',
+    borderRadius: 6,
+    justifyContent: 'space-between',
+    paddingTop: 10,
+    paddingHorizontal: '5%',
   },
 });
 

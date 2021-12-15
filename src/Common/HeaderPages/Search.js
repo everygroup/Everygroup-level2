@@ -4,14 +4,11 @@ import {
   Text,
   StyleSheet,
   Image,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   FlatList,
 } from 'react-native';
 import Input from '../Input';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import FontStyle from '../../Assets/Fonts/FontStyle';
-
 import {Switch} from 'react-native-paper';
 import {ScrollView} from 'react-native-gesture-handler';
 
@@ -60,7 +57,7 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
           justifyContent: 'space-between',
           alignSelf: 'center',
         }}>
-        <View style={{right: 5, top: 17}}>
+        <View style={{right: 5, top: 11}}>
           {filterValue ? (
             <TouchableWithoutFeedback onPress={filterPress}>
               <Image
@@ -83,7 +80,7 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
           placeholder="Gruppe suchen"
           placeholderTextColor="#BECCD6"
         />
-        <View style={{left: 5, top: 15}}>
+        <View style={{left: 5, top: 10}}>
           {starValue ? (
             <TouchableWithoutFeedback onPress={starPress}>
               <Image
@@ -102,7 +99,7 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
         </View>
       </View>
       {filterValue ? (
-        <ScrollView>
+        <ScrollView contentContainerStyle={{paddingBottom: '10%'}}>
           <View
             style={{
               alignItems: 'center',

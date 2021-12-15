@@ -1,45 +1,116 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, FlatList} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  LayoutAnimation,
+  TouchableOpacity,
+} from 'react-native';
 import Header from '../../Common/Header';
 import Styles from './Style';
 import ModalDropdown from 'react-native-modal-dropdown';
 import FontStyle from '../../Assets/Fonts/FontStyle';
+import {RadioButton} from 'react-native-paper';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const Language = () => {
   const [selectedLanguage, setSelectedLanguage] = useState('Deutsch');
+  const [expand, setExpand] = useState(false);
+  const [language] = useState([
+    'Deutsch',
+    'Englisch',
+    'Spanisch',
+    'Indisch',
+    'Polnisch',
+    'Türkisch',
+    'Russisch',
+    'Portugiesisch',
+  ]);
 
-  const [language] = useState(['Deutsch', 'English']);
+  const expandOption = () => {
+    setExpand(!expand);
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+  };
 
   return (
-    <View style={{paddingTop: '25%', height: '100%'}}>
+    <View style={{paddingTop: '25%', height: '100%', backgroundColor: '#fff'}}>
       <Header />
       <Text style={Styles.headingText}>Sprache</Text>
+
       <View
-        style={[styles.containerStyle, {height: 50, justifyContent: 'center'}]}>
-        <ModalDropdown
-          options={language}
-          defaultValue={selectedLanguage}
-          textStyle={{
-            fontSize: 17,
-            alignItems: 'center',
-            fontFamily: FontStyle.MontSemiBold,
-            color: '#FFA420',
-            paddingHorizontal: '5%',
+        style={[
+          styles.containerStyle,
+          {
+            height: expand ? 300 : 50,
+            paddingTop: 10,
+          },
+        ]}>
+        <TouchableOpacity
+          onPress={expandOption}
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            height: 40,
+            paddingRight: 10,
+          }}>
+          <Text style={styles.languageText}>{selectedLanguage}</Text>
+
+          <Icon
+            name={expand ? 'chevron-up' : 'chevron-down'}
+            size={20}
+            color="#205072"
+          />
+        </TouchableOpacity>
+        <View
+          style={{
+            width: '100%',
+            height: 1,
+            backgroundColor: '#DDDFE7',
           }}
-          dropdownStyle={{
-            backgroundColor: '#fff',
-            marginTop: 15,
-            borderColor: '#DDDFE7',
-            borderWidth: 0.5,
-            height: 100,
-            width: '90%',
-          }}
-          dropdownTextStyle={{
-            fontSize: 17,
-            fontFamily: FontStyle.MontSemiBold,
-            color: '#FFA420',
-            paddingHorizontal: '5%',
-          }}></ModalDropdown>
+        />
+        {expand ? (
+          <FlatList
+            data={language}
+            showsVerticalScrollIndicator={false}
+            renderItem={({item}) => {
+              return (
+                <View>
+                  <TouchableOpacity
+                    onPress={() => setSelectedLanguage(item)}
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      height: 50,
+                      alignItems: 'center',
+                      paddingRight: 10,
+                    }}>
+                    <Text style={styles.languageText}>{item}</Text>
+
+                    {selectedLanguage == item ? (
+                      <Icon
+                        name={'check-circle'}
+                        size={20}
+                        color="#205072"
+                        solid
+                      />
+                    ) : (
+                      <Icon name={'circle'} size={20} color="#205072" />
+                    )}
+                  </TouchableOpacity>
+
+                  <View
+                    style={{
+                      width: '100%',
+                      height: 1,
+                      backgroundColor: '#DDDFE7',
+                    }}
+                  />
+                </View>
+              );
+            }}
+          />
+        ) : null}
       </View>
     </View>
   );
@@ -60,6 +131,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.27,
     shadowRadius: 2.65,
     elevation: 2,
+  },
+  languageText: {
+    fontSize: 17,
+    fontFamily: FontStyle.MontSemiBold,
+    color: '#FFA420',
+    paddingHorizontal: '5%',
   },
 });
 

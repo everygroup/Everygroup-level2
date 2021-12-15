@@ -28,14 +28,14 @@ const Header = () => {
       style={{
         height:
           currentSelectedOption == 'menu'
-            ? height / 2
+            ? 320
             : currentSelectedOption == 'search' && filterValue
             ? height
             : currentSelectedOption == 'search'
-            ? height / 6
+            ? 115
             : currentSelectedOption == 'plus'
             ? height
-            : height / 12,
+            : 59,
         width: '100%',
         alignSelf: 'center',
         backgroundColor: '#FF9700',

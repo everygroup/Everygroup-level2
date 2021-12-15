@@ -114,13 +114,14 @@ function Interface(props) {
                 <View
                   style={{
                     backgroundColor: '#205072',
-                    height: 30,
+                    height: 20,
                     minWidth: 50,
                     maxWidth: 'auto',
                     alignItems: 'center',
                     justifyContent: 'center',
                     marginHorizontal: 5,
                     borderRadius: 10,
+                    paddingHorizontal: 5,
                   }}>
                   <Text key={index.toString()} style={styles.category}>
                     {item}
@@ -153,26 +154,49 @@ function Interface(props) {
             </Text>
             <View style={styles.verticalIcons}>
               <TouchableOpacity>
-                <AntDesign name="sharealt" size={30} color="#205072" />
-              </TouchableOpacity>
-              <TouchableOpacity>
                 <Image
-                  source={require('../../Assets/Images/whatsappLine.png')}
-                  style={{height: 35, width: 28, marginTop: 8}}
+                  source={require('../../Assets/Images/share.png')}
+                  style={{
+                    height: 20,
+                    width: 20,
+                    resizeMode: 'contain',
+                    marginVertical: 10,
+                    right: 5,
+                  }}
                 />
               </TouchableOpacity>
               <TouchableOpacity>
                 <Image
-                  source={require('../../Assets/Images/whatsappLine.png')}
-                  style={{height: 45, width: 32, marginTop: 8}}
+                  source={require('../../Assets/Images/arrowBlank.png')}
+                  style={{
+                    height: 20,
+                    width: 20,
+                    resizeMode: 'contain',
+                    right: 5,
+                  }}
                 />
               </TouchableOpacity>
               <TouchableOpacity>
-                <Entypo
-                  name="dots-three-horizontal"
-                  color="#205072"
-                  size={30}
-                  style={{marginTop: 5}}
+                <Image
+                  source={require('../../Assets/Images/mediaArrow.png')}
+                  style={{
+                    height: 36,
+                    width: 32,
+                    resizeMode: 'contain',
+                    marginVertical: 10,
+                  }}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Image
+                  source={require('../../Assets/Images/setting.png')}
+                  style={{
+                    height: 20,
+                    width: 20,
+                    resizeMode: 'contain',
+                    marginVertical: 10,
+                    right: 5,
+                  }}
                 />
               </TouchableOpacity>
             </View>
