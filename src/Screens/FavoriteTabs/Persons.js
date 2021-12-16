@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
-import {View, Text, FlatList} from 'react-native';
+import {View, Text, FlatList, TouchableOpacity} from 'react-native';
 import PersonCard from '../../Common/HeaderPages/PersonCard';
+import {useNavigation} from '@react-navigation/native';
 
 const Persons = () => {
+  const navigation = useNavigation();
   const [personsData, setPersonsData] = useState([
     {
       userName: 'Superman98',

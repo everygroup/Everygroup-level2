@@ -1,9 +1,11 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import {useNavigation} from '@react-navigation/native';
 
 const PersonCard = ({data}) => {
+  const navigation = useNavigation();
   return (
     <View style={styles.containerStyle}>
       <View style={{flex: 0.5}}>
@@ -17,16 +19,20 @@ const PersonCard = ({data}) => {
             paddingHorizontal: '5%',
             paddingTop: '2.5%',
           }}
+          onPress={() => alert('delete')}
         />
-        <Text
-          style={{
-            fontSize: 20,
-            fontFamily: FontStyle.MontBold,
-            color: '#205072',
-            padding: '2.5%',
-          }}>
-          {data.userName}
-        </Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('OtherUserScreen')}>
+          <Text
+            style={{
+              fontSize: 20,
+              fontFamily: FontStyle.MontBold,
+              color: '#205072',
+              padding: '2.5%',
+            }}>
+            {data.userName}
+          </Text>
+        </TouchableOpacity>
       </View>
       <View
         style={{

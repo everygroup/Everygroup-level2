@@ -70,95 +70,96 @@ const GroupCard = ({
             />
           )}
         </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            height: 30,
-            paddingHorizontal: '5%',
-          }}>
+        <TouchableOpacity onPress={() => navigation.navigate('GroupDetail')}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              height: 30,
+              paddingHorizontal: '5%',
+            }}>
+            <Text
+              style={{
+                fontSize: 16,
+                color: '#205072',
+                fontFamily: FontStyle.MontExtBold,
+              }}>
+              {group.groupName}
+            </Text>
+            <Icon name="bookmark" color="#B9B9B9" size={22} />
+          </View>
+
+          <FlatList
+            horizontal={true}
+            contentContainerStyle={{
+              height: 22,
+              width: '90%',
+              paddingHorizontal: '5%',
+            }}
+            data={group.category}
+            renderItem={({item}) => {
+              return (
+                <View
+                  style={{
+                    backgroundColor: '#205072',
+                    marginHorizontal: 5,
+                    height: 20,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    minWidth: 80,
+                    maxWidth: 'auto',
+                    borderRadius: 5,
+                    paddingHorizontal: 5,
+                  }}>
+                  <Text
+                    style={{
+                      color: '#fff',
+                      fontSize: 9,
+                      fontFamily: FontStyle.MontBold,
+                    }}>
+                    {item}
+                  </Text>
+                </View>
+              );
+            }}
+          />
+
+          <FlatList
+            horizontal={true}
+            contentContainerStyle={{
+              width: '95%',
+              height: 22,
+              minHeight: 20,
+              maxHeight: 40,
+              paddingHorizontal: '8%',
+            }}
+            data={group.hashtagData}
+            renderItem={({item}) => {
+              return (
+                <View style={{minWidth: 40, maxWidth: 'auto'}}>
+                  <Text
+                    style={{
+                      color: '#FFA420',
+                      fontSize: 11,
+                      fontFamily: FontStyle.MontMedium,
+                    }}>
+                    {item}
+                  </Text>
+                </View>
+              );
+            }}
+          />
           <Text
             style={{
-              fontSize: 16,
+              fontFamily: FontStyle.MontSemiBold,
+              fontSize: 13,
               color: '#205072',
-              fontFamily: FontStyle.MontExtBold,
+              paddingHorizontal: '8%',
             }}>
-            {group.groupName}
+            {group.description}
           </Text>
-          <Icon name="bookmark" color="#B9B9B9" size={22} />
-        </View>
-
-        <FlatList
-          horizontal={true}
-          contentContainerStyle={{
-            height: 22,
-            width: '90%',
-            paddingHorizontal: '5%',
-          }}
-          data={group.category}
-          renderItem={({item}) => {
-            return (
-              <View
-                style={{
-                  backgroundColor: '#205072',
-                  marginHorizontal: 5,
-                  height: 20,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  minWidth: 80,
-                  maxWidth: 'auto',
-                  borderRadius: 5,
-                  paddingHorizontal: 5,
-                }}>
-                <Text
-                  style={{
-                    color: '#fff',
-                    fontSize: 9,
-                    fontFamily: FontStyle.MontBold,
-                  }}>
-                  {item}
-                </Text>
-              </View>
-            );
-          }}
-        />
-
-        <FlatList
-          horizontal={true}
-          contentContainerStyle={{
-            width: '95%',
-            height: 22,
-            minHeight: 20,
-            maxHeight: 40,
-            paddingHorizontal: '8%',
-          }}
-          data={group.hashtagData}
-          renderItem={({item}) => {
-            return (
-              <View style={{minWidth: 40, maxWidth: 'auto'}}>
-                <Text
-                  style={{
-                    color: '#FFA420',
-                    fontSize: 11,
-                    fontFamily: FontStyle.MontMedium,
-                  }}>
-                  {item}
-                </Text>
-              </View>
-            );
-          }}
-        />
-        <Text
-          style={{
-            fontFamily: FontStyle.MontSemiBold,
-            fontSize: 13,
-            color: '#205072',
-            paddingHorizontal: '8%',
-          }}>
-          {group.description}
-        </Text>
+        </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('GroupDetail')}
           style={{
             backgroundColor:
               group.socialGroup == 'snapchat'

@@ -39,7 +39,11 @@ const UpdateUserName = () => {
       <AlertModal modalValue={modalValue} closeModal={closeModal} />
 
       <TouchableOpacity
-        style={{alignSelf: 'flex-start', paddingHorizontal: '2.5%'}}
+        style={{
+          alignSelf: 'flex-start',
+          paddingHorizontal: '2.5%',
+          marginTop: '5%',
+        }}
         onPress={() => navigation.goBack()}>
         <Image
           source={require('../../Assets/Images/back.png')}
