@@ -8,9 +8,21 @@ const AccountData = () => {
   const navigation = useNavigation();
 
   const [pageOption, setPageOption] = useState([
-    {displayName: 'Passwort ändern', navigationName: 'ChangePassword'},
-    {displayName: 'E-Mail ändern', navigationName: 'ChangeEmail'},
-    {displayName: 'Nutzername ändern', navigationName: 'ChangeUserName'},
+    {
+      displayName: 'Passwort ändern',
+      description: 'Gib dein Passwort ein, um deinen Account löschen zu können',
+      toNavigate: 'UpdatePassword',
+    },
+    {
+      displayName: 'E-Mail ändern',
+      description: 'Gib dein Passwort ein, um deine E-Mail zu ändern',
+      toNavigate: 'UpdateEmail',
+    },
+    {
+      displayName: 'Nutzername ändern',
+      description: ' Gib dein Passwort ein, um deinen Nutzernamen zu ändern',
+      toNavigate: 'UpdateUserName',
+    },
   ]);
 
   return (
@@ -38,7 +50,12 @@ const AccountData = () => {
           renderItem={({item}) => {
             return (
               <TouchableOpacity
-                onPress={() => navigation.navigate(item.navigationName)}
+                onPress={() =>
+                  navigation.navigate('CheckPassword', {
+                    description: item.description,
+                    toNavigate: item.toNavigate,
+                  })
+                }
                 style={Styles.textContainer}>
                 <Text style={Styles.textStyle}>{item.displayName}</Text>
               </TouchableOpacity>
@@ -46,16 +63,25 @@ const AccountData = () => {
           }}
         />
       </View>
-      <Text
-        style={{
-          color: '#929292',
-          fontFamily: FontStyle.MontSemiBold,
-          fontSize: 18,
-          paddingHorizontal: '5%',
-          marginBottom: '10%',
-        }}>
-        Account löschen
-      </Text>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate('CheckPassword', {
+            description:
+              'Gib dein Passwort ein, um deinen Account löschen zu können',
+            toNavigate: 'DeletePage',
+          })
+        }>
+        <Text
+          style={{
+            color: '#929292',
+            fontFamily: FontStyle.MontSemiBold,
+            fontSize: 18,
+            paddingHorizontal: '5%',
+            marginBottom: '10%',
+          }}>
+          Account löschen
+        </Text>
+      </TouchableOpacity>
       <View
         style={{
           justifyContent: 'flex-end',

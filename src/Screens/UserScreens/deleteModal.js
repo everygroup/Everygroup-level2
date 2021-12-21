@@ -1,16 +1,9 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Modal from 'react-native-modal';
-import FontStyle from '../Assets/Fonts/FontStyle';
+import FontStyle from '../../Assets/Fonts/FontStyle';
 
-const AlertModal = ({
-  modalValue,
-  closeModal,
-  message,
-  description,
-  leftButtonColor,
-  rightButtonColor,
-}) => {
+const DeleteModal = ({modalValue, closeModal, message}) => {
   return (
     <View>
       <Modal
@@ -51,16 +44,10 @@ const AlertModal = ({
               width: '85%',
               textAlign: 'left',
             }}>
-            {description ||
-              'Danach kannst du deinen Usernamen nicht mehr ändern.'}
+            Danach kannst du deinen Usernamen nicht mehr ändern.
           </Text>
           <View style={{flexDirection: 'row'}}>
-            <TouchableOpacity
-              onPress={closeModal}
-              style={[
-                styles.buttonView,
-                {backgroundColor: leftButtonColor || '#205072'},
-              ]}>
+            <TouchableOpacity onPress={closeModal} style={styles.buttonView}>
               <Text
                 style={{
                   fontFamily: FontStyle.MontExtBold,
@@ -72,10 +59,7 @@ const AlertModal = ({
             </TouchableOpacity>
             <TouchableOpacity
               onPress={closeModal}
-              style={[
-                styles.buttonView,
-                {backgroundColor: rightButtonColor || '#06BA63'},
-              ]}>
+              style={[styles.buttonView, {backgroundColor: '#06BA63'}]}>
               <Text
                 style={{
                   fontFamily: FontStyle.MontExtBold,
@@ -109,6 +93,7 @@ const styles = StyleSheet.create({
   buttonView: {
     width: 122,
     height: 45,
+    backgroundColor: '#205072',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 21,
@@ -117,4 +102,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AlertModal;
+export default DeleteModal;

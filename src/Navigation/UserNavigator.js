@@ -4,17 +4,19 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Header from '../Common/Header';
 import Profile from '../Screens/UserScreens/Profile';
 import AccountData from '../Screens/UserScreens/AccountData';
-import ChangePassword from '../Screens/UserScreens/ChangePassword';
+// import ChangePassword from '../Screens/UserScreens/ChangePassword';
 import UpdatePassword from '../Screens/UserScreens/UpdatePassword';
-import ChangeUserName from '../Screens/UserScreens/ChangeUserName';
+// import ChangeUserName from '../Screens/UserScreens/ChangeUserName';
 import UpdateUserName from '../Screens/UserScreens/UpdateUserName';
-import ChangeEmail from '../Screens/UserScreens/ChangeEmail';
+// import ChangeEmail from '../Screens/UserScreens/ChangeEmail';
 import UpdateEmail from '../Screens/UserScreens/UpdateEmail';
 import SentEmail from '../Screens/UserScreens/SentEmail';
 import Notification from '../Screens/UserScreens/Notification';
 import NotificationGroupBooster from '../Screens/UserScreens/NotificationGroupBooster';
 import NotificationOwnGroup from '../Screens/UserScreens/NotificationOwnGroup';
 import Coupon from '../Screens/UserScreens/Coupon';
+import CheckPassword from '../Screens/UserScreens/CheckPassword';
+import DeletePage from '../Screens/UserScreens/DeletePage';
 const UserStackScreen = createStackNavigator();
 
 export const UserNavigator = () => {
@@ -35,32 +37,32 @@ export const UserNavigator = () => {
           component={AccountData}
           options={{gestureEnabled: false}}
         />
-        <UserStackScreen.Screen
+        {/* <UserStackScreen.Screen
           name="ChangePassword"
           component={ChangePassword}
           options={{gestureEnabled: false}}
-        />
+        /> */}
 
         <UserStackScreen.Screen
           name="UpdatePassword"
           component={UpdatePassword}
           options={{gestureEnabled: false}}
         />
-        <UserStackScreen.Screen
+        {/* <UserStackScreen.Screen
           name="ChangeUserName"
           component={ChangeUserName}
           options={{gestureEnabled: false}}
-        />
+        /> */}
         <UserStackScreen.Screen
           name="UpdateUserName"
           component={UpdateUserName}
           options={{gestureEnabled: false}}
         />
-        <UserStackScreen.Screen
+        {/* <UserStackScreen.Screen
           name="ChangeEmail"
           component={ChangeEmail}
           options={{gestureEnabled: false}}
-        />
+        /> */}
         <UserStackScreen.Screen
           name="UpdateEmail"
           component={UpdateEmail}
@@ -91,6 +93,16 @@ export const UserNavigator = () => {
         <UserStackScreen.Screen
           name="Coupon"
           component={Coupon}
+          options={{gestureEnabled: false}}
+        />
+        <UserStackScreen.Screen
+          name="CheckPassword"
+          component={CheckPassword}
+          options={{gestureEnabled: false}}
+        />
+        <UserStackScreen.Screen
+          name="DeletePage"
+          component={DeletePage}
           options={{gestureEnabled: false}}
         />
       </UserStackScreen.Navigator>

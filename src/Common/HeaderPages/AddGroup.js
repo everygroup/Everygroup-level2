@@ -15,7 +15,6 @@ import FontStyle from '../../Assets/Fonts/FontStyle';
 import InfoModal from '../InfoModal';
 import {HelperText} from 'react-native-paper';
 import Styles from '../../Screens/UserScreens/Style';
-import {FlatList} from 'react-native-gesture-handler';
 
 const AddGroup = () => {
   const [category] = useState([
