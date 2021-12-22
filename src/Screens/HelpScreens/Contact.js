@@ -64,7 +64,7 @@ const Contact = () => {
           <Text
             style={{
               fontFamily: FontStyle.MontSemiBold,
-              fontSize: 15,
+              fontSize: 17,
               color: '#205072',
             }}>
             hello@everygroup.me

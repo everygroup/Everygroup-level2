@@ -15,7 +15,7 @@ const VerifyMail = () => {
         />
         <Text
           style={{
-            fontSize: 19,
+            fontSize: 21,
             color: '#205072',
             width: '48%',
             textAlign: 'center',

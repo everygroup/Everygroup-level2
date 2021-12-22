@@ -78,19 +78,24 @@ const Dashboard = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: '10%'}}>
         <View style={{height: '24%', backgroundColor: '#fff'}}>
-          <View style={{width: '100%', alignItems: 'center'}}>
+          <View
+            style={{
+              width: '100%',
+              alignItems: 'center',
+            }}>
             <Text
               style={{
                 fontFamily: FontStyle.MontBold,
-                fontSize: 36,
+                fontSize: 38,
                 color: '#205072',
+                left: 3,
               }}>
               Trends
             </Text>
             <Text
               style={{
                 fontFamily: FontStyle.MontBold,
-                fontSize: 16,
+                fontSize: 18,
                 color: '#205072',
               }}>
               Die beliebtesten Gruppen
@@ -120,7 +125,7 @@ const Dashboard = () => {
         <View style={{backgroundColor: '#fff'}}>
           <Text
             style={{
-              fontSize: 24,
+              fontSize: 26,
               color: '#205072',
               fontFamily: FontStyle.MontBold,
               alignSelf: 'center',
@@ -128,7 +133,7 @@ const Dashboard = () => {
             }}>
             Neu hinzugefügt
           </Text>
-          <ScrollView>
+          <ScrollView style={{paddingBottom: 20}}>
             {groupArray.map(group => {
               return <GroupCard group={group} />;
             })}
@@ -146,9 +151,8 @@ const Dashboard = () => {
         <Image
           source={require('../../Assets/Images/group.png')}
           style={{
-            width: 40,
-            height: 40,
-            resizeMode: 'contain',
+            width: 50,
+            height: 50,
           }}
         />
       </TouchableOpacity>

@@ -54,7 +54,7 @@ const SmallCard = ({group}) => {
       <View style={{height: 40}}>
         <Text
           style={{
-            fontSize: 14,
+            fontSize: 16,
             fontFamily: FontStyle.MontBold,
             color: '#205072',
             textAlign: 'center',
@@ -79,7 +79,7 @@ const SmallCard = ({group}) => {
           },
         ]}>
         <Text
-          style={{fontFamily: FontStyle.MontBold, color: '#fff', fontSize: 10}}>
+          style={{fontFamily: FontStyle.MontBold, color: '#fff', fontSize: 12}}>
           Mehr Sehen
         </Text>
       </View>

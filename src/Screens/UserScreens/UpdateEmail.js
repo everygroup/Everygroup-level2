@@ -55,7 +55,7 @@ const UpdateEmail = () => {
       <Text
         style={{
           fontFamily: FontStyle.MontSemiBold,
-          fontSize: 18,
+          fontSize: 20,
           color: '#205072',
           width: '60%',
           textAlign: 'center',

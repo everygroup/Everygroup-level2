@@ -42,7 +42,7 @@ const Menu = ({onPressMenu}) => {
 
 const styles = StyleSheet.create({
   textStyle: {
-    fontSize: 21,
+    fontSize: 23,
     color: '#fff',
     fontFamily: FontStyle.MontBold,
   },

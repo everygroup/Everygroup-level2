@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     fontFamily: FontStyle.MontMedium,
-    fontSize: 13,
+    fontSize: 15,
     color: '#fff',
   },
   textView: {

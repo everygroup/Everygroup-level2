@@ -37,7 +37,7 @@ const UpdatePassword = () => {
       <Text
         style={{
           fontFamily: FontStyle.MontSemiBold,
-          fontSize: 18,
+          fontSize: 20,
           color: '#205072',
           width: '75%',
           textAlign: 'center',

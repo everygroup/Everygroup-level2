@@ -18,6 +18,8 @@ const Input = ({
   bgColor,
   bdWidth,
   borderColor,
+  inputWidth,
+  iconColor,
 }) => {
   return (
     <View
@@ -27,6 +29,7 @@ const Input = ({
           backgroundColor: bgColor || null,
           borderWidth: bdWidth || 2,
           borderColor: borderColor || '#205072',
+          width: inputWidth || '80%',
         },
       ]}>
       <TextInput
@@ -52,7 +55,7 @@ const Input = ({
         <Icon
           name={iconName}
           size={showPassword ? 24 : 20}
-          color="#205072"
+          color={iconColor || '#205072'}
           onPress={iconPress}
         />
       ) : null}
@@ -62,14 +65,13 @@ const Input = ({
 
 const styles = StyleSheet.create({
   textStyle: {
-    fontSize: 14,
+    fontSize: 16,
     width: '85%',
     color: '#205072',
     paddingLeft: 10,
     fontFamily: FontStyle.MontSemiBold,
   },
   inputContainer: {
-    width: '80%',
     flexDirection: 'row',
     alignItems: 'center',
     height: 39,

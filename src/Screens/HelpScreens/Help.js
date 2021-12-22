@@ -55,7 +55,7 @@ const Help = () => {
           style={{
             fontFamily: FontStyle.MontSemiBold,
             color: '#E3E3E3',
-            fontSize: 10,
+            fontSize: 12,
             alignSelf: 'center',
             marginTop: 10,
           }}>
@@ -65,7 +65,7 @@ const Help = () => {
           style={{
             fontFamily: FontStyle.MontSemiBold,
             color: '#E3E3E3',
-            fontSize: 10,
+            fontSize: 12,
             alignSelf: 'center',
           }}>
           Made with many energydrinks.

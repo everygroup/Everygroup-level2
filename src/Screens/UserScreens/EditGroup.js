@@ -71,7 +71,7 @@ const EditGroup = () => {
                   <Text
                     style={{
                       fontFamily: FontStyle.MontBold,
-                      fontSize: 15,
+                      fontSize: 17,
                       color: '#FFA420',
                     }}>
                     {item},
@@ -90,7 +90,7 @@ const EditGroup = () => {
         <EditInput placeholder="#test #test1 #test2 #test3 #test4" />
         <Text
           style={{
-            fontSize: 15,
+            fontSize: 17,
             fontFamily: FontStyle.MontBold,
             color: '#205072',
             width: '70%',
@@ -110,7 +110,7 @@ const EditGroup = () => {
           <Text
             style={{
               fontFamily: FontStyle.MontBold,
-              fontSize: 15,
+              fontSize: 17,
               color: '#BECCD6',
             }}>
             Sprache auswählen..
@@ -119,7 +119,7 @@ const EditGroup = () => {
         </View>
         <Text
           style={{
-            fontSize: 15,
+            fontSize: 17,
             fontFamily: FontStyle.MontBold,
             color: '#205072',
             width: '75%',
@@ -132,7 +132,7 @@ const EditGroup = () => {
           <View style={[styles.buttonView, {backgroundColor: '#BECCD6'}]}>
             <Text
               style={{
-                fontSize: 12,
+                fontSize: 14,
                 color: '#fff',
                 fontFamily: FontStyle.MontBold,
               }}>
@@ -142,7 +142,7 @@ const EditGroup = () => {
           <View style={styles.buttonView}>
             <Text
               style={{
-                fontSize: 12,
+                fontSize: 14,
                 color: '#fff',
                 fontFamily: FontStyle.MontBold,
               }}>
@@ -162,7 +162,7 @@ const EditGroup = () => {
           <Text
             style={{
               fontFamily: FontStyle.MontBold,
-              fontSize: 15,
+              fontSize: 17,
               color: '#BECCD6',
             }}>
             Sprache auswählen..
@@ -182,7 +182,7 @@ const EditGroup = () => {
             style={{
               fontFamily: FontStyle.MontSemiBold,
               color: '#fff',
-              fontSize: 17,
+              fontSize: 19,
             }}>
             Gruppe ändern
           </Text>

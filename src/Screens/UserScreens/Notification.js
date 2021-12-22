@@ -1,16 +1,9 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  Image,
-  StyleSheet,
-} from 'react-native';
+import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
 import Styles from './Style';
 import Header from '../../Common/Header';
 import FontStyle from '../../Assets/Fonts/FontStyle';
-import {Switch} from 'react-native-paper';
+import SwitchToggle from 'react-native-switch-toggle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useNavigation} from '@react-navigation/native';
 
@@ -44,11 +37,15 @@ const Notification = () => {
       <View style={styles.container}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Text style={styles.titleText}>Allgemein</Text>
-          <Switch
-            color="#205072"
-            value={generallySwitch}
-            onValueChange={() => setGenerallySwitch(!generallySwitch)}
-            style={{transform: [{scaleX: 0.65}, {scaleY: 0.6}]}}
+          <SwitchToggle
+            switchOn={generallySwitch}
+            onPress={() => setGenerallySwitch(!generallySwitch)}
+            circleColorOff="#fff"
+            circleColorOn="#fff"
+            backgroundColorOff="#BECCD6"
+            backgroundColorOn="#205072"
+            containerStyle={styles.switchContainer}
+            circleStyle={styles.switchCircle}
           />
         </View>
 
@@ -76,11 +73,16 @@ const Notification = () => {
       <View style={styles.container}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Text style={styles.titleText}>Personen</Text>
-          <Switch
-            color="#205072"
-            value={personSwitch}
-            onValueChange={() => setPersonSwitch(!personSwitch)}
-            style={{transform: [{scaleX: 0.65}, {scaleY: 0.6}]}}
+
+          <SwitchToggle
+            switchOn={personSwitch}
+            onPress={() => setPersonSwitch(!personSwitch)}
+            circleColorOff="#fff"
+            circleColorOn="#fff"
+            backgroundColorOff="#BECCD6"
+            backgroundColorOn="#205072"
+            containerStyle={styles.switchContainer}
+            circleStyle={styles.switchCircle}
           />
         </View>
 
@@ -92,11 +94,16 @@ const Notification = () => {
       <View style={styles.container}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Text style={styles.titleText}>Suche</Text>
-          <Switch
-            color="#205072"
-            value={searchSwitch}
-            onValueChange={() => setSearchSwitch(!searchSwitch)}
-            style={{transform: [{scaleX: 0.65}, {scaleY: 0.6}]}}
+
+          <SwitchToggle
+            switchOn={searchSwitch}
+            onPress={() => setSearchSwitch(!searchSwitch)}
+            circleColorOff="#fff"
+            circleColorOn="#fff"
+            backgroundColorOff="#BECCD6"
+            backgroundColorOn="#205072"
+            containerStyle={styles.switchContainer}
+            circleStyle={styles.switchCircle}
           />
         </View>
 
@@ -124,11 +131,15 @@ const Notification = () => {
       <View style={styles.container}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Text style={styles.titleText}>E-Mail</Text>
-          <Switch
-            color="#205072"
-            value={emailSwitch}
-            onValueChange={() => setEmailSwitch(!emailSwitch)}
-            style={{transform: [{scaleX: 0.65}, {scaleY: 0.6}]}}
+          <SwitchToggle
+            switchOn={emailSwitch}
+            onPress={() => setEmailSwitch(!emailSwitch)}
+            circleColorOff="#fff"
+            circleColorOn="#fff"
+            backgroundColorOff="#BECCD6"
+            backgroundColorOn="#205072"
+            containerStyle={styles.switchContainer}
+            circleStyle={styles.switchCircle}
           />
         </View>
 
@@ -165,13 +176,30 @@ const styles = StyleSheet.create({
   titleText: {
     color: '#FFA420',
     fontFamily: FontStyle.MontSemiBold,
-    fontSize: 18,
+    fontSize: 20,
   },
   descriptionText: {
     color: '#C7C7C7',
-    fontSize: 10,
+    fontSize: 12,
     fontFamily: FontStyle.MontSemiBold,
     width: '80%',
+  },
+  switchContainer: {
+    width: 29,
+    height: 13,
+    borderRadius: 5,
+  },
+  switchCircle: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.32,
+    shadowRadius: 2.65,
+    elevation: 2,
   },
 });
 

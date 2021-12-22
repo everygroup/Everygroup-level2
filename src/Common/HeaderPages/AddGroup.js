@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   Image,
   LayoutAnimation,
-  TouchableWithoutFeedback,
 } from 'react-native';
 import Input from '../Input';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -98,7 +97,7 @@ const AddGroup = () => {
       contentContainerStyle={{
         alignItems: 'center',
         alignSelf: 'center',
-        paddingBottom: '10%',
+        paddingBottom: '15%',
       }}>
       <InfoModal
         modalValue={modalValue}
@@ -109,7 +108,7 @@ const AddGroup = () => {
       <Text
         style={{
           color: '#fff',
-          fontSize: 24,
+          fontSize: 26,
           alignSelf: 'center',
           fontFamily: FontStyle.MontBold,
           marginVertical: '5%',
@@ -220,7 +219,7 @@ const AddGroup = () => {
               style={{
                 fontFamily: FontStyle.MontSemiBold,
                 color: '#FFA420',
-                fontSize: 17,
+                fontSize: 19,
               }}>
               Kategorie
             </Text>
@@ -242,7 +241,7 @@ const AddGroup = () => {
                       <Text
                         style={{
                           fontFamily: FontStyle.MontSemiBold,
-                          fontSize: 17,
+                          fontSize: 19,
                           color: '#FFA420',
                         }}>
                         {el}
@@ -272,7 +271,15 @@ const AddGroup = () => {
           ) : null}
         </View>
       </View>
-      <View style={[styles.container]}>
+      <View
+        style={{
+          height: 100,
+          flexDirection: 'row',
+          width: '100%',
+          alignItems: 'center',
+          paddingHorizontal: '2.5%',
+          marginVertical: 5,
+        }}>
         <TouchableOpacity
           onPress={() =>
             pressInfo(
@@ -290,12 +297,24 @@ const AddGroup = () => {
             }}
           />
         </TouchableOpacity>
-        <Input
-          placeholder="Beschreibung"
-          placeholderTextColor="#BECCD6"
-          bgColor="#fff"
-          bdWidth={0.1}
-        />
+        <View
+          style={{
+            width: '80%',
+            backgroundColor: '#fff',
+            borderRadius: 7,
+            height: 100,
+            justifyContent: 'center',
+          }}>
+          <Input
+            placeholder="Beschreibung"
+            placeholderTextColor="#BECCD6"
+            bgColor="#fff"
+            bdWidth={0.1}
+            height={100}
+            multiline={true}
+            inputWidth="100%"
+          />
+        </View>
       </View>
       <View>
         {hashError == true ? (
@@ -334,13 +353,13 @@ const AddGroup = () => {
           />
         </View>
       </View>
-      <View style={{width: '70%', alignSelf: 'center', marginVertical: '5%'}}>
+      <View style={{width: '70%', alignSelf: 'center', marginBottom: 10}}>
         <Text
           style={{
             color: '#fff',
             textAlign: 'center',
             fontFamily: FontStyle.MontSemiBold,
-            fontSize: 15,
+            fontSize: 17,
           }}>
           Welche Sprache wird in dieser Gruppe gesprochen?
         </Text>
@@ -368,26 +387,29 @@ const AddGroup = () => {
           placeholderTextColor="#BECCD6"
           bgColor="#fff"
           bdWidth={0.1}
+          iconName={'plus'}
+          iconColor="#beccd7"
         />
       </View>
-      <View style={{width: '70%', alignSelf: 'center', marginVertical: '5%'}}>
+      <View style={{width: '80%', alignSelf: 'center', marginBottom: 10}}>
         <Text
           style={{
             color: '#fff',
             textAlign: 'center',
             fontFamily: FontStyle.MontSemiBold,
-            fontSize: 15,
+            fontSize: 17,
           }}>
           Dürfen andere der Gruppe beitreten, egal welche Sprache sie sprechen?
         </Text>
       </View>
-      <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-        <TouchableOpacity style={styles.buttonView}>
+      <View style={{width: '100%', flexDirection: 'row', left: 7}}>
+        <TouchableOpacity style={[styles.buttonView]}>
           <Text
             style={{
-              fontSize: 12,
+              fontSize: 14,
               fontFamily: FontStyle.MontBold,
               color: '#fff',
+              textAlign: 'center',
             }}>
             alle dürfen beitreten
           </Text>
@@ -396,9 +418,10 @@ const AddGroup = () => {
           style={[styles.buttonView, {backgroundColor: '#beccd6'}]}>
           <Text
             style={{
-              fontSize: 12,
+              fontSize: 14,
               fontFamily: FontStyle.MontBold,
               color: '#fff',
+              textAlign: 'center',
             }}>
             nur folgende Sprachen:
           </Text>
@@ -427,6 +450,8 @@ const AddGroup = () => {
           placeholderTextColor="#BECCD6"
           bgColor="#fff"
           bdWidth={0.1}
+          iconName={'plus'}
+          iconColor="#beccd7"
         />
       </View>
       <View
@@ -435,7 +460,7 @@ const AddGroup = () => {
           width: '58%',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginVertical: 10,
+          marginBottom: 10,
         }}>
         {checkedTerms ? (
           <TouchableOpacity onPress={() => setCheckedTerms(false)}>
@@ -469,7 +494,7 @@ const AddGroup = () => {
         <Text
           style={{
             fontFamily: FontStyle.MontMedium,
-            fontSize: 12,
+            fontSize: 14,
             color: '#205072',
             textAlign: 'left',
             width: '85%',
@@ -485,7 +510,7 @@ const AddGroup = () => {
           width: '58%',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginVertical: 10,
+          marginBottom: 10,
         }}>
         {checkedConductRules ? (
           <TouchableOpacity onPress={() => setConductRules(false)}>
@@ -519,7 +544,7 @@ const AddGroup = () => {
         <Text
           style={{
             fontFamily: FontStyle.MontMedium,
-            fontSize: 12,
+            fontSize: 14,
             color: '#205072',
             textAlign: 'left',
             width: '85%',
@@ -549,12 +574,12 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   buttonView: {
-    width: '40%',
-    height: 35,
+    width: '37%',
+    height: 40,
     backgroundColor: '#205072',
     alignItems: 'center',
     justifyContent: 'center',
-    marginHorizontal: '2.5%',
+    marginLeft: '1%',
     borderRadius: 10,
   },
   submitButton: {
@@ -573,6 +598,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingTop: 10,
     paddingHorizontal: '5%',
+    marginBottom: 10,
   },
 });
 

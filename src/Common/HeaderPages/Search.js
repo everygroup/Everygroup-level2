@@ -4,15 +4,18 @@ import {
   Text,
   StyleSheet,
   Image,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   FlatList,
 } from 'react-native';
 import Input from '../Input';
 import FontStyle from '../../Assets/Fonts/FontStyle';
-import {Switch} from 'react-native-paper';
+import SwitchToggle from 'react-native-switch-toggle';
 import {ScrollView} from 'react-native-gesture-handler';
 
 const Search = ({starPress, starValue, filterValue, filterPress}) => {
+  const [selectedMessenger, setSelectedMessenger] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState([]);
   const [switchOn, setSwitchOn] = useState(true);
   const [messangerData] = useState([
     'Telegram',
@@ -48,11 +51,26 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
     'Anime',
   ]);
 
+  const selectMessenger = item => {
+    if (selectedMessenger.some(messenger => messenger == item)) {
+      setSelectedMessenger(selectedMessenger.filter(el => el !== item));
+    } else {
+      setSelectedMessenger(prevValue => [...prevValue, item]);
+    }
+  };
+  const selectCategory = item => {
+    if (selectedCategory.some(category => category == item)) {
+      setSelectedCategory(selectedCategory.filter(el => el !== item));
+    } else {
+      setSelectedCategory(prevValue => [...prevValue, item]);
+    }
+  };
+  console.log(selectedCategory);
   return (
     <View style={{flex: 1}}>
       <View
         style={{
-          top: 20,
+          marginTop: 20,
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignSelf: 'center',
@@ -99,7 +117,7 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
         </View>
       </View>
       {filterValue ? (
-        <ScrollView contentContainerStyle={{paddingBottom: '10%'}}>
+        <ScrollView contentContainerStyle={{paddingBottom: '5%'}}>
           <View
             style={{
               alignItems: 'center',
@@ -109,7 +127,7 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
             <Text
               style={{
                 fontFamily: FontStyle.MontExtBold,
-                fontSize: 24,
+                fontSize: 26,
                 color: '#205072',
               }}>
               Messenger
@@ -117,8 +135,11 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
             <Text
               style={{
                 fontFamily: FontStyle.MontBold,
-                fontSize: 17,
-                color: '#fff',
+                fontSize: 19,
+                color:
+                  selectedMessenger.length == 0 || selectedMessenger.length == 6
+                    ? '#fff'
+                    : '#FFC570',
                 textDecorationLine: 'underline',
               }}>
               Alle
@@ -133,7 +154,8 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
               scrollEnabled={false}
               renderItem={({item}) => {
                 return (
-                  <View
+                  <TouchableOpacity
+                    onPress={() => selectMessenger(item)}
                     style={{
                       width: 120,
                       height: 34,
@@ -144,12 +166,14 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
                     <Text
                       style={{
                         fontFamily: FontStyle.MontBold,
-                        fontSize: 15,
-                        color: '#FFC570',
+                        fontSize: 17,
+                        color: selectedMessenger.some(el => el == item)
+                          ? '#fff'
+                          : '#FFC570',
                       }}>
                       {item}
                     </Text>
-                  </View>
+                  </TouchableOpacity>
                 );
               }}
             />
@@ -163,7 +187,7 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
             <Text
               style={{
                 fontFamily: FontStyle.MontExtBold,
-                fontSize: 24,
+                fontSize: 26,
                 color: '#205072',
               }}>
               Kategorie
@@ -171,8 +195,11 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
             <Text
               style={{
                 fontFamily: FontStyle.MontBold,
-                fontSize: 17,
-                color: '#fff',
+                fontSize: 19,
+                color:
+                  selectedCategory.length == 0 || selectedCategory.length == 21
+                    ? '#fff'
+                    : '#FFC570',
                 textDecorationLine: 'underline',
               }}>
               Alle
@@ -187,7 +214,8 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
               scrollEnabled={false}
               renderItem={({item}) => {
                 return (
-                  <View
+                  <TouchableOpacity
+                    onPress={() => selectCategory(item)}
                     style={{
                       width: 120,
                       height: 34,
@@ -198,12 +226,14 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
                     <Text
                       style={{
                         fontFamily: FontStyle.MontBold,
-                        fontSize: 15,
-                        color: '#FFC570',
+                        fontSize: 17,
+                        color: selectedCategory.some(el => el == item)
+                          ? '#fff'
+                          : '#FFC570',
                       }}>
                       {item}
                     </Text>
-                  </View>
+                  </TouchableOpacity>
                 );
               }}
             />
@@ -223,7 +253,7 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
               <Text
                 style={{
                   fontFamily: FontStyle.MontExtBold,
-                  fontSize: 24,
+                  fontSize: 26,
                   color: '#205072',
                 }}>
                 Sprache
@@ -233,20 +263,29 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
                 style={{height: 16, width: 16, left: 5}}
               />
             </View>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginBottom: 5,
+              }}>
               <Text
                 style={{
                   fontFamily: FontStyle.MontBold,
-                  fontSize: 17,
+                  fontSize: 19,
                   color: '#fff',
                 }}>
                 Alle Sprachen zeigen
               </Text>
-              <Switch
-                color="#205072"
-                value={switchOn}
-                onValueChange={() => setSwitchOn(!switchOn)}
-                style={{transform: [{scaleX: 0.6}, {scaleY: 0.6}]}}
+              <SwitchToggle
+                switchOn={switchOn}
+                onPress={() => setSwitchOn(!switchOn)}
+                circleColorOff="#fff"
+                circleColorOn="#fff"
+                backgroundColorOff="#BECCD6"
+                backgroundColorOn="#205072"
+                containerStyle={styles.switchContainer}
+                circleStyle={styles.switchCircle}
               />
             </View>
             <Input
@@ -269,7 +308,7 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
               <Text
                 style={{
                   fontFamily: FontStyle.MontSemiBold,
-                  fontSize: 17,
+                  fontSize: 19,
                   color: '#FFFFFF',
                 }}>
                 Suchen
@@ -289,6 +328,25 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+  },
+  switchContainer: {
+    width: 29,
+    height: 13,
+    borderRadius: 5,
+    marginLeft: 5,
+    marginTop: 5,
+  },
+  switchCircle: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.32,
+    shadowRadius: 2.65,
+    elevation: 2,
   },
 });
 

@@ -57,7 +57,7 @@ const UpdateUserName = () => {
       <Text
         style={{
           fontFamily: FontStyle.MontSemiBold,
-          fontSize: 18,
+          fontSize: 20,
           color: '#205072',
           width: '60%',
           textAlign: 'center',
@@ -83,7 +83,7 @@ const UpdateUserName = () => {
       <Text
         style={{
           fontFamily: FontStyle.MontMedium,
-          fontSize: 13,
+          fontSize: 15,
           color: '#205072',
           width: '75%',
         }}>

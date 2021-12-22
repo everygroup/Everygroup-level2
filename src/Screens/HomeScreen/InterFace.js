@@ -70,7 +70,7 @@ function Interface(props) {
                   <Text
                     style={{
                       color: '#205072',
-                      fontSize: 16,
+                      fontSize: 18,
                       fontFamily: FontStyle.MontBold,
                     }}>
                     Filter
@@ -145,7 +145,7 @@ function Interface(props) {
             <Text
               style={{
                 color: '#205072',
-                fontSize: 13,
+                fontSize: 15,
                 marginTop: 15,
                 marginLeft: 18,
                 fontFamily: FontStyle.MontMedium,
@@ -226,10 +226,7 @@ const styles = StyleSheet.create({
     height,
     backgroundColor: 'gray',
   },
-  text: {
-    fontSize: width * 0.5,
-    textAlign: 'center',
-  },
+
   button: {
     position: 'absolute',
     bottom: 10,

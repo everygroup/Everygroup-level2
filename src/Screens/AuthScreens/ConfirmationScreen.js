@@ -27,7 +27,7 @@ const ConfirmationScreen = () => {
         <Text
           style={{
             color: '#205072',
-            fontSize: 19,
+            fontSize: 21,
             fontFamily: FontStyle.MontBold,
             marginVertical: 10,
           }}>
@@ -39,7 +39,7 @@ const ConfirmationScreen = () => {
             width: '60%',
             textAlign: 'center',
             fontFamily: FontStyle.MontSemiBold,
-            fontSize: 15,
+            fontSize: 17,
           }}>
           Deine Einstellung zählt hier! Halte dich deshalb bitte an unsere
           <TouchableOpacity
@@ -86,7 +86,7 @@ const ConfirmationScreen = () => {
             </TouchableOpacity>
           )}
 
-          <Text style={{fontSize: 15, left: 5, color: '#205072'}}>
+          <Text style={{fontSize: 17, left: 5, color: '#205072'}}>
             Ich verspreche es !
           </Text>
         </View>
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#BCBCBC',
   },
   buttonText: {
-    fontSize: 17,
+    fontSize: 19,
     fontFamily: FontStyle.MontExtBold,
     textAlign: 'center',
     color: '#ffffff',

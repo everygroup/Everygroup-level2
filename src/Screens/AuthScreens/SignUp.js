@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import {View, Text, SafeAreaView} from 'react-native';
+import {View, Text, SafeAreaView, StyleSheet} from 'react-native';
 import Button from '../../Common/Button';
 import Input from '../../Common/Input';
-import {Switch} from 'react-native-paper';
+import SwitchToggle from 'react-native-switch-toggle';
 import {useNavigation} from '@react-navigation/native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import ErrorText from '../../Common/ErrorText';
@@ -96,7 +96,7 @@ const SignUp = () => {
           <Text
             style={{
               textAlign: 'left',
-              fontSize: 10,
+              fontSize: 12,
               color: '#205072',
               width: '85%',
               fontFamily: FontStyle.MontMedium,
@@ -105,11 +105,15 @@ const SignUp = () => {
             Gewinnspielen von everygroup. Eine Abmeldung kann jederzeit
             vorgenommen werden.
           </Text>
-          <Switch
-            color="#205072"
-            value={switchOn}
-            onValueChange={onToggleSwitch}
-            style={{transform: [{scaleX: 0.6}, {scaleY: 0.6}]}}
+          <SwitchToggle
+            switchOn={switchOn}
+            onPress={() => setSwitchOn(!switchOn)}
+            circleColorOff="#fff"
+            circleColorOn="#fff"
+            backgroundColorOff="#BECCD6"
+            backgroundColorOn="#205072"
+            containerStyle={styles.switchContainer}
+            circleStyle={styles.switchCircle}
           />
         </View>
       </View>
@@ -119,14 +123,14 @@ const SignUp = () => {
       <View style={{width: '72%', alignSelf: 'center', flexDirection: 'row'}}>
         <Text
           style={{
-            fontSize: 10,
+            fontSize: 12,
             color: '#205072',
             marginVertical: '5%',
             fontFamily: FontStyle.MontMedium,
           }}>
           Es gelten unsere
         </Text>
-        <Text style={{fontSize: 10, color: '#3D60FF', marginVertical: '5%'}}>
+        <Text style={{fontSize: 12, color: '#3D60FF', marginVertical: '5%'}}>
           {' '}
           AGB.
         </Text>
@@ -146,5 +150,27 @@ const SignUp = () => {
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  switchContainer: {
+    width: 29,
+    height: 13,
+    borderRadius: 5,
+    marginLeft: 5,
+    marginTop: 5,
+  },
+  switchCircle: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.32,
+    shadowRadius: 2.65,
+    elevation: 2,
+  },
+});
 
 export default SignUp;

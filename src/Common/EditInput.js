@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
 
     fontFamily: FontStyle.MontSemiBold,
     color: '#205072',
-    fontSize: 15,
+    fontSize: 17,
   },
 });
 

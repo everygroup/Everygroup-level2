@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   languageText: {
-    fontSize: 17,
+    fontSize: 19,
     fontFamily: FontStyle.MontSemiBold,
     color: '#FFA420',
     paddingHorizontal: '5%',

@@ -46,7 +46,7 @@ const Coupon = () => {
         <Text style={Styles.headingText}>Gutschein</Text>
         <View />
       </View>
-      <View style={{alignItems: 'center'}}>
+      <View style={{alignItems: 'center', marginTop: '10%'}}>
         {couponError == true ? (
           <HelperText style={[Styles.helperText, {left: '8%'}]} type="error">
             Gruppentitel eingeben
@@ -65,9 +65,9 @@ const Coupon = () => {
         <Text
           style={{
             fontFamily: FontStyle.MontBold,
-            fontSize: 10,
+            fontSize: 12,
             color: '#C7C7C7',
-            width: '75%',
+            width: '78%',
           }}>
           Auf unserem Instagram Account verlosen wir regelmäßig Gutscheine für
           Booster aber auch noch andere tolle Dinge wie Amazon-
@@ -91,7 +91,7 @@ const Coupon = () => {
             style={{
               fontFamily: FontStyle.MontBold,
               color: '#FFA420',
-              fontSize: 15,
+              fontSize: 17,
               left: 10,
             }}>
             everygroup

@@ -34,7 +34,7 @@ const SuccessModal = ({modalValue, closeModal, message}) => {
           <Text
             style={{
               fontFamily: FontStyle.MontBold,
-              fontSize: 16,
+              fontSize: 18,
               color: '#205072',
               width: '70%',
               textAlign: 'center',
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontFamily: FontStyle.bold,
-    fontSize: 16,
+    fontSize: 18,
     color: '#fff',
   },
   buttonView: {

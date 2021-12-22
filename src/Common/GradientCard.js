@@ -45,7 +45,7 @@ const GradientCard = ({group}) => {
       )}
       <Text
         style={{
-          fontSize: 13,
+          fontSize: 15,
           fontFamily: FontStyle.MontBold,
           color: group.socialGroup == 'snapchat' ? '#205072' : '#fff',
           textAlign: 'center',
@@ -62,7 +62,7 @@ const GradientCard = ({group}) => {
         ]}>
         <Text
           style={{
-            fontSize: 13,
+            fontSize: 15,
             fontFamily: FontStyle.MontBold,
             color: group.socialGroup == 'snapchat' ? '#205072' : '#fff',
           }}>

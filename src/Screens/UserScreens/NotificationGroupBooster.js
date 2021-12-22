@@ -11,7 +11,7 @@ import Styles from './Style';
 import Header from '../../Common/Header';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import {useNavigation} from '@react-navigation/native';
-import {Switch} from 'react-native-paper';
+import SwitchToggle from 'react-native-switch-toggle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 const NotificationGroupBooster = () => {
   const [groupArray] = useState([
@@ -55,17 +55,21 @@ const NotificationGroupBooster = () => {
             eines Boosters, sobald du eine Gruppe einmal geboostet hast.
           </Text>
         </View>
-        <Switch
-          color="#205072"
-          value={uploadSwitch}
-          onValueChange={() => setUploadSwitch(!uploadSwitch)}
-          style={{transform: [{scaleX: 0.6}, {scaleY: 0.6}]}}
+        <SwitchToggle
+          switchOn={uploadSwitch}
+          onPress={() => setUploadSwitch(!uploadSwitch)}
+          circleColorOff="#fff"
+          circleColorOn="#fff"
+          backgroundColorOff="#BECCD6"
+          backgroundColorOn="#205072"
+          containerStyle={styles.switchContainer}
+          circleStyle={styles.switchCircle}
         />
       </View>
       <View style={{height: 1, width: '100%', backgroundColor: '#C7C7C7'}} />
       <View
         style={{alignItems: 'center', width: '100%', paddingHorizontal: '5%'}}>
-        <Text style={[styles.titelText, {fontSize: 20, color: '#205072'}]}>
+        <Text style={[styles.titelText, {fontSize: 24, color: '#205072'}]}>
           Gruppen
         </Text>
         <Text
@@ -96,6 +100,7 @@ const NotificationGroupBooster = () => {
                   width: 30,
                   top: -20,
                   borderTopLeftRadius: 7,
+                  borderBottomRightRadius: 5,
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>
@@ -128,7 +133,7 @@ const NotificationGroupBooster = () => {
               </View>
               <Text
                 style={{
-                  fontSize: 16,
+                  fontSize: 18,
                   fontFamily: FontStyle.MontExtBold,
                   color: '#205072',
                 }}>
@@ -161,13 +166,13 @@ const NotificationGroupBooster = () => {
 
 const styles = StyleSheet.create({
   titelText: {
-    fontSize: 18,
+    fontSize: 20,
     fontFamily: FontStyle.MontSemiBold,
     color: '#FFA420',
   },
   descriptionText: {
     fontFamily: FontStyle.MontSemiBold,
-    fontSize: 10,
+    fontSize: 12,
     color: '#C7C7C7',
   },
   container: {
@@ -199,6 +204,24 @@ const styles = StyleSheet.create({
     height: 24,
     width: 24,
     alignSelf: 'flex-start',
+    left: 3,
+  },
+  switchContainer: {
+    width: 29,
+    height: 13,
+    borderRadius: 5,
+  },
+  switchCircle: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.32,
+    shadowRadius: 2.65,
+    elevation: 2,
   },
 });
 

@@ -61,14 +61,14 @@ const AdminRule = () => {
 const styles = StyleSheet.create({
   headingText: {
     fontFamily: FontStyle.poppinsBold,
-    fontSize: 14,
+    fontSize: 16,
     color: '#205072',
     marginTop: '5%',
     alignSelf: 'flex-start',
   },
   descriptionText: {
     fontFamily: FontStyle.poppinsMedium,
-    fontSize: 12,
+    fontSize: 14,
     color: '#205072',
     alignSelf: 'flex-start',
   },

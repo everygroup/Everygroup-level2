@@ -9,7 +9,7 @@ const Styles = StyleSheet.create({
   },
   headingText: {
     fontFamily: FontStyle.MontBold,
-    fontSize: 24,
+    fontSize: 26,
     color: '#205072',
     textAlign: 'center',
     marginVertical: '5%',
@@ -21,13 +21,13 @@ const Styles = StyleSheet.create({
   },
   textStyle: {
     fontFamily: FontStyle.MontSemiBold,
-    fontSize: 18,
+    fontSize: 20,
     color: '#FFA420',
   },
   helperText: {
     fontFamily: FontStyle.MontBold,
     color: 'red',
-    fontSize: 12,
+    fontSize: 14,
     alignSelf: 'flex-start',
   },
 });

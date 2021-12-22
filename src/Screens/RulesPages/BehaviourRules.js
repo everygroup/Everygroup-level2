@@ -27,7 +27,7 @@ const BehaviourRules = () => {
         screenOptions={{
           tabBarActiveTintColor: '#FFA420',
           tabBarInactiveTintColor: '#BECCD6',
-          tabBarLabelStyle: {fontSize: 17, fontFamily: FontStyle.MontBold},
+          tabBarLabelStyle: {fontSize: 19, fontFamily: FontStyle.MontBold},
         }}>
         <Tab.Screen name="Admin" component={AdminRule} />
         <Tab.Screen name="Mitglied" component={MemberRule} />

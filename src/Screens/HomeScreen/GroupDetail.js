@@ -75,7 +75,7 @@ const GroupDetail = () => {
             </TouchableOpacity>
             <Text
               style={{
-                fontSize: 18,
+                fontSize: 20,
                 fontFamily: FontStyle.MontBold,
                 color: '#205072',
               }}>
@@ -173,7 +173,7 @@ const GroupDetail = () => {
             </TouchableOpacity>
           </View>
           <View style={{paddingHorizontal: '2.5%'}}>
-            <Text style={[styles.textStyle, {fontSize: 11}]}>
+            <Text style={[styles.textStyle, {fontSize: 13}]}>
               {groupDetail.groupLanguage}
             </Text>
             <FlatList
@@ -185,7 +185,7 @@ const GroupDetail = () => {
                   <View style={{width: 36, height: 20}}>
                     <Text
                       style={{
-                        fontSize: 11,
+                        fontSize: 13,
                         fontFamily: FontStyle.MontMedium,
                         color: '#FFA420',
                       }}>
@@ -198,7 +198,7 @@ const GroupDetail = () => {
             <Text
               style={{
                 fontFamily: FontStyle.MontSemiBold,
-                fontSize: 13,
+                fontSize: 15,
                 color: '#205072',
                 marginVertical: '7%',
               }}>
@@ -226,7 +226,7 @@ const GroupDetail = () => {
               }}>
               <Text
                 style={{
-                  fontSize: 16,
+                  fontSize: 18,
                   fontFamily: FontStyle.MontBold,
                   color: '#205072',
                 }}>
@@ -254,7 +254,7 @@ const GroupDetail = () => {
                   source={require('../../Assets/Images/shareBlue.png')}
                   style={styles.imageStyleSecond}
                 />
-                <Text style={styles.textStyle}>Melden</Text>
+                <Text style={styles.textStyle}>Teilen</Text>
               </View>
               <View style={styles.verticalLine} />
               <View style={{alignItems: 'center'}}>
@@ -262,7 +262,7 @@ const GroupDetail = () => {
                   source={require('../../Assets/Images/favoriteGrey.png')}
                   style={styles.imageStyleSecond}
                 />
-                <Text style={styles.textStyle}>Melden</Text>
+                <Text style={styles.textStyle}>Favorit</Text>
               </View>
             </View>
             <View
@@ -291,7 +291,7 @@ const GroupDetail = () => {
                   />
                   <Text
                     style={{
-                      fontSize: 21,
+                      fontSize: 23,
                       fontFamily: FontStyle.MontBold,
                       color: '#205072',
                     }}>
@@ -321,7 +321,7 @@ const GroupDetail = () => {
                     style={{
                       fontFamily: FontStyle.MontBold,
                       color: '#205072',
-                      fontSize: 11,
+                      fontSize: 13,
                     }}>
                     1x Boost
                   </Text>
@@ -335,7 +335,7 @@ const GroupDetail = () => {
                     style={{
                       fontFamily: FontStyle.MontBold,
                       color: '#205072',
-                      fontSize: 11,
+                      fontSize: 13,
                     }}>
                     5x Boost
                   </Text>
@@ -346,7 +346,7 @@ const GroupDetail = () => {
         </View>
         <Text
           style={{
-            fontSize: 15,
+            fontSize: 17,
             fontFamily: FontStyle.MontBold,
             color: '#205072',
             alignSelf: 'center',
@@ -371,7 +371,7 @@ const GroupDetail = () => {
 const styles = StyleSheet.create({
   textStyle: {
     fontFamily: FontStyle.MontExtBold,
-    fontSize: 9,
+    fontSize: 11,
     color: '#205072',
   },
   imageStyle: {
@@ -398,7 +398,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
   },
   buttonText: {
-    fontSize: 11,
+    fontSize: 13,
     fontFamily: FontStyle.MontBold,
     textAlign: 'center',
     color: '#ffffff',

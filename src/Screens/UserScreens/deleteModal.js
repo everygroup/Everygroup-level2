@@ -29,7 +29,7 @@ const DeleteModal = ({modalValue, closeModal, message}) => {
           <Text
             style={{
               color: '#205072',
-              fontSize: 18,
+              fontSize: 20,
               fontFamily: FontStyle.MontBold,
               textAlign: 'center',
               marginVertical: '5%',
@@ -40,7 +40,7 @@ const DeleteModal = ({modalValue, closeModal, message}) => {
             style={{
               fontFamily: FontStyle.MontMedium,
               color: '#205072',
-              fontSize: 12,
+              fontSize: 14,
               width: '85%',
               textAlign: 'left',
             }}>
@@ -52,7 +52,7 @@ const DeleteModal = ({modalValue, closeModal, message}) => {
                 style={{
                   fontFamily: FontStyle.MontExtBold,
                   color: '#fff',
-                  fontSize: 15,
+                  fontSize: 17,
                 }}>
                 Doch nicht
               </Text>
@@ -64,7 +64,7 @@ const DeleteModal = ({modalValue, closeModal, message}) => {
                 style={{
                   fontFamily: FontStyle.MontExtBold,
                   color: '#fff',
-                  fontSize: 15,
+                  fontSize: 17,
                 }}>
                 Ändern
               </Text>
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontFamily: FontStyle.bold,
-    fontSize: 16,
+    fontSize: 18,
     color: '#fff',
   },
   buttonView: {

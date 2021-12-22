@@ -19,7 +19,7 @@ const SentEmail = () => {
         />
         <Text
           style={{
-            fontSize: 23,
+            fontSize: 25,
             color: '#205072',
             width: '60%',
             textAlign: 'center',
@@ -30,7 +30,7 @@ const SentEmail = () => {
 
         <Text
           style={{
-            fontSize: 15,
+            fontSize: 17,
             color: '#205072',
             width: '60%',
             textAlign: 'center',

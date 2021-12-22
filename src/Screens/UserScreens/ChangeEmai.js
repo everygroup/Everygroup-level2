@@ -51,7 +51,7 @@ const ChangeEmail = () => {
       <Text
         style={{
           fontFamily: FontStyle.MontSemiBold,
-          fontSize: 18,
+          fontSize: 20,
           color: '#205072',
           width: '75%',
           textAlign: 'center',
@@ -82,7 +82,7 @@ const ChangeEmail = () => {
       <View
         style={{marginVertical: '10%', width: '100%', alignItems: 'center'}}>
         <Button buttonText="Weiter" onPress={submit} />
-        <Text style={{fontSize: 15, color: '#0A49E0', marginVertical: '2.5%'}}>
+        <Text style={{fontSize: 17, color: '#0A49E0', marginVertical: '2.5%'}}>
           Passwort vergessen
         </Text>
       </View>

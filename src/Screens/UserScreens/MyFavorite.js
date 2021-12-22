@@ -22,7 +22,7 @@ const MyFavorite = () => {
           indicatorStyle: {
             backgroundColor: 'red',
           },
-          tabBarLabelStyle: {fontSize: 16, fontFamily: FontStyle.MontBold},
+          tabBarLabelStyle: {fontSize: 18, fontFamily: FontStyle.MontBold},
           tabBarIndicatorStyle: {
             backgroundColor: '#FFA420',
           },

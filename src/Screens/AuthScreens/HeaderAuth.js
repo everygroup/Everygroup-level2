@@ -48,7 +48,7 @@ const HeaderAuth = ({currentRoute, prevRoute}) => {
       <Text
         style={{
           color: '#FFA420',
-          fontSize: 32,
+          fontSize: 34,
           fontFamily: FontStyle.FuturaPTBold,
         }}>
         everygroup

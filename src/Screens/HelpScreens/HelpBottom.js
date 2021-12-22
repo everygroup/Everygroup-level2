@@ -42,7 +42,7 @@ const HelpBottom = () => {
         style={[
           styles.textStyle,
           {
-            fontSize: 17,
+            fontSize: 19,
             fontFamily: FontStyle.MontBold,
             textAlign: 'center',
           },
@@ -74,7 +74,7 @@ const HelpBottom = () => {
         <Text
           style={{
             fontFamily: FontStyle.MontBold,
-            fontSize: 16,
+            fontSize: 18,
             color: '#fff',
           }}>
           FAQ
@@ -87,7 +87,7 @@ const HelpBottom = () => {
       <Text
         style={{
           fontFamily: FontStyle.MontExtBold,
-          fontSize: 10,
+          fontSize: 12,
           color: '#fff',
         }}>
         Copyright © 2020 by everygroup.me. All rights reserved
@@ -99,7 +99,7 @@ const HelpBottom = () => {
 const styles = StyleSheet.create({
   textStyle: {
     fontFamily: FontStyle.MontMedium,
-    fontSize: 13,
+    fontSize: 15,
     color: '#fff',
   },
   textView: {

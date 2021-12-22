@@ -40,7 +40,7 @@ const SignIn = () => {
         buttonText="Anmelden"
       />
       <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
-        <Text style={{fontSize: 15, color: '#0A49E0', marginVertical: '5%'}}>
+        <Text style={{fontSize: 17, color: '#0A49E0', marginVertical: '5%'}}>
           Passwort vergessen
         </Text>
       </TouchableOpacity>

@@ -64,7 +64,7 @@ const OtherUserScreen = () => {
           <Text
             style={{
               color: '#205072',
-              fontSize: 18,
+              fontSize: 20,
               fontFamily: FontStyle.MontMedium,
             }}>
             Alle Gruppen von:
@@ -72,7 +72,7 @@ const OtherUserScreen = () => {
           <Text
             style={{
               color: '#205072',
-              fontSize: 22,
+              fontSize: 24,
               fontFamily: FontStyle.MontBold,
             }}>
             Superman98

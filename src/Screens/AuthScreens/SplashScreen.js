@@ -65,7 +65,7 @@ const SplashScreen = () => {
                   width: '70%',
                   textAlign: 'center',
                   color: '#205072',
-                  fontSize: 14,
+                  fontSize: 16,
                 }}>
                 {item.description}
               </Text>
@@ -94,7 +94,7 @@ const SplashScreen = () => {
 
 const styles = StyleSheet.create({
   logoText: {
-    fontSize: 32,
+    fontSize: 34,
     color: '#FFA420',
     marginVertical: '2.5%',
   },

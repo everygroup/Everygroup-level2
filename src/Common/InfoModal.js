@@ -30,7 +30,7 @@ const InfoModal = ({modalValue, closeModal, message, Faq}) => {
           <Text
             style={{
               color: '#205072',
-              fontSize: 13,
+              fontSize: 15,
               fontFamily: FontStyle.MontSemiBold,
               textAlign: 'center',
 
@@ -38,21 +38,12 @@ const InfoModal = ({modalValue, closeModal, message, Faq}) => {
             }}>
             {message}
           </Text>
-          {/* <Text
-            style={{
-              fontFamily: FontStyle.MontMedium,
-              color: '#205072',
-              fontSize: 12,
-              width: '85%',
-              textAlign: 'left',
-            }}>
-            Danach kannst du deinen Usernamen nicht mehr ändern.
-          </Text> */}
+
           {Faq ? (
             <Text
               style={{
                 fontFamily: FontStyle.MontSemiBold,
-                fontSize: 13,
+                fontSize: 15,
                 color: '#FFA420',
                 marginTop: '5%',
               }}>

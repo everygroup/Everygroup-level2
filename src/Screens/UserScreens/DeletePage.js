@@ -127,7 +127,7 @@ const DeletePage = () => {
         <Text
           style={{
             fontFamily: FontStyle.MontSemiBold,
-            fontSize: 18,
+            fontSize: 20,
             color: '#205072',
             width: '75%',
             textAlign: 'center',
@@ -165,7 +165,7 @@ const DeletePage = () => {
                         style={{
                           fontFamily: FontStyle.MontBold,
                           color: '#82C2F1',
-                          fontSize: 12,
+                          fontSize: 14,
                           marginVertical: '2.5%',
                         }}>
                         {item.description}
@@ -204,7 +204,7 @@ const DeletePage = () => {
         <Text
           style={{
             fontFamily: FontStyle.MontMedium,
-            fontSize: 12,
+            fontSize: 14,
             color: '#205072',
             marginVertical: '5%',
           }}>
@@ -213,7 +213,7 @@ const DeletePage = () => {
         <Button buttonText="Löschen" />
         <Text
           style={{
-            fontSize: 12,
+            fontSize: 14,
             fontFamily: FontStyle.MontMedium,
             color: '#205072',
             width: '80%',
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     fontFamily: FontStyle.MontMedium,
-    fontSize: 15,
+    fontSize: 17,
     color: '#FFA420',
     alignItems: 'center',
     justifyContent: 'space-between',

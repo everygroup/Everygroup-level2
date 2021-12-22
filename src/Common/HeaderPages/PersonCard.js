@@ -25,7 +25,7 @@ const PersonCard = ({data}) => {
           onPress={() => navigation.navigate('OtherUserScreen')}>
           <Text
             style={{
-              fontSize: 20,
+              fontSize: 22,
               fontFamily: FontStyle.MontBold,
               color: '#205072',
               padding: '2.5%',
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   notificationText: {
-    fontSize: 16,
+    fontSize: 18,
     fontFamily: FontStyle.MontMedium,
     color: '#205072',
   },

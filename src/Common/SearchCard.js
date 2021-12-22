@@ -74,12 +74,12 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   titleText: {
-    fontSize: 16,
+    fontSize: 18,
     color: '#205072',
     fontFamily: FontStyle.MontBold,
   },
   descriptionText: {
-    fontSize: 15,
+    fontSize: 17,
     color: '#205072',
     fontFamily: FontStyle.MontMedium,
   },

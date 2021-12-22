@@ -4,7 +4,7 @@ import Styles from './Style';
 import Header from '../../Common/Header';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import {useNavigation} from '@react-navigation/native';
-import {Switch} from 'react-native-paper';
+import SwitchToggle from 'react-native-switch-toggle';
 const NotificationOwnGroup = () => {
   const [uploadSwitch, setUploadSwitch] = useState(true);
   const [boostSwitch, setBoostSwitch] = useState(true);
@@ -37,11 +37,15 @@ const NotificationOwnGroup = () => {
             reuploaden kann.
           </Text>
         </View>
-        <Switch
-          color="#205072"
-          value={uploadSwitch}
-          onValueChange={() => setUploadSwitch(!uploadSwitch)}
-          style={{transform: [{scaleX: 0.6}, {scaleY: 0.6}]}}
+        <SwitchToggle
+          switchOn={uploadSwitch}
+          onPress={() => setUploadSwitch(!uploadSwitch)}
+          circleColorOff="#fff"
+          circleColorOn="#fff"
+          backgroundColorOff="#BECCD6"
+          backgroundColorOn="#205072"
+          containerStyle={styles.switchContainer}
+          circleStyle={styles.switchCircle}
         />
       </View>
       <View style={styles.container}>
@@ -52,12 +56,22 @@ const NotificationOwnGroup = () => {
             erhalten hat.
           </Text>
         </View>
-        <Switch
+        <SwitchToggle
+          switchOn={boostSwitch}
+          onPress={() => setBoostSwitch(!boostSwitch)}
+          circleColorOff="#fff"
+          circleColorOn="#fff"
+          backgroundColorOff="#BECCD6"
+          backgroundColorOn="#205072"
+          containerStyle={styles.switchContainer}
+          circleStyle={styles.switchCircle}
+        />
+        {/* <Switch
           color="#205072"
           value={boostSwitch}
           onValueChange={() => setBoostSwitch(!boostSwitch)}
           style={{transform: [{scaleX: 0.6}, {scaleY: 0.6}]}}
-        />
+        /> */}
       </View>
     </View>
   );
@@ -65,13 +79,13 @@ const NotificationOwnGroup = () => {
 
 const styles = StyleSheet.create({
   titelText: {
-    fontSize: 18,
+    fontSize: 20,
     fontFamily: FontStyle.MontSemiBold,
     color: '#FFA420',
   },
   descriptionText: {
     fontFamily: FontStyle.MontSemiBold,
-    fontSize: 10,
+    fontSize: 12,
     color: '#C7C7C7',
   },
   container: {
@@ -79,6 +93,23 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: '5%',
     marginVertical: '2.5%',
+  },
+  switchContainer: {
+    width: 29,
+    height: 13,
+    borderRadius: 5,
+  },
+  switchCircle: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.32,
+    shadowRadius: 2.65,
+    elevation: 2,
   },
 });
 

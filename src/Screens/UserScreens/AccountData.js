@@ -75,7 +75,7 @@ const AccountData = () => {
           style={{
             color: '#929292',
             fontFamily: FontStyle.MontSemiBold,
-            fontSize: 18,
+            fontSize: 20,
             paddingHorizontal: '5%',
             marginBottom: '10%',
           }}>

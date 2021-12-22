@@ -20,13 +20,13 @@ const Button = ({onPress, buttonText, width, borderRadius}) => {
 
 var styles = StyleSheet.create({
   linearGradient: {
-    minHeight: 35,
+    minHeight: 40,
     maxHeight: 'auto',
     justifyContent: 'center',
     alignItems: 'center',
   },
   buttonText: {
-    fontSize: 18,
+    fontSize: 20,
     fontFamily: FontStyle.MontExtBold,
     textAlign: 'center',
     color: '#ffffff',
