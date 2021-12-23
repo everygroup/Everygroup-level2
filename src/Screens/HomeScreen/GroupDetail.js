@@ -12,7 +12,6 @@ import Header from '../../Common/Header';
 import {useNavigation} from '@react-navigation/core';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import LinearGradient from 'react-native-linear-gradient';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import SmallCard from '../../Common/SmallCard';
 
 const GroupDetail = () => {
@@ -298,13 +297,19 @@ const GroupDetail = () => {
                     Booster
                   </Text>
                 </View>
-                <Icon
-                  name={bellValue ? 'bell' : 'bell-slash'}
-                  size={25}
-                  color="#205072"
-                  solid
-                  onPress={() => setBellValue(!bellValue)}
-                />
+                <TouchableOpacity onPress={() => setBellValue(!bellValue)}>
+                  {bellValue ? (
+                    <Image
+                      source={require('../../Assets/Images/bell.png')}
+                      style={{height: 24, width: 24}}
+                    />
+                  ) : (
+                    <Image
+                      source={require('../../Assets/Images/closebell.png')}
+                      style={{height: 24, width: 24}}
+                    />
+                  )}
+                </TouchableOpacity>
               </View>
               <View
                 style={{
@@ -328,7 +333,7 @@ const GroupDetail = () => {
                 </View>
                 <View style={{alignItems: 'center'}}>
                   <Image
-                    source={require('../../Assets/Images/arrowBlank.png')}
+                    source={require('../../Assets/Images/booster5.png')}
                     style={{width: 22, height: 26, resizeMode: 'contain'}}
                   />
                   <Text

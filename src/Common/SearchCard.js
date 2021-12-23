@@ -2,33 +2,34 @@ import React from 'react';
 import {View, Text, Image, StyleSheet, FlatList} from 'react-native';
 import FontStyle from '../Assets/Fonts/FontStyle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import Icons from 'react-native-vector-icons/Ionicons';
 
 const SearchCard = ({data, onPress}) => {
   return (
     <View>
       <View style={styles.containerStyle}>
-        <View style={{padding: '2.5%'}}>
+        <View style={[styles.spacing, {paddingTop: '2.5%'}]}>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <Text style={styles.titleText}>Suchbegriff:</Text>
-            <Icon
-              name={'times'}
+            <Icons
+              name={'close'}
               color="#EF3E36"
               light
-              size={24}
+              size={26}
               onPress={onPress}
             />
           </View>
           <Text style={styles.descriptionText}>{data.searchTerm}</Text>
         </View>
-        <View style={{padding: '2.5%'}}>
+        <View style={styles.spacing}>
           <Text style={styles.titleText}>Messenger:</Text>
           <Text style={styles.descriptionText}>{data.Messenger}</Text>
         </View>
-        <View style={{padding: '2.5%'}}>
+        <View style={styles.spacing}>
           <Text style={styles.titleText}>Kategorie:</Text>
           <Text style={styles.descriptionText}>{data.category}</Text>
         </View>
-        <View style={{padding: '2.5%'}}>
+        <View style={styles.spacing}>
           <Text style={styles.titleText}>Sprache:</Text>
           <Text style={styles.descriptionText}>{data.language}</Text>
         </View>
@@ -39,7 +40,8 @@ const SearchCard = ({data, onPress}) => {
             alignItems: 'center',
             flexDirection: 'row',
             justifyContent: 'space-between',
-            paddingHorizontal: '2.5%',
+            paddingHorizontal: '3%',
+            width: '100%',
           }}>
           <Text style={styles.titleText}>Benachrichtigung</Text>
           <Icon
@@ -61,7 +63,7 @@ const styles = StyleSheet.create({
     maxHeight: 'auto',
     width: '90%',
     backgroundColor: '#fff',
-    marginVertical: '5%',
+    marginTop: '5%',
     alignSelf: 'center',
     borderRadius: 7,
     shadowColor: 'grey',
@@ -77,12 +79,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#205072',
     fontFamily: FontStyle.MontBold,
+    textDecorationLine: 1,
   },
   descriptionText: {
     fontSize: 17,
     color: '#205072',
     fontFamily: FontStyle.MontMedium,
   },
+  spacing: {paddingHorizontal: '2.5%', paddingBottom: '2.5%'},
 });
 
 export default SearchCard;

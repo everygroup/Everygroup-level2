@@ -3,20 +3,21 @@ import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useNavigation} from '@react-navigation/native';
+import Icons from 'react-native-vector-icons/Ionicons';
 
 const PersonCard = ({data}) => {
   const navigation = useNavigation();
   return (
     <View style={styles.containerStyle}>
       <View style={{flex: 0.5}}>
-        <Icon
-          name={'times'}
+        <Icons
+          name={'close'}
           color="#EF3E36"
           light
           size={24}
           style={{
             alignSelf: 'flex-end',
-            paddingHorizontal: '5%',
+            paddingHorizontal: '2.5%',
             paddingTop: '2.5%',
           }}
           onPress={() => alert('delete')}
@@ -41,7 +42,7 @@ const PersonCard = ({data}) => {
           alignItems: 'center',
           flexDirection: 'row',
           justifyContent: 'space-between',
-          paddingHorizontal: '2.5%',
+          paddingHorizontal: '3%',
         }}>
         <Text style={styles.notificationText}>Benachrichtigung</Text>
         <Icon
@@ -61,7 +62,7 @@ const styles = StyleSheet.create({
     maxHeight: 'auto',
     width: '90%',
     backgroundColor: '#fff',
-    marginVertical: '5%',
+    marginTop: '5%',
     alignSelf: 'center',
     borderRadius: 7,
     shadowColor: 'grey',

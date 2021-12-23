@@ -10,6 +10,7 @@ const Groups = () => {
       hashtagData: ['#test', '#test', '#test', '#test', '#test'],
       description: 'Hey, wir sind eine nette Gruppe',
       socialGroup: 'snapchat',
+      favorite: true,
     },
     {
       groupName: 'Nordsee Gruppe',
@@ -17,6 +18,7 @@ const Groups = () => {
       hashtagData: ['#test', '#test', '#test', '#test', '#test'],
       description: 'Hey, wir sind eine nette Gruppe',
       socialGroup: 'whatsapp',
+      favorite: true,
     },
     {
       groupName: 'Nordsee Gruppe',
@@ -24,6 +26,7 @@ const Groups = () => {
       hashtagData: ['#test', '#test', '#test', '#test', '#test'],
       description: 'Hey, wir sind eine nette Gruppe',
       socialGroup: 'line',
+      favorite: true,
     },
     {
       groupName: 'Nordsee Gruppe',
@@ -31,6 +34,7 @@ const Groups = () => {
       hashtagData: ['#test', '#test', '#test', '#test', '#test'],
       description: 'Hey, wir sind eine nette Gruppe',
       socialGroup: 'telegram',
+      favorite: true,
     },
   ]);
   return (

@@ -89,7 +89,12 @@ const GroupCard = ({
                 }}>
                 {group.groupName}
               </Text>
-              <Icon name="bookmark" color="#B9B9B9" size={22} />
+              <Icon
+                name="bookmark"
+                color={group.favorite ? '#FFA420' : '#B9B9B9'}
+                size={22}
+                solid={group.favorite ? true : false}
+              />
             </View>
 
             <FlatList
@@ -259,13 +264,27 @@ const GroupCard = ({
                   color="#205072"
                   onPress={() => navigation.navigate('EditGroup')}
                 />
-                <Icon
+                {/* <Icon
                   name={bellValue ? 'bell' : 'bell-slash'}
                   size={30}
                   color="#205072"
                   solid
                   onPress={bellPress}
-                />
+                /> */}
+
+                <TouchableOpacity onPress={() => setBellValue(!bellValue)}>
+                  {bellValue ? (
+                    <Image
+                      source={require('../Assets/Images/bell.png')}
+                      style={{height: 24, width: 24}}
+                    />
+                  ) : (
+                    <Image
+                      source={require('../Assets/Images/closebell.png')}
+                      style={{height: 24, width: 24}}
+                    />
+                  )}
+                </TouchableOpacity>
                 <Icon name={'trash'} size={30} color="#205072" />
               </View>
               <Image

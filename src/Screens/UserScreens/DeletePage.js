@@ -96,7 +96,7 @@ const DeletePage = () => {
       showsVerticalScrollIndicator={false}
       style={{backgroundColor: '#fff'}}>
       <AlertModal
-        modalValue={true}
+        modalValue={false}
         message="Account wirklich löschen?"
         description=" "
       />

@@ -37,12 +37,6 @@ const SplashScreen = () => {
   return (
     <View style={{flex: 1, alignItems: 'center', backgroundColor: '#fff'}}>
       <SafeAreaView />
-      {/* <Image
-        source={require('../../Assets/Images/orangeLogo.png')}
-        style={{width: 33, height: 31}}
-      />
-      <Text style={styles.logoText}>everygroup</Text> */}
-      {/* <HeaderAuth /> */}
       <View style={{height: height / 1.7}}>
         <SwiperFlatList
           autoplay
