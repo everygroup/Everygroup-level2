@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import Styles from '../UserScreens/Style';
@@ -6,10 +6,13 @@ import {useNavigation} from '@react-navigation/core';
 import Input from '../../Common/Input';
 import Button from '../../Common/Button';
 import {HelperText} from 'react-native-paper';
+import {useDispatch, useSelector} from 'react-redux';
+import {checkPassword} from '../../../Slice/CheckReducer';
 
 const CheckPassword = ({route}) => {
+  const dispatch = useDispatch();
   const {description, toNavigate} = route.params;
-  console.warn(description, toNavigate);
+
   const navigation = useNavigation();
   const [showPassword, setShowPassword] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
@@ -21,6 +24,21 @@ const CheckPassword = ({route}) => {
       setPasswordError(true);
       setErrorMessage('Passwort wird benötigt');
     } else {
+      dispatch(checkPassword({passwordText}));
+      // navigation.navigate(toNavigate);
+    }
+  };
+
+  const {loading, error, value} = useSelector(state => {
+    return state.check;
+  });
+
+  useEffect(() => {
+    passwordCheck();
+  }, [value]);
+
+  const passwordCheck = async () => {
+    if (value == 'success') {
       navigation.navigate(toNavigate);
     }
   };

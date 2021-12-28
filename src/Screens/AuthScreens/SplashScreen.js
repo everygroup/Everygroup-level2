@@ -12,8 +12,9 @@ import Button from '../../Common/Button';
 import {useNavigation} from '@react-navigation/native';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import FontStyle from '../../Assets/Fonts/FontStyle';
-import HeaderAuth from './HeaderAuth';
+
 const {width, height} = Dimensions.get('window');
+
 const SplashScreen = () => {
   const navigation = useNavigation();
   const [images] = useState([
@@ -34,6 +35,7 @@ const SplashScreen = () => {
       description: 'Jetzt noch schneller Gruppen finden mit dem Randome-Mode',
     },
   ]);
+
   return (
     <View style={{flex: 1, alignItems: 'center', backgroundColor: '#fff'}}>
       <SafeAreaView />

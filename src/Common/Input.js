@@ -20,6 +20,7 @@ const Input = ({
   borderColor,
   inputWidth,
   iconColor,
+  onFocus,
 }) => {
   return (
     <View
@@ -33,6 +34,7 @@ const Input = ({
         },
       ]}>
       <TextInput
+        onFocus={onFocus}
         placeholderTextColor={placeholderTextColor || 'grey'}
         multiline={multiline ? multiline : false}
         onChangeText={onChangeText}

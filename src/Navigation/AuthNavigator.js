@@ -33,7 +33,7 @@ export const AuthNavigator = () => {
     : [];
   const currentRoute = routes[routes.length - 1];
   const prevRoute = routes[routes.length - 2];
-  console.log(currentRoute, 'current');
+
   return (
     <View style={{flex: 1}}>
       {currentRoute ? (

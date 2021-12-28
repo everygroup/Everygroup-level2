@@ -22,6 +22,7 @@ const SmallCard = ({group}) => {
           top: -10,
           left: -10,
           borderBottomEndRadius: 5,
+          borderTopLeftRadius: 5,
           alignItems: 'center',
         }}>
         {group.socialGroup == 'snapchat' ? (
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginVertical: 10,
     borderRadius: 7,
-    padding: '5%',
+    padding: 10,
     backgroundColor: '#fff',
     shadowOffset: {
       width: 0,

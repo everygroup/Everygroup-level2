@@ -7,9 +7,12 @@ import {useNavigation} from '@react-navigation/core';
 import Input from '../../Common/Input';
 import Button from '../../Common/Button';
 import {HelperText} from 'react-native-paper';
+import {useDispatch, useSelector} from 'react-redux';
+import {changeProfile} from '../../../Slice/ProfileReducer';
 
 const UpdateEmail = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [emailText, setEmailText] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -24,9 +27,14 @@ const UpdateEmail = () => {
       setEmailError(true);
       setErrorMessage('E-Mail nicht gültig');
     } else {
-      navigation.navigate('SentEmail');
+      dispatch(changeProfile({emailText}));
+      // navigation.navigate('SentEmail');
     }
   };
+
+  const {error, loading, value} = useSelector(state => {
+    return state;
+  });
 
   return (
     <View

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, SafeAreaView, StyleSheet} from 'react-native';
 import Button from '../../Common/Button';
 import Input from '../../Common/Input';
@@ -6,8 +6,12 @@ import SwitchToggle from 'react-native-switch-toggle';
 import {useNavigation} from '@react-navigation/native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import ErrorText from '../../Common/ErrorText';
+import {registerUser} from '../../../Slice/AuthReducer';
+import {useDispatch, useSelector} from 'react-redux';
+
 const SignUp = () => {
-  const [switchOn, setSwitchOn] = useState(false);
+  const dispatch = useDispatch();
+  const [promotional, setPromotional] = useState(false);
   const [showPassword, setShowPassword] = useState(true);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [email, setEmail] = useState('');
@@ -16,41 +20,55 @@ const SignUp = () => {
   const [userNameError, setUserNameError] = useState(false);
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [emailErrorMessage, setEmailErrorMessage] = useState('');
+  const [usernameErrorMessage, setUsernameErrorMessage] = useState('');
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
 
   const iconPress = () => {
     setShowPassword(!showPassword), setSecureTextEntry(!secureTextEntry);
-  };
-
-  const onToggleSwitch = () => {
-    setSwitchOn(!switchOn);
   };
 
   const submit = () => {
     let emailValidation = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
     if (email == '') {
       setEmailError(true);
-      setErrorMessage('E-Mail wird benötigt');
+      setEmailErrorMessage('E-Mail wird benötigt');
     } else if (emailValidation.test(email) === false) {
       setEmailError(true);
-      setErrorMessage('E-Mail nicht gültig');
+      setEmailErrorMessage('E-Mail nicht gültig');
     } else if (userName == '') {
       setUserNameError(true);
-      setErrorMessage('Nutzername wird benötigt');
+      setUsernameErrorMessage('Nutzername wird benötigt');
     } else if (userName.length > 10) {
       setUserNameError(true);
-      setErrorMessage('Maximal 10 Zeichen');
+      setUsernameErrorMessage('Maximal 10 Zeichen');
     } else if (password == '') {
       setPasswordError(true);
-      setErrorMessage('Passwort wird benötigt');
+      setPasswordErrorMessage('Passwort wird benötigt');
     } else if (password.length < 6) {
       setPasswordError(true);
-      setErrorMessage('Passwort muss mindestens 6 Zeichen haben');
+      setPasswordErrorMessage('Passwort muss mindestens 6 Zeichen haben');
     } else {
-      navigation.navigate('VerifyMail');
+      dispatch(registerUser({email, userName, password, promotional}));
+      // navigation.navigate('VerifyMail');
     }
   };
 
+  const {loading, error, token} = useSelector(state => {
+    return state.user;
+  });
+
+  useEffect(() => {
+    setEmailError(true);
+
+    setEmailErrorMessage(error.email ? error.email[0] : []);
+  }, [error.email]);
+
+  useEffect(() => {
+    setUserNameError(true);
+    setUsernameErrorMessage(error.username ? error.username[0] : []);
+  }, [error.username]);
+  console.log(error, 'error signup');
   const navigation = useNavigation();
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
@@ -61,7 +79,7 @@ const SignUp = () => {
           height: '40%',
           justifyContent: 'center',
         }}>
-        <ErrorText error={emailError} errorMessage={errorMessage} />
+        <ErrorText error={emailError} errorMessage={emailErrorMessage} />
         <Input
           placeholder="E-Mail"
           placeholderTextColor="#205072"
@@ -70,7 +88,7 @@ const SignUp = () => {
             setEmailError(false);
           }}
         />
-        <ErrorText error={userNameError} errorMessage={errorMessage} />
+        <ErrorText error={userNameError} errorMessage={usernameErrorMessage} />
         <Input
           placeholder="Nutzername"
           placeholderTextColor="#205072"
@@ -79,7 +97,7 @@ const SignUp = () => {
             setUserNameError(false);
           }}
         />
-        <ErrorText error={passwordError} errorMessage={errorMessage} />
+        <ErrorText error={passwordError} errorMessage={passwordErrorMessage} />
         <Input
           placeholder="Passwort"
           iconName={showPassword ? 'eye-with-line' : 'eye'}
@@ -106,8 +124,8 @@ const SignUp = () => {
             vorgenommen werden.
           </Text>
           <SwitchToggle
-            switchOn={switchOn}
-            onPress={() => setSwitchOn(!switchOn)}
+            switchOn={promotional}
+            onPress={() => setPromotional(!promotional)}
             circleColorOff="#fff"
             circleColorOn="#fff"
             backgroundColorOff="#BECCD6"

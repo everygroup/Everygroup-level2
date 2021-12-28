@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
   View,
   Text,
@@ -6,16 +6,18 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 import Header from '../../Common/Header';
 import GroupCard from '../../Common/GroupCard';
 import GradientCard from '../../Common/GradientCard';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import {useNavigation} from '@react-navigation/native';
-
+import {useSelector} from 'react-redux';
+const {width} = Dimensions.get('screen');
 const Dashboard = () => {
   const navigation = useNavigation();
-
+  const flatListRef = useRef(2);
   const [groupArray] = useState([
     {
       groupName: 'Nordsee Gruppe',
@@ -46,7 +48,7 @@ const Dashboard = () => {
       socialGroup: 'telegram',
     },
   ]);
-  const [trendingGroup] = useState([
+  const [trendingGroup, setTrengingGroup] = useState([
     {
       description: 'Die Masterchill Gruppe zu plappern',
       socialGroup: 'snapchat',
@@ -64,6 +66,16 @@ const Dashboard = () => {
       socialGroup: 'telegram',
     },
   ]);
+
+  const handleLoadMore = () => {
+    setTrengingGroup(prevValue => [...prevValue, ...trendingGroup]);
+  };
+
+  // Redux code
+  const {name, alignItems, status} = useSelector(state => {
+    return state;
+  });
+  //////////////////////////////
 
   return (
     <View
@@ -102,6 +114,19 @@ const Dashboard = () => {
             </Text>
           </View>
           <FlatList
+            initialScrollIndex={2}
+            onScrollToIndexFailed={info => {
+              const wait = new Promise(resolve => setTimeout(resolve, 500));
+              wait.then(() => {
+                flatList.current?.scrollToIndex({
+                  index: info.index,
+                  animated: true,
+                });
+              });
+            }}
+            getItemLayout={(data, index) => {
+              return {length: 131, offset: 131 * index, index};
+            }}
             horizontal={true}
             data={trendingGroup}
             showsHorizontalScrollIndicator={false}
@@ -111,6 +136,8 @@ const Dashboard = () => {
             renderItem={({item: trending}) => {
               return <GradientCard group={trending} />;
             }}
+            onEndReached={handleLoadMore}
+            onEndThreshold={0}
           />
 
           <View

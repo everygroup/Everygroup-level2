@@ -25,8 +25,8 @@ const GroupCard = ({
   const navigation = useNavigation();
   return (
     <View>
-      <View>
-        <View style={styles.containerStyle}>
+      <View style={{position: 'relative', zIndex: 99999}}>
+        <View style={[styles.containerStyle]}>
           <View
             style={{
               backgroundColor:
@@ -203,43 +203,48 @@ const GroupCard = ({
             </Text>
           </TouchableOpacity>
         </View>
-        <View
-          style={{
-            alignSelf: 'flex-end',
-            marginHorizontal: '5%',
-            height: 22,
-            top: -21,
-            shadowColor: 'grey',
-            backgroundColor: '#fff',
-            width: 62,
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderBottomRightRadius: 10,
-            borderBottomLeftRadius: 10,
-
-            shadowOffset: {
-              width: 0,
-              height: 1,
-            },
-            shadowOpacity: 0.27,
-            shadowRadius: 2.65,
-            elevation: 2,
-          }}>
-          <Text
+        <View style={{position: 'relative'}}>
+          <View
             style={{
-              fontFamily: FontStyle.MontExtBold,
-              fontSize: 9,
-              color: '#205072',
+              alignSelf: 'flex-end',
+              marginHorizontal: '5%',
+              height: 22,
+              top: -21,
+              shadowColor: 'grey',
+              backgroundColor: '#fff',
+              width: 62,
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderBottomRightRadius: 10,
+              borderBottomLeftRadius: 10,
+
+              shadowOffset: {
+                width: 0,
+                height: 1,
+              },
+              shadowOpacity: 0.27,
+              shadowRadius: 2.65,
+              elevation: 2,
+              position: 'absolute',
+              right: 0,
             }}>
-            Deutch
-          </Text>
+            <Text
+              style={{
+                fontFamily: FontStyle.MontExtBold,
+                fontSize: 9,
+                color: '#205072',
+              }}>
+              Deutch
+            </Text>
+          </View>
         </View>
       </View>
       {boosterValue ? (
         <View
           style={[
             styles.boostContainerStyle,
-            {height: group.groupId == selectedGroupName ? 200 : 50},
+
+            {height: group.groupId == selectedGroupName ? 240 : 50},
           ]}>
           {selectedGroupName == group.groupId ? (
             <View style={{width: '100%', alignItems: 'center'}}>
@@ -287,15 +292,28 @@ const GroupCard = ({
                 </TouchableOpacity>
                 <Icon name={'trash'} size={30} color="#205072" />
               </View>
-              <Image
-                source={require('../Assets/Images/boost.png')}
+              <View
                 style={{
-                  height: 61,
-                  width: 61,
-                  alignSelf: 'center',
+                  flexDirection: 'row',
+                  alignItems: 'flex-start',
                   marginVertical: 15,
-                }}
-              />
+                }}>
+                <Image
+                  source={require('../Assets/Images/infoBlue.png')}
+                  style={{
+                    height: 15,
+                    width: 15,
+                  }}
+                />
+                <Image
+                  source={require('../Assets/Images/boost.png')}
+                  style={{
+                    height: 61,
+                    width: 61,
+                    marginRight: 20,
+                  }}
+                />
+              </View>
               <Button width={103} buttonText="Booster" />
             </View>
           ) : null}
@@ -306,6 +324,7 @@ const GroupCard = ({
             size={30}
             color="#205072"
             onPress={onPress}
+            style={[selectedGroupName ? {marginTop: 0} : {marginTop: -5}]}
           />
         </View>
       ) : null}
@@ -317,6 +336,7 @@ const styles = StyleSheet.create({
   containerStyle: {
     minHeight: 170,
     maxHeight: 'auto',
+
     width: '90%',
     backgroundColor: '#fff',
     marginVertical: '5%',
@@ -336,18 +356,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '90%',
-    backgroundColor: '#F3F3F3',
-    top: -25,
+    paddingTop: '5%',
+    backgroundColor: '#FCFCFC',
+    marginTop: -18,
     alignSelf: 'center',
     borderRadius: 7,
-    shadowColor: '#F3F3F3',
+    shadowColor: '#00000029',
     shadowOffset: {
       width: 0,
       height: 1,
     },
     shadowOpacity: 0.27,
     shadowRadius: 2.65,
-
     elevation: 2,
   },
   imageStyle: {

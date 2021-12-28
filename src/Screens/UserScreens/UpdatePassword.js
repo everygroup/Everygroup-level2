@@ -4,11 +4,48 @@ import FontStyle from '../../Assets/Fonts/FontStyle';
 import {useNavigation} from '@react-navigation/core';
 import Input from '../../Common/Input';
 import Button from '../../Common/Button';
+import {useDispatch, useSelector} from 'react-redux';
+import {changeProfile} from '../../../Slice/ProfileReducer';
+import {HelperText} from 'react-native-paper';
+import Styles from './Style';
 
 const UpdatePassword = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [passwordError, setPasswordError] = useState(false);
+  const [confirmPasswordError, setConfirmPasswordError] = useState(false);
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+  const [confirmPasswordErrorMessage, setConfirmPasswordErrorMessage] =
+    useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const {error, loading, value} = useSelector(state => {
+    return state;
+  });
+
+  const submit = () => {
+    if (password == '') {
+      setPasswordError(true);
+      setPasswordErrorMessage('Password should not be blank');
+    } else if (confirmPassword == '') {
+      setConfirmPasswordError(true);
+      setConfirmPasswordErrorMessage('Confirm Password should not be blank');
+    } else if (password != confirmPassword) {
+      setConfirmPasswordError(true);
+      setConfirmPasswordErrorMessage('confirm password not matched');
+    } else {
+      dispatch(changeProfile({password}));
+      // navigation.navigate('SentEmail');
+    }
+  };
+
+  useSelector(state => {
+    console.log(state, 'pass');
+    return state;
+  });
 
   return (
     <View
@@ -45,22 +82,42 @@ const UpdatePassword = () => {
         }}>
         Gib dein neues Passwort ein
       </Text>
+      {passwordError == true ? (
+        <HelperText
+          style={[Styles.helperText, {paddingLeft: '10%'}]}
+          type="error">
+          {passwordErrorMessage}
+        </HelperText>
+      ) : null}
       <Input
         placeholder="Neues Passwort"
         placeholderTextColor="#205072"
         iconName={showPassword ? 'eye' : 'eye-with-line'}
         iconPress={() => setShowPassword(!showPassword)}
         secureTextEntry={!showPassword}
+        onChangeText={text => {
+          setPassword(text), setPasswordError(false);
+        }}
       />
+      {confirmPasswordError == true ? (
+        <HelperText
+          style={[Styles.helperText, {paddingLeft: '10%'}]}
+          type="error">
+          {confirmPasswordErrorMessage}
+        </HelperText>
+      ) : null}
       <Input
         placeholder="Passwort wiederholen"
         placeholderTextColor="#205072"
         iconName={showConfirmPassword ? 'eye' : 'eye-with-line'}
         iconPress={() => setShowConfirmPassword(!showConfirmPassword)}
         secureTextEntry={!showConfirmPassword}
+        onChangeText={text => {
+          setConfirmPassword(text), setConfirmPasswordError(false);
+        }}
       />
       <View style={{marginVertical: '5%', width: '100%', alignItems: 'center'}}>
-        <Button buttonText="passwort ändern" />
+        <Button onPress={submit} buttonText="passwort ändern" />
       </View>
       <View
         style={{

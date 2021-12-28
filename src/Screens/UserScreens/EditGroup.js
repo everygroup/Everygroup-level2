@@ -194,7 +194,7 @@ const EditGroup = () => {
 
 const styles = StyleSheet.create({
   buttonView: {
-    width: '40%',
+    width: '37%',
     height: 35,
     backgroundColor: '#205072',
     alignItems: 'center',

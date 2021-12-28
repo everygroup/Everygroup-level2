@@ -66,7 +66,7 @@ const Header = () => {
           <TouchableOpacity onPress={() => navigation.navigate('Dashboard')}>
             <Image
               source={require('../Assets/Images/whiteLogo.png')}
-              style={{height: 28, width: 28, top: 12, left: 5}}
+              style={{height: 28, width: 28, top: 15, left: 5}}
             />
           </TouchableOpacity>
         </View>
@@ -76,7 +76,7 @@ const Header = () => {
             width: '46%',
             height: '100%',
             flexDirection: 'row',
-            top: 10,
+            top: 15,
             justifyContent: 'space-between',
           }}>
           <TouchableOpacity

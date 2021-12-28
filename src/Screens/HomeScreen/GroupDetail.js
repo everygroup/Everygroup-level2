@@ -30,7 +30,7 @@ const GroupDetail = () => {
     notification: false,
     category: ['Dienstleistungen', 'Interessen', 'Unterhaltung'],
   });
-  const [otherGroup] = useState([
+  const [otherGroup, setOtherGroup] = useState([
     {
       description: 'Eine coole Gruppe',
       socialGroup: 'snapchat',
@@ -48,6 +48,10 @@ const GroupDetail = () => {
       socialGroup: 'telegram',
     },
   ]);
+
+  const handleLoadMore = () => {
+    setOtherGroup(prevValue => [...prevValue, ...otherGroup]);
+  };
   return (
     <View style={{paddingTop: '21%', height: '100%', backgroundColor: '#fff'}}>
       <Header />
@@ -364,6 +368,8 @@ const GroupDetail = () => {
           contentContainerStyle={{marginVertical: '2.5%'}}
           showsHorizontalScrollIndicator={false}
           horizontal={true}
+          onEndReached={handleLoadMore}
+          onEndThreshold={0}
           renderItem={({item}) => {
             return <SmallCard group={item} />;
           }}

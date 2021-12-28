@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginVertical: 10,
     borderRadius: 7,
-    padding: '5%',
+    paddingVertical: '5%',
     shadowOffset: {
       width: 0,
       height: 1,

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,9 @@ import {
   TouchableOpacity,
   Image,
   LayoutAnimation,
+  NativeModules,
+  Platform,
+  FlatList,
 } from 'react-native';
 import Input from '../Input';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -14,39 +17,32 @@ import FontStyle from '../../Assets/Fonts/FontStyle';
 import InfoModal from '../InfoModal';
 import {HelperText} from 'react-native-paper';
 import Styles from '../../Screens/UserScreens/Style';
+import {useDispatch, useSelector} from 'react-redux';
+import {getCategory} from '../../../Slice/CategoryReducer';
+import {getLanguage} from '../../../Slice/LanguageReducer';
+import {createGroup} from '../../../Slice/CreateGroupReducer';
 
 const AddGroup = () => {
-  const [category] = useState([
-    'Allgemein',
-    'Meme',
-    'Gaming',
-    'Wissen',
-    'Dating',
-    'Umgebung',
-    'Interessen',
-    'Selbsthilfe',
-    'Musik',
-    'Tiere',
-    'Finanzen',
-    'LQBTQ+',
-    'RPG',
-    'Unterhaltung',
-    'Technik',
-    'Sport',
-    'Dienstleistungen',
-  ]);
+  const dispatch = useDispatch();
+  const [groupLanguage, setGroupLanguageFocus] = useState(false);
+  const [joinLanguageFocus, setJoinLanguageFocus] = useState(false);
+  const [joinLanguage, setJoinLanguage] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState([]);
+  const [selectedLanguage, setSelectedLanguage] = useState([]);
   const [selectedInfo, setSelectInfo] = useState('');
   const [modalValue, setModalValue] = useState(false);
   const [titel, setTitel] = useState('');
   const [titelError, setTitelError] = useState(false);
   const [groupLink, setGroupLink] = useState('');
+  const [description, setDescription] = useState('');
   const [groupLinkError, setGroupLinkError] = useState(false);
-  const [hashValue, setHashValue] = useState('');
+  const [hashValue, setHashValue] = useState(['latest']);
   const [hashError, setHashError] = useState(false);
   const [checkedTerms, setCheckedTerms] = useState(false);
   const [checkedConductRules, setConductRules] = useState(false);
   const [expand, setExpand] = useState(false);
+  const [termsError, setTermsError] = useState(false);
+  const [conductRulesError, setConductRulesError] = useState(false);
 
   const pressInfo = message => {
     setSelectInfo(message);
@@ -58,10 +54,34 @@ const AddGroup = () => {
       setTitelError(true);
     } else if (groupLink == '') {
       setGroupLinkError(true);
+    } else if (checkedTerms == false) {
+      setTermsError(true);
+    } else if (checkedConductRules == false) {
+      setConductRulesError(true);
     } else {
-      alert('Submitted Successfully');
+      dispatch(
+        createGroup({
+          titel,
+          groupLink,
+          selectedCategory,
+          description,
+          hashValue,
+          selectedLanguage,
+          joinLanguage,
+          checkedTerms,
+          checkedConductRules,
+        }),
+      );
     }
   };
+
+  useEffect(() => {
+    dispatch(getCategory());
+  }, []);
+
+  const {categoryArray} = useSelector(state => {
+    return state.getCategory;
+  });
 
   const expandOption = () => {
     setExpand(!expand);
@@ -69,7 +89,6 @@ const AddGroup = () => {
   };
 
   const categroySelection = category => {
-    // const newArray = [...selectedCategory];
     if (selectedCategory.some(el => el == category)) {
       setSelectedCategory(selectedCategory.filter(item => item !== category));
     } else if (selectedCategory.length >= 3) {
@@ -80,16 +99,42 @@ const AddGroup = () => {
     } else {
       setSelectedCategory(prevValue => [...prevValue, category]);
     }
+  };
 
-    // const newArray = [...selectedCategory, category];
-    // if (selectedCategory.some(el => el == category)) {
-    //   setSelectedCategory(selectedCategory.filter(item => item !== category));
-    // } else if (newArray.length > 3) {
-    //   setSelectedCategory(newArray.filter((item, index) => index !== 0));
-    // } else {
+  const checkLanguage = lang => {
+    if (lang != '') {
+      dispatch(getLanguage(lang));
+    } else {
+      dispatch(getLanguage(''));
+    }
+  };
 
-    //   setSelectedCategory(newArray);
-    // }
+  const deviceLanguage =
+    Platform.OS === 'ios'
+      ? NativeModules.SettingsManager.settings.AppleLocale ||
+        NativeModules.SettingsManager.settings.AppleLanguages[0] // iOS 13
+      : NativeModules.I18nManager.localeIdentifier;
+
+  const {languageArray} = useSelector(state => {
+    return state.getLanguage;
+  });
+
+  const selectLanguage = async item => {
+    if (!selectedLanguage.some(el => el.language == item.language)) {
+      await setSelectedLanguage(prevValue => [...prevValue, item]);
+      dispatch(getLanguage('Hindi'));
+    }
+  };
+
+  const selectJoinLanguage = async item => {
+    if (!joinLanguage.some(el => el.language == item.language)) {
+      await setJoinLanguage(prevValue => [...prevValue, item]);
+      dispatch(getLanguage('Hindi'));
+    }
+  };
+
+  const selectHashTag = text => {
+    console.log(text);
   };
 
   return (
@@ -227,11 +272,11 @@ const AddGroup = () => {
           </TouchableOpacity>
           {expand ? (
             <ScrollView showsVerticalScrollIndicator={false}>
-              {category.map(el => {
+              {categoryArray.map(el => {
                 return (
                   <View>
                     <TouchableOpacity
-                      onPress={() => categroySelection(el)}
+                      onPress={() => categroySelection(el.slug)}
                       style={{
                         height: 39,
                         flexDirection: 'row',
@@ -244,9 +289,9 @@ const AddGroup = () => {
                           fontSize: 19,
                           color: '#FFA420',
                         }}>
-                        {el}
+                        {el.category}
                       </Text>
-                      {selectedCategory.some(item => item === el) ? (
+                      {selectedCategory.some(item => item === el.slug) ? (
                         <Icon
                           name={'check-square'}
                           size={20}
@@ -313,6 +358,7 @@ const AddGroup = () => {
             height={100}
             multiline={true}
             inputWidth="100%"
+            onChangeText={text => setDescription(text)}
           />
         </View>
       </View>
@@ -346,10 +392,7 @@ const AddGroup = () => {
             placeholderTextColor="#BECCD6"
             bgColor="#fff"
             bdWidth={0.1}
-            onChangeText={text => {
-              setHashValue(text);
-              setHashError(false);
-            }}
+            onChangeText={text => selectHashTag(text)}
           />
         </View>
       </View>
@@ -364,7 +407,7 @@ const AddGroup = () => {
           Welche Sprache wird in dieser Gruppe gesprochen?
         </Text>
       </View>
-      <View style={styles.container}>
+      <View style={{flexDirection: 'row'}}>
         <TouchableOpacity
           onPress={() =>
             pressInfo(
@@ -378,17 +421,85 @@ const AddGroup = () => {
               height: 20,
               resizeMode: 'cover',
               right: 10,
-              bottom: 5,
+              top: 10,
             }}
           />
         </TouchableOpacity>
-        <Input
-          placeholder="sprache auswählen"
-          placeholderTextColor="#BECCD6"
-          bgColor="#fff"
-          bdWidth={0.1}
-          iconName={'plus'}
-          iconColor="#beccd7"
+        <View
+          style={{
+            width: '75%',
+            height: languageArray.length > 0 && groupLanguage ? 150 : 40,
+            borderRadius: 5,
+            backgroundColor: '#fff',
+            alignItems: 'flex-start',
+          }}>
+          <Input
+            onFocus={() => {
+              setJoinLanguageFocus(false), setGroupLanguageFocus(true);
+            }}
+            inputWidth={'100%'}
+            height={languageArray.length > 0 && groupLanguage ? 150 : null}
+            placeholder="sprache auswählen"
+            placeholderTextColor="#BECCD6"
+            bgColor="#fff"
+            bdWidth={0.1}
+            iconName={'plus'}
+            iconColor="#beccd7"
+            onChangeText={text => checkLanguage(text)}
+          />
+          {languageArray.length > 0 && groupLanguage ? (
+            <ScrollView>
+              {languageArray.map(item => {
+                return (
+                  <TouchableOpacity
+                    onPress={() => selectLanguage(item)}
+                    style={{
+                      height: 20,
+                      paddingHorizontal: '10%',
+                      marginTop: 5,
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: FontStyle.MontBold,
+                        color: '#82C2F1',
+                        fontSize: 13,
+                      }}>
+                      {item.language}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </ScrollView>
+          ) : null}
+        </View>
+      </View>
+
+      <View
+        style={{
+          width: '75%',
+          alignSelf: 'flex-start',
+          marginLeft: '7%',
+          marginVertical: 7,
+        }}>
+        <FlatList
+          data={selectedLanguage}
+          horizontal={true}
+          scrollEnabled={true}
+          showsHorizontalScrollIndicator={false}
+          renderItem={({item: language}) => {
+            return (
+              <View style={styles.languageContainer}>
+                <Text
+                  style={{
+                    fontFamily: FontStyle.MontRegular,
+                    color: '#fff',
+                    fontSize: 10,
+                  }}>
+                  {language.language}
+                </Text>
+              </View>
+            );
+          }}
         />
       </View>
       <View style={{width: '80%', alignSelf: 'center', marginBottom: 10}}>
@@ -427,7 +538,7 @@ const AddGroup = () => {
           </Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.container}>
+      <View style={{flexDirection: 'row', marginTop: 10}}>
         <TouchableOpacity
           onPress={() =>
             pressInfo(
@@ -441,17 +552,84 @@ const AddGroup = () => {
               height: 20,
               resizeMode: 'cover',
               right: 10,
-              bottom: 5,
+              top: 10,
             }}
           />
         </TouchableOpacity>
-        <Input
-          placeholder="Sprache auswählen..."
-          placeholderTextColor="#BECCD6"
-          bgColor="#fff"
-          bdWidth={0.1}
-          iconName={'plus'}
-          iconColor="#beccd7"
+        <View
+          style={{
+            width: '75%',
+            height: languageArray.length > 0 && joinLanguageFocus ? 150 : 40,
+            borderRadius: 5,
+            backgroundColor: '#fff',
+            alignItems: 'flex-start',
+          }}>
+          <Input
+            onFocus={() => {
+              setJoinLanguageFocus(true), setGroupLanguageFocus(false);
+            }}
+            inputWidth={'100%'}
+            height={languageArray.length > 0 && joinLanguageFocus ? 150 : null}
+            placeholder="Sprache auswählen..."
+            placeholderTextColor="#BECCD6"
+            bgColor="#fff"
+            bdWidth={0.1}
+            iconName={'plus'}
+            iconColor="#beccd7"
+            onChangeText={text => checkLanguage(text)}
+          />
+          {languageArray.length > 0 && joinLanguageFocus ? (
+            <ScrollView>
+              {languageArray.map(item => {
+                return (
+                  <TouchableOpacity
+                    onPress={() => selectJoinLanguage(item)}
+                    style={{
+                      height: 20,
+                      paddingHorizontal: '10%',
+                      marginTop: 5,
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: FontStyle.MontBold,
+                        color: '#82C2F1',
+                        fontSize: 13,
+                      }}>
+                      {item.language}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </ScrollView>
+          ) : null}
+        </View>
+      </View>
+      <View
+        style={{
+          width: '75%',
+          alignSelf: 'flex-start',
+          marginLeft: '7%',
+          marginVertical: 7,
+        }}>
+        <FlatList
+          data={joinLanguage}
+          horizontal={true}
+          scrollEnabled={true}
+          showsHorizontalScrollIndicator={false}
+          renderItem={({item: language}) => {
+            return (
+              <View style={styles.languageContainer}>
+                <Text
+                  style={{
+                    fontFamily: FontStyle.MontRegular,
+                    color: '#fff',
+                    fontSize: 10,
+                  }}>
+                  {language.language}
+                </Text>
+              </View>
+            );
+          }}
         />
       </View>
       <View
@@ -478,7 +656,10 @@ const AddGroup = () => {
             </View>
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity onPress={() => setCheckedTerms(true)}>
+          <TouchableOpacity
+            onPress={() => {
+              setCheckedTerms(true), setTermsError(false);
+            }}>
             <View
               style={{
                 width: 20,
@@ -495,7 +676,7 @@ const AddGroup = () => {
           style={{
             fontFamily: FontStyle.MontMedium,
             fontSize: 14,
-            color: '#205072',
+            color: termsError ? '#EF3E36' : '#205072',
             textAlign: 'left',
             width: '85%',
           }}>
@@ -528,7 +709,10 @@ const AddGroup = () => {
             </View>
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity onPress={() => setConductRules(true)}>
+          <TouchableOpacity
+            onPress={() => {
+              setConductRules(true), setConductRulesError(false);
+            }}>
             <View
               style={{
                 width: 20,
@@ -545,7 +729,7 @@ const AddGroup = () => {
           style={{
             fontFamily: FontStyle.MontMedium,
             fontSize: 14,
-            color: '#205072',
+            color: conductRulesError ? '#EF3E36' : '#205072',
             textAlign: 'left',
             width: '85%',
           }}>
@@ -599,6 +783,17 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingHorizontal: '5%',
     marginBottom: 10,
+  },
+  languageContainer: {
+    minWidth: 77,
+    maxWidth: 'auto',
+    height: 20,
+    borderWidth: 1,
+    borderColor: '#fff',
+    borderRadius: 5,
+    marginHorizontal: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

@@ -7,8 +7,11 @@ import Input from '../../Common/Input';
 import Button from '../../Common/Button';
 import AlertModal from '../../Common/AlertModal';
 import {HelperText} from 'react-native-paper';
+import {useDispatch, useSelector} from 'react-redux';
+import {changeProfile} from '../../../Slice/ProfileReducer';
 
 const UpdateUserName = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const [showPassword, setShowPassword] = useState(false);
   const [modalValue, setModalValue] = useState(false);
@@ -21,13 +24,19 @@ const UpdateUserName = () => {
       setUserError(true);
       setErrorMessage('Username wird benötigt');
     } else {
-      setModalValue(true);
+      // setModalValue(true);
+      dispatch(changeProfile({userNameText}));
     }
   };
+
+  const {error, loading, value} = useSelector(state => {
+    return state.user;
+  });
 
   const closeModal = () => {
     setModalValue(false);
   };
+
   return (
     <View
       style={{

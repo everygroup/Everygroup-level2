@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, FlatList, TouchableOpacity, Image} from 'react-native';
 import Styles from './Style';
 import Header from '../../Common/Header';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import {useNavigation} from '@react-navigation/native';
+
 const AccountData = () => {
   const navigation = useNavigation();
 
