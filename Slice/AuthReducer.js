@@ -7,6 +7,7 @@ const initialState = {
   token: '',
   error: '',
   loading: false,
+  register: '',
 };
 
 export const signInUser = createAsyncThunk(
@@ -44,7 +45,6 @@ export const registerUser = createAsyncThunk(
       });
     } catch (err) {
       const errorr = err.response.data;
-      console.log(err.response);
 
       return rejectWithValue(errorr);
     }
@@ -62,7 +62,7 @@ export const authReducer = createSlice({
     },
     [signInUser.pending]: (state, action) => {
       state.loading = true;
-      state.error = [];
+      state.error = '';
       state.token = '';
     },
     [signInUser.rejected]: (state, action) => {
@@ -71,6 +71,8 @@ export const authReducer = createSlice({
     },
     [registerUser.fulfilled]: (state, action) => {
       state.loading = false;
+      state.error = [];
+      state.register = 'success';
     },
     [registerUser.pending]: (state, action) => {
       state.loading = true;

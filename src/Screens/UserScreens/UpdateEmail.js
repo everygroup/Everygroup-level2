@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 
@@ -33,8 +33,19 @@ const UpdateEmail = () => {
   };
 
   const {error, loading, value} = useSelector(state => {
-    return state;
+    return state.changeProfile;
   });
+
+  useEffect(() => {
+    setEmailError(true);
+    setErrorMessage(error.toString());
+  }, [error]);
+
+  useEffect(() => {
+    if (value == 'success') {
+      navigation.navigate('SentEmail');
+    }
+  }, [value]);
 
   return (
     <View
@@ -71,13 +82,15 @@ const UpdateEmail = () => {
         }}>
         Gib deine neue E-Mail ein
       </Text>
-      {emailError == true ? (
-        <HelperText
-          style={[Styles.helperText, {paddingLeft: '10%'}]}
-          type="error">
-          {errorMessage}
-        </HelperText>
-      ) : null}
+      <View style={Styles.errorContainer}>
+        {emailError == true ? (
+          <HelperText
+            style={[Styles.helperText, {paddingLeft: '10%'}]}
+            type="error">
+            {errorMessage}
+          </HelperText>
+        ) : null}
+      </View>
       <Input
         placeholder="E-mail"
         placeholderTextColor="#205072"

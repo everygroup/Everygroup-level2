@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import Styles from '../UserScreens/Style';
@@ -30,8 +30,19 @@ const UpdateUserName = () => {
   };
 
   const {error, loading, value} = useSelector(state => {
-    return state.user;
+    return state.changeProfile;
   });
+
+  useEffect(() => {
+    setUserError(true);
+    setErrorMessage(error.toString());
+  }, [error]);
+
+  useEffect(() => {
+    if (value == 'success') {
+      setModalValue(true);
+    }
+  }, [value]);
 
   const closeModal = () => {
     setModalValue(false);
@@ -74,13 +85,15 @@ const UpdateUserName = () => {
         }}>
         Gib deinen neuen Nutzernamen ein
       </Text>
-      {userError == true ? (
-        <HelperText
-          style={[Styles.helperText, {paddingLeft: '10%'}]}
-          type="error">
-          {errorMessage}
-        </HelperText>
-      ) : null}
+      <View style={Styles.errorContainer}>
+        {userError == true ? (
+          <HelperText
+            style={[Styles.helperText, {paddingLeft: '10%'}]}
+            type="error">
+            {errorMessage}
+          </HelperText>
+        ) : null}
+      </View>
       <Input
         placeholder="SuperMan98"
         placeholderTextColor="#205072"

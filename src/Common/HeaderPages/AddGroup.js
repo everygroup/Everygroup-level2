@@ -20,7 +20,6 @@ import Styles from '../../Screens/UserScreens/Style';
 import {useDispatch, useSelector} from 'react-redux';
 import {getCategory} from '../../../Slice/CategoryReducer';
 import {getLanguage} from '../../../Slice/LanguageReducer';
-import {createGroup} from '../../../Slice/CreateGroupReducer';
 
 const AddGroup = () => {
   const dispatch = useDispatch();
@@ -83,14 +82,20 @@ const AddGroup = () => {
     return state.getCategory;
   });
 
+  const {createGroup} = useSelector(state => {
+    return state;
+  });
+
   const expandOption = () => {
     setExpand(!expand);
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
   };
 
   const categroySelection = category => {
-    if (selectedCategory.some(el => el == category)) {
-      setSelectedCategory(selectedCategory.filter(item => item !== category));
+    if (selectedCategory.some(el => el.slug == category.slug)) {
+      setSelectedCategory(
+        selectedCategory.filter(item => item.slug !== category.slug),
+      );
     } else if (selectedCategory.length >= 3) {
       setSelectedCategory([
         ...selectedCategory.filter((item, index) => index !== 0),
@@ -136,6 +141,12 @@ const AddGroup = () => {
   const selectHashTag = text => {
     console.log(text);
   };
+
+  const string = '#rohit adflkalsdfka#sdfgsdgsdfgsdfg';
+  const regex = /\#\w{0,40}\s/gm;
+  console.log(string.split(regex));
+  const isExisting = regex.test(string);
+  console.log(isExisting, 'reg');
 
   return (
     <ScrollView
@@ -276,7 +287,7 @@ const AddGroup = () => {
                 return (
                   <View>
                     <TouchableOpacity
-                      onPress={() => categroySelection(el.slug)}
+                      onPress={() => categroySelection(el)}
                       style={{
                         height: 39,
                         flexDirection: 'row',
@@ -291,7 +302,7 @@ const AddGroup = () => {
                         }}>
                         {el.category}
                       </Text>
-                      {selectedCategory.some(item => item === el.slug) ? (
+                      {selectedCategory.some(item => item.slug === el.slug) ? (
                         <Icon
                           name={'check-square'}
                           size={20}

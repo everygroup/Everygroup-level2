@@ -4,10 +4,12 @@ import Styles from './Style';
 import Header from '../../Common/Header';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+import {resetValue} from '../../../Slice/CheckReducer';
 
 const AccountData = () => {
   const navigation = useNavigation();
-
+  const dispatch = useDispatch();
   const [pageOption, setPageOption] = useState([
     {
       displayName: 'Passwort ändern',
@@ -51,12 +53,13 @@ const AccountData = () => {
           renderItem={({item}) => {
             return (
               <TouchableOpacity
-                onPress={() =>
+                onPress={() => {
+                  dispatch(resetValue());
                   navigation.navigate('CheckPassword', {
                     description: item.description,
                     toNavigate: item.toNavigate,
-                  })
-                }
+                  });
+                }}
                 style={Styles.textContainer}>
                 <Text style={Styles.textStyle}>{item.displayName}</Text>
               </TouchableOpacity>

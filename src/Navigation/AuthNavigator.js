@@ -1,15 +1,10 @@
-import React, {useEffect} from 'react';
-import {View, Text} from 'react-native';
+import React from 'react';
+import {View} from 'react-native';
 import {
   CardStyleInterpolators,
   createStackNavigator,
 } from '@react-navigation/stack';
-import {
-  useRoute,
-  useNavigation,
-  useNavigationState,
-  getFocusedRouteNameFromRoute,
-} from '@react-navigation/native';
+import {useNavigation, useNavigationState} from '@react-navigation/native';
 import SignIn from '../Screens/AuthScreens/SignIn';
 import SingUp from '../Screens/AuthScreens/SignUp';
 import VerifyMail from '../Screens/AuthScreens/VerifyMail';

@@ -8,6 +8,8 @@ import FontStyle from '../../Assets/Fonts/FontStyle';
 import ErrorText from '../../Common/ErrorText';
 import {registerUser} from '../../../Slice/AuthReducer';
 import {useDispatch, useSelector} from 'react-redux';
+import {HelperText} from 'react-native-paper';
+import Styles from '../UserScreens/Style';
 
 const SignUp = () => {
   const dispatch = useDispatch();
@@ -17,11 +19,11 @@ const SignUp = () => {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState(false);
   const [userName, setUserName] = useState('');
-  const [userNameError, setUserNameError] = useState(false);
+  const [userError, setUserError] = useState(false);
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = useState('');
-  const [usernameErrorMessage, setUsernameErrorMessage] = useState('');
+  const [userErrorMessage, setUserErrorMessage] = useState('');
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
 
   const iconPress = () => {
@@ -37,11 +39,11 @@ const SignUp = () => {
       setEmailError(true);
       setEmailErrorMessage('E-Mail nicht gültig');
     } else if (userName == '') {
-      setUserNameError(true);
-      setUsernameErrorMessage('Nutzername wird benötigt');
+      setUserError(true);
+      setUserErrorMessage('Nutzername wird benötigt');
     } else if (userName.length > 10) {
-      setUserNameError(true);
-      setUsernameErrorMessage('Maximal 10 Zeichen');
+      setUserError(true);
+      setUserErrorMessage('Maximal 10 Zeichen');
     } else if (password == '') {
       setPasswordError(true);
       setPasswordErrorMessage('Passwort wird benötigt');
@@ -54,24 +56,29 @@ const SignUp = () => {
     }
   };
 
-  const {loading, error, token} = useSelector(state => {
+  const {loading, error, token, register} = useSelector(state => {
     return state.user;
   });
 
   useEffect(() => {
     setEmailError(true);
-
-    setEmailErrorMessage(error.email ? error.email[0] : []);
-  }, [error.email]);
+    setEmailErrorMessage(error.email ? error.email.toString() : null);
+  }, [error]);
 
   useEffect(() => {
-    setUserNameError(true);
-    setUsernameErrorMessage(error.username ? error.username[0] : []);
+    setUserError(true);
+    setUserErrorMessage(error.username ? error.username.toString() : null);
   }, [error.username]);
-  console.log(error, 'error signup');
+
+  useEffect(() => {
+    if (register == 'success') {
+      navigation.navigate('VerifyMail');
+    }
+  }, [register]);
+
   const navigation = useNavigation();
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+    <SafeAreaView style={{height: '100%', backgroundColor: '#fff'}}>
       <View
         style={{
           width: '100%',
@@ -79,7 +86,13 @@ const SignUp = () => {
           height: '40%',
           justifyContent: 'center',
         }}>
-        <ErrorText error={emailError} errorMessage={emailErrorMessage} />
+        <View style={Styles.errorContainer}>
+          {emailError == true ? (
+            <HelperText style={[Styles.helperText, {left: '10%'}]} type="error">
+              {emailErrorMessage}
+            </HelperText>
+          ) : null}
+        </View>
         <Input
           placeholder="E-Mail"
           placeholderTextColor="#205072"
@@ -88,16 +101,30 @@ const SignUp = () => {
             setEmailError(false);
           }}
         />
-        <ErrorText error={userNameError} errorMessage={usernameErrorMessage} />
+
+        <View style={Styles.errorContainer}>
+          {userError == true ? (
+            <HelperText style={[Styles.helperText, {left: '10%'}]} type="error">
+              {userErrorMessage}
+            </HelperText>
+          ) : null}
+        </View>
         <Input
           placeholder="Nutzername"
           placeholderTextColor="#205072"
           onChangeText={text => {
             setUserName(text);
-            setUserNameError(false);
+            setUserError(false);
           }}
         />
-        <ErrorText error={passwordError} errorMessage={passwordErrorMessage} />
+
+        <View style={Styles.errorContainer}>
+          {passwordError == true ? (
+            <HelperText style={[Styles.helperText, {left: '10%'}]} type="error">
+              {passwordErrorMessage}
+            </HelperText>
+          ) : null}
+        </View>
         <Input
           placeholder="Passwort"
           iconName={showPassword ? 'eye-with-line' : 'eye'}
@@ -110,6 +137,7 @@ const SignUp = () => {
             setPasswordError(false);
           }}
         />
+
         <View style={{width: '78%', flexDirection: 'row'}}>
           <Text
             style={{

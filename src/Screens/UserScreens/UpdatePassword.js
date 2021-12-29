@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import {useNavigation} from '@react-navigation/core';
@@ -21,31 +21,41 @@ const UpdatePassword = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-
-  const {error, loading, value} = useSelector(state => {
-    return state;
-  });
-
+  const [successMessage, setSuccessMessage] = useState('');
   const submit = () => {
+    setSuccessMessage('');
     if (password == '') {
       setPasswordError(true);
-      setPasswordErrorMessage('Password should not be blank');
+      setPasswordErrorMessage('Passwort wird benötigt');
     } else if (confirmPassword == '') {
       setConfirmPasswordError(true);
-      setConfirmPasswordErrorMessage('Confirm Password should not be blank');
+      setConfirmPasswordErrorMessage('Passwort bestätigen ist erforderlich');
     } else if (password != confirmPassword) {
       setConfirmPasswordError(true);
-      setConfirmPasswordErrorMessage('confirm password not matched');
+      setConfirmPasswordErrorMessage('Passwörter stimmen nicht überein');
+    } else if (password.length < 6) {
+      setPasswordError(true);
+      setPasswordErrorMessage('Passwort muss mindestens 6 Zeichen haben');
     } else {
       dispatch(changeProfile({password}));
-      // navigation.navigate('SentEmail');
     }
   };
 
-  useSelector(state => {
-    console.log(state, 'pass');
-    return state;
+  const {error, loading, value} = useSelector(state => {
+    console.log(state.changeProfile, 'pass');
+    return state.changeProfile;
   });
+
+  useEffect(() => {
+    setConfirmPassword(true);
+    setConfirmPasswordErrorMessage(error.toString());
+  }, [error]);
+
+  useEffect(() => {
+    if (value == 'success') {
+      setSuccessMessage('Passwort erfolgreich geändert');
+    }
+  }, [value]);
 
   return (
     <View
@@ -82,13 +92,15 @@ const UpdatePassword = () => {
         }}>
         Gib dein neues Passwort ein
       </Text>
-      {passwordError == true ? (
-        <HelperText
-          style={[Styles.helperText, {paddingLeft: '10%'}]}
-          type="error">
-          {passwordErrorMessage}
-        </HelperText>
-      ) : null}
+      <View style={Styles.errorContainer}>
+        {passwordError == true ? (
+          <HelperText
+            style={[Styles.helperText, {paddingLeft: '10%'}]}
+            type="error">
+            {passwordErrorMessage}
+          </HelperText>
+        ) : null}
+      </View>
       <Input
         placeholder="Neues Passwort"
         placeholderTextColor="#205072"
@@ -99,13 +111,15 @@ const UpdatePassword = () => {
           setPassword(text), setPasswordError(false);
         }}
       />
-      {confirmPasswordError == true ? (
-        <HelperText
-          style={[Styles.helperText, {paddingLeft: '10%'}]}
-          type="error">
-          {confirmPasswordErrorMessage}
-        </HelperText>
-      ) : null}
+      <View style={Styles.errorContainer}>
+        {confirmPasswordError == true ? (
+          <HelperText
+            style={[Styles.helperText, {paddingLeft: '10%'}]}
+            type="error">
+            {confirmPasswordErrorMessage}
+          </HelperText>
+        ) : null}
+      </View>
       <Input
         placeholder="Passwort wiederholen"
         placeholderTextColor="#205072"
@@ -119,6 +133,17 @@ const UpdatePassword = () => {
       <View style={{marginVertical: '5%', width: '100%', alignItems: 'center'}}>
         <Button onPress={submit} buttonText="passwort ändern" />
       </View>
+      {successMessage != '' ? (
+        <Text
+          style={{
+            alignSelf: 'center',
+            fontFamily: FontStyle.poppinsMedium,
+            fontSize: 11,
+            color: '#06BA63',
+          }}>
+          {successMessage}
+        </Text>
+      ) : null}
       <View
         style={{
           justifyContent: 'flex-end',

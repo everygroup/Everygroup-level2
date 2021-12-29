@@ -6,7 +6,7 @@ const baseUrl = 'http://203.190.153.22:1639/api/v1';
 
 const initialState = {
   loading: false,
-  error: '',
+  error: [],
   value: '',
 };
 
@@ -26,6 +26,7 @@ export const checkPassword = createAsyncThunk(
 
       return response.data;
     } catch (err) {
+      console.log(err);
       return rejectWithValue(Object.values(err.response.data));
     }
   },
@@ -34,7 +35,11 @@ export const checkPassword = createAsyncThunk(
 export const checkReducer = createSlice({
   name: 'checkUserPassword',
   initialState,
-  reducers: {},
+  reducers: {
+    resetValue(state, action) {
+      state.value = '';
+    },
+  },
   extraReducers: {
     [checkPassword.fulfilled]: (state, action) => {
       state.loading = false;
@@ -42,7 +47,7 @@ export const checkReducer = createSlice({
     },
     [checkPassword.pending]: (state, action) => {
       state.loading = true;
-      state.error = '';
+      state.error = [];
       state.value = '';
     },
     [checkPassword.rejected]: (state, action) => {
@@ -52,5 +57,5 @@ export const checkReducer = createSlice({
     },
   },
 });
-
+export const {resetValue} = checkReducer.actions;
 export default checkReducer.reducer;

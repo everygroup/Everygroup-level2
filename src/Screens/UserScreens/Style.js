@@ -30,6 +30,11 @@ const Styles = StyleSheet.create({
     fontSize: 14,
     alignSelf: 'flex-start',
   },
+  errorContainer: {
+    width: '100%',
+    alignItems: 'flex-start',
+    height: 20,
+  },
 });
 
 export default Styles;

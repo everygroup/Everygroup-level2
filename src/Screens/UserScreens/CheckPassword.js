@@ -37,6 +37,11 @@ const CheckPassword = ({route}) => {
     passwordCheck();
   }, [value]);
 
+  useEffect(() => {
+    setPasswordError(true);
+    setErrorMessage(error.toString());
+  }, [error]);
+
   const passwordCheck = async () => {
     if (value == 'success') {
       navigation.navigate(toNavigate);
@@ -79,13 +84,15 @@ const CheckPassword = ({route}) => {
         {description}
       </Text>
       <View style={{width: '100%', alignItems: 'center'}}>
-        {passwordError == true ? (
-          <HelperText
-            style={[Styles.helperText, {paddingLeft: '10%'}]}
-            type="error">
-            {errorMessage}
-          </HelperText>
-        ) : null}
+        <View style={Styles.errorContainer}>
+          {passwordError == true ? (
+            <HelperText
+              style={[Styles.helperText, {paddingLeft: '10%'}]}
+              type="error">
+              {errorMessage}
+            </HelperText>
+          ) : null}
+        </View>
         <Input
           placeholder="passwort"
           placeholderTextColor="#205072"

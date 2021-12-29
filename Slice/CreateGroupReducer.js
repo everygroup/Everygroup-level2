@@ -14,24 +14,23 @@ export const createGroup = createAsyncThunk(
   'createGroup',
   async (data, {rejectWithValue}) => {
     const token = await AsyncStorage.getItem('token');
-    console.log(data, 'create Group');
+
     try {
       const response = await axios({
         method: 'post',
         headers: {Authorization: `Bearer ${token}`},
         url: `${baseUrl}/group/`,
-        // data: {
-        //   title: 'new Group',
-        //   group_link:
-        //     'https://www.django-rest-framework.org/api-guide/paiation/',
-        //   group_languages: ['spanisch'],
-        //   group_join_languages: ['spanisch'],
-        //   group_categories: ['sport'],
-        //   tags: ['tag'],
-        //   confirm_rules: true,
-        //   confirm_terms: true,
-        //   description: 'Here is Group details.',
-        // },
+        data: {
+          title: data.titel,
+          group_link: data.groupLink,
+          languages: data.selectedLanguage,
+          join_languages: data.joinLanguage,
+          categories: data.selectedCategory,
+          tags: ['tag3'],
+          confirm_rules: data.checkedConductRules,
+          confirm_terms: data.checkedTerms,
+          description: data.description,
+        },
       });
 
       return response.data;

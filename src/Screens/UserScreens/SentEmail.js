@@ -2,15 +2,12 @@ import React from 'react';
 import {View, Text, SafeAreaView, Image, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import Header from '../../Common/Header';
 
 const SentEmail = () => {
   const navigation = useNavigation();
   return (
     <SafeAreaView
       style={{flex: 1, backgroundColor: '#fff', justifyContent: 'center'}}>
-      <Header />
       <View
         style={{alignItems: 'center', height: '90%', justifyContent: 'center'}}>
         <Image
