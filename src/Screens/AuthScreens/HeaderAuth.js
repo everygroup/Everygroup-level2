@@ -37,8 +37,8 @@ const HeaderAuth = ({currentRoute, prevRoute}) => {
         <Image
           source={require('../../Assets/Images/orangeLogo.png')}
           style={{
-            height: 31,
-            width: 33,
+            height: 41,
+            width: 43,
             alignSelf: 'center',
             marginRight: '4%',
           }}

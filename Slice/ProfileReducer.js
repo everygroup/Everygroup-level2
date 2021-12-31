@@ -36,7 +36,12 @@ export const changeProfile = createAsyncThunk(
 export const ProfileReducer = createSlice({
   name: 'ProfileReducer',
   initialState,
-  reducers: {},
+  reducers: {
+    resetValue(state, action) {
+      state.value = '';
+      state.error = [];
+    },
+  },
   extraReducers: {
     [changeProfile.fulfilled]: (state, action) => {
       state.loading = false;
@@ -54,5 +59,7 @@ export const ProfileReducer = createSlice({
     },
   },
 });
+
+export const {resetValue} = ProfileReducer.actions;
 
 export default ProfileReducer.reducer;

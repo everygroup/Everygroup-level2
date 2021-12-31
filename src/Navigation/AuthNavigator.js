@@ -16,6 +16,7 @@ import ConfirmationScreen from '../Screens/AuthScreens/ConfirmationScreen';
 import BehaviourRules from '../Screens/RulesPages/BehaviourRules';
 import ForgotPassword from '../Screens/AuthScreens/ForgotPassword';
 import HeaderAuth from '../Screens/AuthScreens/HeaderAuth';
+import ForgotMailVerify from '../Screens/AuthScreens/ForgotMailVerify';
 
 const AuthStackScreen = createStackNavigator();
 
@@ -87,6 +88,11 @@ export const AuthNavigator = () => {
         <AuthStackScreen.Screen
           name="ForgotPassword"
           component={ForgotPassword}
+          options={{gestureEnabled: false}}
+        />
+        <AuthStackScreen.Screen
+          name="ForgotMailVerify"
+          component={ForgotMailVerify}
           options={{gestureEnabled: false}}
         />
 

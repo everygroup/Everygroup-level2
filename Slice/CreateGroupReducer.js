@@ -32,9 +32,10 @@ export const createGroup = createAsyncThunk(
           description: data.description,
         },
       });
-
+      console.log(response);
       return response.data;
     } catch (err) {
+      console.log(err);
       return rejectWithValue(Object.values(err.response.data));
     }
   },

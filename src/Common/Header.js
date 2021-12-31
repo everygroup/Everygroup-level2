@@ -66,7 +66,7 @@ const Header = () => {
           <TouchableOpacity onPress={() => navigation.navigate('Dashboard')}>
             <Image
               source={require('../Assets/Images/whiteLogo.png')}
-              style={{height: 28, width: 28, top: 15, left: 5}}
+              style={{height: 31, width: 31, top: 15, left: 5}}
             />
           </TouchableOpacity>
         </View>
@@ -85,13 +85,19 @@ const Header = () => {
             {currentSelectedOption == 'plus' ? (
               <Icons name="close-a" size={20} color="#EF3E36" />
             ) : (
-              <Icon name="add" size={30} color="#fff" />
+              <Image
+                source={require('../Assets/Images/plus.png')}
+                style={{height: 31, width: 31, resizeMode: 'contain'}}
+              />
             )}
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.iconContainer}
             onPress={() => menuIconPress('search')}>
-            <Icon name="search" size={30} color="#fff" />
+            <Image
+              source={require('../Assets/Images/search.png')}
+              style={{height: 31, width: 31, resizeMode: 'contain'}}
+            />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.iconContainer}
@@ -99,7 +105,10 @@ const Header = () => {
             {currentSelectedOption == 'menu' ? (
               <Icons name="close-a" size={20} color="#EF3E36" />
             ) : (
-              <Icon name="menu" size={30} color="#fff" />
+              <Image
+                source={require('../Assets/Images/menu.png')}
+                style={{height: 31, width: 31, resizeMode: 'contain'}}
+              />
             )}
           </TouchableOpacity>
         </View>

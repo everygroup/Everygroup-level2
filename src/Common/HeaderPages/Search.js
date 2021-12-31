@@ -12,8 +12,14 @@ import Input from '../Input';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import SwitchToggle from 'react-native-switch-toggle';
 import {ScrollView} from 'react-native-gesture-handler';
+import InfoModal from '../InfoModal';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const Search = ({starPress, starValue, filterValue, filterPress}) => {
+  const [modalValue, setModalValue] = useState(false);
+  const [infoMessage, setInfoMessage] = useState(
+    'Hier kannst du nach der Sprache filtern, welche überwiegend in der Gruppe benutzt wird. Filtere nach Sprachen deiner Wahl oder such nach allen.',
+  );
   const [selectedMessenger, setSelectedMessenger] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState([]);
   const [switchOn, setSwitchOn] = useState(true);
@@ -65,9 +71,14 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
       setSelectedCategory(prevValue => [...prevValue, item]);
     }
   };
-  console.log(selectedCategory);
+
   return (
     <View style={{flex: 1}}>
+      <InfoModal
+        modalValue={modalValue}
+        message={infoMessage}
+        closeModal={() => setModalValue(false)}
+      />
       <View
         style={{
           marginTop: 20,
@@ -117,7 +128,16 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
         </View>
       </View>
       {filterValue ? (
-        <ScrollView contentContainerStyle={{paddingBottom: '5%'}}>
+        <KeyboardAwareScrollView
+          extraScrollHeight={100}
+          showsVerticalScrollIndicator={false}
+          keyboardDismissMode="on-drag"
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={{
+            flexGrow: 1,
+            alignItems: 'center',
+            paddingBottom: '15%',
+          }}>
           <View
             style={{
               alignItems: 'center',
@@ -133,6 +153,7 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
               Messenger
             </Text>
             <Text
+              onPress={() => setSelectedMessenger([])}
               style={{
                 fontFamily: FontStyle.MontBold,
                 fontSize: 19,
@@ -189,10 +210,12 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
                 fontFamily: FontStyle.MontExtBold,
                 fontSize: 26,
                 color: '#205072',
+                marginVertical: 10,
               }}>
               Kategorie
             </Text>
             <Text
+              onPress={() => setSelectedCategory([])}
               style={{
                 fontFamily: FontStyle.MontBold,
                 fontSize: 19,
@@ -242,7 +265,12 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Image
                 source={require('../../Assets/Images/18plus.png')}
-                style={{height: 35, width: 35}}
+                style={{
+                  height: 35,
+                  width: 35,
+                  resizeMode: 'contain',
+                  marginVertical: 10,
+                }}
               />
               <Image
                 source={require('../../Assets/Images/redi.png')}
@@ -258,10 +286,12 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
                 }}>
                 Sprache
               </Text>
-              <Image
-                source={require('../../Assets/Images/info.png')}
-                style={{height: 16, width: 16, left: 5}}
-              />
+              <TouchableOpacity onPress={() => setModalValue(true)}>
+                <Image
+                  source={require('../../Assets/Images/info.png')}
+                  style={{height: 16, width: 16, left: 5}}
+                />
+              </TouchableOpacity>
             </View>
             <View
               style={{
@@ -319,7 +349,7 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
               />
             </View>
           </View>
-        </ScrollView>
+        </KeyboardAwareScrollView>
       ) : null}
     </View>
   );

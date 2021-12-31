@@ -5,7 +5,8 @@ import Header from '../../Common/Header';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {resetValue} from '../../../Slice/CheckReducer';
+import {resetValue} from '../../../Slice/ProfileReducer';
+import {resetPassword} from '../../../Slice/CheckReducer';
 
 const AccountData = () => {
   const navigation = useNavigation();
@@ -54,6 +55,7 @@ const AccountData = () => {
             return (
               <TouchableOpacity
                 onPress={() => {
+                  dispatch(resetPassword());
                   dispatch(resetValue());
                   navigation.navigate('CheckPassword', {
                     description: item.description,

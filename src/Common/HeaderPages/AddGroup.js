@@ -20,9 +20,12 @@ import Styles from '../../Screens/UserScreens/Style';
 import {useDispatch, useSelector} from 'react-redux';
 import {getCategory} from '../../../Slice/CategoryReducer';
 import {getLanguage} from '../../../Slice/LanguageReducer';
+import {createGroup} from '../../../Slice/CreateGroupReducer';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const AddGroup = () => {
   const dispatch = useDispatch();
+  const [joinSelection, setJoinSelection] = useState('all');
   const [groupLanguage, setGroupLanguageFocus] = useState(false);
   const [joinLanguageFocus, setJoinLanguageFocus] = useState(false);
   const [joinLanguage, setJoinLanguage] = useState([]);
@@ -32,8 +35,17 @@ const AddGroup = () => {
   const [modalValue, setModalValue] = useState(false);
   const [titel, setTitel] = useState('');
   const [titelError, setTitelError] = useState(false);
-  const [groupLink, setGroupLink] = useState('');
+  const [titelErrorMessage, setTitelErrorMessage] = useState('');
   const [description, setDescription] = useState('');
+  const [descriptionError, setDescriptionError] = useState(false);
+  const [descriptionErrorMessage, setDescriptionErrorMessage] = useState('');
+
+  const [categoryError, setCategoryError] = useState(false);
+  const [categoryErrorMessage, setCategoryErrorMessage] = useState('');
+
+  const [groupLink, setGroupLink] = useState('');
+  const [spokenError, setSpokenError] = useState(false);
+  const [spokenErrorMessage, setSpokenErrorMessage] = useState('');
   const [groupLinkError, setGroupLinkError] = useState(false);
   const [hashValue, setHashValue] = useState(['latest']);
   const [hashError, setHashError] = useState(false);
@@ -51,8 +63,24 @@ const AddGroup = () => {
   const submitButton = () => {
     if (titel == '') {
       setTitelError(true);
+      setTitelErrorMessage('Bitte gib einen Titel ein');
+    } else if (titel.length > 30) {
+      setTitelError(true);
+      setTitelErrorMessage('Zu viele Zeichen');
     } else if (groupLink == '') {
       setGroupLinkError(true);
+    } else if (selectedCategory.length < 1) {
+      setCategoryError(true);
+      setCategoryErrorMessage('Wähle eine Kategorie');
+    } else if (description == '') {
+      setDescriptionError(true);
+      setDescriptionErrorMessage('Beschreibung einfügen');
+    } else if (description.length > 315) {
+      setDescriptionError(true);
+      setDescriptionErrorMessage('Maximal 315 Zeichen');
+    } else if (selectedLanguage.length < 1) {
+      setSpokenError(true);
+      setSpokenErrorMessage('Wähle eine Sprache');
     } else if (checkedTerms == false) {
       setTermsError(true);
     } else if (checkedConductRules == false) {
@@ -82,9 +110,10 @@ const AddGroup = () => {
     return state.getCategory;
   });
 
-  const {createGroup} = useSelector(state => {
-    return state;
-  });
+  // const {createGroup} = useSelector(state => {
+  //   console.log(state, 'stat aaddd');
+  //   return state;
+  // });
 
   const expandOption = () => {
     setExpand(!expand);
@@ -92,6 +121,7 @@ const AddGroup = () => {
   };
 
   const categroySelection = category => {
+    setCategoryError(false);
     if (selectedCategory.some(el => el.slug == category.slug)) {
       setSelectedCategory(
         selectedCategory.filter(item => item.slug !== category.slug),
@@ -138,18 +168,26 @@ const AddGroup = () => {
     }
   };
 
+  const deleteJoinLanguage = item => {
+    setJoinLanguage(joinLanguage.filter(el => el.language !== item.language));
+  };
+
   const selectHashTag = text => {
     console.log(text);
   };
 
-  const string = '#rohit adflkalsdfka#sdfgsdgsdfgsdfg';
-  const regex = /\#\w{0,40}\s/gm;
-  console.log(string.split(regex));
-  const isExisting = regex.test(string);
-  console.log(isExisting, 'reg');
+  // const string = '#rohit adflkalsdfka#sdfgsdgsdfgsdfg';
+  // const regex = /\#\w{0,40}\s/gm;
+  // console.log(string.split(regex));
+  // const isExisting = regex.test(string);
+  // console.log(isExisting, 'reg');
 
   return (
-    <ScrollView
+    <KeyboardAwareScrollView
+      extraScrollHeight={100}
+      showsVerticalScrollIndicator={false}
+      keyboardDismissMode="on-drag"
+      keyboardShouldPersistTaps="handled"
       contentContainerStyle={{
         alignItems: 'center',
         alignSelf: 'center',
@@ -174,7 +212,7 @@ const AddGroup = () => {
       <View>
         {titelError == true ? (
           <HelperText style={[Styles.helperText, {left: '5%'}]} type="error">
-            Gruppentitel eingeben
+            {titelErrorMessage}
           </HelperText>
         ) : null}
         <View style={styles.container}>
@@ -245,6 +283,11 @@ const AddGroup = () => {
           />
         </View>
       </View>
+      {categoryError == true ? (
+        <HelperText style={[Styles.helperText, {left: '5%'}]} type="error">
+          {categoryErrorMessage}
+        </HelperText>
+      ) : null}
       <View style={[styles.container, {height: expand ? 500 : 50}]}>
         <TouchableOpacity
           onPress={() =>
@@ -275,7 +318,7 @@ const AddGroup = () => {
               style={{
                 fontFamily: FontStyle.MontSemiBold,
                 color: '#FFA420',
-                fontSize: 19,
+                fontSize: 16,
               }}>
               Kategorie
             </Text>
@@ -298,7 +341,7 @@ const AddGroup = () => {
                         style={{
                           fontFamily: FontStyle.MontSemiBold,
                           fontSize: 19,
-                          color: '#FFA420',
+                          color: el.slug == 18 ? '#ef3e36' : '#FFA420',
                         }}>
                         {el.category}
                       </Text>
@@ -327,6 +370,11 @@ const AddGroup = () => {
           ) : null}
         </View>
       </View>
+      {descriptionError == true ? (
+        <HelperText style={[Styles.helperText, {left: '5%'}]} type="error">
+          {descriptionErrorMessage}
+        </HelperText>
+      ) : null}
       <View
         style={{
           height: 100,
@@ -353,6 +401,7 @@ const AddGroup = () => {
             }}
           />
         </TouchableOpacity>
+
         <View
           style={{
             width: '80%',
@@ -360,6 +409,7 @@ const AddGroup = () => {
             borderRadius: 7,
             height: 100,
             justifyContent: 'center',
+            paddingTop: 10,
           }}>
           <Input
             placeholder="Beschreibung"
@@ -418,6 +468,12 @@ const AddGroup = () => {
           Welche Sprache wird in dieser Gruppe gesprochen?
         </Text>
       </View>
+      {spokenError == true ? (
+        <HelperText style={[Styles.helperText, {left: '5%'}]} type="error">
+          {spokenErrorMessage}
+        </HelperText>
+      ) : null}
+
       <View style={{flexDirection: 'row'}}>
         <TouchableOpacity
           onPress={() =>
@@ -450,7 +506,7 @@ const AddGroup = () => {
             }}
             inputWidth={'100%'}
             height={languageArray.length > 0 && groupLanguage ? 150 : null}
-            placeholder="sprache auswählen"
+            placeholder="Sprache auswählen"
             placeholderTextColor="#BECCD6"
             bgColor="#fff"
             bdWidth={0.1}
@@ -525,7 +581,17 @@ const AddGroup = () => {
         </Text>
       </View>
       <View style={{width: '100%', flexDirection: 'row', left: 7}}>
-        <TouchableOpacity style={[styles.buttonView]}>
+        <TouchableOpacity
+          onPress={() =>
+            selectJoinLanguage(
+              {language: 'all', code: 'all'},
+              setJoinSelection('all'),
+            )
+          }
+          style={[
+            styles.buttonView,
+            joinSelection == 'limited' ? {backgroundColor: '#beccd6'} : null,
+          ]}>
           <Text
             style={{
               fontSize: 14,
@@ -533,11 +599,15 @@ const AddGroup = () => {
               color: '#fff',
               textAlign: 'center',
             }}>
-            alle dürfen beitreten
+            Alle dürfen beitreten
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.buttonView, {backgroundColor: '#beccd6'}]}>
+          onPress={() => setJoinSelection('limited')}
+          style={[
+            styles.buttonView,
+            joinSelection == 'all' ? {backgroundColor: '#beccd6'} : null,
+          ]}>
           <Text
             style={{
               fontSize: 14,
@@ -545,7 +615,7 @@ const AddGroup = () => {
               color: '#fff',
               textAlign: 'center',
             }}>
-            nur folgende Sprachen:
+            Nur folgende Sprachen:
           </Text>
         </TouchableOpacity>
       </View>
@@ -638,6 +708,23 @@ const AddGroup = () => {
                   }}>
                   {language.language}
                 </Text>
+                <TouchableOpacity
+                  onPress={() => deleteJoinLanguage(language)}
+                  style={{
+                    width: 15,
+                    alignItems: 'flex-end',
+                    justifyContent: 'center',
+                    height: '100%',
+                  }}>
+                  <Text
+                    style={{
+                      fontFamily: FontStyle.MontMedium,
+                      color: '#fff',
+                      fontSize: 12,
+                    }}>
+                    X
+                  </Text>
+                </TouchableOpacity>
               </View>
             );
           }}
@@ -755,7 +842,7 @@ const AddGroup = () => {
           Gruppe posten
         </Text>
       </TouchableOpacity>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 };
 
@@ -792,19 +879,21 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     justifyContent: 'space-between',
     paddingTop: 10,
-    paddingHorizontal: '5%',
+    paddingHorizontal: '3%',
     marginBottom: 10,
   },
   languageContainer: {
-    minWidth: 77,
+    minWidth: 40,
     maxWidth: 'auto',
     height: 20,
     borderWidth: 1,
     borderColor: '#fff',
     borderRadius: 5,
     marginHorizontal: 5,
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
+    flexDirection: 'row',
+    paddingHorizontal: 2.5,
   },
 });
 

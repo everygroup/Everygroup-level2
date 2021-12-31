@@ -30,6 +30,7 @@ const CheckPassword = ({route}) => {
   };
 
   const {loading, error, value} = useSelector(state => {
+    console.log(state.changeProfile, 'checkpage');
     return state.check;
   });
 
@@ -108,7 +109,9 @@ const CheckPassword = ({route}) => {
       <View
         style={{marginVertical: '10%', width: '100%', alignItems: 'center'}}>
         <Button buttonText="Weiter" onPress={submit} />
-        <Text style={{fontSize: 17, color: '#0A49E0', marginVertical: '2.5%'}}>
+        <Text
+          onPress={() => navigation.navigate('ForgotPassword')}
+          style={{fontSize: 17, color: '#0A49E0', marginVertical: '2.5%'}}>
           Passwort vergessen
         </Text>
       </View>

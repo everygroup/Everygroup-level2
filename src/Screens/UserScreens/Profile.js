@@ -3,16 +3,27 @@ import {View, Text, TouchableOpacity, FlatList, Image} from 'react-native';
 import Header from '../../Common/Header';
 import Styles from './Style';
 import {useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useDispatch} from 'react-redux';
+import {resetToken} from '../../../Slice/AuthReducer';
 
 const Profile = () => {
   const navigation = useNavigation();
-
+  const dispatch = useDispatch();
   const [pageOption, setPageOption] = useState([
     {displayName: 'Accountdaten', navigationName: 'AccountData'},
     {displayName: 'Benachrichtigungen', navigationName: 'Notification'},
     {displayName: 'Gutschein', navigationName: 'Coupon'},
     {displayName: 'Abmelden', navigationName: 'SplashScreen'},
   ]);
+
+  const selectNavigation = async navigatePage => {
+    if (navigatePage == 'SplashScreen') {
+      await AsyncStorage.clear();
+      dispatch(resetToken());
+    }
+    navigation.navigate(navigatePage);
+  };
 
   return (
     <View style={[Styles.mainContainer, {paddingTop: '25%'}]}>
@@ -23,7 +34,7 @@ const Profile = () => {
         renderItem={({item}) => {
           return (
             <TouchableOpacity
-              onPress={() => navigation.navigate(item.navigationName)}
+              onPress={() => selectNavigation(item.navigationName)}
               style={[Styles.textContainer, {flexDirection: 'row'}]}>
               <Text style={Styles.textStyle}>{item.displayName}</Text>
               {item.displayName == 'Gutschein' ? (

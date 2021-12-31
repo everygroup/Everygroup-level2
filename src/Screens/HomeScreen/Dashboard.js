@@ -7,6 +7,7 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  StyleSheet,
 } from 'react-native';
 import Header from '../../Common/Header';
 import GroupCard from '../../Common/GroupCard';
@@ -14,11 +15,40 @@ import GradientCard from '../../Common/GradientCard';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
-const {width} = Dimensions.get('screen');
+
+const {width, height} = Dimensions.get('screen');
 const Dashboard = () => {
   const navigation = useNavigation();
   const flatListRef = useRef(2);
   const [groupArray] = useState([
+    {
+      groupName: 'Nordsee Gruppe',
+      category: ['Dienstleistungen', 'Interessen', 'Unterhaltung'],
+      hashtagData: ['#test', '#test', '#test', '#test', '#test'],
+      description: 'Hey, wir sind eine nette Gruppe',
+      socialGroup: 'snapchat',
+    },
+    {
+      groupName: 'Nordsee Gruppe',
+      category: ['Dienstleistungen', 'Interessen', 'Unterhaltung'],
+      hashtagData: ['#test', '#test', '#test', '#test', '#test'],
+      description: 'Hey, wir sind eine nette Gruppe',
+      socialGroup: 'whatsapp',
+    },
+    {
+      groupName: 'Nordsee Gruppe',
+      category: ['Dienstleistungen', 'Interessen', 'Unterhaltung'],
+      hashtagData: ['#test', '#test', '#test', '#test', '#test'],
+      description: 'Hey, wir sind eine nette Gruppe',
+      socialGroup: 'line',
+    },
+    {
+      groupName: 'Nordsee Gruppe',
+      category: ['Dienstleistungen', 'Interessen', 'Unterhaltung'],
+      hashtagData: ['#test', '#test', '#test', '#test', '#test'],
+      description: 'Hey, wir sind eine nette Gruppe',
+      socialGroup: 'telegram',
+    },
     {
       groupName: 'Nordsee Gruppe',
       category: ['Dienstleistungen', 'Interessen', 'Unterhaltung'],
@@ -89,7 +119,7 @@ const Dashboard = () => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: '10%'}}>
-        <View style={{height: '24%', backgroundColor: '#fff'}}>
+        <View style={{height: height * 0.3, backgroundColor: '#fff'}}>
           <View
             style={{
               width: '100%',
@@ -165,6 +195,16 @@ const Dashboard = () => {
               return <GroupCard group={group} />;
             })}
           </ScrollView>
+          <TouchableOpacity style={styles.moreGroupButton}>
+            <Text
+              style={{
+                fontFamily: FontStyle.MontBold,
+                fontSize: 14,
+                color: '#fff',
+              }}>
+              Mehr Gruppen
+            </Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
       <TouchableOpacity
@@ -186,5 +226,17 @@ const Dashboard = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  moreGroupButton: {
+    backgroundColor: '#FFA420',
+    width: 222,
+    height: 39,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    borderRadius: 8,
+  },
+});
 
 export default Dashboard;

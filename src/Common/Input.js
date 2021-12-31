@@ -1,5 +1,11 @@
 import React from 'react';
-import {StyleSheet, View, TextInput} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import FontStyle from '../Assets/Fonts/FontStyle';
 import Icon from 'react-native-vector-icons/Entypo';
 const Input = ({
@@ -13,7 +19,7 @@ const Input = ({
   showPassword,
   onChangeText,
   value,
-  iconName,
+  icon,
   iconPress,
   bgColor,
   bdWidth,
@@ -53,13 +59,20 @@ const Input = ({
           },
         ]}
       />
-      {iconName ? (
-        <Icon
-          name={iconName}
-          size={showPassword ? 24 : 20}
-          color={iconColor || '#205072'}
-          onPress={iconPress}
-        />
+      {icon == 'available' ? (
+        <TouchableOpacity onPress={iconPress}>
+          {showPassword ? (
+            <Image
+              source={require('../Assets/Images/closeEye.png')}
+              style={{height: 18, width: 18, resizeMode: 'contain'}}
+            />
+          ) : (
+            <Image
+              source={require('../Assets/Images/openEye.png')}
+              style={{height: 18, width: 18, resizeMode: 'contain'}}
+            />
+          )}
+        </TouchableOpacity>
       ) : null}
     </View>
   );

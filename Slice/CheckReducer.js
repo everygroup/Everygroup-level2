@@ -36,8 +36,9 @@ export const checkReducer = createSlice({
   name: 'checkUserPassword',
   initialState,
   reducers: {
-    resetValue(state, action) {
+    resetPassword(state, action) {
       state.value = '';
+      state.error = [];
     },
   },
   extraReducers: {
@@ -57,5 +58,7 @@ export const checkReducer = createSlice({
     },
   },
 });
-export const {resetValue} = checkReducer.actions;
+
+export const {resetPassword} = checkReducer.actions;
+
 export default checkReducer.reducer;

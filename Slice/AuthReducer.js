@@ -8,6 +8,7 @@ const initialState = {
   error: '',
   loading: false,
   register: '',
+  forgotResponse: '',
 };
 
 export const signInUser = createAsyncThunk(
@@ -51,10 +52,34 @@ export const registerUser = createAsyncThunk(
   },
 );
 
+export const forgotPassword = createAsyncThunk(
+  'forgotPassword',
+  async (data, {rejectWithValue}) => {
+    try {
+      const response = await axios({
+        method: 'post',
+        url: `${baseUrl}/forgot-password`,
+        data: {
+          email: data.email,
+        },
+      });
+    } catch (err) {
+      return rejectWithValue(Object.values(err.response.data).toString());
+    }
+  },
+);
+
 export const authReducer = createSlice({
   name: 'user',
   initialState,
-  reducers: {},
+  reducers: {
+    resetToken(state, action) {
+      state.token = '';
+    },
+    resetForgotResponse(state, action) {
+      state.forgotResponse = '';
+    },
+  },
   extraReducers: {
     [signInUser.fulfilled]: (state, action) => {
       state.loading = false;
@@ -83,7 +108,22 @@ export const authReducer = createSlice({
       state.error = action.payload;
       state.loading = false;
     },
+    [forgotPassword.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.error = [];
+      state.forgotResponse = 'success';
+    },
+    [forgotPassword.pending]: (state, action) => {
+      state.loading = true;
+      state.error = [];
+    },
+    [forgotPassword.rejected]: (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    },
   },
 });
+
+export const {resetToken, resetForgotResponse} = authReducer.actions;
 
 export default authReducer.reducer;

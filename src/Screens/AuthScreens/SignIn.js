@@ -3,11 +3,15 @@ import {View, Text, SafeAreaView, TouchableOpacity} from 'react-native';
 import Button from '../../Common/Button';
 import Input from '../../Common/Input';
 import {useNavigation} from '@react-navigation/native';
-import {signInUser} from '../../../Slice/AuthReducer';
+import {forgotPassword, signInUser} from '../../../Slice/AuthReducer';
 import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {HelperText} from 'react-native-paper';
 import Styles from '../UserScreens/Style';
+import Spinner from '../../Common/Spinner';
+import FontStyle from '../../Assets/Fonts/FontStyle';
+import {resetForgotResponse} from '../../../Slice/AuthReducer';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const SignIn = () => {
   const dispatch = useDispatch();
@@ -46,7 +50,6 @@ const SignIn = () => {
     setEmailError(true);
     setEmailErrorMessage(error);
   }, [token, error]);
-  // console.log(error, 'signIn Error');
 
   const tokenFunc = async () => {
     if (token) {
@@ -55,53 +58,82 @@ const SignIn = () => {
     }
   };
 
+  const forgotPasswordPage = async () => {
+    await dispatch(resetForgotResponse());
+    navigation.navigate('ForgotPassword');
+  };
+
   return (
-    <SafeAreaView
-      style={{backgroundColor: '#fff', flex: 1, alignItems: 'center'}}>
-      <View
-        style={{
-          width: '100%',
+    <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+      <KeyboardAwareScrollView
+        showsVerticalScrollIndicator={false}
+        keyboardDismissMode="on-drag"
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{
+          flexGrow: 1,
           alignItems: 'center',
-          height: '30%',
-          justifyContent: 'center',
         }}>
-        {emailError == true ? (
-          <HelperText style={[Styles.helperText, {left: '10%'}]} type="error">
-            {emailErrorMessage}
-          </HelperText>
-        ) : null}
-        <Input
-          placeholder="E-Mail"
-          placeholderTextColor="#205072"
-          onChangeText={text => {
-            setEmail(text), setEmailError(false);
-          }}
-        />
-        {passwordError == true ? (
-          <HelperText style={[Styles.helperText, {left: '10%'}]} type="error">
-            {passwordErrorMessage}
-          </HelperText>
-        ) : null}
-        <Input
-          placeholder="Passwort"
-          placeholderTextColor="#205072"
-          iconName={showPassword ? 'eye-with-line' : 'eye'}
-          showPassword={showPassword}
-          iconPress={iconPress}
-          secureTextEntry={secureTextEntry}
-          onChangeText={text => {
-            setPassword(text), setPasswordError(false);
-          }}
-        />
-      </View>
-      <Button onPress={signInPress} buttonText="Anmelden" />
-      <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+        <View
+          style={{
+            width: '100%',
+            alignItems: 'center',
+            height: '30%',
+            justifyContent: 'center',
+          }}>
+          <View style={Styles.errorContainer}>
+            {emailError == true ? (
+              <HelperText
+                style={[Styles.helperText, {left: '10%'}]}
+                type="error">
+                {emailErrorMessage}
+              </HelperText>
+            ) : null}
+          </View>
+          <Input
+            placeholder="E-Mail"
+            placeholderTextColor="#205072"
+            onChangeText={text => {
+              setEmail(text), setEmailError(false);
+            }}
+          />
+          <View style={Styles.errorContainer}>
+            {passwordError == true ? (
+              <HelperText
+                style={[Styles.helperText, {left: '10%'}]}
+                type="error">
+                {passwordErrorMessage}
+              </HelperText>
+            ) : null}
+          </View>
+          <Input
+            placeholder="Passwort"
+            placeholderTextColor="#205072"
+            icon={'available'}
+            showPassword={showPassword}
+            iconPress={iconPress}
+            secureTextEntry={secureTextEntry}
+            onChangeText={text => {
+              setPassword(text), setPasswordError(false);
+            }}
+          />
+        </View>
+        {loading ? (
+          <Spinner />
+        ) : (
+          <Button onPress={signInPress} buttonText="Anmelden" />
+        )}
+
         <Text
-          onPress={() => navigation.navigate('ForgotPassword')}
-          style={{fontSize: 17, color: '#0A49E0', marginVertical: '5%'}}>
+          onPress={forgotPasswordPage}
+          style={{
+            fontSize: 17,
+            color: '#0A49E0',
+            marginVertical: '5%',
+            fontFamily: FontStyle.MontSemiBold,
+          }}>
           Passwort vergessen
         </Text>
-      </TouchableOpacity>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 };

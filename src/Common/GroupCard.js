@@ -84,6 +84,7 @@ const GroupCard = ({
               <Text
                 style={{
                   fontSize: 18,
+                  marginVertical: 5,
                   color: '#205072',
                   fontFamily: FontStyle.MontExtBold,
                 }}>
@@ -234,7 +235,7 @@ const GroupCard = ({
                 fontSize: 9,
                 color: '#205072',
               }}>
-              Deutch
+              Deutsch
             </Text>
           </View>
         </View>

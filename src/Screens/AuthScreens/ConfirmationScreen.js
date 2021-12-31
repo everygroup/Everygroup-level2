@@ -27,7 +27,7 @@ const ConfirmationScreen = () => {
         <Text
           style={{
             color: '#205072',
-            fontSize: 21,
+            fontSize: 19,
             fontFamily: FontStyle.MontBold,
             marginVertical: 10,
           }}>
@@ -39,12 +39,20 @@ const ConfirmationScreen = () => {
             width: '60%',
             textAlign: 'center',
             fontFamily: FontStyle.MontSemiBold,
-            fontSize: 17,
+            fontSize: 15,
           }}>
           Deine Einstellung zählt hier! Halte dich deshalb bitte an unsere
           <TouchableOpacity
             onPress={() => navigation.navigate('BehaviourRules')}>
-            <Text style={{color: '#3D60FF'}}> Verhaltensregeln.</Text>
+            <Text
+              style={{
+                color: '#3D60FF',
+                fontFamily: FontStyle.MontSemiBold,
+                fontSize: 15,
+              }}>
+              {' '}
+              Verhaltensregeln.
+            </Text>
           </TouchableOpacity>{' '}
           Damit ersparst du dir nicht nur die Löschung deines Accounts, sondern
           sammelst auch eine Menge Karmapunkte.
@@ -86,7 +94,13 @@ const ConfirmationScreen = () => {
             </TouchableOpacity>
           )}
 
-          <Text style={{fontSize: 17, left: 5, color: '#205072'}}>
+          <Text
+            style={{
+              fontSize: 15,
+              left: 5,
+              color: '#205072',
+              fontFamily: FontStyle.MontBold,
+            }}>
             Ich verspreche es !
           </Text>
         </View>

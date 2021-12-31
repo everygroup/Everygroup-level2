@@ -13,20 +13,17 @@ const initialState = {
 export const getCategory = createAsyncThunk(
   'getCategory',
   async (data, {rejectWithValue}) => {
-    // console.log(data);
-
     const token = await AsyncStorage.getItem('token');
-    console.log(token, 'token');
+
     try {
       const response = await axios({
         method: 'get',
         headers: {Authorization: `Bearer ${token}`},
         url: `${baseUrl}/group/category`,
       });
-      console.log(response, 'category');
+
       return response.data.results;
     } catch (err) {
-      console.log(err);
       return rejectWithValue(Object.values(err.response.data));
     }
   },

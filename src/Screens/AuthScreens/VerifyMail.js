@@ -25,11 +25,11 @@ const VerifyMail = () => {
           geht`s los!
         </Text>
       </View>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={() => navigation.navigate('ConfirmationScreen')}
         style={{alignItems: 'center', height: '15%'}}>
         <Icon name={'long-arrow-alt-right'} size={60} color="#FF3333" />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </SafeAreaView>
   );
 };

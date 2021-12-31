@@ -24,13 +24,12 @@ const InfoModal = ({modalValue, closeModal, message, Faq}) => {
             maxHeight: 'auto',
             paddingVertical: '5%',
             borderRadius: 10,
-
             alignItems: 'center',
           }}>
           <Text
             style={{
               color: '#205072',
-              fontSize: 15,
+              fontSize: 14,
               fontFamily: FontStyle.MontSemiBold,
               textAlign: 'center',
 
