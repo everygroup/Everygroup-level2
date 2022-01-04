@@ -80,7 +80,11 @@ const SmallCard = ({group}) => {
           },
         ]}>
         <Text
-          style={{fontFamily: FontStyle.MontBold, color: '#fff', fontSize: 12}}>
+          style={{
+            fontFamily: FontStyle.MontBold,
+            color: group.socialGroup == 'snapchat' ? '#205072' : '#fff',
+            fontSize: 12,
+          }}>
           Mehr Sehen
         </Text>
       </View>
@@ -117,6 +121,7 @@ const styles = StyleSheet.create({
   imageStyle: {
     height: 34,
     width: 34,
+    bottom: 2,
     // alignSelf: 'flex-start',
   },
 });

@@ -5,12 +5,15 @@ import Button from '../../Common/Button';
 import EditInput from '../../Common/EditInput';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import {useNavigation} from '@react-navigation/native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const Contact = () => {
   const navigation = useNavigation();
   return (
     <View style={{paddingTop: '25%', height: '100%', backgroundColor: '#fff'}}>
-      <ScrollView
+      <KeyboardAwareScrollView
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="on-drag"
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           paddingHorizontal: '5%',
@@ -30,8 +33,17 @@ const Contact = () => {
               style={{width: 23, height: 23, resizeMode: 'contain'}}
             />
           </TouchableOpacity>
-          <Text style={Styles.headingText}>Kontakt</Text>
-          <View />
+          <Text
+            style={{
+              fontFamily: FontStyle.MontBold,
+              fontSize: 26,
+              color: '#205072',
+              marginTop: '5%',
+              marginBottom: '3%',
+            }}>
+            Kontakt
+          </Text>
+          <View style={{width: 23}} />
         </View>
         <EditInput
           placeholder="Name (optional)"
@@ -70,7 +82,7 @@ const Contact = () => {
             hello@everygroup.me
           </Text>
         </View>
-      </ScrollView>
+      </KeyboardAwareScrollView>
     </View>
   );
 };

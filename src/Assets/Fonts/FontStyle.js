@@ -7,4 +7,5 @@ export default {
   FuturaPTBold: 'Futura PT Bold',
   poppinsMedium: 'Poppins-Medium',
   poppinsBold: 'Poppins-Bold',
+  MontMediumIta: 'Montserrat-MediumItalic',
 };

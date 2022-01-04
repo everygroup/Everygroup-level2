@@ -35,8 +35,8 @@ export const createGroup = createAsyncThunk(
       console.log(response);
       return response.data;
     } catch (err) {
-      console.log(err);
-      return rejectWithValue(Object.values(err.response.data));
+      console.log(err.response);
+      return rejectWithValue(err.response.data);
     }
   },
 );

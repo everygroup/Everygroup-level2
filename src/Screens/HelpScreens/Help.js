@@ -7,15 +7,15 @@ import {useNavigation} from '@react-navigation/native';
 const Help = () => {
   const navigation = useNavigation();
   const [pageOption, setPageOption] = useState([
-    // {displayName: 'FAQ', navigationName: 'FAQ'},
-    // {displayName: 'BLOG', navigationName: 'BLOG'},
+    {displayName: 'FAQ', navigationName: 'Help'},
+    {displayName: 'BLOG', navigationName: 'Help'},
     {displayName: 'Kontakt', navigationName: 'Contact'},
-    {displayName: 'Verhaltensregeln', navigationName: 'BehaviourRules'},
-    {displayName: 'Impressum', navigationName: 'Imprint'},
-    {displayName: 'Datenschutz', navigationName: 'Privacy'},
+    {displayName: 'Verhaltensregeln', navigationName: 'Help'},
+    {displayName: 'Impressum', navigationName: 'Help'},
+    {displayName: 'Datenschutz', navigationName: 'Help'},
     {
       displayName: 'Allgemeine Geschäftsbedingungen',
-      navigationName: 'TermsCondition',
+      navigationName: 'Help',
     },
   ]);
 

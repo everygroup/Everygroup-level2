@@ -95,7 +95,7 @@ const CheckPassword = ({route}) => {
           ) : null}
         </View>
         <Input
-          placeholder="passwort"
+          placeholder="Passwort"
           placeholderTextColor="#205072"
           iconName={showPassword ? 'eye' : 'eye-with-line'}
           iconPress={() => setShowPassword(!showPassword)}
@@ -111,7 +111,12 @@ const CheckPassword = ({route}) => {
         <Button buttonText="Weiter" onPress={submit} />
         <Text
           onPress={() => navigation.navigate('ForgotPassword')}
-          style={{fontSize: 17, color: '#0A49E0', marginVertical: '2.5%'}}>
+          style={{
+            fontSize: 16,
+            color: '#0A49E0',
+            marginVertical: '2.5%',
+            fontFamily: FontStyle.MontSemiBold,
+          }}>
           Passwort vergessen
         </Text>
       </View>

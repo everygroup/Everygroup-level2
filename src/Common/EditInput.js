@@ -15,13 +15,13 @@ const EditInput = ({
     <View
       style={[
         styles.inputContainer,
-        {backgroundColor: editable ? '#F9F9F9' : '#fff', height: height || 40},
+        {backgroundColor: editable ? '#F9F9F9' : '#fff', height: height || 42},
       ]}>
       <TextInput
         placeholder={placeholder}
         placeholderTextColor={placeholderTextColor || '#205072'}
         value={value}
-        style={[styles.textInputStyle, {height: height || 40}]}
+        style={[styles.textInputStyle, {height: height || 42}]}
         onChangeText={onChangeText}
         editable={editable}
         multiline={multiline}
@@ -32,8 +32,9 @@ const EditInput = ({
 
 const styles = StyleSheet.create({
   inputContainer: {
-    width: '80%',
+    width: '90%',
     borderRadius: 7,
+    marginVertical: 10,
     shadowOffset: {
       width: 0,
       height: 1,

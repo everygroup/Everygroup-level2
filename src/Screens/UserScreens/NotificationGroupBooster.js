@@ -84,62 +84,68 @@ const NotificationGroupBooster = () => {
         renderItem={({item}) => {
           return (
             <View style={[styles.shadowContainer]}>
-              <View
-                style={{
-                  backgroundColor:
-                    item.groupType == 'snapchat'
-                      ? '#FFFC00'
-                      : item.groupType == 'whatsapp'
-                      ? 'lightgreen'
-                      : item.groupType == 'line'
-                      ? 'green'
-                      : item.groupType == 'telegram'
-                      ? '#0088CC'
-                      : 'black',
-                  height: 30,
-                  width: 30,
-                  top: -20,
-                  borderTopLeftRadius: 7,
-                  borderBottomRightRadius: 5,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                {item.groupType == 'snapchat' ? (
-                  <Image
-                    source={require('../../Assets/Images/snapchatLine.png')}
-                    style={styles.imageStyle}
-                  />
-                ) : item.groupType == 'line' ? (
-                  <Image
-                    source={require('../../Assets/Images/lineLine.png')}
-                    style={styles.imageStyle}
-                  />
-                ) : item.groupType == 'telegram' ? (
-                  <Image
-                    source={require('../../Assets/Images/telegramLine.png')}
-                    style={styles.imageStyle}
-                  />
-                ) : item.groupType == 'whatsapp' ? (
-                  <Image
-                    source={require('../../Assets/Images/whatsappLine.png')}
-                    style={styles.imageStyle}
-                  />
-                ) : (
-                  <Image
-                    source={require('../../Assets/Images/orangeLogo.png')}
-                    style={styles.imageStyle}
-                  />
-                )}
+              <View style={{flexDirection: 'row', width: '90%'}}>
+                <View
+                  style={{
+                    backgroundColor:
+                      item.groupType == 'snapchat'
+                        ? '#FFFC00'
+                        : item.groupType == 'whatsapp'
+                        ? 'lightgreen'
+                        : item.groupType == 'line'
+                        ? 'green'
+                        : item.groupType == 'telegram'
+                        ? '#0088CC'
+                        : 'black',
+                    height: 30,
+                    width: 30,
+                    top: -20,
+                    borderTopLeftRadius: 7,
+                    borderBottomRightRadius: 5,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  {item.groupType == 'snapchat' ? (
+                    <Image
+                      source={require('../../Assets/Images/snapchatLine.png')}
+                      style={styles.imageStyle}
+                    />
+                  ) : item.groupType == 'line' ? (
+                    <Image
+                      source={require('../../Assets/Images/lineLine.png')}
+                      style={styles.imageStyle}
+                    />
+                  ) : item.groupType == 'telegram' ? (
+                    <Image
+                      source={require('../../Assets/Images/telegramLine.png')}
+                      style={styles.imageStyle}
+                    />
+                  ) : item.groupType == 'whatsapp' ? (
+                    <Image
+                      source={require('../../Assets/Images/whatsappLine.png')}
+                      style={styles.imageStyle}
+                    />
+                  ) : (
+                    <Image
+                      source={require('../../Assets/Images/orangeLogo.png')}
+                      style={styles.imageStyle}
+                    />
+                  )}
+                </View>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontFamily: FontStyle.MontExtBold,
+                    color: '#205072',
+                    paddingLeft: 20,
+                  }}>
+                  {item.groupName}
+                </Text>
               </View>
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontFamily: FontStyle.MontExtBold,
-                  color: '#205072',
-                }}>
-                {item.groupName}
-              </Text>
-              <Icon name={'bell'} size={30} color="#205072" solid />
+              <Image
+                source={require('../../Assets/Images/bell.png')}
+                style={{width: 24, height: 24, resizeMode: 'contain'}}
+              />
             </View>
           );
         }}
@@ -182,13 +188,12 @@ const styles = StyleSheet.create({
     marginVertical: '2.5%',
   },
   shadowContainer: {
-    width: '80%',
+    width: '90%',
     borderRadius: 7,
 
     paddingVertical: '5%',
     flexDirection: 'row',
     alignSelf: 'center',
-    justifyContent: 'space-between',
     backgroundColor: '#fff',
     shadowOffset: {
       width: 0,

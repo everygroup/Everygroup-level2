@@ -1,9 +1,9 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import Modal from 'react-native-modal';
-import FontStyle from '../Assets/Fonts/FontStyle';
+import FontStyle from '../../Assets/Fonts/FontStyle';
 
-const AlertModal = ({
+const SnapChatModal = ({
   modalValue,
   closeModal,
   message,
@@ -11,6 +11,8 @@ const AlertModal = ({
   leftButtonColor,
   rightButtonColor,
   onPress,
+  rememberPress,
+  rememberValue,
 }) => {
   return (
     <View>
@@ -28,7 +30,7 @@ const AlertModal = ({
         <View
           style={{
             backgroundColor: '#fff',
-            width: '85%',
+            width: '80%',
             minHeight: '20%',
             maxHeight: 'auto',
             paddingVertical: '2%',
@@ -40,12 +42,12 @@ const AlertModal = ({
           <Text
             style={{
               color: '#205072',
-              fontSize: 20,
-              fontFamily: FontStyle.MontBold,
+              fontSize: 14,
+              fontFamily: FontStyle.MontSemiBold,
               textAlign: 'center',
               marginVertical: '5%',
             }}>
-            {message || `Username wirklich ändern?`}
+            {message}
           </Text>
           <Text
             style={{
@@ -55,30 +57,30 @@ const AlertModal = ({
               width: '85%',
               textAlign: 'left',
             }}>
-            {description ||
-              'Danach kannst du deinen Usernamen nicht mehr ändern.'}
+            Weitere Infos findest du in den{' '}
+            <Text style={{color: '#FFA420'}}>FAQ</Text>
           </Text>
-          <View style={{flexDirection: 'row'}}>
+          <View>
             <TouchableOpacity
               onPress={closeModal}
               style={[
                 styles.buttonView,
-                {backgroundColor: leftButtonColor || '#205072'},
+                {backgroundColor: leftButtonColor || '#06BA63'},
               ]}>
               <Text
                 style={{
                   fontFamily: FontStyle.MontExtBold,
                   color: '#fff',
-                  fontSize: 17,
+                  fontSize: 16,
                 }}>
-                Doch nicht
+                Trotzdem Gruppe posten
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={onPress}
               style={[
                 styles.buttonView,
-                {backgroundColor: rightButtonColor || '#06BA63'},
+                {backgroundColor: rightButtonColor || '#EF3E36'},
               ]}>
               <Text
                 style={{
@@ -86,10 +88,37 @@ const AlertModal = ({
                   color: '#fff',
                   fontSize: 17,
                 }}>
-                Ändern
+                Lieber nicht Gruppe posten
               </Text>
             </TouchableOpacity>
           </View>
+          <TouchableOpacity
+            style={{
+              flexDirection: 'row',
+              marginVertical: '10%',
+              alignItems: 'center',
+            }}
+            onPress={rememberPress}>
+            <Text
+              style={{
+                fontFamily: FontStyle.MontExtBold,
+                fontSize: 16,
+                color: '#205072',
+              }}>
+              Nicht nochmal erinnern
+            </Text>
+            {rememberValue ? (
+              <Image
+                source={require('../../Assets/Images/check.png')}
+                style={{width: 24, height: 24, resizeMode: 'contain', left: 10}}
+              />
+            ) : (
+              <Image
+                source={require('../../Assets/Images/uncheck.png')}
+                style={{width: 24, height: 24, resizeMode: 'contain', left: 10}}
+              />
+            )}
+          </TouchableOpacity>
         </View>
       </Modal>
     </View>
@@ -111,14 +140,15 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   buttonView: {
-    width: 122,
+    width: 270,
     height: 45,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 21,
     marginHorizontal: '5%',
     marginTop: '10%',
+    paddingHorizontal: '2.5%',
   },
 });
 
-export default AlertModal;
+export default SnapChatModal;

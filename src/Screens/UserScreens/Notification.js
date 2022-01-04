@@ -54,22 +54,19 @@ const Notification = () => {
           benachrichtigen werden.
         </Text>
       </View>
-      <View style={styles.container}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('NotificationOwnGroup')}
+        style={styles.container}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Text style={styles.titleText}>Eigene Gruppen</Text>
-          <Icon
-            name="chevron-right"
-            size={30}
-            color="#FFA420"
-            onPress={() => navigation.navigate('NotificationOwnGroup')}
-          />
+          <Icon name="chevron-right" size={30} color="#FFA420" />
         </View>
 
         <Text style={styles.descriptionText}>
           Hier tippen, für die Verwaltung der Reupload- und
           Boosterbenachrichtigungen deiner Gruppen
         </Text>
-      </View>
+      </TouchableOpacity>
       <View style={styles.container}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Text style={styles.titleText}>Personen</Text>
@@ -112,22 +109,19 @@ const Notification = () => {
           neue Gruppen gibt. (Einmal alle 24h)
         </Text>
       </View>
-      <View style={styles.container}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('NotificationGroupBooster')}
+        style={styles.container}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Text style={styles.titleText}>Gruppenbooster</Text>
-          <Icon
-            name="chevron-right"
-            size={30}
-            color="#FFA420"
-            onPress={() => navigation.navigate('NotificationGroupBooster')}
-          />
+          <Icon name="chevron-right" size={30} color="#FFA420" />
         </View>
 
         <Text style={styles.descriptionText}>
           Hier tippen, um Benachrichtigungen von jeder Gruppe der du ein Boost
           gegeben hast, zu verwalten
         </Text>
-      </View>
+      </TouchableOpacity>
       <View style={styles.container}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Text style={styles.titleText}>E-Mail</Text>

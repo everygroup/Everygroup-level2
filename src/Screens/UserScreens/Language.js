@@ -43,7 +43,6 @@ const Language = () => {
           styles.containerStyle,
           {
             height: expand ? 300 : 50,
-            paddingTop: 10,
           },
         ]}>
         <TouchableOpacity
@@ -51,8 +50,9 @@ const Language = () => {
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
-            height: 40,
+            height: 50,
             paddingRight: 10,
+            alignItems: 'center',
           }}>
           <Text style={styles.languageText}>{selectedLanguage}</Text>
 

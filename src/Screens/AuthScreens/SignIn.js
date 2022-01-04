@@ -109,6 +109,7 @@ const SignIn = () => {
             placeholder="Passwort"
             placeholderTextColor="#205072"
             icon={'available'}
+            imageSource={require('../../Assets/Images/closeEye.png')}
             showPassword={showPassword}
             iconPress={iconPress}
             secureTextEntry={secureTextEntry}

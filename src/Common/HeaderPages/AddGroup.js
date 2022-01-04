@@ -20,11 +20,14 @@ import Styles from '../../Screens/UserScreens/Style';
 import {useDispatch, useSelector} from 'react-redux';
 import {getCategory} from '../../../Slice/CategoryReducer';
 import {getLanguage} from '../../../Slice/LanguageReducer';
+import {updateRememberSnapChat} from '../../../Slice/AuthReducer';
 import {createGroup} from '../../../Slice/CreateGroupReducer';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import SnapChatModal from './SnapChatModal';
 
 const AddGroup = () => {
   const dispatch = useDispatch();
+  const [snapChatModal, setSnapChatModal] = useState(false);
   const [joinSelection, setJoinSelection] = useState('all');
   const [groupLanguage, setGroupLanguageFocus] = useState(false);
   const [joinLanguageFocus, setJoinLanguageFocus] = useState(false);
@@ -47,6 +50,7 @@ const AddGroup = () => {
   const [spokenError, setSpokenError] = useState(false);
   const [spokenErrorMessage, setSpokenErrorMessage] = useState('');
   const [groupLinkError, setGroupLinkError] = useState(false);
+  const [groupLinkMessage, setGroupLinkMessage] = useState('');
   const [hashValue, setHashValue] = useState(['latest']);
   const [hashError, setHashError] = useState(false);
   const [checkedTerms, setCheckedTerms] = useState(false);
@@ -61,6 +65,7 @@ const AddGroup = () => {
   };
 
   const submitButton = () => {
+    const snapchatRegex = /www.snapchat.com/g;
     if (titel == '') {
       setTitelError(true);
       setTitelErrorMessage('Bitte gib einen Titel ein');
@@ -69,6 +74,7 @@ const AddGroup = () => {
       setTitelErrorMessage('Zu viele Zeichen');
     } else if (groupLink == '') {
       setGroupLinkError(true);
+      setGroupLinkMessage('Gruppentitel eingeben');
     } else if (selectedCategory.length < 1) {
       setCategoryError(true);
       setCategoryErrorMessage('Wähle eine Kategorie');
@@ -86,20 +92,28 @@ const AddGroup = () => {
     } else if (checkedConductRules == false) {
       setConductRulesError(true);
     } else {
-      dispatch(
-        createGroup({
-          titel,
-          groupLink,
-          selectedCategory,
-          description,
-          hashValue,
-          selectedLanguage,
-          joinLanguage,
-          checkedTerms,
-          checkedConductRules,
-        }),
-      );
+      if (snapchatRegex.test(groupLink) && remember_snapchat) {
+        setSnapChatModal(true);
+      } else {
+        CreateGroup();
+      }
     }
+  };
+
+  const CreateGroup = () => {
+    dispatch(
+      createGroup({
+        titel,
+        groupLink,
+        selectedCategory,
+        description,
+        hashValue,
+        selectedLanguage,
+        joinLanguage,
+        checkedTerms,
+        checkedConductRules,
+      }),
+    );
   };
 
   useEffect(() => {
@@ -110,10 +124,16 @@ const AddGroup = () => {
     return state.getCategory;
   });
 
-  // const {createGroup} = useSelector(state => {
-  //   console.log(state, 'stat aaddd');
-  //   return state;
-  // });
+  const {error, loading} = useSelector(state => {
+    return state.createGroup;
+  });
+
+  useEffect(() => {
+    if (error.group_link) {
+      setGroupLinkError(true);
+      setGroupLinkMessage('Link nicht gültig');
+    }
+  }, [error]);
 
   const expandOption = () => {
     setExpand(!expand);
@@ -153,6 +173,9 @@ const AddGroup = () => {
   const {languageArray} = useSelector(state => {
     return state.getLanguage;
   });
+  const {remember_snapchat} = useSelector(state => {
+    return state.user;
+  });
 
   const selectLanguage = async item => {
     if (!selectedLanguage.some(el => el.language == item.language)) {
@@ -181,7 +204,7 @@ const AddGroup = () => {
   // console.log(string.split(regex));
   // const isExisting = regex.test(string);
   // console.log(isExisting, 'reg');
-
+  console.log(error.group_link, 'error');
   return (
     <KeyboardAwareScrollView
       extraScrollHeight={100}
@@ -199,6 +222,13 @@ const AddGroup = () => {
         closeModal={() => setModalValue(false)}
         closeModal={() => setModalValue(false)}
       />
+      <SnapChatModal
+        rememberValue={remember_snapchat}
+        rememberPress={() => dispatch(updateRememberSnapChat())}
+        closeModal={() => setSnapChatModal(false)}
+        modalValue={snapChatModal}
+        message="Hey, du lädst grade eine Snapchat Gruppe hoch. Bei Snapchat Gruppen kannst du keine Mitglieder rauswerfen. Bitte sei dir darüber bewusst, bevor du wirklich diese Gruppe hochlädst."
+      />
       <Text
         style={{
           color: '#fff',
@@ -210,11 +240,13 @@ const AddGroup = () => {
         Gruppe hinzufügen
       </Text>
       <View>
-        {titelError == true ? (
-          <HelperText style={[Styles.helperText, {left: '5%'}]} type="error">
-            {titelErrorMessage}
-          </HelperText>
-        ) : null}
+        <View style={Styles.errorContainer}>
+          {titelError == true ? (
+            <HelperText style={[Styles.helperText, {left: '5%'}]} type="error">
+              {titelErrorMessage}
+            </HelperText>
+          ) : null}
+        </View>
         <View style={styles.container}>
           <TouchableOpacity
             onPress={() =>
@@ -247,11 +279,13 @@ const AddGroup = () => {
         </View>
       </View>
       <View>
-        {groupLinkError == true ? (
-          <HelperText style={[Styles.helperText, {left: '5%'}]} type="error">
-            Gruppentitel eingeben
-          </HelperText>
-        ) : null}
+        <View style={Styles.errorContainer}>
+          {groupLinkError == true ? (
+            <HelperText style={[Styles.helperText, {left: '5%'}]} type="error">
+              {groupLinkMessage}
+            </HelperText>
+          ) : null}
+        </View>
         <View style={styles.container}>
           <TouchableOpacity
             onPress={() =>
@@ -283,11 +317,13 @@ const AddGroup = () => {
           />
         </View>
       </View>
-      {categoryError == true ? (
-        <HelperText style={[Styles.helperText, {left: '5%'}]} type="error">
-          {categoryErrorMessage}
-        </HelperText>
-      ) : null}
+      <View style={Styles.errorContainer}>
+        {categoryError == true ? (
+          <HelperText style={[Styles.helperText, {left: '5%'}]} type="error">
+            {categoryErrorMessage}
+          </HelperText>
+        ) : null}
+      </View>
       <View style={[styles.container, {height: expand ? 500 : 50}]}>
         <TouchableOpacity
           onPress={() =>
@@ -314,14 +350,27 @@ const AddGroup = () => {
               justifyContent: 'space-between',
               height: 39,
             }}>
-            <Text
-              style={{
-                fontFamily: FontStyle.MontSemiBold,
-                color: '#FFA420',
-                fontSize: 16,
-              }}>
-              Kategorie
-            </Text>
+            {selectedCategory.length > 0 ? (
+              <Text
+                style={{
+                  fontFamily: FontStyle.MontSemiBold,
+                  color: '#FFA420',
+                  fontSize: 16,
+                }}>
+                {selectedCategory.map(el => {
+                  return <Text>{el.category} ,</Text>;
+                })}
+              </Text>
+            ) : (
+              <Text
+                style={{
+                  fontFamily: FontStyle.MontSemiBold,
+                  color: '#FFA420',
+                  fontSize: 16,
+                }}>
+                Kategorie
+              </Text>
+            )}
             <Icon name="caret-down" color="#000" size={20} />
           </TouchableOpacity>
           {expand ? (
@@ -370,11 +419,13 @@ const AddGroup = () => {
           ) : null}
         </View>
       </View>
-      {descriptionError == true ? (
-        <HelperText style={[Styles.helperText, {left: '5%'}]} type="error">
-          {descriptionErrorMessage}
-        </HelperText>
-      ) : null}
+      <View style={Styles.errorContainer}>
+        {descriptionError == true ? (
+          <HelperText style={[Styles.helperText, {left: '5%'}]} type="error">
+            {descriptionErrorMessage}
+          </HelperText>
+        ) : null}
+      </View>
       <View
         style={{
           height: 100,
@@ -424,11 +475,13 @@ const AddGroup = () => {
         </View>
       </View>
       <View>
-        {hashError == true ? (
-          <HelperText style={[Styles.helperText, {left: '5%'}]} type="error">
-            Gruppentitel eingeben
-          </HelperText>
-        ) : null}
+        <View style={Styles.errorContainer}>
+          {hashError == true ? (
+            <HelperText style={[Styles.helperText, {left: '5%'}]} type="error">
+              Gruppentitel eingeben
+            </HelperText>
+          ) : null}
+        </View>
         <View style={styles.container}>
           <TouchableOpacity
             onPress={() =>
@@ -468,11 +521,13 @@ const AddGroup = () => {
           Welche Sprache wird in dieser Gruppe gesprochen?
         </Text>
       </View>
-      {spokenError == true ? (
-        <HelperText style={[Styles.helperText, {left: '5%'}]} type="error">
-          {spokenErrorMessage}
-        </HelperText>
-      ) : null}
+      <View style={Styles.errorContainer}>
+        {spokenError == true ? (
+          <HelperText style={[Styles.helperText, {left: '5%'}]} type="error">
+            {spokenErrorMessage}
+          </HelperText>
+        ) : null}
+      </View>
 
       <View style={{flexDirection: 'row'}}>
         <TouchableOpacity
@@ -508,6 +563,8 @@ const AddGroup = () => {
             height={languageArray.length > 0 && groupLanguage ? 150 : null}
             placeholder="Sprache auswählen"
             placeholderTextColor="#BECCD6"
+            icon="available"
+            imageSource1={require('../../Assets/Images/plusGrey.png')}
             bgColor="#fff"
             bdWidth={0.1}
             iconName={'plus'}
@@ -654,6 +711,8 @@ const AddGroup = () => {
             placeholder="Sprache auswählen..."
             placeholderTextColor="#BECCD6"
             bgColor="#fff"
+            icon="available"
+            imageSource1={require('../../Assets/Images/plusGrey.png')}
             bdWidth={0.1}
             iconName={'plus'}
             iconColor="#beccd7"
@@ -763,7 +822,7 @@ const AddGroup = () => {
                 width: 20,
                 height: 20,
                 borderRadius: 10,
-                borderColor: '#205072',
+                borderColor: termsError ? '#EF3E36' : '#205072',
                 borderWidth: 2,
               }}
             />
@@ -816,7 +875,7 @@ const AddGroup = () => {
                 width: 20,
                 height: 20,
                 borderRadius: 10,
-                borderColor: '#205072',
+                borderColor: conductRulesError ? '#EF3E36' : '#205072',
                 borderWidth: 2,
               }}
             />

@@ -12,6 +12,8 @@ import FontStyle from '../Assets/Fonts/FontStyle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Button from './Button';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+import {deleteGroup} from '../../Slice/UserGroupReducer';
 const GroupCard = ({
   group,
   boosterValue,
@@ -21,8 +23,11 @@ const GroupCard = ({
   bellPress,
   eyeValue,
   bellValue,
+  infoPress,
 }) => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
+
   return (
     <View>
       <View style={{position: 'relative', zIndex: 99999}}>
@@ -30,13 +35,13 @@ const GroupCard = ({
           <View
             style={{
               backgroundColor:
-                group.socialGroup == 'snapchat'
+                group.group_type == 'snapchat'
                   ? '#FFFC00'
-                  : group.socialGroup == 'whatsapp'
+                  : group.group_type == 'whatsapp'
                   ? 'lightgreen'
-                  : group.socialGroup == 'line'
+                  : group.group_type == 'line'
                   ? 'green'
-                  : group.socialGroup == 'telegram'
+                  : group.group_type == 'telegram'
                   ? '#0088CC'
                   : 'black',
               height: 30,
@@ -46,22 +51,22 @@ const GroupCard = ({
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-            {group.socialGroup == 'snapchat' ? (
+            {group.group_type == 'snapchat' ? (
               <Image
                 source={require('../Assets/Images/snapchatLine.png')}
                 style={styles.imageStyle}
               />
-            ) : group.socialGroup == 'line' ? (
+            ) : group.group_type == 'line' ? (
               <Image
                 source={require('../Assets/Images/lineLine.png')}
                 style={styles.imageStyle}
               />
-            ) : group.socialGroup == 'telegram' ? (
+            ) : group.group_type == 'telegram' ? (
               <Image
                 source={require('../Assets/Images/telegramLine.png')}
                 style={styles.imageStyle}
               />
-            ) : group.socialGroup == 'whatsapp' ? (
+            ) : group.group_type == 'whatsapp' ? (
               <Image
                 source={require('../Assets/Images/whatsappLine.png')}
                 style={styles.imageStyle}
@@ -88,7 +93,7 @@ const GroupCard = ({
                   color: '#205072',
                   fontFamily: FontStyle.MontExtBold,
                 }}>
-                {group.groupName}
+                {group.title}
               </Text>
               <Icon
                 name="bookmark"
@@ -105,7 +110,7 @@ const GroupCard = ({
                 width: '90%',
                 paddingHorizontal: '5%',
               }}
-              data={group.category}
+              data={group.categories}
               renderItem={({item}) => {
                 return (
                   <View
@@ -126,7 +131,7 @@ const GroupCard = ({
                         fontSize: 11,
                         fontFamily: FontStyle.MontBold,
                       }}>
-                      {item}
+                      {item.category}
                     </Text>
                   </View>
                 );
@@ -142,7 +147,7 @@ const GroupCard = ({
                 maxHeight: 40,
                 paddingHorizontal: '8%',
               }}
-              data={group.hashtagData}
+              data={group.tags}
               renderItem={({item}) => {
                 return (
                   <View style={{minWidth: 38, maxWidth: 'auto'}}>
@@ -169,20 +174,16 @@ const GroupCard = ({
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() =>
-              Linking.openURL(
-                'https://chat.whatsapp.com/K1qNdhQvHgoD0cUj1DoEQs',
-              )
-            }
+            onPress={() => Linking.openURL(group.group_link)}
             style={{
               backgroundColor:
-                group.socialGroup == 'snapchat'
+                group.group_type == 'snapchat'
                   ? '#FFFC00'
-                  : group.socialGroup == 'whatsapp'
+                  : group.group_type == 'whatsapp'
                   ? 'lightgreen'
-                  : group.socialGroup == 'line'
+                  : group.group_type == 'line'
                   ? 'green'
-                  : group.socialGroup == 'telegram'
+                  : group.group_type == 'telegram'
                   ? '#0088CC'
                   : 'black',
               width: '90%',
@@ -196,7 +197,7 @@ const GroupCard = ({
             }}>
             <Text
               style={{
-                color: group.socialGroup == 'snapchat' ? '#205072' : '#fff',
+                color: group.group_type == 'snapchat' ? '#205072' : '#fff',
                 fontFamily: FontStyle.MontBold,
                 fontSize: 16,
               }}>
@@ -245,9 +246,9 @@ const GroupCard = ({
           style={[
             styles.boostContainerStyle,
 
-            {height: group.groupId == selectedGroupName ? 240 : 50},
+            {height: group.id == selectedGroupName ? 240 : 50},
           ]}>
-          {selectedGroupName == group.groupId ? (
+          {selectedGroupName == group.id ? (
             <View style={{width: '100%', alignItems: 'center'}}>
               <View
                 style={{
@@ -255,30 +256,30 @@ const GroupCard = ({
                   justifyContent: 'space-around',
                   width: '100%',
                 }}>
-                <Icon name={'redo-alt'} size={30} color="#C4C6C8" />
+                <Icon name={'redo-alt'} size={21} color="#C4C6C8" />
 
-                <Icon
-                  name={eyeValue ? 'eye' : 'eye-slash'}
-                  size={30}
-                  color="#205072"
-                  onPress={eyePress}
-                />
+                <TouchableOpacity onPress={eyePress}>
+                  {eyeValue ? (
+                    <Image
+                      source={require('../Assets/Images/openEye.png')}
+                      style={styles.iconStyle}
+                    />
+                  ) : (
+                    <Image
+                      source={require('../Assets/Images/closeEye.png')}
+                      style={styles.iconStyle}
+                    />
+                  )}
+                </TouchableOpacity>
 
                 <Icon
                   name={'pencil-alt'}
-                  size={30}
+                  size={21}
                   color="#205072"
                   onPress={() => navigation.navigate('EditGroup')}
                 />
-                {/* <Icon
-                  name={bellValue ? 'bell' : 'bell-slash'}
-                  size={30}
-                  color="#205072"
-                  solid
-                  onPress={bellPress}
-                /> */}
 
-                <TouchableOpacity onPress={() => setBellValue(!bellValue)}>
+                <TouchableOpacity onPress={bellPress}>
                   {bellValue ? (
                     <Image
                       source={require('../Assets/Images/bell.png')}
@@ -291,7 +292,12 @@ const GroupCard = ({
                     />
                   )}
                 </TouchableOpacity>
-                <Icon name={'trash'} size={30} color="#205072" />
+                <Icon
+                  name={'trash'}
+                  size={21}
+                  color="#205072"
+                  onPress={() => dispatch(deleteGroup(group.id))}
+                />
               </View>
               <View
                 style={{
@@ -299,13 +305,15 @@ const GroupCard = ({
                   alignItems: 'flex-start',
                   marginVertical: 15,
                 }}>
-                <Image
-                  source={require('../Assets/Images/infoBlue.png')}
-                  style={{
-                    height: 15,
-                    width: 15,
-                  }}
-                />
+                <TouchableOpacity onPress={infoPress}>
+                  <Image
+                    source={require('../Assets/Images/infoBlue.png')}
+                    style={{
+                      height: 15,
+                      width: 15,
+                    }}
+                  />
+                </TouchableOpacity>
                 <Image
                   source={require('../Assets/Images/boost.png')}
                   style={{
@@ -319,9 +327,7 @@ const GroupCard = ({
             </View>
           ) : null}
           <Icon
-            name={
-              selectedGroupName == group.groupId ? 'chevron-up' : 'chevron-down'
-            }
+            name={selectedGroupName == group.id ? 'chevron-up' : 'chevron-down'}
             size={30}
             color="#205072"
             onPress={onPress}
@@ -358,7 +364,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '90%',
     paddingTop: '5%',
-    backgroundColor: '#FCFCFC',
+    backgroundColor: '#fff',
     marginTop: -18,
     alignSelf: 'center',
     borderRadius: 7,
@@ -367,8 +373,8 @@ const styles = StyleSheet.create({
       width: 0,
       height: 1,
     },
-    shadowOpacity: 0.27,
-    shadowRadius: 2.65,
+    shadowOpacity: 3,
+    shadowRadius: 6,
     elevation: 2,
   },
   imageStyle: {
@@ -376,6 +382,11 @@ const styles = StyleSheet.create({
     width: 24,
     alignSelf: 'flex-start',
     left: 3,
+  },
+  iconStyle: {
+    width: 24,
+    height: 24,
+    resizeMode: 'contain',
   },
 });
 

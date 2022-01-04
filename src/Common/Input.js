@@ -27,6 +27,8 @@ const Input = ({
   inputWidth,
   iconColor,
   onFocus,
+  imageSource,
+  imageSource1,
 }) => {
   return (
     <View
@@ -47,7 +49,7 @@ const Input = ({
         value={value}
         placeholder={placeholder}
         keyboardType={keyboardType}
-        maxLength={maxLength || 55}
+        maxLength={maxLength || 400}
         secureTextEntry={secureTextEntry}
         autoCorrect={false}
         style={[
@@ -63,12 +65,12 @@ const Input = ({
         <TouchableOpacity onPress={iconPress}>
           {showPassword ? (
             <Image
-              source={require('../Assets/Images/closeEye.png')}
+              source={imageSource}
               style={{height: 18, width: 18, resizeMode: 'contain'}}
             />
           ) : (
             <Image
-              source={require('../Assets/Images/openEye.png')}
+              source={imageSource1}
               style={{height: 18, width: 18, resizeMode: 'contain'}}
             />
           )}

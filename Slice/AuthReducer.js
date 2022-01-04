@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const baseUrl = 'http://203.190.153.22:1639/api/v1';
 
@@ -9,6 +10,7 @@ const initialState = {
   loading: false,
   register: '',
   forgotResponse: '',
+  remember_snapchat: true,
 };
 
 export const signInUser = createAsyncThunk(
@@ -23,6 +25,7 @@ export const signInUser = createAsyncThunk(
           password: data.password,
         },
       });
+
       return response.data;
     } catch (err) {
       return rejectWithValue(Object.values(err.response.data).toString());
@@ -69,6 +72,23 @@ export const forgotPassword = createAsyncThunk(
   },
 );
 
+export const updateRememberSnapChat = createAsyncThunk(
+  'UpdateRememberSnapChat',
+  async (data, {rejectWithValue}) => {
+    const token = await AsyncStorage.getItem('token');
+    try {
+      const response = await axios({
+        headers: {Authorization: `Bearer ${token}`},
+        method: 'post',
+        url: `${baseUrl}/remember-snapchat`,
+      });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(Object.values(err.response.data).toString());
+    }
+  },
+);
+
 export const authReducer = createSlice({
   name: 'user',
   initialState,
@@ -84,6 +104,7 @@ export const authReducer = createSlice({
     [signInUser.fulfilled]: (state, action) => {
       state.loading = false;
       state.token = action.payload.access;
+      state.remember_snapchat = action.payload.remember_snapchat;
     },
     [signInUser.pending]: (state, action) => {
       state.loading = true;
@@ -120,6 +141,9 @@ export const authReducer = createSlice({
     [forgotPassword.rejected]: (state, action) => {
       state.error = action.payload;
       state.loading = false;
+    },
+    [updateRememberSnapChat.fulfilled]: (state, action) => {
+      state.remember_snapchat = action.payload.remember_snapchat;
     },
   },
 });

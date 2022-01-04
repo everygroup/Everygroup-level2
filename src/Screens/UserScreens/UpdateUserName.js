@@ -24,25 +24,27 @@ const UpdateUserName = () => {
       setUserError(true);
       setErrorMessage('Username wird benötigt');
     } else {
-      // setModalValue(true);
-      dispatch(changeProfile({userNameText}));
+      setModalValue(true);
+      // dispatch(changeProfile({userNameText}));
     }
   };
 
   const {error, loading, value} = useSelector(state => {
+    console.log(state.changeProfile);
     return state.changeProfile;
   });
 
   useEffect(() => {
     setUserError(true);
     setErrorMessage(error.toString());
+    setModalValue(false);
   }, [error]);
 
   useEffect(() => {
     if (value == 'success') {
-      setModalValue(true);
+      setModalValue(false);
     }
-  }, [value]);
+  }, [value, error]);
 
   const closeModal = () => {
     setModalValue(false);
@@ -56,7 +58,11 @@ const UpdateUserName = () => {
         backgroundColor: '#fff',
         alignItems: 'center',
       }}>
-      <AlertModal modalValue={modalValue} closeModal={closeModal} />
+      <AlertModal
+        modalValue={modalValue}
+        closeModal={closeModal}
+        onPress={() => dispatch(changeProfile({userNameText}))}
+      />
 
       <TouchableOpacity
         style={{
@@ -115,6 +121,18 @@ const UpdateUserName = () => {
         style={{marginVertical: '10%', width: '100%', alignItems: 'center'}}>
         <Button buttonText="Nutzernamen ändern" onPress={submit} />
       </View>
+      {value == 'success' ? (
+        <Text
+          style={{
+            fontFamily: FontStyle.MontMedium,
+            fontSize: 14,
+            color: '#06BA63',
+            width: '70%',
+            textAlign: 'center',
+          }}>
+          Der Nutzername wurde erfolgreich geändert!
+        </Text>
+      ) : null}
       <View
         style={{
           justifyContent: 'flex-end',

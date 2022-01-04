@@ -36,6 +36,7 @@ export const CategoryReducer = createSlice({
   extraReducers: {
     [getCategory.fulfilled]: (state, action) => {
       state.categoryArray = action.payload;
+      state.loading = false;
     },
     [getCategory.pending]: (state, action) => {
       state.loading = true;

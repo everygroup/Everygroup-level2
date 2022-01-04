@@ -17,10 +17,11 @@ import SmallCard from '../../Common/SmallCard';
 const GroupDetail = () => {
   const navigation = useNavigation();
   const [bellValue, setBellValue] = useState(false);
+  const [groupType] = useState('snapchat');
   const [groupDetail] = useState({
     socialGroup: 'snapchat',
     groupName: 'Nordsee Gruppe',
-    groupOwnerName: 'Superman98',
+    groupOwnerName: 'Superman',
     groupLanguage: 'Deutsch',
     groupHashtag: ['#test', '#test', '#test', '#test', '#test'],
     groupDescription: 'Hey, wir sind eine nette Gruppe',
@@ -28,7 +29,7 @@ const GroupDetail = () => {
     groupDevide: false,
     favourite: false,
     notification: false,
-    category: ['Dienstleistungen', 'Interessen', 'Unterhaltung'],
+    category: ['Meme', 'Interessen', 'Unterhaltung'],
   });
   const [otherGroup, setOtherGroup] = useState([
     {
@@ -52,17 +53,24 @@ const GroupDetail = () => {
   const handleLoadMore = () => {
     setOtherGroup(prevValue => [...prevValue, ...otherGroup]);
   };
+
   return (
     <View style={{paddingTop: '21%', height: '100%', backgroundColor: '#fff'}}>
       <Header />
-      <ScrollView>
-        <View
-          style={{
-            backgroundColor: '#FFFC00',
-            height: 120,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <LinearGradient
+          colors={
+            groupType == 'line'
+              ? ['#08C719', '#adebad']
+              : groupType == 'snapchat'
+              ? ['#FFFC00', '#ffffb3']
+              : groupType == 'whatsapp'
+              ? ['#08C719', '#9dfba5']
+              : groupType == 'telegram'
+              ? ['#058acd', '#9cdcfc']
+              : ['#FFFC00', '#ffffb3']
+          }
+          style={styles.titelContainer}>
           <View
             style={{
               flexDirection: 'row',
@@ -139,7 +147,7 @@ const GroupDetail = () => {
               style={styles.imageStyle}
             />
           </View>
-        </View>
+        </LinearGradient>
         <View style={{paddingHorizontal: '1.5%'}}>
           <View
             style={{
@@ -355,11 +363,12 @@ const GroupDetail = () => {
         </View>
         <Text
           style={{
-            fontSize: 17,
+            fontSize: 15,
             fontFamily: FontStyle.MontBold,
             color: '#205072',
             alignSelf: 'center',
-            marginVertical: 20,
+            marginTop: 140,
+            marginBottom: 20,
           }}>
           Die Gruppen könnten dir auch gefallen
         </Text>
@@ -380,6 +389,13 @@ const GroupDetail = () => {
 };
 
 const styles = StyleSheet.create({
+  titelContainer: {
+    backgroundColor: '#FFFC00',
+    height: 130,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: 10,
+  },
   textStyle: {
     fontFamily: FontStyle.MontExtBold,
     fontSize: 11,
@@ -390,7 +406,8 @@ const styles = StyleSheet.create({
     width: 10,
   },
   categoryContainer: {
-    width: 91,
+    minWidth: 50,
+    maxWidth: 'auto',
     height: 18,
     backgroundColor: '#205072',
     marginHorizontal: 2,
@@ -402,14 +419,14 @@ const styles = StyleSheet.create({
 
   linearGradient: {
     borderRadius: 5,
-    minWidth: 83,
+    minWidth: 60,
     minHeight: 19,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 5,
   },
   buttonText: {
-    fontSize: 13,
+    fontSize: 10,
     fontFamily: FontStyle.MontBold,
     textAlign: 'center',
     color: '#ffffff',

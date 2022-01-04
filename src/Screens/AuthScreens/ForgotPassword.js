@@ -8,6 +8,7 @@ import {forgotPassword} from '../../../Slice/AuthReducer';
 import {useDispatch, useSelector} from 'react-redux';
 import {HelperText} from 'react-native-paper';
 import Styles from '../UserScreens/Style';
+import Spinner from '../../Common/Spinner';
 const ForgotPassword = () => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
@@ -73,7 +74,12 @@ const ForgotPassword = () => {
           onChangeText={text => setEmail(text)}
         />
       </View>
-      <Button onPress={submit} buttonText="E-Mail senden" />
+
+      {loading ? (
+        <Spinner />
+      ) : (
+        <Button onPress={submit} buttonText="E-Mail senden" />
+      )}
     </SafeAreaView>
   );
 };
