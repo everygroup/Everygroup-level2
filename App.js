@@ -10,6 +10,7 @@ import CategoryReducer from './Slice/CategoryReducer';
 import LanguageReducer from './Slice/LanguageReducer';
 import CreateGroupReducer from './Slice/CreateGroupReducer';
 import UserGroupReducer from './Slice/UserGroupReducer';
+import GroupDetailReducer from './Slice/GroupDetailReducer';
 const store = configureStore({
   reducer: {
     user: authReducer,
@@ -19,6 +20,7 @@ const store = configureStore({
     getLanguage: LanguageReducer,
     createGroup: CreateGroupReducer,
     UserGroupReducer,
+    GroupDetailReducer,
   },
 });
 

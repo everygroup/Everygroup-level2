@@ -14,10 +14,12 @@ import GroupCard from '../../Common/GroupCard';
 import GradientCard from '../../Common/GradientCard';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import {useNavigation} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
+import {getCategory} from '../../../Slice/CategoryReducer';
+import {useSelector, useDispatch} from 'react-redux';
 
 const {width, height} = Dimensions.get('screen');
 const Dashboard = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const flatListRef = useRef(2);
   const [groupArray] = useState([
@@ -100,6 +102,10 @@ const Dashboard = () => {
   const handleLoadMore = () => {
     setTrengingGroup(prevValue => [...prevValue, ...trendingGroup]);
   };
+
+  useEffect(() => {
+    dispatch(getCategory());
+  }, []);
 
   // Redux code
   const {name, alignItems, status} = useSelector(state => {

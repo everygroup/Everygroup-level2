@@ -1,10 +1,12 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Image,
   TouchableOpacity,
   Dimensions,
   StyleSheet,
+  TouchableWithoutFeedback,
+  Animated,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Icons from 'react-native-vector-icons/Fontisto';
@@ -16,6 +18,7 @@ const {width, height} = Dimensions.get('window');
 
 const Header = () => {
   const navigation = useNavigation();
+  const [searchOpacity] = useState(new Animated.Value(1));
   const [starValue, setStarValue] = useState(false);
   const [filterValue, setFilterValue] = useState(false);
   const [currentSelectedOption, setSelectedOption] = useState('');
@@ -30,6 +33,19 @@ const Header = () => {
     }
   };
 
+  const startAnimation = () => {
+    menuIconPress('search');
+    Animated.timing(searchOpacity, {
+      useNativeDriver: false,
+      toValue: 0,
+      duration: 350,
+    }).start();
+  };
+  // useEffect(() => {
+  //   startAnimation();
+  // }, []);
+
+  console.log(searchOpacity, 'animation');
   return (
     <View
       style={{
@@ -91,14 +107,23 @@ const Header = () => {
               />
             )}
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.iconContainer}
-            onPress={() => menuIconPress('search')}>
-            <Image
+          <TouchableWithoutFeedback
+            style={[styles.iconContainer]}
+            onPress={startAnimation}>
+            {/* <Animated.View
+              style={[
+                {
+                  searchOpacity,
+                  width: 50,
+                  height: 50,
+                  backgroundColor: 'green',
+                },
+              ]}></Animated.View> */}
+            <Animated.Image
               source={require('../Assets/Images/search.png')}
               style={{height: 31, width: 31, resizeMode: 'contain'}}
             />
-          </TouchableOpacity>
+          </TouchableWithoutFeedback>
           <TouchableOpacity
             style={styles.iconContainer}
             onPress={() => menuIconPress('menu')}>

@@ -73,8 +73,3 @@ export const UserGroupReducer = createSlice({
 });
 
 export default UserGroupReducer.reducer;
-
-// state.roundScore.splice(
-//   state.roundScore.findIndex(arrow => arrow.id === action.payload),
-//   1,
-// );

@@ -78,7 +78,10 @@ const GroupCard = ({
               />
             )}
           </View>
-          <TouchableOpacity onPress={() => navigation.navigate('GroupDetail')}>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('GroupDetail', {groupId: group.id})
+            }>
             <View
               style={{
                 flexDirection: 'row',

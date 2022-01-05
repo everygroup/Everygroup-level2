@@ -18,7 +18,7 @@ import InfoModal from '../InfoModal';
 import {HelperText} from 'react-native-paper';
 import Styles from '../../Screens/UserScreens/Style';
 import {useDispatch, useSelector} from 'react-redux';
-import {getCategory} from '../../../Slice/CategoryReducer';
+
 import {getLanguage} from '../../../Slice/LanguageReducer';
 import {updateRememberSnapChat} from '../../../Slice/AuthReducer';
 import {createGroup} from '../../../Slice/CreateGroupReducer';
@@ -27,6 +27,8 @@ import SnapChatModal from './SnapChatModal';
 
 const AddGroup = () => {
   const dispatch = useDispatch();
+  const [joinedLanguage, setJoinedLanguage] = useState('');
+  const [spokenLanguage, setSpokenLanguage] = useState('');
   const [snapChatModal, setSnapChatModal] = useState(false);
   const [joinSelection, setJoinSelection] = useState('all');
   const [groupLanguage, setGroupLanguageFocus] = useState(false);
@@ -116,10 +118,6 @@ const AddGroup = () => {
     );
   };
 
-  useEffect(() => {
-    dispatch(getCategory());
-  }, []);
-
   const {categoryArray} = useSelector(state => {
     return state.getCategory;
   });
@@ -157,6 +155,7 @@ const AddGroup = () => {
   };
 
   const checkLanguage = lang => {
+    // setSpokenLanguage(lang);
     if (lang != '') {
       dispatch(getLanguage(lang));
     } else {
@@ -177,22 +176,37 @@ const AddGroup = () => {
     return state.user;
   });
 
-  const selectLanguage = async item => {
-    if (!selectedLanguage.some(el => el.language == item.language)) {
-      await setSelectedLanguage(prevValue => [...prevValue, item]);
+  const selectLanguage = item => {
+    setSpokenLanguage(item);
+  };
+
+  const addSelectLanguage = async () => {
+    if (!selectedLanguage.some(el => el.language == spokenLanguage.language)) {
+      await setSelectedLanguage(prevValue => [...prevValue, spokenLanguage]);
       dispatch(getLanguage('Hindi'));
+      setSpokenLanguage('');
     }
   };
 
-  const selectJoinLanguage = async item => {
-    if (!joinLanguage.some(el => el.language == item.language)) {
-      await setJoinLanguage(prevValue => [...prevValue, item]);
+  const selectJoinLanguage = item => {
+    setJoinedLanguage(item);
+  };
+
+  const addJoinedLanguage = async () => {
+    if (!joinLanguage.some(el => el.language == joinedLanguage.language)) {
+      await setJoinLanguage(prevValue => [...prevValue, joinedLanguage]);
       dispatch(getLanguage('Hindi'));
+      setJoinedLanguage('');
     }
   };
 
   const deleteJoinLanguage = item => {
     setJoinLanguage(joinLanguage.filter(el => el.language !== item.language));
+  };
+  const deleteSelectLanguage = item => {
+    setSelectedLanguage(
+      selectedLanguage.filter(el => el.language !== item.language),
+    );
   };
 
   const selectHashTag = text => {
@@ -204,7 +218,7 @@ const AddGroup = () => {
   // console.log(string.split(regex));
   // const isExisting = regex.test(string);
   // console.log(isExisting, 'reg');
-  console.log(error.group_link, 'error');
+  console.log(spokenLanguage, 'error');
   return (
     <KeyboardAwareScrollView
       extraScrollHeight={100}
@@ -564,12 +578,18 @@ const AddGroup = () => {
             placeholder="Sprache auswählen"
             placeholderTextColor="#BECCD6"
             icon="available"
-            imageSource1={require('../../Assets/Images/plusGrey.png')}
+            iconPress={() => addSelectLanguage()}
+            imageSource1={
+              spokenLanguage == ''
+                ? require('../../Assets/Images/plusGrey.png')
+                : require('../../Assets/Images/plusOrange.png')
+            }
             bgColor="#fff"
             bdWidth={0.1}
             iconName={'plus'}
             iconColor="#beccd7"
             onChangeText={text => checkLanguage(text)}
+            value={spokenLanguage.language}
           />
           {languageArray.length > 0 && groupLanguage ? (
             <ScrollView>
@@ -621,6 +641,23 @@ const AddGroup = () => {
                   }}>
                   {language.language}
                 </Text>
+                <TouchableOpacity
+                  onPress={() => deleteSelectLanguage(language)}
+                  style={{
+                    width: 15,
+                    alignItems: 'flex-end',
+                    justifyContent: 'center',
+                    height: '100%',
+                  }}>
+                  <Text
+                    style={{
+                      fontFamily: FontStyle.MontMedium,
+                      color: '#fff',
+                      fontSize: 12,
+                    }}>
+                    X
+                  </Text>
+                </TouchableOpacity>
               </View>
             );
           }}
@@ -712,11 +749,17 @@ const AddGroup = () => {
             placeholderTextColor="#BECCD6"
             bgColor="#fff"
             icon="available"
-            imageSource1={require('../../Assets/Images/plusGrey.png')}
+            iconPress={() => addJoinedLanguage()}
+            imageSource1={
+              joinedLanguage == ''
+                ? require('../../Assets/Images/plusGrey.png')
+                : require('../../Assets/Images/plusOrange.png')
+            }
             bdWidth={0.1}
             iconName={'plus'}
             iconColor="#beccd7"
             onChangeText={text => checkLanguage(text)}
+            value={joinedLanguage.language}
           />
           {languageArray.length > 0 && joinLanguageFocus ? (
             <ScrollView>

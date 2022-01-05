@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -13,24 +13,28 @@ import {useNavigation} from '@react-navigation/core';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import LinearGradient from 'react-native-linear-gradient';
 import SmallCard from '../../Common/SmallCard';
+import {useDispatch, useSelector} from 'react-redux';
+import {getGroupDetail} from '../../../Slice/GroupDetailReducer';
 
-const GroupDetail = () => {
+const GroupDetail = ({route}) => {
+  const {groupId} = route.params;
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const [bellValue, setBellValue] = useState(false);
   const [groupType] = useState('snapchat');
-  const [groupDetail] = useState({
-    socialGroup: 'snapchat',
-    groupName: 'Nordsee Gruppe',
-    groupOwnerName: 'Superman',
-    groupLanguage: 'Deutsch',
-    groupHashtag: ['#test', '#test', '#test', '#test', '#test'],
-    groupDescription: 'Hey, wir sind eine nette Gruppe',
-    groupReport: false,
-    groupDevide: false,
-    favourite: false,
-    notification: false,
-    category: ['Meme', 'Interessen', 'Unterhaltung'],
-  });
+  // const [groupDetail] = useState({
+  //   socialGroup: 'snapchat',
+  //   groupName: 'Nordsee Gruppe',
+  //   groupOwnerName: 'Superman',
+  //   groupLanguage: 'Deutsch',
+  //   groupHashtag: ['#test', '#test', '#test', '#test', '#test'],
+  //   groupDescription: 'Hey, wir sind eine nette Gruppe',
+  //   groupReport: false,
+  //   groupDevide: false,
+  //   favourite: false,
+  //   notification: false,
+  //   category: ['Meme', 'Interessen', 'Unterhaltung'],
+  // });
   const [otherGroup, setOtherGroup] = useState([
     {
       description: 'Eine coole Gruppe',
@@ -54,19 +58,27 @@ const GroupDetail = () => {
     setOtherGroup(prevValue => [...prevValue, ...otherGroup]);
   };
 
+  useEffect(() => {
+    dispatch(getGroupDetail(groupId));
+  }, []);
+
+  const {groupDetail, error, loading} = useSelector(state => {
+    return state.GroupDetailReducer;
+  });
+  console.log(groupDetail, 'deeee');
   return (
     <View style={{paddingTop: '21%', height: '100%', backgroundColor: '#fff'}}>
       <Header />
       <ScrollView showsVerticalScrollIndicator={false}>
         <LinearGradient
           colors={
-            groupType == 'line'
+            groupDetail.group_type == 'line'
               ? ['#08C719', '#adebad']
-              : groupType == 'snapchat'
+              : groupDetail.group_type == 'snapchat'
               ? ['#FFFC00', '#ffffb3']
-              : groupType == 'whatsapp'
+              : groupDetail.group_type == 'whatsapp'
               ? ['#08C719', '#9dfba5']
-              : groupType == 'telegram'
+              : groupDetail.group_type == 'telegram'
               ? ['#058acd', '#9cdcfc']
               : ['#FFFC00', '#ffffb3']
           }
@@ -90,7 +102,7 @@ const GroupDetail = () => {
                 fontFamily: FontStyle.MontBold,
                 color: '#205072',
               }}>
-              {groupDetail.groupName}
+              {groupDetail.title}
             </Text>
             <Image
               source={require('../../Assets/Images/snapchatLine.png')}
@@ -155,7 +167,7 @@ const GroupDetail = () => {
               marginVertical: '2.5%',
             }}>
             <FlatList
-              data={groupDetail.category}
+              data={groupDetail.categories}
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               renderItem={({item: category}) => {
@@ -166,7 +178,7 @@ const GroupDetail = () => {
                         styles.textStyle,
                         {fontFamily: FontStyle.MontBold, color: '#fff'},
                       ]}>
-                      {category}
+                      {category.category}
                     </Text>
                   </View>
                 );
@@ -184,14 +196,18 @@ const GroupDetail = () => {
             </TouchableOpacity>
           </View>
           <View style={{paddingHorizontal: '2.5%'}}>
-            <Text style={[styles.textStyle, {fontSize: 13}]}>
-              {groupDetail.groupLanguage}
-            </Text>
+            {groupDetail.languages ? (
+              <Text style={[styles.textStyle, {fontSize: 13}]}>
+                {groupDetail.languages.map(el => (
+                  <Text>{el.language},</Text>
+                ))}
+              </Text>
+            ) : null}
             <FlatList
-              data={groupDetail.groupHashtag}
+              data={groupDetail.tags}
               horizontal={true}
               showsHorizontalScrollIndicator={false}
-              renderItem={({item: category}) => {
+              renderItem={({item: tags}) => {
                 return (
                   <View style={{width: 36, height: 20}}>
                     <Text
@@ -200,7 +216,7 @@ const GroupDetail = () => {
                         fontFamily: FontStyle.MontMedium,
                         color: '#FFA420',
                       }}>
-                      {category}
+                      {tags}
                     </Text>
                   </View>
                 );
@@ -213,18 +229,18 @@ const GroupDetail = () => {
                 color: '#205072',
                 marginVertical: '7%',
               }}>
-              {groupDetail.groupDescription}
+              {groupDetail.description}
             </Text>
             <View
               style={{
                 backgroundColor:
-                  groupDetail.socialGroup == 'snapchat'
+                  groupDetail.group_type == 'snapchat'
                     ? '#FFFC00'
-                    : groupDetail.socialGroup == 'whatsapp'
+                    : groupDetail.group_type == 'whatsapp'
                     ? 'lightgreen'
-                    : groupDetail.socialGroup == 'line'
+                    : groupDetail.group_type == 'line'
                     ? 'green'
-                    : groupDetail.socialGroup == 'telegram'
+                    : groupDetail.group_type == 'telegram'
                     ? '#0088CC'
                     : 'black',
                 width: '90%',

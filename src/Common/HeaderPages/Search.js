@@ -14,12 +14,20 @@ import SwitchToggle from 'react-native-switch-toggle';
 import {ScrollView} from 'react-native-gesture-handler';
 import InfoModal from '../InfoModal';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {useDispatch, useSelector} from 'react-redux';
+import {getLanguage} from '../../../Slice/LanguageReducer';
+import {saveSearch} from '../../../Slice/SearchReducer';
 
 const Search = ({starPress, starValue, filterValue, filterPress}) => {
+  const dispatch = useDispatch();
+  const [query, setQuery] = useState('');
+  const [searchedLanguage, setSearchedLanguage] = useState('');
+  const [selectedLanguage, setSelectedLanguage] = useState([]);
   const [modalValue, setModalValue] = useState(false);
   const [infoMessage, setInfoMessage] = useState(
     'Hier kannst du nach der Sprache filtern, welche überwiegend in der Gruppe benutzt wird. Filtere nach Sprachen deiner Wahl oder such nach allen.',
   );
+  const [chooseLanguage, setChooseLanguage] = useState('');
   const [selectedMessenger, setSelectedMessenger] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState([]);
   const [switchOn, setSwitchOn] = useState(true);
@@ -31,31 +39,14 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
     'Snapchat',
     'Line',
   ]);
-  const [categoryData] = useState([
-    'Creator',
-    'Fangruppe',
-    'Allgemein',
-    'Meme',
-    'Gaming',
-    'Wissen',
-    'Dating',
-    'Umgebung',
-    'Interessen',
-    'Selbsthilfe',
-    'Musik',
-    'Tiere',
-    'Finanzen',
-    'LGBTQ+',
-    'RPG',
-    'Unterhaltung',
-    'Technik',
-    'Sport',
-    'Dienstleistungen',
-    'Kunst',
-    'Lokal',
-    'Filme',
-    'Anime',
-  ]);
+
+  const {languageArray} = useSelector(state => {
+    return state.getLanguage;
+  });
+
+  const {categoryArray} = useSelector(state => {
+    return state.getCategory;
+  });
 
   const selectMessenger = item => {
     if (selectedMessenger.some(messenger => messenger == item)) {
@@ -71,6 +62,57 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
       setSelectedCategory(prevValue => [...prevValue, item]);
     }
   };
+
+  const checkLanguage = lang => {
+    if (lang != '') {
+      dispatch(getLanguage(lang));
+    } else {
+      dispatch(getLanguage(''));
+    }
+  };
+
+  const selectSearchLanguage = item => {
+    setSearchedLanguage(item);
+  };
+
+  const addSelectLanguage = async () => {
+    if (
+      !selectedLanguage.some(el => el.language == searchedLanguage.language)
+    ) {
+      await setSelectedLanguage(prevValue => [...prevValue, searchedLanguage]);
+      dispatch(getLanguage('Hindi'));
+      setSearchedLanguage('');
+    }
+  };
+
+  const deleteSelectLanguage = item => {
+    setSelectedLanguage(
+      selectedLanguage.filter(el => el.language !== item.language),
+    );
+  };
+
+  const searchSave = () => {
+    console.log(selectedLanguage, 'lang');
+    const category = selectedCategory.map(({category, ...rest}) => ({
+      ...rest,
+    }));
+    const shortCategory = category.map(el => el.slug);
+    const language = selectedLanguage.map(({language, ...rest}) => ({
+      ...rest,
+    }));
+    const shortLanguage = language.map(el => el.code);
+
+    dispatch(
+      saveSearch({
+        query: query,
+        groupType: selectedMessenger,
+        groupCategory: shortCategory,
+        groupLanguage: shortLanguage,
+      }),
+    );
+  };
+
+  // console.log(languageArray, 'lang array');
 
   return (
     <View style={{flex: 1}}>
@@ -108,6 +150,7 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
           bdWidth={0.1}
           placeholder="Gruppe suchen"
           placeholderTextColor="#BECCD6"
+          onChangeText={text => setQuery(text)}
         />
         <View style={{left: 5, top: 10}}>
           {starValue ? (
@@ -118,7 +161,7 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
               />
             </TouchableWithoutFeedback>
           ) : (
-            <TouchableWithoutFeedback onPress={starPress}>
+            <TouchableWithoutFeedback onPress={searchSave}>
               <Image
                 source={require('../../Assets/Images/star.png')}
                 style={{height: 24, width: 24}}
@@ -129,14 +172,14 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
       </View>
       {filterValue ? (
         <KeyboardAwareScrollView
-          extraScrollHeight={100}
+          extraScrollHeight={150}
           showsVerticalScrollIndicator={false}
-          keyboardDismissMode="on-drag"
+          // keyboardDismissMode="on-drag"
           keyboardShouldPersistTaps="handled"
           contentContainerStyle={{
             flexGrow: 1,
             alignItems: 'center',
-            paddingBottom: '15%',
+            paddingBottom: 200,
           }}>
           <View
             style={{
@@ -202,7 +245,7 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
           <View
             style={{
               alignItems: 'center',
-              height: '43%',
+              height: '50%',
               width: '100%',
             }}>
             <Text
@@ -228,7 +271,7 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
               Alle
             </Text>
             <FlatList
-              data={categoryData}
+              data={categoryArray}
               numColumns={3}
               contentContainerStyle={{
                 alignSelf: 'center',
@@ -254,7 +297,7 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
                           ? '#fff'
                           : '#FFC570',
                       }}>
-                      {item}
+                      {item.slug == '18' ? null : item.category}
                     </Text>
                   </TouchableOpacity>
                 );
@@ -262,21 +305,23 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
             />
           </View>
           <View style={{width: '100%', alignItems: 'center'}}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Image
-                source={require('../../Assets/Images/18plus.png')}
-                style={{
-                  height: 35,
-                  width: 35,
-                  resizeMode: 'contain',
-                  marginVertical: 10,
-                }}
-              />
-              <Image
-                source={require('../../Assets/Images/redi.png')}
-                style={{height: 18, width: 18, left: 5}}
-              />
-            </View>
+            {categoryArray.some(el => el.slug == '18') ? (
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Image
+                  source={require('../../Assets/Images/18plus.png')}
+                  style={{
+                    height: 35,
+                    width: 35,
+                    resizeMode: 'contain',
+                    marginVertical: 10,
+                  }}
+                />
+                <Image
+                  source={require('../../Assets/Images/redi.png')}
+                  style={{height: 18, width: 18, left: 5}}
+                />
+              </View>
+            ) : null}
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text
                 style={{
@@ -318,13 +363,103 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
                 circleStyle={styles.switchCircle}
               />
             </View>
-            <Input
-              bgColor="#fff"
-              bdWidth={0.1}
-              iconName="plus"
-              placeholder="Sprache auswählen.."
-              placeholderTextColor="#BECCD6"
-            />
+            <View
+              style={{
+                // paddingHorizontal: '2.5%',
+                width: '85%',
+                height: languageArray.length > 0 ? 150 : null,
+                borderRadius: 5,
+                backgroundColor: '#fff',
+                alignItems: 'flex-start',
+              }}>
+              <Input
+                height={languageArray.length > 0 ? 150 : null}
+                bgColor="#fff"
+                inputWidth="100%"
+                bdWidth={0.1}
+                placeholder="Sprache auswählen.."
+                placeholderTextColor="#BECCD6"
+                onChangeText={text => checkLanguage(text)}
+                value={searchedLanguage.language}
+                imageSource1={
+                  searchedLanguage == ''
+                    ? require('../../Assets/Images/plusGrey.png')
+                    : require('../../Assets/Images/plusOrange.png')
+                }
+                icon="available"
+                iconPress={() => addSelectLanguage()}
+              />
+              {languageArray.length > 0 ? (
+                <ScrollView>
+                  {languageArray.map(item => {
+                    return (
+                      <TouchableOpacity
+                        onPress={() => selectSearchLanguage(item)}
+                        style={{
+                          height: 20,
+                          paddingHorizontal: '10%',
+                          marginTop: 5,
+                        }}>
+                        <Text
+                          style={{
+                            fontFamily: FontStyle.MontBold,
+                            color: '#82C2F1',
+                            fontSize: 13,
+                          }}>
+                          {item.language}
+                        </Text>
+                      </TouchableOpacity>
+                    );
+                  })}
+                </ScrollView>
+              ) : null}
+            </View>
+
+            <View
+              style={{
+                height: 30,
+                alignSelf: 'flex-start',
+                marginLeft: '7%',
+                marginVertical: 7,
+              }}>
+              <FlatList
+                data={selectedLanguage}
+                horizontal={true}
+                scrollEnabled={true}
+                showsHorizontalScrollIndicator={false}
+                renderItem={({item: language}) => {
+                  return (
+                    <View style={styles.languageContainer}>
+                      <Text
+                        style={{
+                          fontFamily: FontStyle.MontRegular,
+                          color: '#fff',
+                          fontSize: 10,
+                        }}>
+                        {language.language}
+                      </Text>
+                      <TouchableOpacity
+                        onPress={() => deleteSelectLanguage(language)}
+                        style={{
+                          width: 15,
+                          alignItems: 'flex-end',
+                          justifyContent: 'center',
+                          height: '100%',
+                        }}>
+                        <Text
+                          style={{
+                            fontFamily: FontStyle.MontMedium,
+                            color: '#fff',
+                            fontSize: 12,
+                          }}>
+                          X
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  );
+                }}
+              />
+            </View>
             <View
               style={{
                 height: 50,
@@ -377,6 +512,19 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.32,
     shadowRadius: 2.65,
     elevation: 2,
+  },
+  languageContainer: {
+    minWidth: 40,
+    maxWidth: 'auto',
+    height: 20,
+    borderWidth: 1,
+    borderColor: '#fff',
+    borderRadius: 5,
+    marginHorizontal: 5,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingHorizontal: 2.5,
   },
 });
 
