@@ -115,7 +115,7 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
   // console.log(languageArray, 'lang array');
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1, top: 20}}>
       <InfoModal
         modalValue={modalValue}
         message={infoMessage}
@@ -128,7 +128,7 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
           justifyContent: 'space-between',
           alignSelf: 'center',
         }}>
-        <View style={{right: 5, top: 11}}>
+        <View style={{right: 5, top: 10}}>
           {filterValue ? (
             <TouchableWithoutFeedback onPress={filterPress}>
               <Image
@@ -148,11 +148,13 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
         <Input
           bgColor="#fff"
           bdWidth={0.1}
+          icon="available"
+          imageSource1={require('../../Assets/Images/searchOrange.png')}
           placeholder="Gruppe suchen"
           placeholderTextColor="#BECCD6"
           onChangeText={text => setQuery(text)}
         />
-        <View style={{left: 5, top: 10}}>
+        <View style={{left: 5, top: 8}}>
           {starValue ? (
             <TouchableWithoutFeedback onPress={starPress}>
               <Image
@@ -367,13 +369,13 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
               style={{
                 // paddingHorizontal: '2.5%',
                 width: '85%',
-                height: languageArray.length > 0 ? 150 : null,
+                height: languageArray.length > 0 ? 150 : 39,
                 borderRadius: 5,
                 backgroundColor: '#fff',
                 alignItems: 'flex-start',
               }}>
               <Input
-                height={languageArray.length > 0 ? 150 : null}
+                height={languageArray.length > 0 ? 150 : 39}
                 bgColor="#fff"
                 inputWidth="100%"
                 bdWidth={0.1}

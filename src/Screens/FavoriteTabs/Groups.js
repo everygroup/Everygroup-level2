@@ -9,7 +9,7 @@ const Groups = () => {
       category: ['Dienstleistungen', 'Interessen', 'Unterhaltung'],
       hashtagData: ['#test', '#test', '#test', '#test', '#test'],
       description: 'Hey, wir sind eine nette Gruppe',
-      socialGroup: 'snapchat',
+      group_type: 'snapchat',
       favorite: true,
     },
     {
@@ -17,7 +17,7 @@ const Groups = () => {
       category: ['Dienstleistungen', 'Interessen', 'Unterhaltung'],
       hashtagData: ['#test', '#test', '#test', '#test', '#test'],
       description: 'Hey, wir sind eine nette Gruppe',
-      socialGroup: 'whatsapp',
+      group_type: 'whatsapp',
       favorite: true,
     },
     {
@@ -25,7 +25,7 @@ const Groups = () => {
       category: ['Dienstleistungen', 'Interessen', 'Unterhaltung'],
       hashtagData: ['#test', '#test', '#test', '#test', '#test'],
       description: 'Hey, wir sind eine nette Gruppe',
-      socialGroup: 'line',
+      group_type: 'line',
       favorite: true,
     },
     {
@@ -33,15 +33,16 @@ const Groups = () => {
       category: ['Dienstleistungen', 'Interessen', 'Unterhaltung'],
       hashtagData: ['#test', '#test', '#test', '#test', '#test'],
       description: 'Hey, wir sind eine nette Gruppe',
-      socialGroup: 'telegram',
+      group_type: 'telegram',
       favorite: true,
     },
   ]);
   return (
     <View style={{backgroundColor: '#fff', flex: 1}}>
       <FlatList
+        showsVerticalScrollIndicator={false}
         data={groupArray}
-        contentContainerStyle={{backgroundColor: '#fff'}}
+        contentContainerStyle={{backgroundColor: '#fff', paddingBottom: 100}}
         renderItem={({item: group}) => {
           return <GroupCard group={group} />;
         }}

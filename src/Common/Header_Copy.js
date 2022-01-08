@@ -7,7 +7,9 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   Animated,
+  Text,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import Icons from 'react-native-vector-icons/Fontisto';
 import AddGroup from './HeaderPages/AddGroup';
 import Menu from './HeaderPages/Menu';
@@ -32,13 +34,12 @@ const Header = () => {
     }
   };
 
-  const startAnimation = () => {
-    menuIconPress('search');
-    // Animated.timing(opacity, {
-    //   toValue: 0,
-    //   duration: 300,
-    //   useNativeDriver: false,
-    // }).start();
+  const textPress = () => {
+    Animated.timing(opacity, {
+      toValue: 0,
+      duration: 3000,
+      useNativeDriver: false,
+    }).start();
   };
 
   return (
@@ -74,12 +75,19 @@ const Header = () => {
             width: '52%',
             height: '100%',
           }}>
-          <TouchableOpacity onPress={() => navigation.navigate('Dashboard')}>
-            <Image
+          <Text onPress={textPress}>rohit</Text>
+
+          {/* <Image
               source={require('../Assets/Images/whiteLogo.png')}
               style={{height: 31, width: 31, top: 15, left: 5}}
-            />
-          </TouchableOpacity>
+            /> */}
+          <Animated.View
+            style={{
+              height: 50,
+              width: 50,
+              backgroundColor: 'red',
+              opacity,
+            }}></Animated.View>
         </View>
 
         <View
@@ -102,19 +110,10 @@ const Header = () => {
               />
             )}
           </TouchableOpacity>
-          <TouchableWithoutFeedback
-            style={[styles.iconContainer, opacity]}
-            onPress={startAnimation}>
-            {/* <Animated.View
-              style={{
-                height: 50,
-                width: 50,
-                backgroundColor: 'green',
-                opacity,
-              }}></Animated.View> */}
+          <TouchableWithoutFeedback style={[styles.iconContainer]}>
             <Animated.Image
               source={require('../Assets/Images/search.png')}
-              style={{height: 31, width: 31, resizeMode: 'contain', opacity}}
+              style={{height: 31, width: 31, resizeMode: 'contain'}}
             />
           </TouchableWithoutFeedback>
           <TouchableOpacity

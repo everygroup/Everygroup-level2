@@ -17,6 +17,7 @@ import BehaviourRules from '../Screens/RulesPages/BehaviourRules';
 import ForgotPassword from '../Screens/AuthScreens/ForgotPassword';
 import HeaderAuth from '../Screens/AuthScreens/HeaderAuth';
 import ForgotMailVerify from '../Screens/AuthScreens/ForgotMailVerify';
+import TestPage from '../Screens/AuthScreens/TestPage';
 
 const AuthStackScreen = createStackNavigator();
 
@@ -46,7 +47,7 @@ export const AuthNavigator = () => {
         screenOptions={{
           headerShown: false,
         }}
-        initialRouteName="SplashScreen">
+        initialRouteName="TestPage">
         <AuthStackScreen.Screen
           name="SignIn"
           component={SignIn}
@@ -114,6 +115,7 @@ export const AuthNavigator = () => {
           name="HelpNavigator"
           component={HelpNavigator}
         />
+        <AuthStackScreen.Screen name="TestPage" component={TestPage} />
       </AuthStackScreen.Navigator>
     </View>
   );

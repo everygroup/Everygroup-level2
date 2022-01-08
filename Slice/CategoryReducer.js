@@ -21,9 +21,10 @@ export const getCategory = createAsyncThunk(
         headers: {Authorization: `Bearer ${token}`},
         url: `${baseUrl}/group/category`,
       });
-
+      console.log(response, 'ccategory reducer');
       return response.data.results;
     } catch (err) {
+      console.log(err.response);
       return rejectWithValue(Object.values(err.response.data));
     }
   },

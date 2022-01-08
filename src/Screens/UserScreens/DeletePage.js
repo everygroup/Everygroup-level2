@@ -716,7 +716,11 @@ const DeletePage = () => {
           Wir werden dich vermissen :(
         </Text>
         {selectedReason.length > 0 ? (
-          <Button buttonText="Löschen" />
+          <Button
+            buttonText="Löschen"
+            buttonColor1="#FF3434"
+            buttonColor2="#FF3434"
+          />
         ) : (
           <View style={styles.buttonView}>
             <Text

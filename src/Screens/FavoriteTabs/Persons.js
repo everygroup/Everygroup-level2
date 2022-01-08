@@ -22,6 +22,8 @@ const Persons = () => {
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <FlatList
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{paddingBottom: 100}}
         data={personsData}
         renderItem={({item: data}) => {
           return <PersonCard data={data} />;

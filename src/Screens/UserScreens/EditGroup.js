@@ -132,7 +132,7 @@ const EditGroup = () => {
           <View style={[styles.buttonView, {backgroundColor: '#BECCD6'}]}>
             <Text
               style={{
-                fontSize: 14,
+                fontSize: 12,
                 color: '#fff',
                 fontFamily: FontStyle.MontBold,
               }}>
@@ -142,7 +142,7 @@ const EditGroup = () => {
           <View style={styles.buttonView}>
             <Text
               style={{
-                fontSize: 14,
+                fontSize: 12,
                 color: '#fff',
                 fontFamily: FontStyle.MontBold,
               }}>

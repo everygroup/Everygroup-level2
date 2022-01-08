@@ -27,6 +27,8 @@ const Search = () => {
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <FlatList
+        contentContainerStyle={{paddingBottom: 100}}
+        showsVerticalScrollIndicator={false}
         data={searchData}
         renderItem={({item: data}) => {
           return (

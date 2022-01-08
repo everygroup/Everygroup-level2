@@ -90,7 +90,6 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
     height: 39,
     borderRadius: 6,
     marginBottom: 10,

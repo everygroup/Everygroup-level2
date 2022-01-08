@@ -31,7 +31,7 @@ const GroupCard = ({
   return (
     <View>
       <View style={{position: 'relative', zIndex: 99999}}>
-        <View style={[styles.containerStyle]}>
+        <View style={[styles.containerStyle, {borderBottomRightRadius: 0}]}>
           <View
             style={{
               backgroundColor:
@@ -214,7 +214,7 @@ const GroupCard = ({
               alignSelf: 'flex-end',
               marginHorizontal: '5%',
               height: 22,
-              top: -21,
+              top: -24,
               shadowColor: 'grey',
               backgroundColor: '#fff',
               width: 62,
@@ -225,7 +225,7 @@ const GroupCard = ({
 
               shadowOffset: {
                 width: 0,
-                height: 1,
+                height: 5,
               },
               shadowOpacity: 0.27,
               shadowRadius: 2.65,
