@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, SafeAreaView, TouchableOpacity} from 'react-native';
+import {View, Text, SafeAreaView} from 'react-native';
 import Button from '../../Common/Button';
 import Input from '../../Common/Input';
 import {useNavigation} from '@react-navigation/native';
-import {forgotPassword, signInUser} from '../../../Slice/AuthReducer';
+import {signInUser} from '../../../Slice/AuthReducer';
 import {useDispatch, useSelector} from 'react-redux';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorageLib from '@react-native-async-storage/async-storage';
 import {HelperText} from 'react-native-paper';
 import Styles from '../UserScreens/Style';
 import Spinner from '../../Common/Spinner';
@@ -19,7 +19,6 @@ const SignIn = () => {
   const [emailErrorMessage, setEmailErrorMessage] = useState('');
   const [passwordError, setPasswordError] = useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
-  const [redirect, setRedirect] = useState('');
   const [showPassword, setShowPassword] = useState(true);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [email, setEmail] = useState('');
@@ -49,11 +48,11 @@ const SignIn = () => {
     tokenFunc();
     setEmailError(true);
     setEmailErrorMessage(error);
-  }, [token, error]);
+  }, [error, token]);
 
   const tokenFunc = async () => {
-    if (token) {
-      AsyncStorage.setItem('token', token);
+    const successToken = await AsyncStorageLib.getItem('token');
+    if (successToken || token) {
       navigation.navigate('HomeNavigator');
     }
   };

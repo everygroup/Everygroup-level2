@@ -47,7 +47,7 @@ export const AuthNavigator = () => {
         screenOptions={{
           headerShown: false,
         }}
-        initialRouteName="TestPage">
+        initialRouteName="SplashScreen">
         <AuthStackScreen.Screen
           name="SignIn"
           component={SignIn}

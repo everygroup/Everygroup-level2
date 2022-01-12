@@ -11,6 +11,9 @@ import LanguageReducer from './Slice/LanguageReducer';
 import CreateGroupReducer from './Slice/CreateGroupReducer';
 import UserGroupReducer from './Slice/UserGroupReducer';
 import GroupDetailReducer from './Slice/GroupDetailReducer';
+import SearchReducer from './Slice/SearchReducer';
+import SearchResultReducer from './Slice/SearchResultReducer';
+
 const store = configureStore({
   reducer: {
     user: authReducer,
@@ -21,6 +24,8 @@ const store = configureStore({
     createGroup: CreateGroupReducer,
     UserGroupReducer,
     GroupDetailReducer,
+    SearchReducer,
+    SearchResultReducer,
   },
 });
 

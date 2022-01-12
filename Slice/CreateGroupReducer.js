@@ -5,9 +5,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const baseUrl = 'http://203.190.153.22:1639/api/v1';
 
 const initialState = {
-  loading: false,
+  createGroupLoading: false,
+  errorLoading: false,
   error: '',
   data: '',
+  createSuccess: '',
 };
 
 export const createGroup = createAsyncThunk(
@@ -26,16 +28,15 @@ export const createGroup = createAsyncThunk(
           languages: data.selectedLanguage,
           join_languages: data.joinLanguage,
           categories: data.selectedCategory,
-          tags: ['tag3'],
+          tags: data.hashArray,
           confirm_rules: data.checkedConductRules,
           confirm_terms: data.checkedTerms,
           description: data.description,
         },
       });
-      console.log(response);
+
       return response.data;
     } catch (err) {
-      console.log(err.response);
       return rejectWithValue(err.response.data);
     }
   },
@@ -44,22 +45,34 @@ export const createGroup = createAsyncThunk(
 export const CreateGroupReducer = createSlice({
   name: 'CreateGroupReducer',
   initialState,
-  reducers: {},
+  reducers: {
+    resetErroLoading(state, action) {
+      (state.errorLoading = false), (state.createSuccess = '');
+    },
+  },
   extraReducers: {
     [createGroup.fulfilled]: (state, action) => {
       state.data = action.payload;
+      state.createSuccess = 'success';
+      state.createGroupLoading = false;
     },
     [createGroup.pending]: (state, action) => {
       state.data = '';
-      state.loading = true;
+      state.createGroupLoading = true;
       state.error = '';
+      state.createSuccess = '';
+      state.errorLoading = true;
     },
     [createGroup.rejected]: (state, action) => {
       state.error = action.payload;
-      state.loading = false;
+      state.createGroupLoading = false;
       state.data = '';
+      state.createSuccess = '';
+      state.errorLoading = false;
     },
   },
 });
+
+export const {resetErroLoading} = CreateGroupReducer.actions;
 
 export default CreateGroupReducer.reducer;

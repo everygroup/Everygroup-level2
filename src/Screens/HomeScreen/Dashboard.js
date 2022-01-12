@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   Dimensions,
   StyleSheet,
+  NativeModules,
+  Platform,
 } from 'react-native';
 import Header from '../../Common/Header';
 import GroupCard from '../../Common/GroupCard';
@@ -16,6 +18,7 @@ import FontStyle from '../../Assets/Fonts/FontStyle';
 import {useNavigation} from '@react-navigation/native';
 import {getCategory} from '../../../Slice/CategoryReducer';
 import {useSelector, useDispatch} from 'react-redux';
+import AsyncStorageLib from '@react-native-async-storage/async-storage';
 
 const {width, height} = Dimensions.get('screen');
 const Dashboard = () => {
@@ -103,7 +106,21 @@ const Dashboard = () => {
     setTrengingGroup(prevValue => [...prevValue, ...trendingGroup]);
   };
 
+  const la =
+    Platform.OS === 'ios'
+      ? NativeModules.SettingsManager.settings.AppleLocale ||
+        NativeModules.SettingsManager.settings.AppleLanguages[0] // iOS 13
+      : NativeModules.I18nManager.localeIdentifier;
+
   useEffect(() => {
+    AsyncStorageLib.setItem(
+      'systemLang',
+      Platform.OS === 'ios'
+        ? NativeModules.SettingsManager.settings.AppleLocale ||
+            NativeModules.SettingsManager.settings.AppleLanguages[0] // iOS 13
+        : NativeModules.I18nManager.localeIdentifier,
+    );
+
     dispatch(getCategory());
   }, []);
 

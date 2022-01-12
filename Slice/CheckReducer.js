@@ -26,7 +26,6 @@ export const checkPassword = createAsyncThunk(
 
       return response.data;
     } catch (err) {
-      console.log(err);
       return rejectWithValue(Object.values(err.response.data));
     }
   },

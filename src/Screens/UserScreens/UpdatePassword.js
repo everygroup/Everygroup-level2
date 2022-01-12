@@ -42,7 +42,6 @@ const UpdatePassword = () => {
   };
 
   const {error, loading, value} = useSelector(state => {
-    console.log(state.changeProfile, 'pass');
     return state.changeProfile;
   });
 

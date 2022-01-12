@@ -15,19 +15,17 @@ const AdminRule = () => {
 
       <Text style={styles.descriptionText}>
         Als Admin trägst du die Verantwortung über die Gruppe und deren
-        Mitglieder.
-      </Text>
-      <Text style={styles.descriptionText}>
-        Mit dem Hochladen deiner Gruppe, stimmst du zu, dass du dich an unseren
-        Verhaltenskodex hältst und deiner Position als Admin verantwortungsvoll
-        nachgehst, um damit eine sichere und friedliche Atmosphäre in der Gruppe
-        zu schaffen.
+        Mitglieder. Mit dem Hochladen deiner Gruppe, stimmst du zu, dass du dich
+        an unseren Verhaltensregeln hältst und deiner Position als Admin
+        verantwortungsvoll nachgehst, um damit eine sichere und friedliche
+        Atmosphäre in der Gruppe zu schaffen.
       </Text>
       <Text style={styles.headingText}>Gruppe hochladen</Text>
       <Text style={styles.descriptionText}>
         Es dürfen keine Gruppen hochgeladen werden, dessen Inhalte gegen die
-        geltenden Gesetze verstoßen oder gegen unseren Verhaltenskodex. Bei
-        einem Verstoß führt es zur Löschung der Gruppe oder anderen Maßnahmen.
+        geltenden Gesetze verstoßen oder gegen unseren Verhaltensregeln. Bei
+        einem Verstoß führt es zur Löschung der Gruppe oder anderen Maßnahmen,
+        die wir, abhängig von der Situation, für sinnvoll erachten.
       </Text>
       <Text style={styles.headingText}>Bestehende Gruppe hochladen</Text>
       <Text style={styles.descriptionText}>
@@ -40,19 +38,28 @@ const AdminRule = () => {
       <Text style={styles.headingText}>Moderation der Gruppe</Text>
       <Text style={styles.descriptionText}>
         Mit dem Hochladen der Gruppe auf everygroup stimmst du zu, dass du nach
-        besten Gewissen die Gruppe moderierst und dich dabei an den
-        Verhaltenskodex orientierst. Kommt es im Chat zu heftigen
+        besten Gewissen die Gruppe moderierst und dich dabei an die
+        Verhaltensregeln orientierst. Kommt es im Chat zu heftigen
         Auseinandersetzungen oder wirst du um Hilfe gebeten, versuchst du den
         Streit zu schlichten. Wenn du im Gruppenchat zeuge, von Mobbing wirst
         und dieser nicht geschlichtet werden kann, entfernst du das/die
         Mitglied/er aus der Gruppe von denen das Mobbing ausgeht.
       </Text>
+
+      <Text style={styles.headingText}>
+        Kontakt zur Beratungsstelle der Polizei
+      </Text>
       <Text style={styles.descriptionText}>
-        Mit der Nutzung von everygroup versprichst du uns, dich an den
-        Verhaltenskodex zu halten. Solltest du dich nicht an den Verhaltenskodex
-        halten, werden wir deinen Account temporär Blockieren oder eine
-        vollständige Löschung deines Accounts einleiten oder andere Schritte
-        einleiten, die wir für Sinnvoll erachten.
+        Außerdem hast du die Möglichkeit dich an die Polizei zu wenden, wenn du
+        Zeuge von rechtswidrigen Verhalten wirst. Hier ist der Link, zum
+        Kontaktformular der Polizei: www.polizei-beratung.de/kontakt/
+      </Text>
+      <Text style={[styles.descriptionText, {marginTop: '5%'}]}>
+        Mit der Nutzung von everygroup versprichst du uns, dich an unsere
+        Verhaltensregeln zu halten. Solltest du dich nicht an unsere
+        Verhaltensregeln halten, werden wir deinen Account temporär blockieren
+        oder eine vollständige Löschung deines Accounts einleiten oder andere
+        Schritte einleiten, die wir für Sinnvoll erachten.
       </Text>
     </ScrollView>
   );

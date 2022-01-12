@@ -6,13 +6,16 @@ const baseUrl = 'http://203.190.153.22:1639/api/v1';
 
 const initialState = {
   getAllSearch: [],
+  error: [],
+  loading: false,
+  searchSuccess: '',
 };
 
 export const saveSearch = createAsyncThunk(
   'saveSearch',
   async (data, {rejectWithValue}) => {
-    console.log(data, 'search data');
     const token = await AsyncStorage.getItem('token');
+
     try {
       const response = await axios({
         method: 'post',
@@ -25,16 +28,15 @@ export const saveSearch = createAsyncThunk(
           group_language: data.groupLanguage,
         },
       });
-      console.log(response, 'saveSearch Response');
-      return response;
+
+      return response.status;
     } catch (err) {
-      console.log(err.response, 'saveSearch Error');
       return rejectWithValue(Object.values(err.response.data));
     }
   },
 );
 export const getSearch = createAsyncThunk(
-  'saveSearch',
+  'getSearch',
   async (data, {rejectWithValue}) => {
     const token = await AsyncStorage.getItem('token');
     try {
@@ -43,17 +45,16 @@ export const getSearch = createAsyncThunk(
         headers: {Authorization: `Bearer ${token}`},
         url: `${baseUrl}/favourite-search`,
       });
-      console.log(response, 'getSearch Response');
-      return response;
+
+      return response.data.results;
     } catch (err) {
-      console.log(err.response, 'getSearch Error');
       return rejectWithValue(Object.values(err.response.data));
     }
   },
 );
 
 export const deleteSearch = createAsyncThunk(
-  'saveSearch',
+  'deleteSearch',
   async (data, {rejectWithValue}) => {
     const token = await AsyncStorage.getItem('token');
     try {
@@ -62,10 +63,9 @@ export const deleteSearch = createAsyncThunk(
         headers: {Authorization: `Bearer ${token}`},
         url: `${baseUrl}/favourite-search/${data}`,
       });
-      console.log(response, 'deleteSearch Response');
-      return response;
+
+      return data;
     } catch (err) {
-      console.log(err.response, 'deleteSearch Error');
       return rejectWithValue(Object.values(err.response.data));
     }
   },
@@ -79,6 +79,7 @@ export const SearchReducer = createSlice({
     [saveSearch.fulfilled]: (state, action) => {
       state.categoryArray = action.payload;
       state.loading = false;
+      state.searchSuccess = 'success';
     },
     [saveSearch.pending]: (state, action) => {
       state.loading = true;
@@ -102,6 +103,10 @@ export const SearchReducer = createSlice({
     },
     [deleteSearch.fulfilled]: (state, action) => {
       state.loading = false;
+      state.getAllSearch.splice(
+        state.getAllSearch.findIndex(el => el.id === action.payload),
+        1,
+      );
     },
     [deleteSearch.pending]: (state, action) => {
       state.loading = true;
@@ -113,3 +118,5 @@ export const SearchReducer = createSlice({
     },
   },
 });
+
+export default SearchReducer.reducer;

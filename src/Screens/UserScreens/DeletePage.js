@@ -94,8 +94,6 @@ const DeletePage = () => {
     }
   };
 
-  console.log(selectedReason);
-
   return (
     <ScrollView
       contentContainerStyle={{paddingBottom: 100}}

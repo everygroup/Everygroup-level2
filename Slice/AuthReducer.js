@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorageLib from '@react-native-async-storage/async-storage';
 
 const baseUrl = 'http://203.190.153.22:1639/api/v1';
 
@@ -26,6 +27,7 @@ export const signInUser = createAsyncThunk(
         },
       });
 
+      await AsyncStorageLib.setItem('token', response.data.access);
       return response.data;
     } catch (err) {
       return rejectWithValue(Object.values(err.response.data).toString());

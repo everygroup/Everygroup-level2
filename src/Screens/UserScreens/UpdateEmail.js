@@ -33,7 +33,6 @@ const UpdateEmail = () => {
   };
 
   const {error, loading, value} = useSelector(state => {
-    console.log(state.changeProfile, 'upate ');
     return state.changeProfile;
   });
 

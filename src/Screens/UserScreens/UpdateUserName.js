@@ -30,7 +30,6 @@ const UpdateUserName = () => {
   };
 
   const {error, loading, value} = useSelector(state => {
-    console.log(state.changeProfile);
     return state.changeProfile;
   });
 

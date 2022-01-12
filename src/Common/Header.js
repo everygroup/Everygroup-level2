@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import {
   View,
   Image,
@@ -15,7 +15,7 @@ import Search from './HeaderPages/Search';
 import {useNavigation} from '@react-navigation/native';
 const {width, height} = Dimensions.get('window');
 
-const Header = () => {
+const Header = ({selectionOption, closeAddGroup}) => {
   const navigation = useNavigation();
   const [opacity] = useState(new Animated.Value(1));
   const [starValue, setStarValue] = useState(false);
@@ -34,12 +34,11 @@ const Header = () => {
 
   const startAnimation = () => {
     menuIconPress('search');
-    // Animated.timing(opacity, {
-    //   toValue: 0,
-    //   duration: 300,
-    //   useNativeDriver: false,
-    // }).start();
   };
+
+  const callback = useCallback(value => {
+    menuIconPress('');
+  }, []);
 
   return (
     <View
@@ -51,7 +50,7 @@ const Header = () => {
             ? height
             : currentSelectedOption == 'search'
             ? 135
-            : currentSelectedOption == 'plus'
+            : currentSelectedOption == 'plus' || selectionOption
             ? height
             : 59,
         width: '100%',
@@ -90,18 +89,25 @@ const Header = () => {
             top: 15,
             justifyContent: 'space-between',
           }}>
-          <TouchableOpacity
-            style={styles.iconContainer}
-            onPress={() => menuIconPress('plus')}>
-            {currentSelectedOption == 'plus' ? (
+          {currentSelectedOption == 'plus' || selectionOption == 'plus' ? (
+            <TouchableOpacity
+              style={styles.iconContainer}
+              onPress={closeAddGroup}>
               <Icons name="close-a" size={20} color="#EF3E36" />
-            ) : (
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={styles.iconContainer}
+              onPress={() => {
+                menuIconPress('plus');
+              }}>
               <Image
                 source={require('../Assets/Images/plus.png')}
                 style={{height: 31, width: 31, resizeMode: 'contain'}}
               />
-            )}
-          </TouchableOpacity>
+            </TouchableOpacity>
+          )}
+
           <TouchableWithoutFeedback
             style={[styles.iconContainer, opacity]}
             onPress={startAnimation}>
@@ -133,7 +139,7 @@ const Header = () => {
       </View>
       {currentSelectedOption == 'menu' ? (
         <Menu onPressMenu={() => setSelectedOption('')} />
-      ) : currentSelectedOption == 'plus' ? (
+      ) : currentSelectedOption == 'plus' || selectionOption == 'plus' ? (
         <View style={{paddingTop: '5%'}}>
           <AddGroup />
         </View>
@@ -144,6 +150,7 @@ const Header = () => {
             starValue={starValue}
             filterPress={() => setFilterValue(!filterValue)}
             filterValue={filterValue}
+            parentCallBack={callback}
           />
         </View>
       ) : null}

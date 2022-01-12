@@ -30,7 +30,6 @@ const CheckPassword = ({route}) => {
   };
 
   const {loading, error, value} = useSelector(state => {
-    console.log(state.changeProfile, 'checkpage');
     return state.check;
   });
 

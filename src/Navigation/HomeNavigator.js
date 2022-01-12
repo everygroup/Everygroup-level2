@@ -11,6 +11,7 @@ import Contact from '../Screens/HelpScreens/Contact';
 import GroupDetail from '../Screens/HomeScreen/GroupDetail';
 import OtherUserScreen from '../Screens/HomeScreen/OtherUserScreen';
 import EditGroup from '../Screens/UserScreens/EditGroup';
+import SearchScreen from '../Screens/HomeScreen/SearchScreen';
 const HomeStackScreen = createStackNavigator();
 
 export const HomeNavigator = () => {
@@ -23,6 +24,11 @@ export const HomeNavigator = () => {
       <HomeStackScreen.Screen
         name="Dashboard"
         component={Dashboard}
+        options={{gestureEnabled: false}}
+      />
+      <HomeStackScreen.Screen
+        name="SearchScreen"
+        component={SearchScreen}
         options={{gestureEnabled: false}}
       />
 

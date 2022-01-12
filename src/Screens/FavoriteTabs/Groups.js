@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, FlatList} from 'react-native';
+import {View, FlatList} from 'react-native';
 import GroupCard from '../../Common/GroupCard';
 
 const Groups = () => {

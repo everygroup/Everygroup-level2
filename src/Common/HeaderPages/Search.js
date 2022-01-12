@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -14,14 +14,27 @@ import SwitchToggle from 'react-native-switch-toggle';
 import {ScrollView} from 'react-native-gesture-handler';
 import InfoModal from '../InfoModal';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {getLanguage} from '../../../Slice/LanguageReducer';
 import {saveSearch} from '../../../Slice/SearchReducer';
+import {getSearchResult} from '../../../Slice/SearchResultReducer';
+import AdultModal from '../AdultModal';
+import AsyncStorageLib from '@react-native-async-storage/async-storage';
 
-const Search = ({starPress, starValue, filterValue, filterPress}) => {
+const Search = ({
+  starPress,
+  starValue,
+  filterValue,
+  filterPress,
+  parentCallBack,
+}) => {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
+  const [_18modal, set18Modal] = useState(false);
   const [query, setQuery] = useState('');
   const [searchedLanguage, setSearchedLanguage] = useState('');
+
   const [selectedLanguage, setSelectedLanguage] = useState([]);
   const [modalValue, setModalValue] = useState(false);
   const [infoMessage, setInfoMessage] = useState(
@@ -33,7 +46,7 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
   const [switchOn, setSwitchOn] = useState(true);
   const [messangerData] = useState([
     'Telegram',
-    'Whatsapp',
+    'whatsapp',
     'Discord',
     'Viber',
     'Snapchat',
@@ -48,6 +61,10 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
     return state.getCategory;
   });
 
+  const {error, loading, searchSuccess} = useSelector(state => {
+    return state.SearchReducer;
+  });
+
   const selectMessenger = item => {
     if (selectedMessenger.some(messenger => messenger == item)) {
       setSelectedMessenger(selectedMessenger.filter(el => el !== item));
@@ -56,8 +73,8 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
     }
   };
   const selectCategory = item => {
-    if (selectedCategory.some(category => category == item)) {
-      setSelectedCategory(selectedCategory.filter(el => el !== item));
+    if (selectedCategory.some(el => el.slug == item.slug)) {
+      setSelectedCategory(selectedCategory.filter(el => el.slug !== item.slug));
     } else {
       setSelectedCategory(prevValue => [...prevValue, item]);
     }
@@ -92,7 +109,6 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
   };
 
   const searchSave = () => {
-    console.log(selectedLanguage, 'lang');
     const category = selectedCategory.map(({category, ...rest}) => ({
       ...rest,
     }));
@@ -111,15 +127,51 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
       }),
     );
   };
+  const getResult = async () => {
+    const category = await selectedCategory.map(({category, ...rest}) => ({
+      ...rest,
+    }));
+    const shortCategory = await category.map(el => el.slug);
+    const language = selectedLanguage.map(({language, ...rest}) => ({
+      ...rest,
+    }));
+    const shortLanguage = language.map(el => el.code);
+    await dispatch(
+      getSearchResult({query, selectedMessenger, shortCategory, shortLanguage}),
+    );
+    navigation.navigate('SearchScreen');
+    parentCallBack('rohit');
+  };
 
-  // console.log(languageArray, 'lang array');
+  useEffect(async () => {
+    getSystemLanguage();
+  }, [getSystemLanguage]);
+
+  const getSystemLanguage = async () => {
+    const lang = await AsyncStorageLib.getItem('systemLang');
+    if (lang == 'en') {
+      setSelectedLanguage(prevValue => [
+        ...prevValue,
+        {code: lang, language: 'English'},
+      ]);
+    }
+  };
 
   return (
     <View style={{flex: 1, top: 20}}>
+      {error.length > 0 ? alert(error) : null}
       <InfoModal
         modalValue={modalValue}
         message={infoMessage}
         closeModal={() => setModalValue(false)}
+      />
+      <AdultModal
+        modalValue={_18modal}
+        message={'Bist du wirklich 18 Jahre alt?'}
+        closeModal={() => set18Modal(false)}
+        _18Press={() => {
+          selectCategory({category: '18', slug: '18'}), set18Modal(false);
+        }}
       />
       <View
         style={{
@@ -155,7 +207,7 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
           onChangeText={text => setQuery(text)}
         />
         <View style={{left: 5, top: 8}}>
-          {starValue ? (
+          {searchSuccess == 'success' ? (
             <TouchableWithoutFeedback onPress={starPress}>
               <Image
                 source={require('../../Assets/Images/starFill.png')}
@@ -308,20 +360,42 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
           </View>
           <View style={{width: '100%', alignItems: 'center'}}>
             {categoryArray.some(el => el.slug == '18') ? (
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Image
-                  source={require('../../Assets/Images/18plus.png')}
-                  style={{
-                    height: 35,
-                    width: 35,
-                    resizeMode: 'contain',
-                    marginVertical: 10,
-                  }}
-                />
-                <Image
-                  source={require('../../Assets/Images/redi.png')}
-                  style={{height: 18, width: 18, left: 5}}
-                />
+              <View style={{height: 40}}>
+                {selectedCategory.some(el => el.slug == '18') ? (
+                  <TouchableOpacity
+                    onPress={() =>
+                      selectCategory({category: '18', slug: '18'})
+                    }>
+                    <Text
+                      style={{
+                        fontSize: 17,
+                        fontFamily: FontStyle.MontBold,
+                        color: '#EF3E36',
+                        textDecorationLine: 'underline',
+                        top: 20,
+                      }}>
+                      18+
+                    </Text>
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    onPress={() => set18Modal(true)}
+                    style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <Image
+                      source={require('../../Assets/Images/18plus.png')}
+                      style={{
+                        height: 35,
+                        width: 35,
+                        resizeMode: 'contain',
+                        marginVertical: 10,
+                      }}
+                    />
+                    <Image
+                      source={require('../../Assets/Images/redi.png')}
+                      style={{height: 18, width: 18, left: 5}}
+                    />
+                  </TouchableOpacity>
+                )}
               </View>
             ) : null}
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -462,16 +536,7 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
                 }}
               />
             </View>
-            <View
-              style={{
-                height: 50,
-                width: 140,
-                backgroundColor: '#205072',
-                alignItems: 'center',
-                justifyContent: 'space-around',
-                borderRadius: 10,
-                flexDirection: 'row',
-              }}>
+            <TouchableOpacity onPress={getResult} style={styles.buttonView}>
               <Text
                 style={{
                   fontFamily: FontStyle.MontSemiBold,
@@ -484,7 +549,7 @@ const Search = ({starPress, starValue, filterValue, filterPress}) => {
                 source={require('../../Assets/Images/searchWhite.png')}
                 style={{height: 20, width: 20}}
               />
-            </View>
+            </TouchableOpacity>
           </View>
         </KeyboardAwareScrollView>
       ) : null}
@@ -527,6 +592,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     paddingHorizontal: 2.5,
+  },
+  buttonView: {
+    height: 50,
+    width: 140,
+    backgroundColor: '#205072',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    borderRadius: 10,
+    flexDirection: 'row',
   },
 });
 

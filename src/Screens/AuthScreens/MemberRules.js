@@ -66,11 +66,14 @@ const MemberRule = () => {
         Kontakt zur Beratungsstelle der Polizei
       </Text>
       <Text style={styles.descriptionText}>
-        www.polizei-beratung.de/kontakt/ Mit der Nutzung von everygroup
-        versprichst du uns, dich an den Verhaltenskodex zu halten. Solltest du
-        dich nicht an den Verhaltenskodex halten, werden wir deinen Account
-        temporär Blockieren oder eine vollständige Löschung deines Accounts
-        einleiten oder andere Schritte einleiten, die wir für Sinnvoll erachten.
+        www.polizei-beratung.de/kontakt/
+      </Text>
+      <Text style={[styles.descriptionText, {marginTop: '5%'}]}>
+        Mit der Nutzung von everygroup versprichst du uns, dich an den
+        Verhaltenskodex zu halten. Solltest du dich nicht an den Verhaltenskodex
+        halten, werden wir deinen Account temporär Blockieren oder eine
+        vollständige Löschung deines Accounts einleiten oder andere Schritte
+        einleiten, die wir für Sinnvoll erachten.
       </Text>
     </ScrollView>
   );

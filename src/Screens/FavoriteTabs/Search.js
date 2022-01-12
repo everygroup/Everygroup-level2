@@ -1,40 +1,38 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, FlatList} from 'react-native';
 import SearchCard from '../../Common/SearchCard';
+import {useSelector, useDispatch} from 'react-redux';
+import {getSearch, deleteSearch} from '../../../Slice/SearchReducer';
 
 const Search = () => {
-  const [searchData, setSearchData] = useState([
-    {
-      id: '0',
-      searchTerm: 'Nordsee Gruppe',
-      Messenger: 'Alle',
-      category: 'Alle',
-      language: 'Alle',
-      notification: true,
-    },
-    {
-      id: '1',
-      searchTerm: 'Kein Suchbegriff',
-      Messenger: 'Discord, Snapchat, WhatsApp, Telegram',
-      category:
-        'Unterhaltung, Dienstleistung, Allgemein, Interessen, Musik, Umgebung, Tiere, Kunst',
-      language: 'Deutsch, Spanisch, Türkisch, Englisch, Norwegisch, Französich',
-      notification: false,
-    },
-  ]);
+  const dispatch = useDispatch();
 
-  const onPress = (id, currentValue) => {};
+  useEffect(() => {
+    dispatch(getSearch());
+  }, [getAllSearch]);
+
+  const {getAllSearch} = useSelector(state => {
+    return state.SearchReducer;
+  });
+
+  const deleteSearchData = searchId => {
+    dispatch(deleteSearch(searchId));
+  };
+
+  const bellPress = id => {};
+
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <FlatList
         contentContainerStyle={{paddingBottom: 100}}
         showsVerticalScrollIndicator={false}
-        data={searchData}
+        data={getAllSearch}
         renderItem={({item: data}) => {
           return (
             <SearchCard
               data={data}
-              onPress={() => onPress(data.id, data.notification)}
+              onPress={() => deleteSearchData(data.id)}
+              bellPress={() => bellPress(data.id)}
             />
           );
         }}

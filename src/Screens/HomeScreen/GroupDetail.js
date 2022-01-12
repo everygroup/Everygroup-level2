@@ -9,7 +9,7 @@ import {
   FlatList,
 } from 'react-native';
 import Header from '../../Common/Header';
-import {useNavigation} from '@react-navigation/core';
+import {useNavigation} from '@react-navigation/native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import LinearGradient from 'react-native-linear-gradient';
 import SmallCard from '../../Common/SmallCard';
@@ -60,12 +60,14 @@ const GroupDetail = ({route}) => {
 
   useEffect(() => {
     dispatch(getGroupDetail(groupId));
+    console.log(groupId, 'groupid');
   }, []);
 
   const {groupDetail, error, loading} = useSelector(state => {
+    console.log(state.GroupDetailReducer, 'rohit aroar');
     return state.GroupDetailReducer;
   });
-  console.log(groupDetail, 'deeee');
+  console.log(groupDetail, 'deteil');
   return (
     <View style={{paddingTop: '21%', height: '100%', backgroundColor: '#fff'}}>
       <Header />
@@ -189,9 +191,7 @@ const GroupDetail = ({route}) => {
               <LinearGradient
                 colors={['#FFA420', '#FE7027']}
                 style={[styles.linearGradient]}>
-                <Text style={styles.buttonText}>
-                  {groupDetail.groupOwnerName}
-                </Text>
+                <Text style={styles.buttonText}>{}</Text>
               </LinearGradient>
             </TouchableOpacity>
           </View>

@@ -4,7 +4,7 @@ import FontStyle from '../Assets/Fonts/FontStyle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Icons from 'react-native-vector-icons/Ionicons';
 
-const SearchCard = ({data, onPress}) => {
+const SearchCard = ({data, onPress, bellPress}) => {
   return (
     <View>
       <View style={styles.containerStyle}>
@@ -19,19 +19,40 @@ const SearchCard = ({data, onPress}) => {
               onPress={onPress}
             />
           </View>
-          <Text style={styles.descriptionText}>{data.searchTerm}</Text>
+          <Text style={styles.descriptionText}>{data.query}</Text>
         </View>
         <View style={styles.spacing}>
           <Text style={styles.titleText}>Messenger:</Text>
-          <Text style={styles.descriptionText}>{data.Messenger}</Text>
+          <FlatList
+            listKey="1.1"
+            numColumns={4}
+            data={data.group_type}
+            renderItem={({item}) => {
+              return <Text style={styles.descriptionText}>{item},</Text>;
+            }}
+          />
         </View>
         <View style={styles.spacing}>
           <Text style={styles.titleText}>Kategorie:</Text>
-          <Text style={styles.descriptionText}>{data.category}</Text>
+          <FlatList
+            listKey="1.2"
+            numColumns={4}
+            data={data.group_category}
+            renderItem={({item}) => {
+              return <Text style={styles.descriptionText}>{item},</Text>;
+            }}
+          />
         </View>
         <View style={styles.spacing}>
           <Text style={styles.titleText}>Sprache:</Text>
-          <Text style={styles.descriptionText}>{data.language}</Text>
+          <FlatList
+            listKey="1.3"
+            numColumns={4}
+            data={data.group_language}
+            renderItem={({item}) => {
+              return <Text style={styles.descriptionText}>{item},</Text>;
+            }}
+          />
         </View>
         <View
           style={{
@@ -49,7 +70,7 @@ const SearchCard = ({data, onPress}) => {
             color="#205072"
             solid
             size={24}
-            onPress={onPress}
+            bellPress={bellPress}
           />
         </View>
       </View>

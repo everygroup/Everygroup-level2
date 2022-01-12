@@ -18,15 +18,19 @@ import InfoModal from '../InfoModal';
 import {HelperText} from 'react-native-paper';
 import Styles from '../../Screens/UserScreens/Style';
 import {useDispatch, useSelector} from 'react-redux';
-
+import {useNavigation} from '@react-navigation/native';
 import {getLanguage} from '../../../Slice/LanguageReducer';
-import {updateRememberSnapChat} from '../../../Slice/AuthReducer';
+import {registerUser, updateRememberSnapChat} from '../../../Slice/AuthReducer';
 import {createGroup} from '../../../Slice/CreateGroupReducer';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import SnapChatModal from './SnapChatModal';
+import LoadingModal from '../LoadingModal';
+import {resetErroLoading} from '../../../Slice/CreateGroupReducer';
 
 const AddGroup = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const [createLoading, setcreateLoading] = useState(false);
   const [joinedLanguage, setJoinedLanguage] = useState('');
   const [spokenLanguage, setSpokenLanguage] = useState('');
   const [snapChatModal, setSnapChatModal] = useState(false);
@@ -47,14 +51,15 @@ const AddGroup = () => {
 
   const [categoryError, setCategoryError] = useState(false);
   const [categoryErrorMessage, setCategoryErrorMessage] = useState('');
-
+  const [hashText, setHashText] = useState('');
+  const [hashError, setHashError] = useState(false);
+  const [hashErrorMessage, setHashErrorMessage] = useState('');
   const [groupLink, setGroupLink] = useState('');
   const [spokenError, setSpokenError] = useState(false);
   const [spokenErrorMessage, setSpokenErrorMessage] = useState('');
   const [groupLinkError, setGroupLinkError] = useState(false);
   const [groupLinkMessage, setGroupLinkMessage] = useState('');
   const [hashValue, setHashValue] = useState(['latest']);
-  const [hashError, setHashError] = useState(false);
   const [checkedTerms, setCheckedTerms] = useState(false);
   const [checkedConductRules, setConductRules] = useState(false);
   const [expand, setExpand] = useState(false);
@@ -86,6 +91,12 @@ const AddGroup = () => {
     } else if (description.length > 315) {
       setDescriptionError(true);
       setDescriptionErrorMessage('Maximal 315 Zeichen');
+    } else if (hashText == '#') {
+      setHashError(true);
+      setHashErrorMessage('Hashtag nicht gültig');
+    } else if (hashText.length > 41) {
+      setHashError(true);
+      setHashErrorMessage('Maximal 40 Zeichen');
     } else if (selectedLanguage.length < 1) {
       setSpokenError(true);
       setSpokenErrorMessage('Wähle eine Sprache');
@@ -103,19 +114,23 @@ const AddGroup = () => {
   };
 
   const CreateGroup = () => {
-    dispatch(
-      createGroup({
-        titel,
-        groupLink,
-        selectedCategory,
-        description,
-        hashValue,
-        selectedLanguage,
-        joinLanguage,
-        checkedTerms,
-        checkedConductRules,
-      }),
-    );
+    const hashArray = hashText.split(' ');
+    setcreateLoading(true);
+    setTimeout(() => {
+      dispatch(
+        createGroup({
+          titel,
+          groupLink,
+          selectedCategory,
+          description,
+          hashArray,
+          selectedLanguage,
+          joinLanguage,
+          checkedTerms,
+          checkedConductRules,
+        }),
+      );
+    }, 2000);
   };
 
   const {categoryArray} = useSelector(state => {
@@ -163,12 +178,6 @@ const AddGroup = () => {
     }
   };
 
-  const deviceLanguage =
-    Platform.OS === 'ios'
-      ? NativeModules.SettingsManager.settings.AppleLocale ||
-        NativeModules.SettingsManager.settings.AppleLanguages[0] // iOS 13
-      : NativeModules.I18nManager.localeIdentifier;
-
   const {languageArray} = useSelector(state => {
     return state.getLanguage;
   });
@@ -176,6 +185,13 @@ const AddGroup = () => {
     return state.user;
   });
 
+  const {errorLoading} = useSelector(state => {
+    console.log(state.createGroup, 'uuuuuu');
+    return state.createGroup;
+  });
+  useEffect(() => {
+    setcreateLoading(errorLoading);
+  }, [errorLoading]);
   const selectLanguage = item => {
     setSpokenLanguage(item);
   };
@@ -208,17 +224,7 @@ const AddGroup = () => {
       selectedLanguage.filter(el => el.language !== item.language),
     );
   };
-
-  const selectHashTag = text => {
-    console.log(text);
-  };
-
-  // const string = '#rohit adflkalsdfka#sdfgsdgsdfgsdfg';
-  // const regex = /\#\w{0,40}\s/gm;
-  // console.log(string.split(regex));
-  // const isExisting = regex.test(string);
-  // console.log(isExisting, 'reg');
-  console.log(spokenLanguage, 'error');
+  console.log(createLoading, 'createe loading');
   return (
     <KeyboardAwareScrollView
       extraScrollHeight={100}
@@ -230,6 +236,15 @@ const AddGroup = () => {
         alignSelf: 'center',
         paddingBottom: '15%',
       }}>
+      <LoadingModal
+        modalValue={createLoading}
+        navigationModal={() => {
+          dispatch(resetErroLoading()), navigation.navigate('MyGroup');
+        }}
+        closeModal={() => setcreateLoading(false)}
+        source={require('../../animationJson/loadingBar.json')}
+      />
+
       <InfoModal
         modalValue={modalValue}
         message={selectedInfo}
@@ -243,6 +258,7 @@ const AddGroup = () => {
         modalValue={snapChatModal}
         message="Hey, du lädst grade eine Snapchat Gruppe hoch. Bei Snapchat Gruppen kannst du keine Mitglieder rauswerfen. Bitte sei dir darüber bewusst, bevor du wirklich diese Gruppe hochlädst."
       />
+
       <Text
         style={{
           color: '#fff',
@@ -253,6 +269,7 @@ const AddGroup = () => {
         }}>
         Gruppe hinzufügen
       </Text>
+
       <View>
         <View style={Styles.errorContainer}>
           {titelError == true ? (
@@ -492,7 +509,7 @@ const AddGroup = () => {
         <View style={Styles.errorContainer}>
           {hashError == true ? (
             <HelperText style={[Styles.helperText, {left: '5%'}]} type="error">
-              Gruppentitel eingeben
+              {hashErrorMessage}
             </HelperText>
           ) : null}
         </View>
@@ -520,7 +537,9 @@ const AddGroup = () => {
             placeholderTextColor="#BECCD6"
             bgColor="#fff"
             bdWidth={0.1}
-            onChangeText={text => selectHashTag(text)}
+            onChangeText={text => {
+              setHashText(text), setHashError(false);
+            }}
           />
         </View>
       </View>
