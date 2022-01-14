@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import {
   View,
   Image,
@@ -7,22 +7,29 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   Animated,
-  Text,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import Icons from 'react-native-vector-icons/Fontisto';
 import AddGroup from './HeaderPages/AddGroup';
 import Menu from './HeaderPages/Menu';
 import Search from './HeaderPages/Search';
 import {useNavigation} from '@react-navigation/native';
+import * as Animatable from 'react-native-animatable';
+import Icon from 'react-native-vector-icons/AntDesign';
+
+const AnimatedIcon = Animatable.createAnimatableComponent(Icon);
 const {width, height} = Dimensions.get('window');
 
-const Header = () => {
+const Header = ({selectionOption, closeAddGroup}) => {
   const navigation = useNavigation();
+  const [liked, setLiked] = useState(false);
   const [opacity] = useState(new Animated.Value(1));
   const [starValue, setStarValue] = useState(false);
   const [filterValue, setFilterValue] = useState(false);
   const [currentSelectedOption, setSelectedOption] = useState('');
+
+  useEffect(() => {
+    setSelectedOption(selectionOption);
+  }, [selectionOption]);
 
   const menuIconPress = value => {
     if (value == '') {
@@ -34,13 +41,13 @@ const Header = () => {
     }
   };
 
-  const textPress = () => {
-    Animated.timing(opacity, {
-      toValue: 0,
-      duration: 3000,
-      useNativeDriver: false,
-    }).start();
+  const startAnimation = () => {
+    menuIconPress('search');
   };
+
+  const callback = useCallback(value => {
+    menuIconPress('');
+  }, []);
 
   return (
     <View
@@ -75,19 +82,12 @@ const Header = () => {
             width: '52%',
             height: '100%',
           }}>
-          <Text onPress={textPress}>rohit</Text>
-
-          {/* <Image
+          <TouchableOpacity onPress={() => navigation.navigate('Dashboard')}>
+            <Image
               source={require('../Assets/Images/whiteLogo.png')}
               style={{height: 31, width: 31, top: 15, left: 5}}
-            /> */}
-          <Animated.View
-            style={{
-              height: 50,
-              width: 50,
-              backgroundColor: 'red',
-              opacity,
-            }}></Animated.View>
+            />
+          </TouchableOpacity>
         </View>
 
         <View
@@ -98,22 +98,38 @@ const Header = () => {
             top: 15,
             justifyContent: 'space-between',
           }}>
-          <TouchableOpacity
-            style={styles.iconContainer}
-            onPress={() => menuIconPress('plus')}>
-            {currentSelectedOption == 'plus' ? (
+          {currentSelectedOption == 'plus' ? (
+            <TouchableOpacity
+              style={styles.iconContainer}
+              onPress={menuIconPress}>
               <Icons name="close-a" size={20} color="#EF3E36" />
-            ) : (
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={styles.iconContainer}
+              onPress={() => {
+                menuIconPress('plus');
+              }}>
               <Image
                 source={require('../Assets/Images/plus.png')}
                 style={{height: 31, width: 31, resizeMode: 'contain'}}
               />
-            )}
-          </TouchableOpacity>
-          <TouchableWithoutFeedback style={[styles.iconContainer]}>
+            </TouchableOpacity>
+          )}
+
+          <TouchableWithoutFeedback
+            style={[styles.iconContainer, opacity]}
+            onPress={startAnimation}>
+            {/* <Animated.View
+              style={{
+                height: 50,
+                width: 50,
+                backgroundColor: 'green',
+                opacity,
+              }}></Animated.View> */}
             <Animated.Image
               source={require('../Assets/Images/search.png')}
-              style={{height: 31, width: 31, resizeMode: 'contain'}}
+              style={{height: 31, width: 31, resizeMode: 'contain', opacity}}
             />
           </TouchableWithoutFeedback>
           <TouchableOpacity
@@ -143,6 +159,7 @@ const Header = () => {
             starValue={starValue}
             filterPress={() => setFilterValue(!filterValue)}
             filterValue={filterValue}
+            parentCallBack={callback}
           />
         </View>
       ) : null}

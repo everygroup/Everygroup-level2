@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   FlatList,
+  Animated,
 } from 'react-native';
 import Input from '../Input';
 import FontStyle from '../../Assets/Fonts/FontStyle';
@@ -17,19 +18,17 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {getLanguage} from '../../../Slice/LanguageReducer';
-import {saveSearch} from '../../../Slice/SearchReducer';
+import SearchReducer, {saveSearch} from '../../../Slice/SearchReducer';
 import {getSearchResult} from '../../../Slice/SearchResultReducer';
 import AdultModal from '../AdultModal';
 import AsyncStorageLib from '@react-native-async-storage/async-storage';
 
-const Search = ({
-  starPress,
-  starValue,
-  filterValue,
-  filterPress,
-  parentCallBack,
-}) => {
+import Icon from 'react-native-vector-icons/FontAwesome5';
+
+const Search = ({starPress, filterValue, filterPress, parentCallBack}) => {
   const navigation = useNavigation();
+  const [scale, setScale] = useState(new Animated.Value(0));
+  const [liked, setLiked] = useState(false);
   const dispatch = useDispatch();
   const [_18modal, set18Modal] = useState(false);
   const [query, setQuery] = useState('');
@@ -61,9 +60,32 @@ const Search = ({
     return state.getCategory;
   });
 
+  const triggerBouncy = () => {
+    setLiked(!liked);
+    Animated.spring(scale, {
+      toValue: 2,
+      friction: 3,
+      useNativeDriver: true,
+    }).start(() => {
+      scale.setValue(0);
+    });
+  };
+
+  const bouncyView = scale.interpolate({
+    inputRange: [0, 1, 2],
+    outputRange: [1, 0.8, 1],
+  });
+
   const {error, loading, searchSuccess} = useSelector(state => {
     return state.SearchReducer;
   });
+
+  useEffect(() => {
+    if (searchSuccess) {
+      triggerBouncy();
+    }
+    console.log(searchSuccess, 'rrrr');
+  }, [searchSuccess]);
 
   const selectMessenger = item => {
     if (selectedMessenger.some(messenger => messenger == item)) {
@@ -207,7 +229,12 @@ const Search = ({
           onChangeText={text => setQuery(text)}
         />
         <View style={{left: 5, top: 8}}>
-          {searchSuccess == 'success' ? (
+          <TouchableWithoutFeedback onPress={searchSave}>
+            <Animated.View style={{transform: [{scale: bouncyView}]}}>
+              <Icon name="star" size={30} color={'yellow'} solid={liked} />
+            </Animated.View>
+          </TouchableWithoutFeedback>
+          {/* {searchSuccess == 'success' ? (
             <TouchableWithoutFeedback onPress={starPress}>
               <Image
                 source={require('../../Assets/Images/starFill.png')}
@@ -221,7 +248,7 @@ const Search = ({
                 style={{height: 24, width: 24}}
               />
             </TouchableWithoutFeedback>
-          )}
+          )} */}
         </View>
       </View>
       {filterValue ? (

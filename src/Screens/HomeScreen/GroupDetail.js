@@ -22,19 +22,7 @@ const GroupDetail = ({route}) => {
   const navigation = useNavigation();
   const [bellValue, setBellValue] = useState(false);
   const [groupType] = useState('snapchat');
-  // const [groupDetail] = useState({
-  //   socialGroup: 'snapchat',
-  //   groupName: 'Nordsee Gruppe',
-  //   groupOwnerName: 'Superman',
-  //   groupLanguage: 'Deutsch',
-  //   groupHashtag: ['#test', '#test', '#test', '#test', '#test'],
-  //   groupDescription: 'Hey, wir sind eine nette Gruppe',
-  //   groupReport: false,
-  //   groupDevide: false,
-  //   favourite: false,
-  //   notification: false,
-  //   category: ['Meme', 'Interessen', 'Unterhaltung'],
-  // });
+
   const [otherGroup, setOtherGroup] = useState([
     {
       description: 'Eine coole Gruppe',

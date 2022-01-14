@@ -186,7 +186,6 @@ const AddGroup = () => {
   });
 
   const {errorLoading} = useSelector(state => {
-    console.log(state.createGroup, 'uuuuuu');
     return state.createGroup;
   });
   useEffect(() => {
@@ -224,7 +223,7 @@ const AddGroup = () => {
       selectedLanguage.filter(el => el.language !== item.language),
     );
   };
-  console.log(createLoading, 'createe loading');
+
   return (
     <KeyboardAwareScrollView
       extraScrollHeight={100}
@@ -242,7 +241,7 @@ const AddGroup = () => {
           dispatch(resetErroLoading()), navigation.navigate('MyGroup');
         }}
         closeModal={() => setcreateLoading(false)}
-        source={require('../../animationJson/loadingBar.json')}
+        source={require('../../Assets/animation/loadingBar.json')}
       />
 
       <InfoModal

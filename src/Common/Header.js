@@ -13,6 +13,7 @@ import AddGroup from './HeaderPages/AddGroup';
 import Menu from './HeaderPages/Menu';
 import Search from './HeaderPages/Search';
 import {useNavigation} from '@react-navigation/native';
+
 const {width, height} = Dimensions.get('window');
 
 const Header = ({selectionOption, closeAddGroup}) => {
@@ -21,6 +22,10 @@ const Header = ({selectionOption, closeAddGroup}) => {
   const [starValue, setStarValue] = useState(false);
   const [filterValue, setFilterValue] = useState(false);
   const [currentSelectedOption, setSelectedOption] = useState('');
+
+  useEffect(() => {
+    setSelectedOption(selectionOption);
+  }, [selectionOption]);
 
   const menuIconPress = value => {
     if (value == '') {
@@ -50,7 +55,7 @@ const Header = ({selectionOption, closeAddGroup}) => {
             ? height
             : currentSelectedOption == 'search'
             ? 135
-            : currentSelectedOption == 'plus' || selectionOption
+            : currentSelectedOption == 'plus'
             ? height
             : 59,
         width: '100%',
@@ -89,10 +94,10 @@ const Header = ({selectionOption, closeAddGroup}) => {
             top: 15,
             justifyContent: 'space-between',
           }}>
-          {currentSelectedOption == 'plus' || selectionOption == 'plus' ? (
+          {currentSelectedOption == 'plus' ? (
             <TouchableOpacity
               style={styles.iconContainer}
-              onPress={closeAddGroup}>
+              onPress={menuIconPress}>
               <Icons name="close-a" size={20} color="#EF3E36" />
             </TouchableOpacity>
           ) : (
@@ -139,7 +144,7 @@ const Header = ({selectionOption, closeAddGroup}) => {
       </View>
       {currentSelectedOption == 'menu' ? (
         <Menu onPressMenu={() => setSelectedOption('')} />
-      ) : currentSelectedOption == 'plus' || selectionOption == 'plus' ? (
+      ) : currentSelectedOption == 'plus' ? (
         <View style={{paddingTop: '5%'}}>
           <AddGroup />
         </View>

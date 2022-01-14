@@ -106,7 +106,8 @@ const SearchScreen = () => {
                 <Text
                   onPress={() => setSelectionOption('plus')}
                   style={{color: '#FFA420'}}>
-                  poste
+                  {' '}
+                  poste{' '}
                 </Text>
                 als Erster hier eine Gruppe!
               </Text>
