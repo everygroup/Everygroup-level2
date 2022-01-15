@@ -165,7 +165,7 @@ const Search = ({starPress, filterValue, filterPress, parentCallBack}) => {
     parentCallBack('rohit');
   };
 
-  useEffect(async () => {
+  useEffect(() => {
     getSystemLanguage();
   }, [getSystemLanguage]);
 
@@ -228,10 +228,10 @@ const Search = ({starPress, filterValue, filterPress, parentCallBack}) => {
           placeholderTextColor="#BECCD6"
           onChangeText={text => setQuery(text)}
         />
-        <View style={{left: 5, top: 8}}>
+        <View style={{left: 5, top: 4}}>
           <TouchableWithoutFeedback onPress={searchSave}>
             <Animated.View style={{transform: [{scale: bouncyView}]}}>
-              <Icon name="star" size={30} color={'yellow'} solid={liked} />
+              <Icon name="star" size={30} color={'#FFCC00'} solid={liked} />
             </Animated.View>
           </TouchableWithoutFeedback>
           {/* {searchSuccess == 'success' ? (

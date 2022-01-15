@@ -7,6 +7,8 @@ import {
   Image,
   StyleSheet,
   FlatList,
+  TouchableWithoutFeedback,
+  Animated,
 } from 'react-native';
 import Header from '../../Common/Header';
 import {useNavigation} from '@react-navigation/native';
@@ -15,10 +17,15 @@ import LinearGradient from 'react-native-linear-gradient';
 import SmallCard from '../../Common/SmallCard';
 import {useDispatch, useSelector} from 'react-redux';
 import {getGroupDetail} from '../../../Slice/GroupDetailReducer';
+import ReportModal from './ReportModal';
 
 const GroupDetail = ({route}) => {
   const {groupId} = route.params;
+
   const dispatch = useDispatch();
+  const [bouncy, setBouncy] = useState(new Animated.Value(0));
+  const [reportModal, setReportModal] = useState(false);
+  const [flagValue, setFlagValue] = useState(false);
   const navigation = useNavigation();
   const [bellValue, setBellValue] = useState(false);
   const [groupType] = useState('snapchat');
@@ -48,17 +55,43 @@ const GroupDetail = ({route}) => {
 
   useEffect(() => {
     dispatch(getGroupDetail(groupId));
-    console.log(groupId, 'groupid');
   }, []);
 
   const {groupDetail, error, loading} = useSelector(state => {
-    console.log(state.GroupDetailReducer, 'rohit aroar');
     return state.GroupDetailReducer;
   });
-  console.log(groupDetail, 'deteil');
+
+  const submitReport = () => {
+    setReportModal(false);
+    setTimeout(() => {
+      triggerBouncy();
+    }, 1000);
+  };
+
+  const triggerBouncy = () => {
+    setFlagValue(true);
+    Animated.spring(bouncy, {
+      toValue: 2,
+      friction: 3,
+      useNativeDriver: true,
+    }).start(() => {
+      bouncy.setValue(0);
+    });
+  };
+
+  const bouncyView = bouncy.interpolate({
+    inputRange: [0, 1, 2],
+    outputRange: [1, 0.8, 1],
+  });
+
   return (
     <View style={{paddingTop: '21%', height: '100%', backgroundColor: '#fff'}}>
       <Header />
+      <ReportModal
+        modalValue={reportModal}
+        closeModal={() => setReportModal(false)}
+        onPress={submitReport}
+      />
       <ScrollView showsVerticalScrollIndicator={false}>
         <LinearGradient
           colors={
@@ -175,11 +208,16 @@ const GroupDetail = ({route}) => {
               }}
             />
             <TouchableOpacity
-              onPress={() => navigation.navigate('OtherUserScreen')}>
+              onPress={() =>
+                navigation.navigate('OtherUserScreen', {
+                  otherUserId: groupDetail.user,
+                  otherUserName: groupDetail.owner_name,
+                })
+              }>
               <LinearGradient
                 colors={['#FFA420', '#FE7027']}
                 style={[styles.linearGradient]}>
-                <Text style={styles.buttonText}>{}</Text>
+                <Text style={styles.buttonText}>{groupDetail.owner_name}</Text>
               </LinearGradient>
             </TouchableOpacity>
           </View>
@@ -256,13 +294,25 @@ const GroupDetail = ({route}) => {
                 width: '80%',
                 alignSelf: 'center',
               }}>
-              <View style={{alignItems: 'center'}}>
-                <Image
-                  source={require('../../Assets/Images/flagBlue.png')}
-                  style={styles.imageStyleSecond}
-                />
-                <Text style={styles.textStyle}>Melden</Text>
-              </View>
+              <TouchableWithoutFeedback onPress={() => setReportModal(true)}>
+                <View style={{alignItems: 'center'}}>
+                  {flagValue ? (
+                    <Animated.View style={{transform: [{scale: bouncyView}]}}>
+                      <Image
+                        source={require('../../Assets/Images/flagRed.png')}
+                        style={styles.imageStyleSecond}
+                      />
+                    </Animated.View>
+                  ) : (
+                    <Image
+                      source={require('../../Assets/Images/flagBlue.png')}
+                      style={styles.imageStyleSecond}
+                    />
+                  )}
+
+                  <Text style={styles.textStyle}>Melden</Text>
+                </View>
+              </TouchableWithoutFeedback>
               <View style={styles.verticalLine} />
               <View style={{alignItems: 'center'}}>
                 <Image

@@ -4,9 +4,16 @@ import FontStyle from '../../Assets/Fonts/FontStyle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useNavigation} from '@react-navigation/native';
 import Icons from 'react-native-vector-icons/Ionicons';
+import {useDispatch, useSelector} from 'react-redux';
+import {deleteFavouriteUser} from '../../../Slice/FavouriteUserReducer';
 
 const PersonCard = ({data}) => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
+
+  const deleteUser = personId => {
+    dispatch(deleteFavouriteUser(personId));
+  };
   return (
     <View style={styles.containerStyle}>
       <View style={{flex: 0.5}}>
@@ -20,7 +27,7 @@ const PersonCard = ({data}) => {
             paddingHorizontal: '2.5%',
             paddingTop: '2.5%',
           }}
-          onPress={() => alert('delete')}
+          onPress={() => deleteUser(data.favourite_user_id)}
         />
         <TouchableOpacity
           onPress={() => navigation.navigate('OtherUserScreen')}>
@@ -31,7 +38,7 @@ const PersonCard = ({data}) => {
               color: '#205072',
               padding: '2.5%',
             }}>
-            {data.userName}
+            {data.username}
           </Text>
         </TouchableOpacity>
       </View>
@@ -46,7 +53,7 @@ const PersonCard = ({data}) => {
         }}>
         <Text style={styles.notificationText}>Benachrichtigung</Text>
         <Icon
-          name={data.notificationValue ? 'bell' : 'bell-slash'}
+          name={data.notification ? 'bell' : 'bell-slash'}
           color="#205072"
           solid
           size={24}
