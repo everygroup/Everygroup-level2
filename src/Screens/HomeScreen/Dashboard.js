@@ -19,6 +19,7 @@ import {useNavigation} from '@react-navigation/native';
 import {getCategory} from '../../../Slice/CategoryReducer';
 import {useSelector, useDispatch} from 'react-redux';
 import AsyncStorageLib from '@react-native-async-storage/async-storage';
+import {getAllGroup} from '../../../Slice/AllGroupListReducer';
 
 const {width, height} = Dimensions.get('screen');
 const Dashboard = () => {
@@ -26,55 +27,6 @@ const Dashboard = () => {
   const navigation = useNavigation();
   const flatListRef = useRef(2);
   const [groupArray] = useState([
-    {
-      groupName: 'Nordsee Gruppe',
-      category: ['Dienstleistungen', 'Interessen', 'Unterhaltung'],
-      hashtagData: ['#test', '#test', '#test', '#test', '#test'],
-      description: 'Hey, wir sind eine nette Gruppe',
-      group_type: 'snapchat',
-    },
-    {
-      groupName: 'Nordsee Gruppe',
-      category: ['Dienstleistungen', 'Interessen', 'Unterhaltung'],
-      hashtagData: ['#test', '#test', '#test', '#test', '#test'],
-      description: 'Hey, wir sind eine nette Gruppe',
-      group_type: 'whatsapp',
-    },
-    {
-      groupName: 'Nordsee Gruppe',
-      category: ['Dienstleistungen', 'Interessen', 'Unterhaltung'],
-      hashtagData: ['#test', '#test', '#test', '#test', '#test'],
-      description: 'Hey, wir sind eine nette Gruppe',
-      group_type: 'line',
-    },
-    {
-      groupName: 'Nordsee Gruppe',
-      category: ['Dienstleistungen', 'Interessen', 'Unterhaltung'],
-      hashtagData: ['#test', '#test', '#test', '#test', '#test'],
-      description: 'Hey, wir sind eine nette Gruppe',
-      group_type: 'telegram',
-    },
-    {
-      groupName: 'Nordsee Gruppe',
-      category: ['Dienstleistungen', 'Interessen', 'Unterhaltung'],
-      hashtagData: ['#test', '#test', '#test', '#test', '#test'],
-      description: 'Hey, wir sind eine nette Gruppe',
-      group_type: 'snapchat',
-    },
-    {
-      groupName: 'Nordsee Gruppe',
-      category: ['Dienstleistungen', 'Interessen', 'Unterhaltung'],
-      hashtagData: ['#test', '#test', '#test', '#test', '#test'],
-      description: 'Hey, wir sind eine nette Gruppe',
-      group_type: 'whatsapp',
-    },
-    {
-      groupName: 'Nordsee Gruppe',
-      category: ['Dienstleistungen', 'Interessen', 'Unterhaltung'],
-      hashtagData: ['#test', '#test', '#test', '#test', '#test'],
-      description: 'Hey, wir sind eine nette Gruppe',
-      group_type: 'line',
-    },
     {
       groupName: 'Nordsee Gruppe',
       category: ['Dienstleistungen', 'Interessen', 'Unterhaltung'],
@@ -113,6 +65,7 @@ const Dashboard = () => {
       : NativeModules.I18nManager.localeIdentifier;
 
   useEffect(() => {
+    dispatch(getAllGroup());
     AsyncStorageLib.setItem(
       'systemLang',
       Platform.OS === 'ios'
@@ -125,11 +78,11 @@ const Dashboard = () => {
   }, []);
 
   // Redux code
-  const {name, alignItems, status} = useSelector(state => {
-    return state;
+  const {groupData, error, loading} = useSelector(state => {
+    return state.AllGroupListReducer;
   });
   //////////////////////////////
-
+  console.log(groupData, 'gro data');
   return (
     <View
       style={{
@@ -214,7 +167,7 @@ const Dashboard = () => {
             Neu hinzugefügt
           </Text>
           <ScrollView style={{paddingBottom: 20}}>
-            {groupArray.map(group => {
+            {groupData.map(group => {
               return <GroupCard group={group} />;
             })}
           </ScrollView>

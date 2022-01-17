@@ -15,8 +15,8 @@
 		1EE8E82F806C4321A7C9D6C0 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 15AB641C84BC457ABB98975E /* FontAwesome5_Regular.ttf */; };
 		1F15ABBA2761EB38003119FE /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1F15ABB92761EB38003119FE /* Montserrat-Regular.ttf */; };
 		1F1FE95327609773006F4136 /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1F1FE95227609772006F4136 /* Poppins-Bold.ttf */; };
+		1F38E3A327959D3000D7B7CB /* Futura-PT-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1F38E3A227959D3000D7B7CB /* Futura-PT-Bold.ttf */; };
 		1F829C32275A505B00E21328 /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1F829C31275A505B00E21328 /* Poppins-Medium.ttf */; };
-		1F829C35275A597E00E21328 /* Futura PT Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1F829C33275A597E00E21328 /* Futura PT Bold.ttf */; };
 		1F829C36275A597E00E21328 /* Montserrat-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1F829C34275A597E00E21328 /* Montserrat-ExtraBold.ttf */; };
 		1FDE89CB275B353200F186D0 /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1FDE89C8275B353200F186D0 /* Montserrat-Medium.ttf */; };
 		1FDE89CC275B353200F186D0 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1FDE89C9275B353200F186D0 /* Montserrat-Bold.ttf */; };
@@ -66,8 +66,8 @@
 		15AB641C84BC457ABB98975E /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		1F15ABB92761EB38003119FE /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Montserrat-Regular.ttf"; path = "../src/Assets/Fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		1F1FE95227609772006F4136 /* Poppins-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Poppins-Bold.ttf"; path = "../src/Assets/Fonts/Poppins-Bold.ttf"; sourceTree = "<group>"; };
+		1F38E3A227959D3000D7B7CB /* Futura-PT-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Futura-PT-Bold.ttf"; path = "../src/Assets/Fonts/Futura-PT-Bold.ttf"; sourceTree = "<group>"; };
 		1F829C31275A505B00E21328 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Poppins-Medium.ttf"; path = "../src/Assets/Fonts/Poppins-Medium.ttf"; sourceTree = "<group>"; };
-		1F829C33275A597E00E21328 /* Futura PT Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Futura PT Bold.ttf"; path = "../src/Assets/Fonts/Futura PT Bold.ttf"; sourceTree = "<group>"; };
 		1F829C34275A597E00E21328 /* Montserrat-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Montserrat-ExtraBold.ttf"; path = "../src/Assets/Fonts/Montserrat-ExtraBold.ttf"; sourceTree = "<group>"; };
 		1FDE89C8275B353200F186D0 /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Montserrat-Medium.ttf"; path = "../src/Assets/Fonts/Montserrat-Medium.ttf"; sourceTree = "<group>"; };
 		1FDE89C9275B353200F186D0 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Montserrat-Bold.ttf"; path = "../src/Assets/Fonts/Montserrat-Bold.ttf"; sourceTree = "<group>"; };
@@ -139,10 +139,10 @@
 				1F15ABB92761EB38003119FE /* Montserrat-Regular.ttf */,
 				1FFBD9302782FF9E000D4A68 /* Montserrat-MediumItalic.ttf */,
 				1F1FE95227609772006F4136 /* Poppins-Bold.ttf */,
+				1F38E3A227959D3000D7B7CB /* Futura-PT-Bold.ttf */,
 				1FDE89C9275B353200F186D0 /* Montserrat-Bold.ttf */,
 				1FDE89C8275B353200F186D0 /* Montserrat-Medium.ttf */,
 				1FDE89CA275B353200F186D0 /* Montserrat-SemiBold.ttf */,
-				1F829C33275A597E00E21328 /* Futura PT Bold.ttf */,
 				1F829C34275A597E00E21328 /* Montserrat-ExtraBold.ttf */,
 				1F829C31275A505B00E21328 /* Poppins-Medium.ttf */,
 				1FE907E22757566B009C25C1 /* Fonts */,
@@ -329,7 +329,7 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				F44B50C143CB4D92AC5E9B73 /* AntDesign.ttf in Resources */,
 				36C22483E4D54A458CADAFE9 /* Entypo.ttf in Resources */,
-				1F829C35275A597E00E21328 /* Futura PT Bold.ttf in Resources */,
+				1F38E3A327959D3000D7B7CB /* Futura-PT-Bold.ttf in Resources */,
 				E0634178739448078C06D84E /* EvilIcons.ttf in Resources */,
 				B001CA55CEFF43EBBFADAE1E /* Feather.ttf in Resources */,
 				146E4CC06974487D89294EDA /* FontAwesome.ttf in Resources */,

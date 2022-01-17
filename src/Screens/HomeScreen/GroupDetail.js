@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -18,12 +18,15 @@ import SmallCard from '../../Common/SmallCard';
 import {useDispatch, useSelector} from 'react-redux';
 import {getGroupDetail} from '../../../Slice/GroupDetailReducer';
 import ReportModal from './ReportModal';
+import {reportGroup} from '../../../Slice/ReportGroupReducer';
+import SuccessModal from './SuccessModal';
 
-const GroupDetail = ({route}) => {
+const GroupDetail = ({route, parentCallBack}) => {
   const {groupId} = route.params;
 
   const dispatch = useDispatch();
   const [bouncy, setBouncy] = useState(new Animated.Value(0));
+  const [SuccessModalValue, setSuccessModalValue] = useState(false);
   const [reportModal, setReportModal] = useState(false);
   const [flagValue, setFlagValue] = useState(false);
   const navigation = useNavigation();
@@ -61,12 +64,38 @@ const GroupDetail = ({route}) => {
     return state.GroupDetailReducer;
   });
 
-  const submitReport = () => {
+  // const submitReport = () => {
+  //   setReportModal(false);
+  //   setTimeout(() => {
+  //     triggerBouncy();
+  //   }, 1000);
+
+  //   dispatch(reportGroup({}));
+  // };
+
+  const submitReport = useCallback(value => {
     setReportModal(false);
     setTimeout(() => {
-      triggerBouncy();
-    }, 1000);
-  };
+      dispatch(reportGroup({value, groupId}));
+    }, 500);
+  }, []);
+
+  const {status, flagError, flagLoading} = useSelector(state => {
+    return state.ReportGroupReducer;
+  });
+
+  useEffect(() => {
+    if (status == 'success') {
+      setSuccessModalValue(true);
+
+      setTimeout(() => {
+        setSuccessModalValue(false);
+        setTimeout(() => {
+          triggerBouncy();
+        }, 500);
+      }, 2000);
+    }
+  }, [status]);
 
   const triggerBouncy = () => {
     setFlagValue(true);
@@ -87,10 +116,11 @@ const GroupDetail = ({route}) => {
   return (
     <View style={{paddingTop: '21%', height: '100%', backgroundColor: '#fff'}}>
       <Header />
+      <SuccessModal modalValue={SuccessModalValue} />
       <ReportModal
         modalValue={reportModal}
         closeModal={() => setReportModal(false)}
-        onPress={submitReport}
+        parentCallBack={submitReport}
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         <LinearGradient
@@ -294,25 +324,27 @@ const GroupDetail = ({route}) => {
                 width: '80%',
                 alignSelf: 'center',
               }}>
-              <TouchableWithoutFeedback onPress={() => setReportModal(true)}>
-                <View style={{alignItems: 'center'}}>
-                  {flagValue ? (
-                    <Animated.View style={{transform: [{scale: bouncyView}]}}>
-                      <Image
-                        source={require('../../Assets/Images/flagRed.png')}
-                        style={styles.imageStyleSecond}
-                      />
-                    </Animated.View>
-                  ) : (
+              <View style={{alignItems: 'center'}}>
+                {flagValue ? (
+                  <Animated.View style={{transform: [{scale: bouncyView}]}}>
+                    <Image
+                      source={require('../../Assets/Images/flagRed.png')}
+                      style={styles.imageStyleSecond}
+                    />
+                  </Animated.View>
+                ) : (
+                  <TouchableWithoutFeedback
+                    onPress={() => setReportModal(true)}>
                     <Image
                       source={require('../../Assets/Images/flagBlue.png')}
                       style={styles.imageStyleSecond}
                     />
-                  )}
+                  </TouchableWithoutFeedback>
+                )}
 
-                  <Text style={styles.textStyle}>Melden</Text>
-                </View>
-              </TouchableWithoutFeedback>
+                <Text style={styles.textStyle}>Melden</Text>
+              </View>
+
               <View style={styles.verticalLine} />
               <View style={{alignItems: 'center'}}>
                 <Image

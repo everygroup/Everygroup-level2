@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -11,16 +11,27 @@ import {
 } from 'react-native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import Header from '../../Common/Header';
-import Input from '../../Common/Input';
 import Styles from './Style';
 import EditInput from '../../Common/EditInput';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {useNavigation} from '@react-navigation/native';
+import {useSelector, useDispatch} from 'react-redux';
+import {getGroupDetail} from '../../../Slice/GroupDetailReducer';
+import {updateGroupDetail} from '../../../Slice/AddGroupReducer';
 
 const EditGroup = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
-  const [groupName, setGroupName] = useState('Nordsee Gruppe');
+
+  // const [groupName, setGroupName] = useState('Nordsee Gruppe');
   const [category] = useState(['Dienstleistungen', 'Interessen', 'Unt']);
+
+  const {groupDetail, error, loading} = useSelector(state => {
+    console.log(state.AddGroupReducer, 'detail');
+    // setGroupName(state.GroupDetailReducer.groupDetail.title);
+    return state.AddGroupReducer;
+  });
+
   return (
     <View style={{paddingTop: '25%', height: '100%', backgroundColor: '#fff'}}>
       <Header />
@@ -42,13 +53,11 @@ const EditGroup = () => {
       </View>
       <ScrollView contentContainerStyle={{alignItems: 'center'}}>
         <EditInput
-          onChangeText={text => setGroupName(text)}
-          value={groupName}
+          onChangeText={text => dispatch(updateGroupDetail({groupName: text}))}
         />
         <EditInput
           onChangeText={text => setGroupName(text)}
-          value={'https://chat.whatsapp.com/HpcDd6s'}
-          editable={true}
+          value={groupDetail.group_link}
         />
 
         <View
@@ -86,6 +95,9 @@ const EditGroup = () => {
           height={140}
           multiline={true}
           placeholder="Hey, wir sind ein nette Gruppe"
+          onChangeText={text =>
+            dispatch(updateGroupDetail({description: text}))
+          }
         />
         <EditInput placeholder="#test #test1 #test2 #test3 #test4" />
         <Text

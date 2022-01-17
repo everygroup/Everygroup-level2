@@ -16,6 +16,7 @@ import GroupCard from '../../Common/GroupCard';
 import {FlatList} from 'react-native-gesture-handler';
 import {useDispatch, useSelector} from 'react-redux';
 import {favouriteUser} from '../../../Slice/FavouriteUserReducer';
+import {getOtherUserGroup} from '../../../Slice/OtherUserGroupReducer';
 const OtherUserScreen = ({route}) => {
   const {otherUserId, otherUserName} = route.params;
   const dispatch = useDispatch();
@@ -38,11 +39,16 @@ const OtherUserScreen = ({route}) => {
   };
 
   const {loading, error, value} = useSelector(state => {
-    console.log(state, 'stae');
     return state.FavouriteUserReducer;
   });
 
+  const {otherUserGroupList} = useSelector(state => {
+    console.log(state.OtherUserGroupReducer, 'other list');
+    return state.OtherUserGroupReducer;
+  });
+
   useEffect(() => {
+    dispatch(getOtherUserGroup(otherUserId));
     if (value == 'success') {
       triggerBouncy();
     }
@@ -111,7 +117,7 @@ const OtherUserScreen = ({route}) => {
       </View>
 
       <FlatList
-        data={groupArray}
+        data={otherUserGroupList}
         showsVerticalScrollIndicator={false}
         renderItem={({item: group}) => {
           return <GroupCard group={group} />;

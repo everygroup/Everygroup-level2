@@ -32,7 +32,6 @@ const InfoModal = ({modalValue, closeModal, message, Faq}) => {
               fontSize: 14,
               fontFamily: FontStyle.MontSemiBold,
               textAlign: 'center',
-
               width: '80%',
             }}>
             {message}

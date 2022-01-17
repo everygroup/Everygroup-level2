@@ -67,10 +67,8 @@ export const deleteFavouriteUser = createAsyncThunk(
         headers: {Authorization: `Bearer ${token}`},
         url: `${baseUrl}/favourite-person/${data}`,
       });
-      console.log(response.data, 'response');
       return data;
     } catch (err) {
-      console.log(err.response);
       return rejectWithValue(Object.values(err.response.data));
     }
   },

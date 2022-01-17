@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -11,22 +11,41 @@ import {
 import Modal from 'react-native-modal';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import Button from '../../Common/Button';
-import Input from '../../Common/Input';
 
-const ReportModal = ({modalValue, closeModal, onPress}) => {
+const ReportModal = ({modalValue, closeModal, parentCallBack}) => {
+  const [otherText, setOtherText] = useState('');
   const [selectedOption, setSelectedOption] = useState([]);
   const [reportOption, setReportOption] = useState([
-    {id: 1, description: 'Die Gruppe enthält anstößige Inhalte'},
-    {id: 2, description: 'Der Gruppenlink ist abgelaufen'},
-    {id: 3, description: 'Andere Gründe'},
+    {
+      id: 1,
+      description: 'Die Gruppe enthält anstößige Inhalte',
+      type: 'Offensive content',
+      slug: 'offensive-content',
+    },
+    {
+      id: 2,
+      description: 'Der Gruppenlink ist abgelaufen',
+      type: 'link has expired',
+      slug: 'link-has-expired',
+    },
+    {
+      id: 3,
+      description: 'Andere Gründe',
+      type: 'Other concern',
+      slug: 'other-concern',
+    },
   ]);
   const selectOption = item => {
-    if (selectedOption.find(el => el.id == item.id)) {
-      setSelectedOption(selectedOption.filter(el => el.id !== item.id));
+    if (selectedOption.find(el => el.slug == item.slug)) {
+      setSelectedOption(selectedOption.filter(el => el.slug !== item.slug));
     } else {
       setSelectedOption(oldData => [...oldData, item]);
     }
   };
+
+  // const submitData = () => {
+  //   parentCallBack(selectedOption);
+  // };
 
   return (
     <View>
@@ -52,7 +71,7 @@ const ReportModal = ({modalValue, closeModal, onPress}) => {
               return (
                 <TouchableWithoutFeedback onPress={() => selectOption(item)}>
                   <View style={[styles.optionContainer, {marginTop: '5%'}]}>
-                    {selectedOption.find(el => el.id == item.id) ? (
+                    {selectedOption.find(el => el.slug == item.slug) ? (
                       <Image
                         source={require('../../Assets/Images/rightBlue.png')}
                         style={{height: 24, width: 24, borderRadius: 12}}
@@ -75,6 +94,7 @@ const ReportModal = ({modalValue, closeModal, onPress}) => {
                 multiline={true}
                 placeholderTextColor="#8B8B8B"
                 placeholder="Schreib uns gerne den Grund.."
+                onChangeText={text => setOtherText(text)}
                 style={{
                   borderWidth: 1,
                   height: 100,
@@ -92,7 +112,7 @@ const ReportModal = ({modalValue, closeModal, onPress}) => {
               buttonText="Melden"
               buttonColor1={selectedOption.length > 0 ? '#FFA420' : '#f1f3f5'}
               buttonColor2={selectedOption.length > 0 ? '#FE7027' : '#f1f3f5'}
-              onPress={onPress}
+              onPress={() => parentCallBack({selectedOption, otherText})}
             />
           </View>
         </View>
