@@ -45,6 +45,35 @@ export const deleteGroup = createAsyncThunk(
   },
 );
 
+export const updateGroup = createAsyncThunk(
+  'updateGroup',
+  async (data, {rejectWithValue}) => {
+    console.log(data, 'data');
+    const token = await AsyncStorage.getItem('token');
+    try {
+      const response = await axios({
+        method: 'patch',
+        headers: {Authorization: `Bearer ${token}`},
+        url: `${baseUrl}/group/${data.groupId}`,
+        data: {
+          title: data.groupTitle,
+          languages: data.selectedLanguage,
+          join_languages: data.joinLanguage,
+          categories: data.selectedCategory,
+          tags: data.tags,
+          description: data.description,
+          visible_status: data.visible,
+        },
+      });
+      console.log(response, 'update Responxe');
+      return response.data;
+    } catch (err) {
+      console.log(err.response);
+      return rejectWithValue(err.response.data.detail);
+    }
+  },
+);
+
 export const UserGroupReducer = createSlice({
   name: 'UserGroupReducer',
   initialState,
@@ -67,6 +96,13 @@ export const UserGroupReducer = createSlice({
         state.userGroupData.findIndex(el => el.id === action.payload),
         1,
       );
+      state.loading = false;
+    },
+    [updateGroup.fulfilled]: (state, action) => {
+      const updateIndex = state.userGroupData.findIndex(
+        el => el.id == action.payload.id,
+      );
+      state.userGroupData[updateIndex] = action.payload;
       state.loading = false;
     },
   },

@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: 23,
     color: '#fff',
-    fontFamily: 'Montserrat-Bold',
+    fontFamily: FontStyle.MontBold,
   },
 });
 

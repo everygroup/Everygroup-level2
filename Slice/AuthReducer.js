@@ -26,10 +26,11 @@ export const signInUser = createAsyncThunk(
           password: data.password,
         },
       });
-
+      console.log(response, 'signin Response');
       await AsyncStorageLib.setItem('token', response.data.access);
       return response.data;
     } catch (err) {
+      console.log(err.response, 'signin');
       return rejectWithValue(Object.values(err.response.data).toString());
     }
   },

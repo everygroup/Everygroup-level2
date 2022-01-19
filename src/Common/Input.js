@@ -55,7 +55,7 @@ const Input = ({
         style={[
           styles.textStyle,
           {
-            fontFamily: 'Poppins-Medium',
+            fontFamily: FontStyle.poppinsMedium,
             height: height || 39,
             textAlignVertical: 'top',
           },
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     width: '85%',
     color: '#205072',
     paddingLeft: 10,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: FontStyle.MontSemiBold,
   },
   inputContainer: {
     flexDirection: 'row',

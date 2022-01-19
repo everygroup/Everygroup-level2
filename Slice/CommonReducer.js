@@ -8,7 +8,7 @@ const getSystemLang = () => {
       ? NativeModules.SettingsManager.settings.AppleLocale ||
         NativeModules.SettingsManager.settings.AppleLanguages[0] // iOS 13
       : NativeModules.I18nManager.localeIdentifier;
-  console.log(value, 'vlasdf');
+
   //   return value;
 };
 

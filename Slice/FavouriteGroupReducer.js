@@ -1,0 +1,101 @@
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import axios from 'axios';
+import AsyncStorageLib from '@react-native-async-storage/async-storage';
+
+const baseUrl = 'http://203.190.153.22:1639/api/v1';
+
+const initialState = {
+  favouriteGroupList: [],
+};
+
+export const favouriteGroup = createAsyncThunk(
+  'favouriteGroup',
+  async (data, {rejectWithValue}) => {
+    const token = await AsyncStorageLib.getItem('token');
+    try {
+      const response = await axios({
+        method: 'post',
+        headers: {Authorization: `Bearer ${token}`},
+        url: `${baseUrl}/favourite-group`,
+        data: {
+          group_id: data,
+        },
+      });
+
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(Object.values(err.response.data));
+    }
+  },
+);
+
+export const getFavouriteGroup = createAsyncThunk(
+  'getFavouriteGroup',
+  async (data, {rejectWithValue}) => {
+    const token = await AsyncStorageLib.getItem('token');
+    try {
+      const response = await axios({
+        method: 'get',
+        headers: {Authorization: `Bearer ${token}`},
+        url: `${baseUrl}/favourite-group`,
+      });
+
+      return response.data.results;
+    } catch (err) {
+      return rejectWithValue(Object.values(err.response.data));
+    }
+  },
+);
+export const deleteFavouriteGroup = createAsyncThunk(
+  'deleteFavouriteGroup',
+  async (data, {rejectWithValue}) => {
+    const token = await AsyncStorageLib.getItem('token');
+    try {
+      const response = await axios({
+        method: 'delete',
+        headers: {Authorization: `Bearer ${token}`},
+        url: `${baseUrl}/favourite-group/${data}`,
+      });
+
+      return data;
+    } catch (err) {
+      return rejectWithValue(Object.values(err.response.data));
+    }
+  },
+);
+
+export const FavouriteGroupReducer = createSlice({
+  name: 'FavouriteGroupReducer',
+  initialState,
+  reducers: {},
+  extraReducers: {
+    [favouriteGroup.fulfilled]: (state, action) => {
+      state.value = action.payload;
+      state.error = '';
+      state.loading = false;
+    },
+    [favouriteGroup.pending]: (state, action) => {
+      state.value = '';
+      state.error = '';
+      state.loading = true;
+    },
+    [favouriteGroup.rejected]: (state, action) => {
+      state.error = action.payload;
+      state.value = '';
+      state.loading = false;
+    },
+    [getFavouriteGroup.fulfilled]: (state, action) => {
+      state.favouriteGroupList = action.payload;
+    },
+
+    [deleteFavouriteGroup.fulfilled]: (state, action) => {
+      state.favouriteGroupList.splice(
+        state.favouriteGroupList.findIndex(el => el.id === action.payload),
+        1,
+      );
+      // state.favouriteGroupList = action.payload;
+    },
+  },
+});
+
+export default FavouriteGroupReducer.reducer;

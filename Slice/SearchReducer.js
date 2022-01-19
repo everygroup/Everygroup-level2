@@ -8,7 +8,7 @@ const initialState = {
   getAllSearch: [],
   error: [],
   loading: false,
-  searchSuccess: '',
+  searchSuccess: false,
 };
 
 export const saveSearch = createAsyncThunk(
@@ -45,7 +45,7 @@ export const getSearch = createAsyncThunk(
         headers: {Authorization: `Bearer ${token}`},
         url: `${baseUrl}/favourite-search`,
       });
-
+      console.log(response, 'get all search');
       return response.data.results;
     } catch (err) {
       return rejectWithValue(Object.values(err.response.data));
@@ -79,7 +79,7 @@ export const SearchReducer = createSlice({
     [saveSearch.fulfilled]: (state, action) => {
       state.categoryArray = action.payload;
       state.loading = false;
-      state.searchSuccess = 'success';
+      state.searchSuccess = true;
     },
     [saveSearch.pending]: (state, action) => {
       state.loading = true;

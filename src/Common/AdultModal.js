@@ -30,7 +30,7 @@ const AdultModal = ({modalValue, closeModal, message, _18Press}) => {
             style={{
               color: '#205072',
               fontSize: 17,
-              fontFamily: 'Montserrat-ExtraBold',
+              fontFamily: FontStyle.MontExtBold,
               textAlign: 'center',
 
               width: '80%',
@@ -44,7 +44,7 @@ const AdultModal = ({modalValue, closeModal, message, _18Press}) => {
           <Text
             onPress={_18Press}
             style={{
-              fontFamily: 'Montserrat-SemiBold',
+              fontFamily: FontStyle.MontSemiBold,
               fontSize: 12,
               color: '#FFA420',
             }}>

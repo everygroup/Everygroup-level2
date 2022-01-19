@@ -37,7 +37,7 @@ const Category = onPress => {
         }}>
         <Text
           style={{
-            fontFamily: 'Montserrat-SemiBold',
+            fontFamily: FontStyle.MontSemiBold,
             color: '#FFA420',
           }}>
           Kategorie

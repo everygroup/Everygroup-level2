@@ -19,12 +19,11 @@ export const getGroupDetail = createAsyncThunk(
       const response = await axios({
         method: 'get',
         headers: {Authorization: `Bearer ${token}`},
-        url: `${baseUrl}/group/${data}`,
+        url: `${baseUrl}/group/detail/${data}`,
       });
-      console.log(response, 'detail response');
+
       return response.data;
     } catch (err) {
-      console.log(err.response, 'detail error');
       return rejectWithValue(err.response.data);
     }
   },
@@ -33,7 +32,12 @@ export const getGroupDetail = createAsyncThunk(
 export const GroupDetailReducer = createSlice({
   name: 'GroupDetailReducer',
   initialState,
-  reducers: {},
+  reducers: {
+    updateOtherUserFavStatus(state, action) {
+      console.log(action, 'new data');
+      // state.groupDetail = action.payload;
+    },
+  },
   extraReducers: {
     [getGroupDetail.fulfilled]: (state, action) => {
       state.groupDetail = action.payload;
@@ -50,5 +54,7 @@ export const GroupDetailReducer = createSlice({
     },
   },
 });
+
+export const {updateOtherUserFavStatus} = GroupDetailReducer.actions;
 
 export default GroupDetailReducer.reducer;

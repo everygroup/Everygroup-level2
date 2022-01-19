@@ -13,11 +13,15 @@ import AddGroup from './HeaderPages/AddGroup';
 import Menu from './HeaderPages/Menu';
 import Search from './HeaderPages/Search';
 import {useNavigation} from '@react-navigation/native';
+import * as Animatable from 'react-native-animatable';
+import Icon from 'react-native-vector-icons/AntDesign';
 
+const AnimatedIcon = Animatable.createAnimatableComponent(Icon);
 const {width, height} = Dimensions.get('window');
 
 const Header = ({selectionOption, closeAddGroup}) => {
   const navigation = useNavigation();
+  const [liked, setLiked] = useState(false);
   const [opacity] = useState(new Animated.Value(1));
   const [starValue, setStarValue] = useState(false);
   const [filterValue, setFilterValue] = useState(false);

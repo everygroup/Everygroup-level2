@@ -33,7 +33,7 @@ const SuccessModal = ({modalValue, closeModal, message}) => {
           />
           <Text
             style={{
-              fontFamily: 'Montserrat-Bold',
+              fontFamily: FontStyle.MontBold,
               fontSize: 18,
               color: '#205072',
               width: '70%',
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   buttonText: {
-    fontFamily: 'Montserrat-Bold',
+    fontFamily: FontStyle.bold,
     fontSize: 18,
     color: '#fff',
   },

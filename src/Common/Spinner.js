@@ -1,8 +1,6 @@
-import React from 'react';
-import {View, Image, StyleSheet, ActivityIndicator} from 'react-native';
-// import LinearGradient from 'react-native-linear-gradient';
-import { LinearGradient } from 'expo-linear-gradient';
-
+import React from "react";
+import { View, Image, StyleSheet, ActivityIndicator } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 const Spinner = ({
   size,
@@ -15,14 +13,15 @@ const Spinner = ({
 }) => {
   return (
     <LinearGradient
-      colors={['#FFA420', '#FE7027']}
+      colors={["#FFA420", "#FE7027"]}
       style={[
         styles.linearGradient,
-        {width: width || 206, borderRadius: borderRadius || 20},
-      ]}>
+        { width: width || 206, borderRadius: borderRadius || 20 },
+      ]}
+    >
       <ActivityIndicator
-        size={size || 'large'}
-        color={spinnercolor || '#fff'}
+        size={size || "large"}
+        color={spinnercolor || "#fff"}
       />
     </LinearGradient>
   );
@@ -31,9 +30,9 @@ const Spinner = ({
 var styles = StyleSheet.create({
   linearGradient: {
     minHeight: 40,
-    maxHeight: 'auto',
-    justifyContent: 'center',
-    alignItems: 'center',
+    maxHeight: "auto",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

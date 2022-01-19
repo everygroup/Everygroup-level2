@@ -43,7 +43,7 @@ const SnapChatModal = ({
             style={{
               color: '#205072',
               fontSize: 14,
-              fontFamily: 'Montserrat-SemiBold',
+              fontFamily: FontStyle.MontSemiBold,
               textAlign: 'center',
               marginVertical: '5%',
             }}>
@@ -51,7 +51,7 @@ const SnapChatModal = ({
           </Text>
           <Text
             style={{
-              fontFamily: 'Montserrat-Medium',
+              fontFamily: FontStyle.MontMedium,
               color: '#205072',
               fontSize: 14,
               width: '85%',

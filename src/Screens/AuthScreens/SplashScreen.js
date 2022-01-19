@@ -62,7 +62,7 @@ const SplashScreen = () => {
                   textAlign: 'center',
                   color: '#205072',
                   fontSize: 18,
-                  fontFamily: 'Montserrat-Bold',
+                  fontFamily: FontStyle.MontExtBold,
                 }}>
                 {item.description}
               </Text>
@@ -80,7 +80,7 @@ const SplashScreen = () => {
           style={{
             color: '#FFA420',
             marginVertical: '7%',
-            fontFamily: 'Montserrat-ExtraBold',
+            fontFamily: FontStyle.MontExtBold,
             fontSize: 21,
           }}>
           Registrieren

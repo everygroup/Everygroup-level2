@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
+import React from 'react';
+import {View} from 'react-native';
 import RootNavigator from './src/Navigation/RootNavigator';
-import { configureStore } from '@reduxjs/toolkit';
-import { Provider } from 'react-redux';
+import {configureStore} from '@reduxjs/toolkit';
+import {Provider} from 'react-redux';
 import authReducer from './Slice/AuthReducer';
 import checkReducer from './Slice/CheckReducer';
 import ProfileReducer from './Slice/ProfileReducer';
@@ -13,10 +13,11 @@ import UserGroupReducer from './Slice/UserGroupReducer';
 import GroupDetailReducer from './Slice/GroupDetailReducer';
 import SearchReducer from './Slice/SearchReducer';
 import SearchResultReducer from './Slice/SearchResultReducer';
-import SignIn from './src/Screens/AuthScreens/SignIn';
-import { NavigationContainer } from '@react-navigation/native';
-import { useFonts } from 'expo-font'
-import { AppLoading } from 'expo'
+import FavouriteUserReducer from './Slice/FavouriteUserReducer';
+import OtherUserGroupReducer from './Slice/OtherUserGroupReducer';
+import ReportGroupReducer from './Slice/ReportGroupReducer';
+import AllGroupListReducer from './Slice/AllGroupListReducer';
+import FavouriteGroupReducer from './Slice/FavouriteGroupReducer';
 const store = configureStore({
   reducer: {
     user: authReducer,
@@ -29,19 +30,18 @@ const store = configureStore({
     GroupDetailReducer,
     SearchReducer,
     SearchResultReducer,
+    FavouriteUserReducer,
+    OtherUserGroupReducer,
+    ReportGroupReducer,
+    AllGroupListReducer,
+    FavouriteGroupReducer,
   },
 });
 
-
-
-
-
-
 const App = () => {
-
   return (
     <Provider store={store}>
-      <View style={{ flex: 1 }}>
+      <View style={{flex: 1}}>
         <RootNavigator />
       </View>
     </Provider>

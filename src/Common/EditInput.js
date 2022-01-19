@@ -1,5 +1,12 @@
 import React from 'react';
-import {View, Text, StyleSheet, TextInput} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import FontStyle from '../Assets/Fonts/FontStyle';
 
 const EditInput = ({
@@ -10,6 +17,10 @@ const EditInput = ({
   multiline,
   placeholder,
   placeholderTextColor,
+  icon,
+  iconPress,
+  imageSource1,
+  onFocus,
 }) => {
   return (
     <View
@@ -25,13 +36,24 @@ const EditInput = ({
         onChangeText={onChangeText}
         editable={editable}
         multiline={multiline}
+        onFocus={onFocus}
       />
+      {icon == 'available' ? (
+        <TouchableOpacity onPress={iconPress}>
+          <Image
+            source={imageSource1}
+            style={{height: 18, width: 18, resizeMode: 'contain'}}
+          />
+        </TouchableOpacity>
+      ) : null}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     width: '90%',
     borderRadius: 7,
     marginVertical: 10,
@@ -48,7 +70,7 @@ const styles = StyleSheet.create({
   textInputStyle: {
     width: '90%',
 
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: FontStyle.MontSemiBold,
     color: '#205072',
     fontSize: 17,
   },

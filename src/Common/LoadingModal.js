@@ -51,7 +51,7 @@ const LoadingModal = ({modalValue, source, closeModal, navigationModal}) => {
               />
               <Text
                 style={{
-                  fontFamily: 'Montserrat-Bold',
+                  fontFamily: FontStyle.MontBold,
                   color: '#205072',
                   fontSize: 17,
                   textAlign: 'center',

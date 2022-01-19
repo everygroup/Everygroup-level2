@@ -3,7 +3,7 @@ import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Modal from 'react-native-modal';
 import FontStyle from '../Assets/Fonts/FontStyle';
 import Button from './Button';
-const InfoModal = ({modalValue, closeModal, message, Faq}) => {
+const InfoModal = ({modalValue, closeModal, message, Faq, titel}) => {
   return (
     <View>
       <Modal
@@ -26,13 +26,23 @@ const InfoModal = ({modalValue, closeModal, message, Faq}) => {
             borderRadius: 10,
             alignItems: 'center',
           }}>
+          {titel ? (
+            <Text
+              style={{
+                fontSize: 19,
+                fontFamily: FontStyle.MontExtBold,
+                color: '#205072',
+                marginVertical: '2.5%',
+              }}>
+              {titel}
+            </Text>
+          ) : null}
           <Text
             style={{
               color: '#205072',
               fontSize: 14,
-              fontFamily: 'Montserrat-SemiBold',
+              fontFamily: FontStyle.MontSemiBold,
               textAlign: 'center',
-
               width: '80%',
             }}>
             {message}
@@ -41,7 +51,7 @@ const InfoModal = ({modalValue, closeModal, message, Faq}) => {
           {Faq ? (
             <Text
               style={{
-                fontFamily: 'Montserrat-SemiBold',
+                fontFamily: FontStyle.MontSemiBold,
                 fontSize: 15,
                 color: '#FFA420',
                 marginTop: '5%',

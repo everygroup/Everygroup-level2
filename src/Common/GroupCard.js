@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -7,13 +7,15 @@ import {
   FlatList,
   TouchableOpacity,
   Linking,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import FontStyle from '../Assets/Fonts/FontStyle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Button from './Button';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {deleteGroup} from '../../Slice/UserGroupReducer';
+import {deleteGroup, updateGroup} from '../../Slice/UserGroupReducer';
+import InfoModal from './InfoModal';
 const GroupCard = ({
   group,
   boosterValue,
@@ -24,12 +26,29 @@ const GroupCard = ({
   eyeValue,
   bellValue,
   infoPress,
+  favourite,
+  removeFavourite,
 }) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-
+  const [modalValue, setModalValue] = useState(false);
+  const visibleUnvisible = () => {
+    if (group.visible_status == true) {
+      setModalValue(true);
+    }
+    dispatch(updateGroup({groupId: group.id, visible: !group.visible_status}));
+  };
+  console.log(group, 'group');
   return (
     <View>
+      <InfoModal
+        modalValue={modalValue}
+        closeModal={() => setModalValue(false)}
+        titel="Unsichtbar"
+        message={
+          'Deine Gruppe ist jetzt nicht mehr sichtbar für andere Nutzer. Ebenfalls wird sie nicht mehr in den Favoriten von anderen gezeigt, die deine Gruppe als Favorit markiert haben.'
+        }
+      />
       <View style={{position: 'relative', zIndex: 99999}}>
         <View style={[styles.containerStyle, {borderBottomRightRadius: 0}]}>
           <View
@@ -94,16 +113,24 @@ const GroupCard = ({
                   fontSize: 18,
                   marginVertical: 5,
                   color: '#205072',
-                  fontFamily: 'Montserrat-ExtraBold',
+                  fontFamily: FontStyle.MontExtBold,
                 }}>
                 {group.title}
               </Text>
-              <Icon
-                name="bookmark"
-                color={group.favorite ? '#FFA420' : '#B9B9B9'}
-                size={22}
-                solid={group.favorite ? true : false}
-              />
+              <TouchableWithoutFeedback onPress={removeFavourite}>
+                <Icon
+                  name="bookmark"
+                  color={
+                    group.group_favourite_status || favourite
+                      ? '#FFA420'
+                      : '#B9B9B9'
+                  }
+                  size={22}
+                  solid={
+                    group.group_favourite_status || favourite ? true : false
+                  }
+                />
+              </TouchableWithoutFeedback>
             </View>
 
             <FlatList
@@ -132,7 +159,7 @@ const GroupCard = ({
                       style={{
                         color: '#fff',
                         fontSize: 11,
-                        fontFamily: 'Montserrat-Bold',
+                        fontFamily: FontStyle.MontBold,
                       }}>
                       {item.category}
                     </Text>
@@ -158,7 +185,7 @@ const GroupCard = ({
                       style={{
                         color: '#FFA420',
                         fontSize: 13,
-                        fontFamily:'Montserrat-Medium',
+                        fontFamily: FontStyle.MontMedium,
                       }}>
                       {item}
                     </Text>
@@ -168,7 +195,7 @@ const GroupCard = ({
             />
             <Text
               style={{
-                fontFamily: 'Montserrat-SemiBold',
+                fontFamily: FontStyle.MontSemiBold,
                 fontSize: 15,
                 color: '#205072',
                 paddingHorizontal: '8%',
@@ -201,7 +228,7 @@ const GroupCard = ({
             <Text
               style={{
                 color: group.group_type == 'snapchat' ? '#205072' : '#fff',
-                fontFamily: 'Montserrat-Bold',
+                fontFamily: FontStyle.MontBold,
                 fontSize: 16,
               }}>
               BEITRETEN
@@ -235,11 +262,11 @@ const GroupCard = ({
             }}>
             <Text
               style={{
-                fontFamily: 'Montserrat-ExtraBold',
+                fontFamily: FontStyle.MontExtBold,
                 fontSize: 9,
                 color: '#205072',
               }}>
-              Deutsch
+              {group.languages[0].language}
             </Text>
           </View>
         </View>
@@ -261,8 +288,8 @@ const GroupCard = ({
                 }}>
                 <Icon name={'redo-alt'} size={21} color="#C4C6C8" />
 
-                <TouchableOpacity onPress={eyePress}>
-                  {eyeValue ? (
+                <TouchableWithoutFeedback onPress={() => visibleUnvisible()}>
+                  {group.visible_status ? (
                     <Image
                       source={require('../Assets/Images/openEye.png')}
                       style={styles.iconStyle}
@@ -273,13 +300,15 @@ const GroupCard = ({
                       style={styles.iconStyle}
                     />
                   )}
-                </TouchableOpacity>
+                </TouchableWithoutFeedback>
 
                 <Icon
                   name={'pencil-alt'}
                   size={21}
                   color="#205072"
-                  onPress={() => navigation.navigate('EditGroup')}
+                  onPress={() =>
+                    navigation.navigate('EditGroup', {groupId: group.id})
+                  }
                 />
 
                 <TouchableOpacity onPress={bellPress}>

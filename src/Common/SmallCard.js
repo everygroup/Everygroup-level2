@@ -56,7 +56,7 @@ const SmallCard = ({group}) => {
         <Text
           style={{
             fontSize: 16,
-            fontFamily: 'Montserrat-Bold',
+            fontFamily: FontStyle.MontBold,
             color: '#205072',
             textAlign: 'center',
           }}>
@@ -81,7 +81,7 @@ const SmallCard = ({group}) => {
         ]}>
         <Text
           style={{
-            fontFamily:'Montserrat-Bold',
+            fontFamily: FontStyle.MontBold,
             color: group.socialGroup == 'snapchat' ? '#205072' : '#fff',
             fontSize: 12,
           }}>

@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {View, FlatList} from 'react-native';
+import {View, FlatList, Animated, Easing} from 'react-native';
 import SearchCard from '../../Common/SearchCard';
 import {useSelector, useDispatch} from 'react-redux';
-import {getSearch, deleteSearch} from '../../../Slice/SearchReducer';
+import {getSearch} from '../../../Slice/SearchReducer';
 
 const Search = () => {
+  // const [animatedHeight, setAnimatedHeight] = useState(new Animated.Value(310));
+  // const [deleteId, setDeleteId] = useState();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -15,23 +17,18 @@ const Search = () => {
     return state.SearchReducer;
   });
 
-  const deleteSearchData = searchId => {
-    dispatch(deleteSearch(searchId));
-  };
-
-  const bellPress = id => {};
-
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <FlatList
         contentContainerStyle={{paddingBottom: 100}}
         showsVerticalScrollIndicator={false}
         data={getAllSearch}
+        listKey={getAllSearch.id}
         renderItem={({item: data}) => {
           return (
             <SearchCard
               data={data}
-              onPress={() => deleteSearchData(data.id)}
+              onPress={data.id}
               bellPress={() => bellPress(data.id)}
             />
           );

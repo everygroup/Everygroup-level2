@@ -186,7 +186,6 @@ const AddGroup = () => {
   });
 
   const {errorLoading} = useSelector(state => {
-    console.log(state.createGroup, 'uuuuuu');
     return state.createGroup;
   });
   useEffect(() => {
@@ -224,7 +223,7 @@ const AddGroup = () => {
       selectedLanguage.filter(el => el.language !== item.language),
     );
   };
-  console.log(createLoading, 'createe loading');
+
   return (
     <KeyboardAwareScrollView
       extraScrollHeight={100}
@@ -242,7 +241,7 @@ const AddGroup = () => {
           dispatch(resetErroLoading()), navigation.navigate('MyGroup');
         }}
         closeModal={() => setcreateLoading(false)}
-        source={require('../../animationJson/loadingBar.json')}
+        source={require('../../Assets/animation/loadingBar.json')}
       />
 
       <InfoModal
@@ -264,7 +263,7 @@ const AddGroup = () => {
           color: '#fff',
           fontSize: 26,
           alignSelf: 'center',
-          fontFamily: 'Montserrat-Bold',
+          fontFamily: FontStyle.MontBold,
           marginVertical: '5%',
         }}>
         Gruppe hinzufügen
@@ -384,7 +383,7 @@ const AddGroup = () => {
             {selectedCategory.length > 0 ? (
               <Text
                 style={{
-                  fontFamily: 'Montserrat-SemiBold',
+                  fontFamily: FontStyle.MontSemiBold,
                   color: '#FFA420',
                   fontSize: 16,
                 }}>
@@ -395,7 +394,7 @@ const AddGroup = () => {
             ) : (
               <Text
                 style={{
-                  fontFamily: 'Montserrat-SemiBold',
+                  fontFamily: FontStyle.MontSemiBold,
                   color: '#FFA420',
                   fontSize: 16,
                 }}>
@@ -419,7 +418,7 @@ const AddGroup = () => {
                       }}>
                       <Text
                         style={{
-                          fontFamily: 'Montserrat-SemiBold',
+                          fontFamily: FontStyle.MontSemiBold,
                           fontSize: 19,
                           color: el.slug == 18 ? '#ef3e36' : '#FFA420',
                         }}>
@@ -548,7 +547,7 @@ const AddGroup = () => {
           style={{
             color: '#fff',
             textAlign: 'center',
-            fontFamily: 'Montserrat-SemiBold',
+            fontFamily: FontStyle.MontSemiBold,
             fontSize: 17,
           }}>
           Welche Sprache wird in dieser Gruppe gesprochen?
@@ -623,7 +622,7 @@ const AddGroup = () => {
                     }}>
                     <Text
                       style={{
-                        fontFamily: 'Montserrat-Bold',
+                        fontFamily: FontStyle.MontBold,
                         color: '#82C2F1',
                         fontSize: 13,
                       }}>
@@ -654,7 +653,7 @@ const AddGroup = () => {
               <View style={styles.languageContainer}>
                 <Text
                   style={{
-                    fontFamily: 'Montserrat-Regular',
+                    fontFamily: FontStyle.MontRegular,
                     color: '#fff',
                     fontSize: 10,
                   }}>
@@ -670,7 +669,7 @@ const AddGroup = () => {
                   }}>
                   <Text
                     style={{
-                      fontFamily: 'Montserrat-Medium',
+                      fontFamily: FontStyle.MontMedium,
                       color: '#fff',
                       fontSize: 12,
                     }}>
@@ -687,7 +686,7 @@ const AddGroup = () => {
           style={{
             color: '#fff',
             textAlign: 'center',
-            fontFamily: 'Montserrat-SemiBold',
+            fontFamily: FontStyle.MontSemiBold,
             fontSize: 17,
           }}>
           Dürfen andere der Gruppe beitreten, egal welche Sprache sie sprechen?
@@ -708,7 +707,7 @@ const AddGroup = () => {
           <Text
             style={{
               fontSize: 14,
-              fontFamily: 'Montserrat-Bold',
+              fontFamily: FontStyle.MontBold,
               color: '#fff',
               textAlign: 'center',
             }}>
@@ -724,7 +723,7 @@ const AddGroup = () => {
           <Text
             style={{
               fontSize: 14,
-              fontFamily: 'Montserrat-Bold',
+              fontFamily: FontStyle.MontBold,
               color: '#fff',
               textAlign: 'center',
             }}>
@@ -793,7 +792,7 @@ const AddGroup = () => {
                     }}>
                     <Text
                       style={{
-                        fontFamily: 'Montserrat-Bold',
+                        fontFamily: FontStyle.MontBold,
                         color: '#82C2F1',
                         fontSize: 13,
                       }}>
@@ -823,7 +822,7 @@ const AddGroup = () => {
               <View style={styles.languageContainer}>
                 <Text
                   style={{
-                    fontFamily: 'Montserrat-Regular',
+                    fontFamily: FontStyle.MontRegular,
                     color: '#fff',
                     fontSize: 10,
                   }}>
@@ -839,7 +838,7 @@ const AddGroup = () => {
                   }}>
                   <Text
                     style={{
-                      fontFamily: 'Montserrat-Medium',
+                      fontFamily: FontStyle.MontMedium,
                       color: '#fff',
                       fontSize: 12,
                     }}>
@@ -893,7 +892,7 @@ const AddGroup = () => {
 
         <Text
           style={{
-            fontFamily:'Montserrat-Medium',
+            fontFamily: FontStyle.MontMedium,
             fontSize: 14,
             color: termsError ? '#EF3E36' : '#205072',
             textAlign: 'left',
@@ -946,7 +945,7 @@ const AddGroup = () => {
 
         <Text
           style={{
-            fontFamily: 'Montserrat-Medium',
+            fontFamily: FontStyle.MontMedium,
             fontSize: 14,
             color: conductRulesError ? '#EF3E36' : '#205072',
             textAlign: 'left',
@@ -959,7 +958,7 @@ const AddGroup = () => {
       </View>
       <TouchableOpacity onPress={submitButton} style={styles.submitButton}>
         <Text
-          style={{fontFamily: 'Montserrat-Bold', color: '#fff', fontSize: 16}}>
+          style={{fontFamily: FontStyle.MontBold, color: '#fff', fontSize: 16}}>
           Gruppe posten
         </Text>
       </TouchableOpacity>

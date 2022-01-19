@@ -41,7 +41,7 @@ const AlertModal = ({
             style={{
               color: '#205072',
               fontSize: 20,
-              fontFamily: 'Montserrat-Bold',
+              fontFamily: FontStyle.MontBold,
               textAlign: 'center',
               marginVertical: '5%',
             }}>
@@ -49,7 +49,7 @@ const AlertModal = ({
           </Text>
           <Text
             style={{
-              fontFamily: 'Montserrat-Medium',
+              fontFamily: FontStyle.MontMedium,
               color: '#205072',
               fontSize: 14,
               width: '85%',
@@ -67,7 +67,7 @@ const AlertModal = ({
               ]}>
               <Text
                 style={{
-                  fontFamily: 'Montserrat-ExtraBold',
+                  fontFamily: FontStyle.MontExtBold,
                   color: '#fff',
                   fontSize: 17,
                 }}>
@@ -82,7 +82,7 @@ const AlertModal = ({
               ]}>
               <Text
                 style={{
-                  fontFamily: 'Montserrat-ExtraBold',
+                  fontFamily: FontStyle.MontExtBold,
                   color: '#fff',
                   fontSize: 17,
                 }}>
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   buttonText: {
-    fontFamily: 'Montserrat-Bold',
+    fontFamily: FontStyle.bold,
     fontSize: 18,
     color: '#fff',
   },
