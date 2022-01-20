@@ -30,7 +30,7 @@ export const signInUser = createAsyncThunk(
       await AsyncStorageLib.setItem('token', response.data.access);
       return response.data;
     } catch (err) {
-      console.log(err.response, 'signin');
+      console.log(err, 'signin');
       return rejectWithValue(Object.values(err.response.data).toString());
     }
   },
@@ -50,7 +50,9 @@ export const registerUser = createAsyncThunk(
           promotable: data.promotional,
         },
       });
+      console.log(response, 'auth resposne');
     } catch (err) {
+      console.log(err.response, 'error');
       const errorr = err.response.data;
 
       return rejectWithValue(errorr);

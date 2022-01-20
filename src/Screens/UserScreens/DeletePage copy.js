@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -16,12 +16,9 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import Button from '../../Common/Button';
 import AlertModal from '../../Common/AlertModal';
 import Input from '../../Common/Input';
-import {useDispatch, useSelector} from 'react-redux';
-import {getDeleteOption} from '../../../Slice/GetDeleteUserOptionReducer';
 
 const DeletePage = () => {
   const navigation = useNavigation();
-  const dispatch = useDispatch();
   const [noGroupFound, setNoGroupFound] = useState(false);
   const [badExperience, setBadExperience] = useState(false);
   const [notSatisfy, setNotSatisfy] = useState(false);
@@ -32,25 +29,70 @@ const DeletePage = () => {
   const [differentReason, setDifferentReason] = useState(false);
   const [dontInformation, setDontInformation] = useState(false);
   const [selectedReason, setSelectedReason] = useState([]);
+  const [deleteReason] = useState([
+    {
+      description:
+        'Das tut uns sehr leid.. Solltest du Erfahrungen gesammelt haben, die dich belasten oder rechtswidrig sind, findest du in unseren Verhaltensregeln Stellen, an die du dich wenden kannst, um professionelle Hilfe zu erhalten.',
+      value: false,
+      option: 'badExperience',
+      titel: 'Ich habe schlechte Erfahrungen in Gruppen gesammelt.',
+    },
+    {
+      titel: 'Ich bin mit den Funktionen von everygroup nicht zufrieden.',
+      description:
+        'Wir freuen uns immer über Post von dir! Solltest du Vorschläge, Kritik oder Anregungen haben, kannst du dich immer gerne an uns wenden unter: hey@everygroup.me',
+      value: false,
+      option: 'functionalitySatification',
+    },
+    {
+      titel: 'Es gibt technische Probleme.',
+      description:
+        'Hilf uns die Fehler zu finden und everygroup von Bugs zu befreien! Schick uns eine kurze formlose E-Mail an: developer@evergroup.me und beschreibe dein Problem.',
+      value: false,
+      option: 'technicalProblem',
+    },
+    {
+      titel: 'Ich nutze everygroup zu viel.',
+      description:
+        'In den Systemeinstellungen deines Handys kannst du ein Zeitlimit für deine Apps einstellen. So musst du everygroup nicht löschen.',
+      value: false,
+      option: 'toMuchUse',
+    },
+    {
+      titel: 'Die Benachrichtigungen stören.',
+      description:
+        'Unter Benachrichtigungen hast du volle Kontrolle über all deine Benachrichtigungen, die wir dir schicken. Haben die Einstellung nicht umsonst reingemacht.',
+      value: false,
+      option: 'notificationInterfer',
+    },
+    {
+      titel: 'Mir gefällt das Konzept von everygroup nicht.',
+      //   description: 'Mir gefällt das Konzept von everygroup nicht.',
+      value: false,
+      option: 'dontLikeConcept',
+    },
+    {
+      titel: 'Andere Gründe.',
+      //   description: 'Andere Gründe.',
+      value: false,
+      option: 'differentReason',
+    },
+    {
+      titel: 'Ich will keine Angaben machen.',
+      description: 'Ich will keine Angaben machen.',
+      value: false,
+      option: 'noReason',
+    },
+  ]);
 
   const reasonSelection = reason => {
-    console.log(reason, 'reason');
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    if (selectedReason.some(el => el.id == reason.id)) {
-      setSelectedReason(selectedReason.filter(item => item.id !== reason.id));
+    if (selectedReason.some(el => el == reason)) {
+      setSelectedReason(selectedReason.filter(item => item !== reason));
     } else {
       setSelectedReason(prevValue => [...prevValue, reason]);
     }
   };
-
-  useEffect(() => {
-    dispatch(getDeleteOption());
-  }, []);
-
-  const {deleteOption} = useSelector(state => {
-    return state.GetDeleteUserOptionReducer;
-  });
-  console.log(selectedReason, 'option');
 
   return (
     <ScrollView
@@ -98,13 +140,8 @@ const DeletePage = () => {
           Warum willst du deinen Account löschen?
         </Text>
 
-        <ScrollView scrollEnabled={false}>
-          {deleteOption.map(item => {
-            const hier = /\W*(hier)\W*/gi;
-            const findIndex = item.description.indexOf('hier');
-            String.prototype.replaceBetween = function (start, end, what) {
-              return this.substring(0, start) + what + this.substring(end);
-            };
+        {/* <ScrollView scrollEnabled={false}>
+          {deleteReason.map(item => {
             return (
               <View>
                 <View
@@ -118,32 +155,30 @@ const DeletePage = () => {
                 <View
                   style={[
                     styles.container,
-                    selectedReason.some(
-                      el => el.id == item.id && item.description.length > 0,
-                    )
+                    selectedReason.some(el => el.option == item.option)
                       ? {height: 'auto', alignItems: 'flex-start'}
                       : {height: 50, alignItems: 'center'},
                   ]}>
                   <View style={{width: '85%'}}>
                     <TouchableWithoutFeedback
                       onPress={() => reasonSelection(item)}>
-                      <Text style={styles.textStyle}>{item.title}</Text>
+                      <Text style={styles.textStyle}>{item.titel}</Text>
                     </TouchableWithoutFeedback>
-                    {selectedReason.some(
-                      el => el.id == item.id && item.description.length > 0,
-                    ) ? (
+                    {selectedReason.some(el => el.option == item.option) ? (
                       <Text
                         style={{
                           fontFamily: FontStyle.MontBold,
                           color: '#82C2F1',
-                          fontSize: 12,
+                          fontSize: 14,
                           marginVertical: '2.5%',
                         }}>
                         {item.description}
                       </Text>
                     ) : null}
                     {selectedReason.some(
-                      el => el.id == 'differentReason' && el.id == item.id,
+                      el =>
+                        el.option == 'differentReason' &&
+                        el.option == item.option,
                     ) ? (
                       <TextInput
                         placeholder="Hier Gründe eintragen.."
@@ -156,26 +191,10 @@ const DeletePage = () => {
                   <View style={{width: '10%'}}>
                     <TouchableWithoutFeedback
                       onPress={() => reasonSelection(item)}>
-                      {selectedReason.some(el => el.id == item.id) ? (
-                        <Image
-                          source={require('../../Assets/Images/check.png')}
-                          style={{
-                            width: 24,
-                            height: 24,
-                            resizeMode: 'contain',
-                            left: 10,
-                          }}
-                        />
+                      {selectedReason.some(el => el.option == item.option) ? (
+                        <Icon name={'check-square'} size={20} color="#205072" />
                       ) : (
-                        <Image
-                          source={require('../../Assets/Images/uncheck.png')}
-                          style={{
-                            width: 24,
-                            height: 24,
-                            resizeMode: 'contain',
-                            left: 10,
-                          }}
-                        />
+                        <Icon name={'square'} size={20} color="#205072" />
                       )}
                     </TouchableWithoutFeedback>
                   </View>
@@ -183,10 +202,10 @@ const DeletePage = () => {
               </View>
             );
           })}
-        </ScrollView>
+        </ScrollView> */}
 
         <View style={{width: '100%', height: 2, backgroundColor: '#DDDFE7'}} />
-        {/* <View style={{width: '100%'}}>
+        <View style={{width: '100%'}}>
           <View style={styles.container}>
             <Text style={[styles.textStyle]}>
               Keine Gruppen gefunden die mir gefallen.
@@ -241,8 +260,8 @@ const DeletePage = () => {
             backgroundColor: '#DDDFE7',
             marginTop: 10,
           }}
-        /> */}
-        {/* <View style={{width: '100%'}}>
+        />
+        <View style={{width: '100%'}}>
           <View style={styles.container}>
             <Text style={[styles.textStyle]}>
               Ich habe schlechte Erfahrungen in Gruppen gesammelt.
@@ -302,9 +321,9 @@ const DeletePage = () => {
             backgroundColor: '#DDDFE7',
             marginTop: 10,
           }}
-        /> */}
+        />
 
-        {/* <View style={{width: '100%'}}>
+        <View style={{width: '100%'}}>
           <View style={styles.container}>
             <Text style={[styles.textStyle]}>
               Ich bin mit den Funktionen von everygroup nicht zufrieden.
@@ -363,9 +382,9 @@ const DeletePage = () => {
             backgroundColor: '#DDDFE7',
             marginTop: 10,
           }}
-        /> */}
+        />
 
-        {/* <View style={{width: '100%'}}>
+        <View style={{width: '100%'}}>
           <View style={styles.container}>
             <Text style={[styles.textStyle]}>Es gibt technische Probleme.</Text>
             <View
@@ -422,9 +441,9 @@ const DeletePage = () => {
             backgroundColor: '#DDDFE7',
             marginTop: 10,
           }}
-        /> */}
+        />
 
-        {/* <View style={{width: '100%'}}>
+        <View style={{width: '100%'}}>
           <View style={styles.container}>
             <Text style={[styles.textStyle]}>
               Ich nutze everygroup zu viel.
@@ -482,9 +501,9 @@ const DeletePage = () => {
             backgroundColor: '#DDDFE7',
             marginTop: 10,
           }}
-        /> */}
+        />
 
-        {/* <View style={{width: '100%'}}>
+        <View style={{width: '100%'}}>
           <View style={styles.container}>
             <Text style={[styles.textStyle]}>
               Die Benachrichtigungen stören.
@@ -543,9 +562,9 @@ const DeletePage = () => {
             backgroundColor: '#DDDFE7',
             marginTop: 10,
           }}
-        /> */}
+        />
 
-        {/* <View style={{width: '100%'}}>
+        <View style={{width: '100%'}}>
           <View style={styles.container}>
             <Text style={[styles.textStyle]}>
               Mir gefällt das Konzept von everygroup nicht.
@@ -590,9 +609,9 @@ const DeletePage = () => {
             backgroundColor: '#DDDFE7',
             marginTop: 10,
           }}
-        /> */}
+        />
 
-        {/* <View style={{width: '100%'}}>
+        <View style={{width: '100%'}}>
           <View style={styles.container}>
             <Text style={[styles.textStyle]}>Andere Gründe.</Text>
             <View
@@ -636,9 +655,9 @@ const DeletePage = () => {
             backgroundColor: '#DDDFE7',
             marginTop: 10,
           }}
-        /> */}
+        />
 
-        {/* <View style={{width: '100%'}}>
+        <View style={{width: '100%'}}>
           <View style={styles.container}>
             <Text style={[styles.textStyle]}>
               Ich will keine Angaben machen.
@@ -683,7 +702,7 @@ const DeletePage = () => {
             backgroundColor: '#DDDFE7',
             marginTop: 10,
           }}
-        /> */}
+        />
 
         <Text
           style={{
@@ -738,7 +757,7 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     fontFamily: FontStyle.MontMedium,
-    fontSize: 15,
+    fontSize: 17,
     color: '#FFA420',
     alignItems: 'center',
     width: '80%',

@@ -17,11 +17,12 @@ import {FlatList} from 'react-native-gesture-handler';
 import {useDispatch, useSelector} from 'react-redux';
 import {favouriteUser} from '../../../Slice/FavouriteUserReducer';
 import {getOtherUserGroup} from '../../../Slice/OtherUserGroupReducer';
+import {updateOtherUserFavStatus} from '../../../Slice/GroupDetailReducer';
 const OtherUserScreen = ({route}) => {
-  const {otherUserId, otherUserName} = route.params;
+  const {otherUserId, otherUserName, userStatus} = route.params;
   const dispatch = useDispatch();
   const [bouncy, setBouncy] = useState(new Animated.Value(0));
-  const [starValue, setStarValue] = useState(false);
+  const [starValue, setStarValue] = useState();
   const [groupArray] = useState([
     {
       groupName: 'Nordsee Gruppe',
@@ -32,6 +33,10 @@ const OtherUserScreen = ({route}) => {
     },
   ]);
 
+  useEffect(() => {
+    setStarValue(userStatus);
+  }, [userStatus]);
+
   const navigation = useNavigation();
 
   const submitReport = () => {
@@ -41,9 +46,8 @@ const OtherUserScreen = ({route}) => {
   const {loading, error, value} = useSelector(state => {
     return state.FavouriteUserReducer;
   });
-
+  console.log(value, 'value succees');
   const {otherUserGroupList} = useSelector(state => {
-    console.log(state.OtherUserGroupReducer, 'other list');
     return state.OtherUserGroupReducer;
   });
 

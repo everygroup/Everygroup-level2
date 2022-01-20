@@ -21,10 +21,9 @@ export const getAllGroup = createAsyncThunk(
         headers: {Authorization: `Bearer ${token}`},
         url: `${baseUrl}/group/all`,
       });
-      console.log(response, 'tttt');
+
       return response.data.results;
     } catch (err) {
-      console.log(err.response);
       return rejectWithValue(err.response.data);
     }
   },

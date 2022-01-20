@@ -26,9 +26,10 @@ export const reportGroup = createAsyncThunk(
           description: data.value.otherText,
         },
       });
-
+      console.log(response, 'resnlasdf');
       return response.data;
     } catch (err) {
+      console.log(err.response, 'erora dlk');
       return rejectWithValue(err.response.data);
     }
   },

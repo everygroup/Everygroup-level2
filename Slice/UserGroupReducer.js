@@ -8,6 +8,7 @@ const initialState = {
   userGroupData: [],
   error: '',
   loading: false,
+  updateGroup: '',
 };
 
 export const getUserGroup = createAsyncThunk(
@@ -45,10 +46,42 @@ export const deleteGroup = createAsyncThunk(
   },
 );
 
+export const updateGroup = createAsyncThunk(
+  'updateGroup',
+  async (data, {rejectWithValue}) => {
+    console.log(data, 'data');
+    const token = await AsyncStorage.getItem('token');
+    try {
+      const response = await axios({
+        method: 'patch',
+        headers: {Authorization: `Bearer ${token}`},
+        url: `${baseUrl}/group/${data.groupId}`,
+        data: {
+          title: data.titel,
+          languages: data.selectedLanguage,
+          join_languages: data.joinLanguage,
+          categories: data.selectedCategory,
+          tags: data.tags,
+          description: data.description,
+          visible_status: data.visible,
+        },
+      });
+
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data.detail);
+    }
+  },
+);
+
 export const UserGroupReducer = createSlice({
   name: 'UserGroupReducer',
   initialState,
-  reducers: {},
+  reducers: {
+    updateSuccessValue(state, action) {
+      state.updateGroup = '';
+    },
+  },
   extraReducers: {
     [getUserGroup.fulfilled]: (state, action) => {
       state.userGroupData = action.payload;
@@ -69,7 +102,15 @@ export const UserGroupReducer = createSlice({
       );
       state.loading = false;
     },
+    [updateGroup.fulfilled]: (state, action) => {
+      const updateIndex = state.userGroupData.findIndex(
+        el => el.id == action.payload.id,
+      );
+      state.userGroupData[updateIndex] = action.payload;
+      state.loading = false;
+      state.updateGroup = 'success';
+    },
   },
 });
-
+export const {updateSuccessValue} = UserGroupReducer.actions;
 export default UserGroupReducer.reducer;

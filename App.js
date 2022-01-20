@@ -17,7 +17,8 @@ import FavouriteUserReducer from './Slice/FavouriteUserReducer';
 import OtherUserGroupReducer from './Slice/OtherUserGroupReducer';
 import ReportGroupReducer from './Slice/ReportGroupReducer';
 import AllGroupListReducer from './Slice/AllGroupListReducer';
-import AddGroupReducer from './Slice/AddGroupReducer';
+import FavouriteGroupReducer from './Slice/FavouriteGroupReducer';
+import GetDeleteUserOptionReducer from './Slice/GetDeleteUserOptionReducer';
 const store = configureStore({
   reducer: {
     user: authReducer,
@@ -34,7 +35,8 @@ const store = configureStore({
     OtherUserGroupReducer,
     ReportGroupReducer,
     AllGroupListReducer,
-    AddGroupReducer,
+    FavouriteGroupReducer,
+    GetDeleteUserOptionReducer,
   },
 });
 

@@ -16,12 +16,19 @@ import FontStyle from '../../Assets/Fonts/FontStyle';
 import LinearGradient from 'react-native-linear-gradient';
 import SmallCard from '../../Common/SmallCard';
 import {useDispatch, useSelector} from 'react-redux';
-import {getGroupDetail} from '../../../Slice/GroupDetailReducer';
+import {
+  getGroupDetail,
+  updateOtherUserFavStatus,
+} from '../../../Slice/GroupDetailReducer';
 import ReportModal from './ReportModal';
 import {reportGroup} from '../../../Slice/ReportGroupReducer';
 import SuccessModal from './SuccessModal';
+import {favouriteGroup} from '../../../Slice/FavouriteGroupReducer';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import {resetFavouriteValue} from '../../../Slice/FavouriteUserReducer';
+import Share from 'react-native-share';
 
-const GroupDetail = ({route, parentCallBack}) => {
+const GroupDetail = ({route}) => {
   const {groupId} = route.params;
 
   const dispatch = useDispatch();
@@ -32,6 +39,24 @@ const GroupDetail = ({route, parentCallBack}) => {
   const navigation = useNavigation();
   const [bellValue, setBellValue] = useState(false);
   const [groupType] = useState('snapchat');
+
+  const url = 'https://everygroup.com/';
+  const title = 'Awesome';
+  const message = 'Please check this out.';
+
+  const options = {
+    title,
+    url,
+    message,
+  };
+
+  const openShare = async (customOptions = options) => {
+    try {
+      await Share.open(customOptions);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const [otherGroup, setOtherGroup] = useState([
     {
@@ -57,6 +82,7 @@ const GroupDetail = ({route, parentCallBack}) => {
   };
 
   useEffect(() => {
+    dispatch(resetFavouriteValue());
     dispatch(getGroupDetail(groupId));
   }, []);
 
@@ -112,6 +138,18 @@ const GroupDetail = ({route, parentCallBack}) => {
     inputRange: [0, 1, 2],
     outputRange: [1, 0.8, 1],
   });
+
+  const {value, favouriteError} = useSelector(state => {
+    return state.FavouriteGroupReducer;
+  });
+  const updateFavouriteGroup = () => {
+    dispatch(favouriteGroup(groupId));
+  };
+  useEffect(() => {
+    if (value == 'success') {
+      dispatch(updateOtherUserFavStatus(true));
+    }
+  }, [value]);
 
   return (
     <View style={{paddingTop: '21%', height: '100%', backgroundColor: '#fff'}}>
@@ -242,6 +280,7 @@ const GroupDetail = ({route, parentCallBack}) => {
                 navigation.navigate('OtherUserScreen', {
                   otherUserId: groupDetail.user,
                   otherUserName: groupDetail.owner_name,
+                  userStatus: groupDetail.is_group_owner_favourite,
                 })
               }>
               <LinearGradient
@@ -325,7 +364,7 @@ const GroupDetail = ({route, parentCallBack}) => {
                 alignSelf: 'center',
               }}>
               <View style={{alignItems: 'center'}}>
-                {flagValue ? (
+                {groupDetail.group_report_status || flagValue ? (
                   <Animated.View style={{transform: [{scale: bouncyView}]}}>
                     <Image
                       source={require('../../Assets/Images/flagRed.png')}
@@ -346,21 +385,30 @@ const GroupDetail = ({route, parentCallBack}) => {
               </View>
 
               <View style={styles.verticalLine} />
-              <View style={{alignItems: 'center'}}>
-                <Image
-                  source={require('../../Assets/Images/shareBlue.png')}
-                  style={styles.imageStyleSecond}
-                />
-                <Text style={styles.textStyle}>Teilen</Text>
-              </View>
+              <TouchableWithoutFeedback onPress={() => openShare()}>
+                <View style={{alignItems: 'center'}}>
+                  <Image
+                    source={require('../../Assets/Images/shareBlue.png')}
+                    style={styles.imageStyleSecond}
+                  />
+                  <Text style={styles.textStyle}>Teilen</Text>
+                </View>
+              </TouchableWithoutFeedback>
               <View style={styles.verticalLine} />
-              <View style={{alignItems: 'center'}}>
-                <Image
-                  source={require('../../Assets/Images/favoriteGrey.png')}
-                  style={styles.imageStyleSecond}
-                />
-                <Text style={styles.textStyle}>Favorit</Text>
-              </View>
+              <TouchableWithoutFeedback onPress={() => updateFavouriteGroup()}>
+                <View style={{alignItems: 'center'}}>
+                  <Icon
+                    name="bookmark"
+                    // color="#FFA420"
+                    color={
+                      groupDetail.group_favourite_status ? '#FFA420' : '#B9B9B9'
+                    }
+                    size={22}
+                    solid={groupDetail.group_favourite_status ? true : false}
+                  />
+                  <Text style={styles.textStyle}>Favorit</Text>
+                </View>
+              </TouchableWithoutFeedback>
             </View>
             <View
               style={{

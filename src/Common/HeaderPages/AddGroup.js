@@ -500,7 +500,9 @@ const AddGroup = () => {
             height={100}
             multiline={true}
             inputWidth="100%"
-            onChangeText={text => setDescription(text)}
+            onChangeText={text => {
+              setDescription(text), setDescriptionError(false);
+            }}
           />
         </View>
       </View>

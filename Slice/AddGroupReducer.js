@@ -45,11 +45,7 @@ export const AddGroupReducer = createSlice({
   initialState,
   reducers: {
     updateGroupDetail(state, action) {
-      console.log(action, 'action');
-
-      state.groupDetail.titel = action.payload.groupName;
-
-      state.groupDetail.description = action.payload.description;
+      state.groupDetail = {...state.groupDetail, ...action.payload};
     },
   },
   extraReducers: {},

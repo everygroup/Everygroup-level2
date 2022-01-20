@@ -13,16 +13,6 @@ const MyGroup = () => {
   const [eyeValue, setEyeValue] = useState(true);
   const [bellValue, setBellValue] = useState(true);
   const [infoModalValue, setInfoModalValue] = useState(false);
-  const [ownGroupArray] = useState([
-    {
-      groupId: '0',
-      groupName: 'Nordsee Gruppe',
-      category: ['Dienstleistungen', 'Interessen', 'Unterhaltung'],
-      hashtagData: ['#test', '#test', '#test', '#test', '#test'],
-      description: 'Hey, wir sind eine nette Gruppe',
-      socialGroup: 'snapchat',
-    },
-  ]);
 
   useEffect(() => {
     dispatch(getUserGroup());

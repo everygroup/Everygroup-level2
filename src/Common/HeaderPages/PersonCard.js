@@ -14,6 +14,7 @@ const PersonCard = ({data}) => {
   const deleteUser = personId => {
     dispatch(deleteFavouriteUser(personId));
   };
+
   return (
     <View style={styles.containerStyle}>
       <View style={{flex: 0.5}}>
@@ -27,7 +28,7 @@ const PersonCard = ({data}) => {
             paddingHorizontal: '2.5%',
             paddingTop: '2.5%',
           }}
-          onPress={() => deleteUser(data.favourite_user_id)}
+          onPress={() => deleteUser(data.id)}
         />
         <TouchableOpacity
           onPress={() => navigation.navigate('OtherUserScreen')}>

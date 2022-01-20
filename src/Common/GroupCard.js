@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -7,13 +7,16 @@ import {
   FlatList,
   TouchableOpacity,
   Linking,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import FontStyle from '../Assets/Fonts/FontStyle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Button from './Button';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {deleteGroup} from '../../Slice/UserGroupReducer';
+import {deleteGroup, updateGroup} from '../../Slice/UserGroupReducer';
+import InfoModal from './InfoModal';
+import DeleteModal from '../Screens/UserScreens/deleteModal';
 const GroupCard = ({
   group,
   boosterValue,
@@ -24,12 +27,39 @@ const GroupCard = ({
   eyeValue,
   bellValue,
   infoPress,
+  favourite,
+  removeFavourite,
 }) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [modalValue, setModalValue] = useState(false);
+  const visibleUnvisible = () => {
+    if (group.visible_status == true) {
+      setModalValue(true);
+    }
+    dispatch(updateGroup({groupId: group.id, visible: !group.visible_status}));
+  };
 
   return (
     <View>
+      <InfoModal
+        modalValue={modalValue}
+        closeModal={() => setModalValue(false)}
+        titel="Unsichtbar"
+        message={
+          'Deine Gruppe ist jetzt nicht mehr sichtbar für andere Nutzer. Ebenfalls wird sie nicht mehr in den Favoriten von anderen gezeigt, die deine Gruppe als Favorit markiert haben.'
+        }
+      />
+      <DeleteModal
+        modalValue={deleteModal}
+        deletePress={() => dispatch(deleteGroup(group.id))}
+        message={'Gruppe wirklich löschen?'}
+        deleteImage={true}
+        buttonLeftColor={'#205072'}
+        buttonRightColor={'#EF3E36'}
+        closeModal={() => setDeleteModal(false)}
+      />
       <View style={{position: 'relative', zIndex: 99999}}>
         <View style={[styles.containerStyle, {borderBottomRightRadius: 0}]}>
           <View
@@ -98,12 +128,20 @@ const GroupCard = ({
                 }}>
                 {group.title}
               </Text>
-              <Icon
-                name="bookmark"
-                color={group.favorite ? '#FFA420' : '#B9B9B9'}
-                size={22}
-                solid={group.favorite ? true : false}
-              />
+              <TouchableWithoutFeedback onPress={removeFavourite}>
+                <Icon
+                  name="bookmark"
+                  color={
+                    group.group_favourite_status || favourite
+                      ? '#FFA420'
+                      : '#B9B9B9'
+                  }
+                  size={22}
+                  solid={
+                    group.group_favourite_status || favourite ? true : false
+                  }
+                />
+              </TouchableWithoutFeedback>
             </View>
 
             <FlatList
@@ -239,7 +277,7 @@ const GroupCard = ({
                 fontSize: 9,
                 color: '#205072',
               }}>
-              Deutsch
+              {group.languages[0].language}
             </Text>
           </View>
         </View>
@@ -261,8 +299,8 @@ const GroupCard = ({
                 }}>
                 <Icon name={'redo-alt'} size={21} color="#C4C6C8" />
 
-                <TouchableOpacity onPress={eyePress}>
-                  {eyeValue ? (
+                <TouchableWithoutFeedback onPress={() => visibleUnvisible()}>
+                  {group.visible_status ? (
                     <Image
                       source={require('../Assets/Images/openEye.png')}
                       style={styles.iconStyle}
@@ -273,13 +311,15 @@ const GroupCard = ({
                       style={styles.iconStyle}
                     />
                   )}
-                </TouchableOpacity>
+                </TouchableWithoutFeedback>
 
                 <Icon
                   name={'pencil-alt'}
                   size={21}
                   color="#205072"
-                  onPress={() => navigation.navigate('EditGroup')}
+                  onPress={() =>
+                    navigation.navigate('EditGroup', {groupId: group.id})
+                  }
                 />
 
                 <TouchableOpacity onPress={bellPress}>
@@ -299,7 +339,7 @@ const GroupCard = ({
                   name={'trash'}
                   size={21}
                   color="#205072"
-                  onPress={() => dispatch(deleteGroup(group.id))}
+                  onPress={() => setDeleteModal(true)}
                 />
               </View>
               <View

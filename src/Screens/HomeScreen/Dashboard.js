@@ -25,16 +25,7 @@ const {width, height} = Dimensions.get('screen');
 const Dashboard = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const flatListRef = useRef(2);
-  const [groupArray] = useState([
-    {
-      groupName: 'Nordsee Gruppe',
-      category: ['Dienstleistungen', 'Interessen', 'Unterhaltung'],
-      hashtagData: ['#test', '#test', '#test', '#test', '#test'],
-      description: 'Hey, wir sind eine nette Gruppe',
-      group_type: 'telegram',
-    },
-  ]);
+
   const [trendingGroup, setTrengingGroup] = useState([
     {
       description: 'Die Masterchill Gruppe zu plappern',

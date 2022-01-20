@@ -32,7 +32,12 @@ export const getGroupDetail = createAsyncThunk(
 export const GroupDetailReducer = createSlice({
   name: 'GroupDetailReducer',
   initialState,
-  reducers: {},
+  reducers: {
+    updateOtherUserFavStatus(state, action) {
+      state.groupDetail.group_favourite_status = action.payload;
+      // state.groupDetail = action.payload;
+    },
+  },
   extraReducers: {
     [getGroupDetail.fulfilled]: (state, action) => {
       state.groupDetail = action.payload;
@@ -49,5 +54,7 @@ export const GroupDetailReducer = createSlice({
     },
   },
 });
+
+export const {updateOtherUserFavStatus} = GroupDetailReducer.actions;
 
 export default GroupDetailReducer.reducer;

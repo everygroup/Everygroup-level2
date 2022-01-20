@@ -49,7 +49,7 @@ export const getFavouriteUsers = createAsyncThunk(
         headers: {Authorization: `Bearer ${token}`},
         url: `${baseUrl}/favourite-person`,
       });
-      console.log(response.data.results, 'response');
+      console.log(response.data.results, 'response person');
       return response.data.results;
     } catch (err) {
       return rejectWithValue(Object.values(err.response.data));
@@ -67,8 +67,10 @@ export const deleteFavouriteUser = createAsyncThunk(
         headers: {Authorization: `Bearer ${token}`},
         url: `${baseUrl}/favourite-person/${data}`,
       });
+      console.log(response, 'respo');
       return data;
     } catch (err) {
+      console.log(err.response, 'err delete ');
       return rejectWithValue(Object.values(err.response.data));
     }
   },
@@ -77,7 +79,12 @@ export const deleteFavouriteUser = createAsyncThunk(
 export const FavouriteUserReducer = createSlice({
   name: 'FavouriteUserReducer',
   initialState,
-  reducers: {},
+  reducers: {
+    resetFavouriteValue(state, action) {
+      state.value = '';
+      state.error = '';
+    },
+  },
   extraReducers: {
     [favouriteUser.fulfilled]: (state, action) => {
       state.loading = false;
@@ -125,5 +132,7 @@ export const FavouriteUserReducer = createSlice({
     },
   },
 });
+
+export const {resetFavouriteValue} = FavouriteUserReducer.actions;
 
 export default FavouriteUserReducer.reducer;

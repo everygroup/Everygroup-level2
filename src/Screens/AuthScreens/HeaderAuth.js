@@ -49,7 +49,7 @@ const HeaderAuth = ({currentRoute, prevRoute}) => {
         style={{
           color: '#FFA420',
           fontSize: 34,
-          fontFamily: FontStyle.FuturaPTBold,
+          fontFamily: FontStyle.FuturaBold,
         }}>
         everygroup
       </Text>

@@ -1,9 +1,17 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import Modal from 'react-native-modal';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 
-const DeleteModal = ({modalValue, closeModal, message}) => {
+const DeleteModal = ({
+  modalValue,
+  closeModal,
+  message,
+  deleteImage,
+  buttonLeftColor,
+  buttonRightColor,
+  deletePress,
+}) => {
   return (
     <View>
       <Modal
@@ -18,36 +26,33 @@ const DeleteModal = ({modalValue, closeModal, message}) => {
         <View
           style={{
             backgroundColor: '#fff',
-            width: '70%',
+            width: '80%',
             minHeight: '20%',
             maxHeight: 'auto',
-            paddingVertical: '2%',
+            paddingVertical: '5%',
             borderRadius: 10,
             justifyContent: 'center',
             alignItems: 'center',
           }}>
+          <Image
+            source={require('../../Assets/Images/Trash.png')}
+            style={{width: 160, height: 120, resizeMode: 'contain'}}
+          />
           <Text
             style={{
               color: '#205072',
-              fontSize: 20,
+              fontSize: 16,
               fontFamily: FontStyle.MontBold,
               textAlign: 'center',
-              marginVertical: '5%',
+              marginTop: '2.5%',
             }}>
-            {message || `Username wirklich ändern?`}
+            {message}
           </Text>
-          <Text
-            style={{
-              fontFamily: FontStyle.MontMedium,
-              color: '#205072',
-              fontSize: 14,
-              width: '85%',
-              textAlign: 'left',
-            }}>
-            Danach kannst du deinen Usernamen nicht mehr ändern.
-          </Text>
+
           <View style={{flexDirection: 'row'}}>
-            <TouchableOpacity onPress={closeModal} style={styles.buttonView}>
+            <TouchableOpacity
+              onPress={closeModal}
+              style={[styles.buttonView, {backgroundColor: buttonLeftColor}]}>
               <Text
                 style={{
                   fontFamily: FontStyle.MontExtBold,
@@ -58,15 +63,15 @@ const DeleteModal = ({modalValue, closeModal, message}) => {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={closeModal}
-              style={[styles.buttonView, {backgroundColor: '#06BA63'}]}>
+              onPress={deletePress}
+              style={[styles.buttonView, {backgroundColor: buttonRightColor}]}>
               <Text
                 style={{
                   fontFamily: FontStyle.MontExtBold,
                   color: '#fff',
                   fontSize: 17,
                 }}>
-                Ändern
+                Löschen
               </Text>
             </TouchableOpacity>
           </View>
@@ -93,12 +98,11 @@ const styles = StyleSheet.create({
   buttonView: {
     width: 122,
     height: 45,
-    backgroundColor: '#205072',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 21,
-    marginHorizontal: '5%',
-    marginTop: '10%',
+    marginHorizontal: '2.5%',
+    marginTop: '8%',
   },
 });
 
