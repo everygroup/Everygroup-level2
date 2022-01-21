@@ -13,7 +13,7 @@ import NotificationGroupBooster from '../Screens/UserScreens/NotificationGroupBo
 import NotificationOwnGroup from '../Screens/UserScreens/NotificationOwnGroup';
 import Coupon from '../Screens/UserScreens/Coupon';
 import CheckPassword from '../Screens/UserScreens/CheckPassword';
-import DeletePage from '../Screens/UserScreens/DeletePage';
+
 const UserStackScreen = createStackNavigator();
 
 export const UserNavigator = () => {
@@ -95,11 +95,6 @@ export const UserNavigator = () => {
         <UserStackScreen.Screen
           name="CheckPassword"
           component={CheckPassword}
-          options={{gestureEnabled: false}}
-        />
-        <UserStackScreen.Screen
-          name="DeletePage"
-          component={DeletePage}
           options={{gestureEnabled: false}}
         />
       </UserStackScreen.Navigator>

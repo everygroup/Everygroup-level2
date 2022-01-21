@@ -12,6 +12,7 @@ import GroupDetail from '../Screens/HomeScreen/GroupDetail';
 import OtherUserScreen from '../Screens/HomeScreen/OtherUserScreen';
 import EditGroup from '../Screens/UserScreens/EditGroup';
 import SearchScreen from '../Screens/HomeScreen/SearchScreen';
+import DeletePage from '../Screens/HomeScreen/DeletePage';
 const HomeStackScreen = createStackNavigator();
 
 export const HomeNavigator = () => {
@@ -24,6 +25,11 @@ export const HomeNavigator = () => {
       <HomeStackScreen.Screen
         name="Dashboard"
         component={Dashboard}
+        options={{gestureEnabled: false}}
+      />
+      <HomeStackScreen.Screen
+        name="DeletePage"
+        component={DeletePage}
         options={{gestureEnabled: false}}
       />
       <HomeStackScreen.Screen

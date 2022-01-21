@@ -27,6 +27,7 @@ import {favouriteGroup} from '../../../Slice/FavouriteGroupReducer';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {resetFavouriteValue} from '../../../Slice/FavouriteUserReducer';
 import Share from 'react-native-share';
+import {getSimilarGroupList} from '../../../Slice/AllGroupListReducer';
 
 const GroupDetail = ({route}) => {
   const {groupId} = route.params;
@@ -58,28 +59,16 @@ const GroupDetail = ({route}) => {
     }
   };
 
-  const [otherGroup, setOtherGroup] = useState([
-    {
-      description: 'Eine coole Gruppe',
-      socialGroup: 'snapchat',
-    },
-    {
-      description: 'Nordsee Gruppe fur dies und das',
-      socialGroup: 'whatsapp',
-    },
-    {
-      description: 'Die Masterchill Gruppe zu plappern',
-      socialGroup: 'line',
-    },
-    {
-      description: 'Die Masterchill Gruppe zu plappern',
-      socialGroup: 'telegram',
-    },
-  ]);
+  // const [otherGroup, setOtherGroup] = useState([
+  //   {
+  //     description: 'Eine coole Gruppe',
+  //     socialGroup: 'snapchat',
+  //   },
+  // ]);
 
-  const handleLoadMore = () => {
-    setOtherGroup(prevValue => [...prevValue, ...otherGroup]);
-  };
+  // const handleLoadMore = () => {
+  //   setOtherGroup(prevValue => [...prevValue, ...otherGroup]);
+  // };
 
   useEffect(() => {
     dispatch(resetFavouriteValue());
@@ -146,10 +135,16 @@ const GroupDetail = ({route}) => {
     dispatch(favouriteGroup(groupId));
   };
   useEffect(() => {
+    dispatch(getSimilarGroupList(groupDetail.categories));
     if (value == 'success') {
       dispatch(updateOtherUserFavStatus(true));
     }
   }, [value]);
+
+  const {similarGroupList} = useSelector(state => {
+    console.log(state.AllGroupListReducer, 'rohit reducer');
+    return state.AllGroupListReducer;
+  });
 
   return (
     <View style={{paddingTop: '21%', height: '100%', backgroundColor: '#fff'}}>
@@ -507,14 +502,19 @@ const GroupDetail = ({route}) => {
           Die Gruppen könnten dir auch gefallen
         </Text>
         <FlatList
-          data={otherGroup}
+          data={similarGroupList}
           contentContainerStyle={{marginVertical: '2.5%'}}
           showsHorizontalScrollIndicator={false}
           horizontal={true}
-          onEndReached={handleLoadMore}
+          // onEndReached={handleLoadMore}
           onEndThreshold={0}
           renderItem={({item}) => {
-            return <SmallCard group={item} />;
+            return (
+              <SmallCard
+                group={item}
+                mehrSehen={() => dispatch(getGroupDetail(item.id))}
+              />
+            );
           }}
         />
       </ScrollView>

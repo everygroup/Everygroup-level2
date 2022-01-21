@@ -34,10 +34,12 @@ const DeleteModal = ({
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Image
-            source={require('../../Assets/Images/Trash.png')}
-            style={{width: 160, height: 120, resizeMode: 'contain'}}
-          />
+          {deleteImage ? (
+            <Image
+              source={require('../../Assets/Images/Trash.png')}
+              style={{width: 160, height: 120, resizeMode: 'contain'}}
+            />
+          ) : null}
           <Text
             style={{
               color: '#205072',

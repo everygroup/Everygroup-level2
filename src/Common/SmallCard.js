@@ -1,20 +1,27 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet, FlatList} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 
 import FontStyle from '../Assets/Fonts/FontStyle';
-const SmallCard = ({group}) => {
+const SmallCard = ({group, mehrSehen}) => {
   return (
     <View style={styles.containerStyle}>
       <View
         style={{
           backgroundColor:
-            group.socialGroup == 'snapchat'
+            group.group_type == 'snapchat'
               ? '#FFFC00'
-              : group.socialGroup == 'whatsapp'
+              : group.group_type == 'whatsapp'
               ? 'lightgreen'
-              : group.socialGroup == 'line'
+              : group.group_type == 'line'
               ? 'green'
-              : group.socialGroup == 'telegram'
+              : group.group_type == 'telegram'
               ? '#0088CC'
               : 'black',
           height: 30,
@@ -25,22 +32,22 @@ const SmallCard = ({group}) => {
           borderTopLeftRadius: 5,
           alignItems: 'center',
         }}>
-        {group.socialGroup == 'snapchat' ? (
+        {group.group_type == 'snapchat' ? (
           <Image
             source={require('../Assets/Images/snapchatLine.png')}
             style={styles.imageStyle}
           />
-        ) : group.socialGroup == 'line' ? (
+        ) : group.group_type == 'line' ? (
           <Image
             source={require('../Assets/Images/lineLine.png')}
             style={styles.imageStyle}
           />
-        ) : group.socialGroup == 'telegram' ? (
+        ) : group.group_type == 'telegram' ? (
           <Image
             source={require('../Assets/Images/telegramLine.png')}
             style={styles.imageStyle}
           />
-        ) : group.socialGroup == 'whatsapp' ? (
+        ) : group.group_type == 'whatsapp' ? (
           <Image
             source={require('../Assets/Images/whatsappLine.png')}
             style={styles.imageStyle}
@@ -63,18 +70,19 @@ const SmallCard = ({group}) => {
           {group.description}
         </Text>
       </View>
-      <View
+      <TouchableOpacity
+        onPress={mehrSehen}
         style={[
           styles.buttonStyle,
           {
             backgroundColor:
-              group.socialGroup == 'snapchat'
+              group.group_type == 'snapchat'
                 ? '#FFFC00'
-                : group.socialGroup == 'whatsapp'
+                : group.group_type == 'whatsapp'
                 ? '#25D366'
-                : group.socialGroup == 'line'
+                : group.group_type == 'line'
                 ? '#00B900'
-                : group.socialGroup == 'telegram'
+                : group.group_type == 'telegram'
                 ? '#0088CC'
                 : 'red',
           },
@@ -82,12 +90,12 @@ const SmallCard = ({group}) => {
         <Text
           style={{
             fontFamily: FontStyle.MontBold,
-            color: group.socialGroup == 'snapchat' ? '#205072' : '#fff',
+            color: group.group_type == 'snapchat' ? '#205072' : '#fff',
             fontSize: 12,
           }}>
           Mehr Sehen
         </Text>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };
