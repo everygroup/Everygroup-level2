@@ -145,6 +145,7 @@ const GroupCard = ({
             </View>
 
             <FlatList
+              keyExtractor={(item, index) => item.slug}
               horizontal={true}
               contentContainerStyle={{
                 height: 22,
@@ -180,6 +181,7 @@ const GroupCard = ({
             />
 
             <FlatList
+              keyExtractor={(item, index) => item}
               horizontal={true}
               contentContainerStyle={{
                 width: '95%',

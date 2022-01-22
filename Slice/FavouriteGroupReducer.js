@@ -9,6 +9,7 @@ const initialState = {
   favouriteError: '',
   value: '',
   loading: '',
+  dataLoading: false,
 };
 
 export const favouriteGroup = createAsyncThunk(
@@ -59,10 +60,9 @@ export const deleteFavouriteGroup = createAsyncThunk(
         headers: {Authorization: `Bearer ${token}`},
         url: `${baseUrl}/favourite-group/${data}`,
       });
-      console.log(response);
+
       return data;
     } catch (err) {
-      console.log(err.response);
       return rejectWithValue(Object.values(err.response.data));
     }
   },
@@ -90,6 +90,15 @@ export const FavouriteGroupReducer = createSlice({
     },
     [getFavouriteGroup.fulfilled]: (state, action) => {
       state.favouriteGroupList = action.payload;
+      state.dataLoading = false;
+    },
+    [getFavouriteGroup.pending]: (state, action) => {
+      state.favouriteGroupList = [];
+      state.dataLoading = true;
+    },
+    [getFavouriteGroup.rejected]: (state, action) => {
+      state.favouriteGroupList = [];
+      state.dataLoading = false;
     },
 
     [deleteFavouriteGroup.fulfilled]: (state, action) => {

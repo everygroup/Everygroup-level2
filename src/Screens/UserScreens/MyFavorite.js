@@ -12,7 +12,11 @@ const Tab = createMaterialTopTabNavigator();
 
 const MyFavorite = () => {
   return (
-    <View style={[Styles.mainContainer, {paddingTop: '25%'}]}>
+    <View
+      style={[
+        Styles.mainContainer,
+        {paddingTop: '25%', backgroundColor: '#fff'},
+      ]}>
       <Header />
       <Text style={Styles.headingText}>Favoriten</Text>
       <Tab.Navigator

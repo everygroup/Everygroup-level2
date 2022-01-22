@@ -18,6 +18,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {favouriteUser} from '../../../Slice/FavouriteUserReducer';
 import {getOtherUserGroup} from '../../../Slice/OtherUserGroupReducer';
 import {updateOtherUserFavStatus} from '../../../Slice/GroupDetailReducer';
+import MainLoader from '../../Common/MainLoader';
 const OtherUserScreen = ({route}) => {
   const {otherUserId, otherUserName, userStatus} = route.params;
   const dispatch = useDispatch();
@@ -46,8 +47,8 @@ const OtherUserScreen = ({route}) => {
   const {loading, error, value} = useSelector(state => {
     return state.FavouriteUserReducer;
   });
-  console.log(value, 'value succees');
-  const {otherUserGroupList} = useSelector(state => {
+
+  const {otherUserGroupList, dataLoading} = useSelector(state => {
     return state.OtherUserGroupReducer;
   });
 
@@ -76,57 +77,67 @@ const OtherUserScreen = ({route}) => {
   return (
     <View style={{paddingTop: '21%', height: '100%', backgroundColor: '#fff'}}>
       <Header />
-      {error ? alert(error) : null}
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          paddingHorizontal: '5%',
-          marginVertical: '5%',
-        }}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image
-            source={require('../../Assets/Images/back.png')}
-            style={{width: 23, height: 23, resizeMode: 'contain'}}
+      {/* {error ? alert(error) : null} */}
+      {dataLoading ? (
+        <MainLoader heightValue={1.1} />
+      ) : (
+        <>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              paddingHorizontal: '5%',
+              marginVertical: '5%',
+            }}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Image
+                source={require('../../Assets/Images/back.png')}
+                style={{width: 23, height: 23, resizeMode: 'contain'}}
+              />
+            </TouchableOpacity>
+            <View
+              style={{
+                alignItems: 'center',
+                width: '80%',
+              }}>
+              <Text
+                style={{
+                  color: '#205072',
+                  fontSize: 20,
+                  fontFamily: FontStyle.MontMedium,
+                }}>
+                Alle Gruppen von:
+              </Text>
+              <Text
+                style={{
+                  color: '#205072',
+                  fontSize: 24,
+                  fontFamily: FontStyle.MontBold,
+                }}>
+                {otherUserName}
+              </Text>
+            </View>
+            <TouchableWithoutFeedback onPress={() => submitReport()}>
+              <Animated.View style={{transform: [{scale: bouncyView}]}}>
+                <Icon
+                  name="star"
+                  size={30}
+                  color={'#FFCC00'}
+                  solid={starValue}
+                />
+              </Animated.View>
+            </TouchableWithoutFeedback>
+          </View>
+          <FlatList
+            data={otherUserGroupList}
+            showsVerticalScrollIndicator={false}
+            renderItem={({item: group}) => {
+              return <GroupCard group={group} />;
+            }}
           />
-        </TouchableOpacity>
-        <View
-          style={{
-            alignItems: 'center',
-            width: '80%',
-          }}>
-          <Text
-            style={{
-              color: '#205072',
-              fontSize: 20,
-              fontFamily: FontStyle.MontMedium,
-            }}>
-            Alle Gruppen von:
-          </Text>
-          <Text
-            style={{
-              color: '#205072',
-              fontSize: 24,
-              fontFamily: FontStyle.MontBold,
-            }}>
-            {otherUserName}
-          </Text>
-        </View>
-        <TouchableWithoutFeedback onPress={() => submitReport()}>
-          <Animated.View style={{transform: [{scale: bouncyView}]}}>
-            <Icon name="star" size={30} color={'#FFCC00'} solid={starValue} />
-          </Animated.View>
-        </TouchableWithoutFeedback>
-      </View>
-
-      <FlatList
-        data={otherUserGroupList}
-        showsVerticalScrollIndicator={false}
-        renderItem={({item: group}) => {
-          return <GroupCard group={group} />;
-        }}
-      />
+        </>
+      )}
     </View>
   );
 };

@@ -20,6 +20,7 @@ import {getCategory} from '../../../Slice/CategoryReducer';
 import {useSelector, useDispatch} from 'react-redux';
 import AsyncStorageLib from '@react-native-async-storage/async-storage';
 import {getAllGroup} from '../../../Slice/AllGroupListReducer';
+import MainLoader from '../../Common/MainLoader';
 
 const {width, height} = Dimensions.get('screen');
 const Dashboard = () => {
@@ -73,7 +74,7 @@ const Dashboard = () => {
     return state.AllGroupListReducer;
   });
   //////////////////////////////
-  console.log(groupData, 'gro data');
+
   return (
     <View
       style={{
@@ -83,113 +84,119 @@ const Dashboard = () => {
       }}>
       <Header />
 
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{paddingBottom: '10%'}}>
-        <View style={{height: height * 0.3, backgroundColor: '#fff'}}>
-          <View
-            style={{
-              width: '100%',
-              alignItems: 'center',
-            }}>
-            <Text
-              style={{
-                fontFamily: FontStyle.MontBold,
-                fontSize: 38,
-                color: '#205072',
-                left: 3,
-              }}>
-              Trends
-            </Text>
-            <Text
-              style={{
-                fontFamily: FontStyle.MontBold,
-                fontSize: 18,
-                color: '#205072',
-              }}>
-              Die beliebtesten Gruppen
-            </Text>
-          </View>
-          <FlatList
-            initialScrollIndex={2}
-            onScrollToIndexFailed={info => {
-              const wait = new Promise(resolve => setTimeout(resolve, 500));
-              wait.then(() => {
-                flatList.current?.scrollToIndex({
-                  index: info.index,
-                  animated: true,
-                });
-              });
-            }}
-            getItemLayout={(data, index) => {
-              return {length: 131, offset: 131 * index, index};
-            }}
-            horizontal={true}
-            data={trendingGroup}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{
-              backgroundColor: '#fff',
-            }}
-            renderItem={({item: trending}) => {
-              return <GradientCard group={trending} />;
-            }}
-            onEndReached={handleLoadMore}
-            onEndThreshold={0}
-          />
+      {loading ? (
+        <MainLoader heightValue={1.1} />
+      ) : (
+        <>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{paddingBottom: '10%'}}>
+            <View style={{height: height * 0.3, backgroundColor: '#fff'}}>
+              <View
+                style={{
+                  width: '100%',
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{
+                    fontFamily: FontStyle.MontBold,
+                    fontSize: 38,
+                    color: '#205072',
+                    left: 3,
+                  }}>
+                  Trends
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: FontStyle.MontBold,
+                    fontSize: 18,
+                    color: '#205072',
+                  }}>
+                  Die beliebtesten Gruppen
+                </Text>
+              </View>
+              <FlatList
+                initialScrollIndex={2}
+                onScrollToIndexFailed={info => {
+                  const wait = new Promise(resolve => setTimeout(resolve, 500));
+                  wait.then(() => {
+                    flatList.current?.scrollToIndex({
+                      index: info.index,
+                      animated: true,
+                    });
+                  });
+                }}
+                getItemLayout={(data, index) => {
+                  return {length: 131, offset: 131 * index, index};
+                }}
+                horizontal={true}
+                data={trendingGroup}
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{
+                  backgroundColor: '#fff',
+                }}
+                renderItem={({item: trending}) => {
+                  return <GradientCard group={trending} />;
+                }}
+                onEndReached={handleLoadMore}
+                onEndThreshold={0}
+              />
 
-          <View
-            style={{
-              backgroundColor: '#FFA420',
-              height: 2,
-              width: '50%',
-              alignSelf: 'center',
-            }}
-          />
-        </View>
-        <View style={{backgroundColor: '#fff'}}>
-          <Text
-            style={{
-              fontSize: 26,
-              color: '#205072',
-              fontFamily: FontStyle.MontBold,
-              alignSelf: 'center',
-              marginTop: 10,
-            }}>
-            Neu hinzugefügt
-          </Text>
-          <ScrollView style={{paddingBottom: 20}}>
-            {groupData.map(group => {
-              return <GroupCard group={group} />;
-            })}
+              <View
+                style={{
+                  backgroundColor: '#FFA420',
+                  height: 2,
+                  width: '50%',
+                  alignSelf: 'center',
+                }}
+              />
+            </View>
+            <View style={{backgroundColor: '#fff'}}>
+              <Text
+                style={{
+                  fontSize: 26,
+                  color: '#205072',
+                  fontFamily: FontStyle.MontBold,
+                  alignSelf: 'center',
+                  marginTop: 10,
+                }}>
+                Neu hinzugefügt
+              </Text>
+              <ScrollView style={{paddingBottom: 20}}>
+                {groupData.map(group => {
+                  return <GroupCard group={group} />;
+                })}
+              </ScrollView>
+              <TouchableOpacity style={styles.moreGroupButton}>
+                <Text
+                  style={{
+                    fontFamily: FontStyle.MontBold,
+                    fontSize: 14,
+                    color: '#fff',
+                  }}>
+                  Mehr Gruppen
+                </Text>
+              </TouchableOpacity>
+            </View>
           </ScrollView>
-          <TouchableOpacity style={styles.moreGroupButton}>
-            <Text
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Interface')}
+            style={{
+              position: 'absolute',
+              bottom: '10%',
+              alignSelf: 'flex-end',
+              right: '8%',
+            }}>
+            <Image
+              source={require('../../Assets/Images/group.png')}
               style={{
-                fontFamily: FontStyle.MontBold,
-                fontSize: 14,
-                color: '#fff',
-              }}>
-              Mehr Gruppen
-            </Text>
+                width: 50,
+                height: 50,
+              }}
+            />
           </TouchableOpacity>
-        </View>
-      </ScrollView>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Interface')}
-        style={{
-          position: 'absolute',
-          bottom: '10%',
-          alignSelf: 'flex-end',
-          right: '8%',
-        }}>
-        <Image
-          source={require('../../Assets/Images/group.png')}
-          style={{
-            width: 50,
-            height: 50,
-          }}
-        />
-      </TouchableOpacity>
+        </>
+      )}
     </View>
   );
 };

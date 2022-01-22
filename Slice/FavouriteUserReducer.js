@@ -33,7 +33,6 @@ export const favouriteUser = createAsyncThunk(
 
       return response.data;
     } catch (err) {
-      console.log(err.response, 'favo error');
       return rejectWithValue(Object.values(err.response.data));
     }
   },
@@ -49,7 +48,7 @@ export const getFavouriteUsers = createAsyncThunk(
         headers: {Authorization: `Bearer ${token}`},
         url: `${baseUrl}/favourite-person`,
       });
-      console.log(response.data.results, 'response person');
+
       return response.data.results;
     } catch (err) {
       return rejectWithValue(Object.values(err.response.data));
@@ -67,10 +66,9 @@ export const deleteFavouriteUser = createAsyncThunk(
         headers: {Authorization: `Bearer ${token}`},
         url: `${baseUrl}/favourite-person/${data}`,
       });
-      console.log(response, 'respo');
+
       return data;
     } catch (err) {
-      console.log(err.response, 'err delete ');
       return rejectWithValue(Object.values(err.response.data));
     }
   },

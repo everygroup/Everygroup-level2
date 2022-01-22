@@ -6,31 +6,25 @@ import {
   deleteFavouriteGroup,
   getFavouriteGroup,
 } from '../../../Slice/FavouriteGroupReducer';
+import MainLoader from '../../Common/MainLoader';
 
 const Groups = () => {
   const dispatch = useDispatch();
-  const [groupArray] = useState([
-    // {
-    //   groupName: 'Nordsee Gruppe',
-    //   category: ['Dienstleistungen', 'Interessen', 'Unterhaltung'],
-    //   hashtagData: ['#test', '#test', '#test', '#test', '#test'],
-    //   description: 'Hey, wir sind eine nette Gruppe',
-    //   group_type: 'snapchat',
-    //   favorite: true,
-    // },
-  ]);
 
   useEffect(() => {
     dispatch(getFavouriteGroup());
   }, []);
 
-  const {favouriteGroupList} = useSelector(state => {
+  const {favouriteGroupList, dataLoading} = useSelector(state => {
     return state.FavouriteGroupReducer;
   });
 
-  return (
+  return dataLoading ? (
+    <MainLoader heightValue={1.6} />
+  ) : (
     <View style={{backgroundColor: '#fff', flex: 1}}>
       <FlatList
+        keyExtractor={(item, index) => item.id}
         showsVerticalScrollIndicator={false}
         data={favouriteGroupList}
         contentContainerStyle={{backgroundColor: '#fff', paddingBottom: 100}}

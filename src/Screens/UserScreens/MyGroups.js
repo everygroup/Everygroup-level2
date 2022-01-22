@@ -6,6 +6,7 @@ import GroupCard from '../../Common/GroupCard';
 import InfoModal from '../../Common/InfoModal';
 import {useDispatch, useSelector} from 'react-redux';
 import {getUserGroup} from '../../../Slice/UserGroupReducer';
+import MainLoader from '../../Common/MainLoader';
 
 const MyGroup = () => {
   const dispatch = useDispatch();
@@ -41,26 +42,33 @@ const MyGroup = () => {
         modalValue={infoModalValue}
         message={`Mit dem Booster wird deine Gruppe 5 Tage lang alle 8 Stunden automatisch wieder hoch geladen ohne, dass du dafür ein Video schauen musst.\n \n Um einen Booster zu erhalten, muss deine Gruppe genug Boosts von anderen Nutzern sammeln.`}
       />
-      <Text style={Styles.headingText}>Meine Gruppen</Text>
-      <FlatList
-        data={userGroupData}
-        contentContainerStyle={{backgroundColor: '#fff'}}
-        renderItem={({item: group}) => {
-          return (
-            <GroupCard
-              group={group}
-              boosterValue={true}
-              onPress={() => expandOption(group.id)}
-              selectedGroupName={groupId}
-              eyePress={() => setEyeValue(!eyeValue)}
-              eyeValue={eyeValue}
-              bellPress={() => setBellValue(!bellValue)}
-              bellValue={bellValue}
-              infoPress={() => setInfoModalValue(true)}
-            />
-          );
-        }}
-      />
+
+      {loading ? (
+        <MainLoader heightValue={1.1} />
+      ) : (
+        <>
+          <Text style={Styles.headingText}>Meine Gruppen</Text>
+          <FlatList
+            data={userGroupData}
+            contentContainerStyle={{backgroundColor: '#fff'}}
+            renderItem={({item: group}) => {
+              return (
+                <GroupCard
+                  group={group}
+                  boosterValue={true}
+                  onPress={() => expandOption(group.id)}
+                  selectedGroupName={groupId}
+                  eyePress={() => setEyeValue(!eyeValue)}
+                  eyeValue={eyeValue}
+                  bellPress={() => setBellValue(!bellValue)}
+                  bellValue={bellValue}
+                  infoPress={() => setInfoModalValue(true)}
+                />
+              );
+            }}
+          />
+        </>
+      )}
     </View>
   );
 };

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -8,64 +8,105 @@ import {
   Image,
   ScrollView,
   TouchableWithoutFeedback,
+  Animated,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import Icons from 'react-native-vector-icons/Ionicons';
 import MessangerModal from './MessangerModal';
 import LinearGradient from 'react-native-linear-gradient';
+import AsyncStorageLib from '@react-native-async-storage/async-storage';
+import {updateTutorialStatus} from '../../../Slice/AuthReducer';
+import {getRandomeList} from '../../../Slice/RandomeReducer';
+
 function Interface(props) {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const [modalValue, setModalValue] = useState(false);
-  const [groupArray] = useState([
-    {
-      groupName: 'Nordsee Gruppe 1',
-      category: ['Dienstleistungen', 'Interessen', 'Unterhaltung'],
-      hashtagData: ['test', 'test', 'test', 'test', 'test'],
-      description: 'Hey, wir sind eine nette Gruppe',
-      groupType: 'snapchat',
-    },
-    {
-      groupName: 'Nordsee Gruppe 2',
-      category: ['Dienstleistungen', 'Interessen', 'Unterhaltung'],
-      hashtagData: ['test', 'test', 'test', 'test', 'test'],
-      description: 'Hey, wir sind eine nette Gruppe',
-      groupType: 'whatsapp',
-    },
-    {
-      groupName: 'Nordsee Gruppe 3',
-      category: ['Dienstleistungen', 'Interessen', 'Unterhaltung'],
-      hashtagData: ['test', 'test', 'test', 'test', '#test'],
-      description: 'Hey, wir sind eine nette Gruppe',
-      groupType: 'line',
-    },
-    {
-      groupName: 'Nordsee Gruppe 4',
-      category: ['Dienstleistungen', 'Interessen', 'Unterhaltung'],
-      hashtagData: ['test', 'test', 'test', 'test', 'test'],
-      description: 'Hey, wir sind eine nette Gruppe',
-      groupType: 'telegram',
-    },
-  ]);
+  const [tutorialStatus, setTutorialStatus] = useState('');
+  const [systemLang, setSystemLang] = useState('');
+  const [animation] = useState(new Animated.Value(1));
+
+  const startAnimation = () => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(animation, {
+          toValue: -60,
+          duration: 1500,
+          delay: 500,
+          useNativeDriver: true,
+        }),
+        Animated.timing(animation, {
+          toValue: 0,
+          duration: 500,
+          useNativeDriver: true,
+        }),
+      ]),
+      {
+        iterations: 1000,
+      },
+    ).start();
+  };
+
+  useEffect(() => {
+    getStatus();
+    startAnimation();
+  }, []);
+
+  const getStatus = async () => {
+    setTutorialStatus(await AsyncStorageLib.getItem('tutorial'));
+    setSystemLang(await AsyncStorageLib.getItem('systemLang'));
+  };
+
+  useEffect(() => {
+    dispatch(getRandomeList());
+  }, []);
+
+  const {randomeList, error, loading} = useSelector(state => {
+    return state.RandomeReducer;
+  });
+
+  const updateStatus = async () => {
+    setTutorialStatus('True');
+    dispatch(updateTutorialStatus());
+    await AsyncStorageLib.setItem('tutorial', 'True');
+  };
+
+  console.log(randomeList, 'lang');
 
   return (
-    <View style={{flex: 1, backgroundColor: '#fff'}}>
+    <View style={{flex: 1, backgroundColor: '#dcdcdc'}}>
       <MessangerModal
         modalValue={modalValue}
         closeModal={() => setModalValue(false)}
       />
       <ScrollView
+        onScroll={event => {
+          const scrolling = event.nativeEvent.contentOffset.y;
+
+          if (scrolling > 250) {
+            updateStatus();
+          }
+        }}
+        scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}
         snapToInterval={height}
         decelerationRate="fast">
-        {groupArray.map(item => {
+        {randomeList.map(item => {
           return (
-            <View style={{height: height}}>
+            <View
+              style={{height: height}}
+              pointerEvents={tutorialStatus == 'False' ? 'none' : 'auto'}>
               <View
                 style={[
                   styles.child,
-                  {backgroundColor: '#fff', paddingTop: 10},
+                  {
+                    backgroundColor:
+                      tutorialStatus == 'True' ? '#fff' : 'rgb(190,191,191)',
+                    paddingTop: 20,
+                  },
                 ]}>
                 <View style={styles.subContainer}>
                   <View style={styles.header}>
@@ -92,7 +133,7 @@ function Interface(props) {
                       </View>
                     </TouchableWithoutFeedback>
                   </View>
-                  <View style={styles.subHeader}>
+                  <View style={[styles.subHeader]}>
                     <TouchableOpacity
                       onPress={() => navigation.navigate('OtherUserScreen')}
                       style={{
@@ -102,20 +143,20 @@ function Interface(props) {
                       }}>
                       <Text
                         style={{color: '#fff', fontFamily: FontStyle.MontBold}}>
-                        Superman98
+                        {item.owner_name}
                       </Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={{padding: 6, borderRadius: 12}}>
                       <Image
                         style={{height: 50, width: 50, resizeMode: 'contain'}}
                         source={
-                          item.groupType === 'whatsapp'
+                          item.group_type === 'whatsapp'
                             ? require('../../Assets/Images/whatsapp.png')
-                            : item.groupType === 'snapchat'
+                            : item.group_type === 'snapchat'
                             ? require('../../Assets/Images/snapchat.png')
-                            : item.groupType === 'telegram'
+                            : item.group_type === 'telegram'
                             ? require('../../Assets/Images/telegram.png')
-                            : item.groupType === 'line'
+                            : item.group_type === 'line'
                             ? require('../../Assets/Images/line.png')
                             : null
                         }
@@ -124,9 +165,9 @@ function Interface(props) {
                   </View>
                 </View>
 
-                <Text style={styles.groupName}>{item.groupName}</Text>
+                <Text style={styles.groupName}>{item.title}</Text>
                 <View style={styles.categoryContainer}>
-                  {item.category.map((item, index) => (
+                  {item.categories.map((categories, index) => (
                     <View
                       style={{
                         backgroundColor: '#205072',
@@ -140,13 +181,13 @@ function Interface(props) {
                         paddingHorizontal: 5,
                       }}>
                       <Text key={index.toString()} style={styles.category}>
-                        {item}
+                        {categories.category}
                       </Text>
                     </View>
                   ))}
                 </View>
                 <View style={styles.hashtagContainer}>
-                  {item.hashtagData.map(item => (
+                  {item.tags.map(tags => (
                     <Text
                       style={{
                         color: '#FFA420',
@@ -154,7 +195,7 @@ function Interface(props) {
                         fontFamily: FontStyle.MontMedium,
                         fontSize: 14,
                       }}>
-                      #{item}
+                      {tags}
                     </Text>
                   ))}
                 </View>
@@ -169,6 +210,39 @@ function Interface(props) {
                   }}>
                   {item.description}
                 </Text>
+                {tutorialStatus == 'False' ? (
+                  <View
+                    style={{
+                      alignSelf: 'flex-end',
+                      flexDirection: 'row',
+                      height: 180,
+                      justifyContent: 'flex-end',
+                      alignItems: 'flex-end',
+                    }}>
+                    <Image
+                      source={require('../../Assets/Images/arrowanimation.png')}
+                      style={{
+                        height: 39,
+                        width: 26,
+                        top: 10,
+                        right: -15,
+                        resizeMode: 'contain',
+                        alignSelf: 'flex-start',
+                      }}
+                    />
+                    <Animated.Image
+                      source={require('../../Assets/Images/handanimation.png')}
+                      style={{
+                        height: 110,
+                        width: 88,
+                        marginRight: 30,
+                        marginTop: 40,
+                        resizeMode: 'contain',
+                        transform: [{translateY: animation}],
+                      }}
+                    />
+                  </View>
+                ) : null}
                 <View style={styles.verticalIcons}>
                   <TouchableOpacity>
                     <Image
@@ -182,6 +256,7 @@ function Interface(props) {
                       }}
                     />
                   </TouchableOpacity>
+
                   <TouchableOpacity>
                     <Image
                       source={require('../../Assets/Images/arrowBlank.png')}
@@ -220,22 +295,21 @@ function Interface(props) {
                 </View>
               </View>
               <LinearGradient
-                style
                 colors={
-                  item.groupType == 'line'
+                  item.group_type == 'line'
                     ? ['#08C719', '#adebad']
-                    : item.groupType == 'snapchat'
+                    : item.group_type == 'snapchat'
                     ? ['#FFFC00', '#ffffb3']
-                    : item.groupType == 'whatsapp'
+                    : item.group_type == 'whatsapp'
                     ? ['#08C719', '#9dfba5']
-                    : item.groupType == 'telegram'
+                    : item.group_type == 'telegram'
                     ? ['#058acd', '#9cdcfc']
                     : ['#FFFC00', '#ffffb3']
                 }
                 style={styles.button}>
                 <Text
                   style={{
-                    color: item.groupType == 'snapchat' ? '#205072' : '#fff',
+                    color: item.group_type == 'snapchat' ? '#205072' : '#fff',
                     fontFamily: FontStyle.MontBold,
                     fontSize: 19,
                   }}>
@@ -257,7 +331,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   child: {
-    height: height * 0.9,
+    height: height * 0.98,
     backgroundColor: 'gray',
   },
 
@@ -269,7 +343,7 @@ const styles = StyleSheet.create({
     borderRadius: 22,
     width: 224,
     height: 45,
-    bottom: 30,
+    bottom: height * 0.12,
   },
   verticalIcons: {
     position: 'absolute',

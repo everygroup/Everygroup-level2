@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  LayoutAnimation,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import FontStyle from '../Assets/Fonts/FontStyle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 const Category = onPress => {

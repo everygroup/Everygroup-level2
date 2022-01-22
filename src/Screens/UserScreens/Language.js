@@ -6,6 +6,7 @@ import {
   FlatList,
   LayoutAnimation,
   TouchableOpacity,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import Header from '../../Common/Header';
 import Styles from './Style';
@@ -19,13 +20,13 @@ const Language = () => {
   const [expand, setExpand] = useState(false);
   const [language] = useState([
     'Deutsch',
-    'Englisch',
-    'Spanisch',
-    'Indisch',
-    'Polnisch',
-    'Türkisch',
-    'Russisch',
-    'Portugiesisch',
+    // 'Englisch',
+    // 'Spanisch',
+    // 'Indisch',
+    // 'Polnisch',
+    // 'Türkisch',
+    // 'Russisch',
+    // 'Portugiesisch',
   ]);
 
   const expandOption = () => {
@@ -42,26 +43,27 @@ const Language = () => {
         style={[
           styles.containerStyle,
           {
-            height: expand ? 300 : 50,
+            height: expand ? 50 : 50,
           },
         ]}>
-        <TouchableOpacity
-          onPress={expandOption}
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            height: 50,
-            paddingRight: 10,
-            alignItems: 'center',
-          }}>
-          <Text style={styles.languageText}>{selectedLanguage}</Text>
+        <TouchableWithoutFeedback onPress={expandOption}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              height: 50,
+              paddingRight: 10,
+              alignItems: 'center',
+            }}>
+            <Text style={styles.languageText}>{selectedLanguage}</Text>
 
-          <Icon
-            name={expand ? 'chevron-up' : 'chevron-down'}
-            size={20}
-            color="#205072"
-          />
-        </TouchableOpacity>
+            <Icon
+              name={expand ? 'chevron-up' : 'chevron-down'}
+              size={20}
+              color="#205072"
+            />
+          </View>
+        </TouchableWithoutFeedback>
         <View
           style={{
             width: '100%',

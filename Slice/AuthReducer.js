@@ -28,6 +28,11 @@ export const signInUser = createAsyncThunk(
       });
       console.log(response, 'signin Response');
       await AsyncStorageLib.setItem('token', response.data.access);
+      await AsyncStorageLib.setItem(
+        'tutorial',
+        response.data.random_mode_tutorial_status.toString(),
+      );
+
       return response.data;
     } catch (err) {
       console.log(err, 'signin');
@@ -87,6 +92,27 @@ export const updateRememberSnapChat = createAsyncThunk(
         method: 'post',
         url: `${baseUrl}/remember-snapchat`,
       });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(Object.values(err.response.data).toString());
+    }
+  },
+);
+
+export const updateTutorialStatus = createAsyncThunk(
+  'updateTutorialStatus',
+  async (data, {rejectWithValue}) => {
+    const token = await AsyncStorageLib.getItem('token');
+    try {
+      const response = await axios({
+        headers: {Authorization: `Bearer ${token}`},
+        method: 'post',
+        url: `${baseUrl}/random-mode-tutorial`,
+        data: {
+          random_mode_tutorial_status: 'True',
+        },
+      });
+
       return response.data;
     } catch (err) {
       return rejectWithValue(Object.values(err.response.data).toString());

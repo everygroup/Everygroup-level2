@@ -5,13 +5,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const baseUrl = 'http://203.190.153.22:1639/api/v1';
 
 const initialState = {
-  otherUserGroupList: [],
+  randomeList: [],
+  loading: false,
   error: '',
-  dataLoading: false,
 };
 
-export const getOtherUserGroup = createAsyncThunk(
-  'getOtherUserGroupList',
+export const getRandomeList = createAsyncThunk(
+  'getRandomeList',
   async (data, {rejectWithValue}) => {
     const token = await AsyncStorage.getItem('token');
 
@@ -19,34 +19,36 @@ export const getOtherUserGroup = createAsyncThunk(
       const response = await axios({
         method: 'get',
         headers: {Authorization: `Bearer ${token}`},
-        url: `${baseUrl}/group/user/${data}`,
+        url: `${baseUrl}/group/feed`,
       });
 
       return response.data.results;
     } catch (err) {
-      return rejectWithValue(Object.values(err.response.data));
+      return rejectWithValue(err.response.data);
     }
   },
 );
 
-export const OtherUserGroupReducer = createSlice({
-  name: 'OtherUserGroupReducer',
+export const RandomeReducer = createSlice({
+  name: 'RandomeReducer',
   initialState,
   reducers: {},
   extraReducers: {
-    [getOtherUserGroup.fulfilled]: (state, action) => {
-      state.otherUserGroupList = action.payload;
-      state.dataLoading = false;
+    [getRandomeList.fulfilled]: (state, action) => {
+      state.randomeList = action.payload;
+      state.loading = false;
     },
-    [getOtherUserGroup.pending]: (state, action) => {
-      state.dataLoading = true;
+    [getRandomeList.pending]: (state, action) => {
+      state.randomeList = [];
+      state.loading = true;
       state.error = '';
     },
-    [getOtherUserGroup.rejected]: (state, action) => {
+    [getRandomeList.rejected]: (state, action) => {
       state.error = action.payload;
-      state.dataLoading = false;
+      state.loading = false;
+      state.randomeList = [];
     },
   },
 });
 
-export default OtherUserGroupReducer.reducer;
+export default RandomeReducer.reducer;

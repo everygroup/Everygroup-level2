@@ -74,7 +74,7 @@ const EditGroup = ({route}) => {
     setJoinLanguage(groupDetail.join_languages);
     setSelectedCategory(groupDetail.categories);
   }, [groupDetail]);
-  console.log(hashText, 'hash text');
+
   useEffect(() => {
     dispatch(getGroupDetail(groupId));
   }, []);
