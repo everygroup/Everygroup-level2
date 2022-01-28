@@ -21,6 +21,8 @@ import FavouriteGroupReducer from './Slice/FavouriteGroupReducer';
 import GetDeleteUserOptionReducer from './Slice/GetDeleteUserOptionReducer';
 import DeleteUserReducer from './Slice/DeleteUserReducer';
 import RandomeReducer from './Slice/RandomeReducer';
+import ActivateUserReducer from './Slice/ActivateUserReducer';
+import BoosterGroupReducer from './Slice/BoosterGroupReducer';
 const store = configureStore({
   reducer: {
     user: authReducer,
@@ -41,6 +43,8 @@ const store = configureStore({
     GetDeleteUserOptionReducer,
     DeleteUserReducer,
     RandomeReducer,
+    ActivateUserReducer,
+    BoosterGroupReducer,
   },
 });
 

@@ -26,6 +26,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import SnapChatModal from './SnapChatModal';
 import LoadingModal from '../LoadingModal';
 import {resetErroLoading} from '../../../Slice/CreateGroupReducer';
+import LottieView from 'lottie-react-native';
 
 const AddGroup = () => {
   const dispatch = useDispatch();
@@ -170,7 +171,6 @@ const AddGroup = () => {
   };
 
   const checkLanguage = lang => {
-    // setSpokenLanguage(lang);
     if (lang != '') {
       dispatch(getLanguage(lang));
     } else {
@@ -225,23 +225,14 @@ const AddGroup = () => {
   };
 
   return (
-    <KeyboardAwareScrollView
-      extraScrollHeight={100}
-      showsVerticalScrollIndicator={false}
-      keyboardDismissMode="on-drag"
-      keyboardShouldPersistTaps="handled"
-      contentContainerStyle={{
-        alignItems: 'center',
-        alignSelf: 'center',
-        paddingBottom: '15%',
-      }}>
+    <View>
       <LoadingModal
         modalValue={createLoading}
         navigationModal={() => {
           dispatch(resetErroLoading()), navigation.navigate('MyGroup');
         }}
         closeModal={() => setcreateLoading(false)}
-        source={require('../../Assets/animation/loadingBar.json')}
+        source={require('../../Assets/animation/orangeLoader.json')}
       />
 
       <InfoModal
@@ -257,268 +248,512 @@ const AddGroup = () => {
         modalValue={snapChatModal}
         message="Hey, du lädst grade eine Snapchat Gruppe hoch. Bei Snapchat Gruppen kannst du keine Mitglieder rauswerfen. Bitte sei dir darüber bewusst, bevor du wirklich diese Gruppe hochlädst."
       />
-
-      <Text
-        style={{
-          color: '#fff',
-          fontSize: 26,
+      <KeyboardAwareScrollView
+        enableOnAndroid={true}
+        extraScrollHeight={Platform.os == 'ios' ? 100 : 220}
+        showsVerticalScrollIndicator={false}
+        keyboardDismissMode="on-drag"
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{
+          alignItems: 'center',
           alignSelf: 'center',
-          fontFamily: FontStyle.MontBold,
-          marginVertical: '5%',
+          // paddingBottom: '15%',
         }}>
-        Gruppe hinzufügen
-      </Text>
+        <Text
+          style={{
+            color: '#fff',
+            fontSize: 26,
+            alignSelf: 'center',
+            fontFamily: FontStyle.MontBold,
+            marginVertical: '5%',
+          }}>
+          Gruppe hinzufügen
+        </Text>
 
-      <View>
-        <View style={Styles.errorContainer}>
-          {titelError == true ? (
-            <HelperText style={[Styles.helperText, {left: '5%'}]} type="error">
-              {titelErrorMessage}
-            </HelperText>
-          ) : null}
-        </View>
-        <View style={styles.container}>
-          <TouchableOpacity
-            onPress={() =>
-              pressInfo(
-                'Wähle einen aussagekräftigen Titel, damit jeder sofort auf einen Blick weiß, worum es in deiner Gruppe geht.',
-              )
-            }>
-            <Image
-              source={require('../../Assets/Images/info.png')}
-              style={{
-                width: 20,
-                height: 20,
-                resizeMode: 'cover',
-                right: 10,
-                bottom: 5,
-              }}
-            />
-          </TouchableOpacity>
-          <Input
-            placeholder="Titel"
-            placeholderTextColor="#BECCD6"
-            bgColor="#fff"
-            bdWidth={titelError ? 2 : 0.1}
-            borderColor={titelError ? 'red' : null}
-            onChangeText={text => {
-              setTitel(text);
-              setTitelError(false);
-            }}
-          />
-        </View>
-      </View>
-      <View>
-        <View style={Styles.errorContainer}>
-          {groupLinkError == true ? (
-            <HelperText style={[Styles.helperText, {left: '5%'}]} type="error">
-              {groupLinkMessage}
-            </HelperText>
-          ) : null}
-        </View>
-        <View style={styles.container}>
-          <TouchableOpacity
-            onPress={() =>
-              pressInfo(
-                `Mit dem Gruppenlink können andere deiner Gruppe beitreten. Durch den Link erkennen wir auch automatisch um welchen Messanger es sich handelt und ordnen den passenden Messanger deiner Gruppe zu. Du kannst bei uns Gruppen von WhatsApp, Discord, Snapchat, Telegram, Viber, Line und hochladen \n   \n In unseren FAQ zeigen wir dir für jeden Messanger jeweils, wo dieser Link zu finden ist :)`,
-              )
-            }>
-            <Image
-              source={require('../../Assets/Images/info.png')}
-              style={{
-                width: 20,
-                height: 20,
-                resizeMode: 'cover',
-                right: 10,
-                bottom: 5,
-              }}
-            />
-          </TouchableOpacity>
-          <Input
-            placeholder="Gruppenlink"
-            placeholderTextColor="#BECCD6"
-            bgColor="#fff"
-            bdWidth={groupLinkError ? 2 : 0.1}
-            borderColor={groupLinkError ? 'red' : null}
-            onChangeText={text => {
-              setGroupLink(text);
-              setGroupLinkError(false);
-            }}
-          />
-        </View>
-      </View>
-      <View style={Styles.errorContainer}>
-        {categoryError == true ? (
-          <HelperText style={[Styles.helperText, {left: '5%'}]} type="error">
-            {categoryErrorMessage}
-          </HelperText>
-        ) : null}
-      </View>
-      <View style={[styles.container, {height: expand ? 500 : 50}]}>
-        <TouchableOpacity
-          onPress={() =>
-            pressInfo(
-              'Mit der Kategorie kannst du passende Themen deiner Gruppe zuordnen. Tipp: So mehr Kategorien du deiner Gruppe zuordnest, desto besser kann sie gefunden werden.',
-            )
-          }>
-          <Image
-            source={require('../../Assets/Images/info.png')}
-            style={{
-              width: 20,
-              height: 20,
-              resizeMode: 'cover',
-              right: 10,
-              bottom: 5,
-            }}
-          />
-        </TouchableOpacity>
-        <View style={[styles.insideContainer, {height: expand ? 500 : 39}]}>
-          <TouchableOpacity
-            onPress={expandOption}
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              height: 39,
-            }}>
-            {selectedCategory.length > 0 ? (
-              <Text
+        <View>
+          <View style={Styles.errorContainer}>
+            {titelError == true ? (
+              <HelperText
+                style={[Styles.helperText, {left: '5%'}]}
+                type="error">
+                {titelErrorMessage}
+              </HelperText>
+            ) : null}
+          </View>
+          <View style={styles.container}>
+            <TouchableOpacity
+              onPress={() =>
+                pressInfo(
+                  'Wähle einen aussagekräftigen Titel, damit jeder sofort auf einen Blick weiß, worum es in deiner Gruppe geht.',
+                )
+              }>
+              <Image
+                source={require('../../Assets/Images/info.png')}
                 style={{
-                  fontFamily: FontStyle.MontSemiBold,
-                  color: '#FFA420',
-                  fontSize: 16,
-                }}>
-                {selectedCategory.map(el => {
-                  return <Text>{el.category} ,</Text>;
+                  width: 20,
+                  height: 20,
+                  resizeMode: 'cover',
+                  right: 10,
+                  bottom: 5,
+                }}
+              />
+            </TouchableOpacity>
+            <Input
+              placeholder="Titel"
+              placeholderTextColor="#BECCD6"
+              bgColor="#fff"
+              height={50}
+              bdWidth={titelError ? 2 : 0.1}
+              borderColor={titelError ? 'red' : '#fff'}
+              onChangeText={text => {
+                setTitel(text);
+                setTitelError(false);
+              }}
+            />
+          </View>
+        </View>
+        <View>
+          <View style={Styles.errorContainer}>
+            {groupLinkError == true ? (
+              <HelperText
+                style={[Styles.helperText, {left: '5%'}]}
+                type="error">
+                {groupLinkMessage}
+              </HelperText>
+            ) : null}
+          </View>
+          <View style={styles.container}>
+            <TouchableOpacity
+              onPress={() =>
+                pressInfo(
+                  `Mit dem Gruppenlink können andere deiner Gruppe beitreten. Durch den Link erkennen wir auch automatisch um welchen Messanger es sich handelt und ordnen den passenden Messanger deiner Gruppe zu. Du kannst bei uns Gruppen von WhatsApp, Discord, Snapchat, Telegram, Viber, Line und hochladen \n   \n In unseren FAQ zeigen wir dir für jeden Messanger jeweils, wo dieser Link zu finden ist :)`,
+                )
+              }>
+              <Image
+                source={require('../../Assets/Images/info.png')}
+                style={{
+                  width: 20,
+                  height: 20,
+                  resizeMode: 'cover',
+                  right: 10,
+                  bottom: 5,
+                }}
+              />
+            </TouchableOpacity>
+            <Input
+              placeholder="Gruppenlink"
+              placeholderTextColor="#BECCD6"
+              bgColor="#fff"
+              height={50}
+              bdWidth={groupLinkError ? 2 : 0.1}
+              borderColor={groupLinkError ? 'red' : '#fff'}
+              onChangeText={text => {
+                setGroupLink(text);
+                setGroupLinkError(false);
+              }}
+            />
+          </View>
+        </View>
+        <View style={Styles.errorContainer}>
+          {categoryError == true ? (
+            <HelperText style={[Styles.helperText, {left: '5%'}]} type="error">
+              {categoryErrorMessage}
+            </HelperText>
+          ) : null}
+        </View>
+        <View style={[styles.container, {height: expand ? 500 : 50}]}>
+          <TouchableOpacity
+            onPress={() =>
+              pressInfo(
+                'Mit der Kategorie kannst du passende Themen deiner Gruppe zuordnen. Tipp: So mehr Kategorien du deiner Gruppe zuordnest, desto besser kann sie gefunden werden.',
+              )
+            }>
+            <Image
+              source={require('../../Assets/Images/info.png')}
+              style={{
+                width: 20,
+                height: 20,
+                resizeMode: 'cover',
+                right: 10,
+                bottom: 5,
+              }}
+            />
+          </TouchableOpacity>
+          <View style={[styles.insideContainer, {height: expand ? 500 : 39}]}>
+            <TouchableOpacity
+              onPress={expandOption}
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                height: 39,
+              }}>
+              {selectedCategory.length > 0 ? (
+                <Text
+                  style={{
+                    fontFamily: FontStyle.MontSemiBold,
+                    color: '#FFA420',
+                    fontSize: 16,
+                  }}>
+                  {selectedCategory.map(el => {
+                    return <Text>{el.category} ,</Text>;
+                  })}
+                </Text>
+              ) : (
+                <Text
+                  style={{
+                    fontFamily: FontStyle.MontSemiBold,
+                    color: '#FFA420',
+                    fontSize: 16,
+                  }}>
+                  Kategorie
+                </Text>
+              )}
+              <Icon name="caret-down" color="#000" size={20} />
+            </TouchableOpacity>
+            {expand ? (
+              <ScrollView showsVerticalScrollIndicator={false}>
+                {categoryArray.map(el => {
+                  return (
+                    <View>
+                      <TouchableOpacity
+                        onPress={() => categroySelection(el)}
+                        style={{
+                          height: 39,
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                        }}>
+                        <Text
+                          style={{
+                            fontFamily: FontStyle.MontSemiBold,
+                            fontSize: 19,
+                            color: el.slug == 18 ? '#ef3e36' : '#FFA420',
+                          }}>
+                          {el.category}
+                        </Text>
+                        {selectedCategory.some(
+                          item => item.slug === el.slug,
+                        ) ? (
+                          <Icon
+                            name={'check-square'}
+                            size={20}
+                            color="#205072"
+                            solid
+                          />
+                        ) : (
+                          <Icon name={'square'} size={20} color="#205072" />
+                        )}
+                      </TouchableOpacity>
+                      <View
+                        style={{
+                          width: '100%',
+                          height: 1,
+                          backgroundColor: '#DDDFE7',
+                        }}
+                      />
+                    </View>
+                  );
                 })}
-              </Text>
-            ) : (
-              <Text
-                style={{
-                  fontFamily: FontStyle.MontSemiBold,
-                  color: '#FFA420',
-                  fontSize: 16,
-                }}>
-                Kategorie
-              </Text>
-            )}
-            <Icon name="caret-down" color="#000" size={20} />
+              </ScrollView>
+            ) : null}
+          </View>
+        </View>
+        <View style={Styles.errorContainer}>
+          {descriptionError == true ? (
+            <HelperText style={[Styles.helperText, {left: '5%'}]} type="error">
+              {descriptionErrorMessage}
+            </HelperText>
+          ) : null}
+        </View>
+        <View
+          style={{
+            height: 100,
+            flexDirection: 'row',
+            width: '100%',
+            alignItems: 'center',
+            paddingHorizontal: '2.5%',
+            marginVertical: 5,
+          }}>
+          <TouchableOpacity
+            onPress={() =>
+              pressInfo(
+                'Durch die Beschreibung hast du die Möglichkeit deine Gruppe detaillierter zu beschreiben \n \n Tipp: Mit einer ansprechenden Beschreibung, kannst du deine Chancen erhöhen, dass mehr Leute deiner Gruppe beitreten.',
+              )
+            }>
+            <Image
+              source={require('../../Assets/Images/info.png')}
+              style={{
+                width: 20,
+                height: 20,
+                resizeMode: 'cover',
+                right: 10,
+                bottom: 5,
+              }}
+            />
           </TouchableOpacity>
-          {expand ? (
-            <ScrollView showsVerticalScrollIndicator={false}>
-              {categoryArray.map(el => {
-                return (
-                  <View>
+
+          <View
+            style={{
+              width: '80%',
+              backgroundColor: '#fff',
+              borderRadius: 7,
+              height: 100,
+              justifyContent: 'center',
+              paddingTop: 10,
+            }}>
+            <Input
+              placeholder="Beschreibung"
+              placeholderTextColor="#BECCD6"
+              bgColor="#fff"
+              borderColor="#fff"
+              bdWidth={0.1}
+              height={100}
+              multiline={true}
+              inputWidth="100%"
+              onChangeText={text => {
+                setDescription(text), setDescriptionError(false);
+              }}
+            />
+          </View>
+        </View>
+        <View>
+          <View style={Styles.errorContainer}>
+            {hashError == true ? (
+              <HelperText
+                style={[Styles.helperText, {left: '5%'}]}
+                type="error">
+                {hashErrorMessage}
+              </HelperText>
+            ) : null}
+          </View>
+          <View style={styles.container}>
+            <TouchableOpacity
+              onPress={() =>
+                pressInfo(
+                  'Durch Hashtags kannst du deiner Gruppe passende Schlagwörter zuordnen. \n \n  Tipp: Du kannst bis zu 5 Hashtags deiner Gruppe zuordnen. So mehr Hashtags deine Gruppe hat, umso besser kann sie gefunden werden',
+                )
+              }>
+              <Image
+                source={require('../../Assets/Images/info.png')}
+                style={{
+                  width: 20,
+                  height: 20,
+                  resizeMode: 'cover',
+                  right: 10,
+                  bottom: 5,
+                }}
+              />
+            </TouchableOpacity>
+
+            <Input
+              placeholder="#hashtag #nur #wenn #du #willst"
+              placeholderTextColor="#BECCD6"
+              bgColor="#fff"
+              borderColor="#fff"
+              height={50}
+              bdWidth={0.1}
+              onChangeText={text => {
+                setHashText(text), setHashError(false);
+              }}
+            />
+          </View>
+        </View>
+        <View style={{width: '70%', alignSelf: 'center', marginBottom: 10}}>
+          <Text
+            style={{
+              color: '#fff',
+              textAlign: 'center',
+              fontFamily: FontStyle.MontSemiBold,
+              fontSize: 17,
+            }}>
+            Welche Sprache wird in dieser Gruppe gesprochen?
+          </Text>
+        </View>
+        <View style={Styles.errorContainer}>
+          {spokenError == true ? (
+            <HelperText style={[Styles.helperText, {left: '5%'}]} type="error">
+              {spokenErrorMessage}
+            </HelperText>
+          ) : null}
+        </View>
+
+        <View style={{flexDirection: 'row'}}>
+          <TouchableOpacity
+            onPress={() =>
+              pressInfo(
+                'Hier kannst du angeben welche Sprache oder Sprachen in deiner Gruppe überwiegend gesprochen werden.',
+              )
+            }>
+            <Image
+              source={require('../../Assets/Images/info.png')}
+              style={{
+                width: 20,
+                height: 20,
+                resizeMode: 'cover',
+                right: 10,
+                top: 10,
+              }}
+            />
+          </TouchableOpacity>
+          <View
+            style={{
+              width: '75%',
+              height: languageArray.length > 0 && groupLanguage ? 150 : 40,
+              borderRadius: 5,
+              backgroundColor: '#fff',
+              alignItems: 'flex-start',
+            }}>
+            <Input
+              onFocus={() => {
+                setJoinLanguageFocus(false), setGroupLanguageFocus(true);
+              }}
+              inputWidth={'100%'}
+              height={50}
+              placeholder="Sprache auswählen"
+              placeholderTextColor="#BECCD6"
+              icon="available"
+              iconPress={() => addSelectLanguage()}
+              imageSource1={
+                spokenLanguage == ''
+                  ? require('../../Assets/Images/plusGrey.png')
+                  : require('../../Assets/Images/plusOrange.png')
+              }
+              bgColor="#fff"
+              borderColor="#fff"
+              bdWidth={0.1}
+              iconName={'plus'}
+              iconColor="#beccd7"
+              onChangeText={text => checkLanguage(text)}
+              value={spokenLanguage.language}
+            />
+            {languageArray.length > 0 && groupLanguage ? (
+              <ScrollView>
+                {languageArray.map(item => {
+                  return (
                     <TouchableOpacity
-                      onPress={() => categroySelection(el)}
+                      onPress={() => selectLanguage(item)}
                       style={{
-                        height: 39,
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
+                        height: 20,
+                        paddingHorizontal: '10%',
+                        marginTop: 5,
                       }}>
                       <Text
                         style={{
-                          fontFamily: FontStyle.MontSemiBold,
-                          fontSize: 19,
-                          color: el.slug == 18 ? '#ef3e36' : '#FFA420',
+                          fontFamily: FontStyle.MontBold,
+                          color: '#82C2F1',
+                          fontSize: 13,
                         }}>
-                        {el.category}
+                        {item.language}
                       </Text>
-                      {selectedCategory.some(item => item.slug === el.slug) ? (
-                        <Icon
-                          name={'check-square'}
-                          size={20}
-                          color="#205072"
-                          solid
-                        />
-                      ) : (
-                        <Icon name={'square'} size={20} color="#205072" />
-                      )}
                     </TouchableOpacity>
-                    <View
-                      style={{
-                        width: '100%',
-                        height: 1,
-                        backgroundColor: '#DDDFE7',
-                      }}
-                    />
-                  </View>
-                );
-              })}
-            </ScrollView>
-          ) : null}
+                  );
+                })}
+              </ScrollView>
+            ) : null}
+          </View>
         </View>
-      </View>
-      <View style={Styles.errorContainer}>
-        {descriptionError == true ? (
-          <HelperText style={[Styles.helperText, {left: '5%'}]} type="error">
-            {descriptionErrorMessage}
-          </HelperText>
-        ) : null}
-      </View>
-      <View
-        style={{
-          height: 100,
-          flexDirection: 'row',
-          width: '100%',
-          alignItems: 'center',
-          paddingHorizontal: '2.5%',
-          marginVertical: 5,
-        }}>
-        <TouchableOpacity
-          onPress={() =>
-            pressInfo(
-              'Durch die Beschreibung hast du die Möglichkeit deine Gruppe detaillierter zu beschreiben \n \n Tipp: Mit einer ansprechenden Beschreibung, kannst du deine Chancen erhöhen, dass mehr Leute deiner Gruppe beitreten.',
-            )
-          }>
-          <Image
-            source={require('../../Assets/Images/info.png')}
-            style={{
-              width: 20,
-              height: 20,
-              resizeMode: 'cover',
-              right: 10,
-              bottom: 5,
-            }}
-          />
-        </TouchableOpacity>
 
         <View
           style={{
-            width: '80%',
-            backgroundColor: '#fff',
-            borderRadius: 7,
-            height: 100,
-            justifyContent: 'center',
-            paddingTop: 10,
+            width: '75%',
+            alignSelf: 'flex-start',
+            marginLeft: '7%',
+            marginVertical: 7,
           }}>
-          <Input
-            placeholder="Beschreibung"
-            placeholderTextColor="#BECCD6"
-            bgColor="#fff"
-            bdWidth={0.1}
-            height={100}
-            multiline={true}
-            inputWidth="100%"
-            onChangeText={text => {
-              setDescription(text), setDescriptionError(false);
+          <FlatList
+            data={selectedLanguage}
+            horizontal={true}
+            scrollEnabled={true}
+            showsHorizontalScrollIndicator={false}
+            renderItem={({item: language}) => {
+              return (
+                <View style={styles.languageContainer}>
+                  <Text
+                    style={{
+                      fontFamily: FontStyle.MontRegular,
+                      color: '#fff',
+                      fontSize: 10,
+                    }}>
+                    {language.language}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => deleteSelectLanguage(language)}
+                    style={{
+                      width: 15,
+                      alignItems: 'flex-end',
+                      justifyContent: 'center',
+                      height: '100%',
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: FontStyle.MontMedium,
+                        color: '#fff',
+                        fontSize: 12,
+                      }}>
+                      X
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              );
             }}
           />
         </View>
-      </View>
-      <View>
-        <View style={Styles.errorContainer}>
-          {hashError == true ? (
-            <HelperText style={[Styles.helperText, {left: '5%'}]} type="error">
-              {hashErrorMessage}
-            </HelperText>
-          ) : null}
+        <View style={{width: '80%', alignSelf: 'center', marginBottom: 10}}>
+          <Text
+            style={{
+              color: '#fff',
+              textAlign: 'center',
+              fontFamily: FontStyle.MontSemiBold,
+              fontSize: 17,
+            }}>
+            Dürfen andere der Gruppe beitreten, egal welche Sprache sie
+            sprechen?
+          </Text>
         </View>
-        <View style={styles.container}>
+        <View style={{width: '100%', flexDirection: 'row', left: 7}}>
+          <TouchableOpacity
+            onPress={() =>
+              selectJoinLanguage(
+                {language: 'all', code: 'all'},
+                setJoinSelection('all'),
+              )
+            }
+            style={[
+              styles.buttonView,
+              joinSelection == 'limited' ? {backgroundColor: '#beccd6'} : null,
+            ]}>
+            <Text
+              style={{
+                fontSize: 14,
+                fontFamily: FontStyle.MontBold,
+                color: '#fff',
+                textAlign: 'center',
+              }}>
+              Alle dürfen beitreten
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setJoinSelection('limited')}
+            style={[
+              styles.buttonView,
+              joinSelection == 'all' ? {backgroundColor: '#beccd6'} : null,
+            ]}>
+            <Text
+              style={{
+                fontSize: 14,
+                fontFamily: FontStyle.MontBold,
+                color: '#fff',
+                textAlign: 'center',
+              }}>
+              Nur folgende Sprachen:
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={{flexDirection: 'row', marginTop: 10}}>
           <TouchableOpacity
             onPress={() =>
               pressInfo(
-                'Durch Hashtags kannst du deiner Gruppe passende Schlagwörter zuordnen. \n \n  Tipp: Du kannst bis zu 5 Hashtags deiner Gruppe zuordnen. So mehr Hashtags deine Gruppe hat, umso besser kann sie gefunden werden',
+                'Wenn du nicht willst, dass Personen mit anderen Sprachen deiner Gruppe beitreten können dann kannst du dir hier Sprachen auswählen und nur Personen die deine ausgewählte Sprache sprechen, können deiner Gruppe beitreten. Alle anderen, die nicht die ausgewählte Sprache sprechen, wird diese Gruppe nicht angezeigt.',
               )
             }>
             <Image
@@ -528,443 +763,231 @@ const AddGroup = () => {
                 height: 20,
                 resizeMode: 'cover',
                 right: 10,
-                bottom: 5,
+                top: 10,
               }}
             />
           </TouchableOpacity>
-
-          <Input
-            placeholder="#hashtag #nur #wenn #du #willst"
-            placeholderTextColor="#BECCD6"
-            bgColor="#fff"
-            bdWidth={0.1}
-            onChangeText={text => {
-              setHashText(text), setHashError(false);
-            }}
-          />
-        </View>
-      </View>
-      <View style={{width: '70%', alignSelf: 'center', marginBottom: 10}}>
-        <Text
-          style={{
-            color: '#fff',
-            textAlign: 'center',
-            fontFamily: FontStyle.MontSemiBold,
-            fontSize: 17,
-          }}>
-          Welche Sprache wird in dieser Gruppe gesprochen?
-        </Text>
-      </View>
-      <View style={Styles.errorContainer}>
-        {spokenError == true ? (
-          <HelperText style={[Styles.helperText, {left: '5%'}]} type="error">
-            {spokenErrorMessage}
-          </HelperText>
-        ) : null}
-      </View>
-
-      <View style={{flexDirection: 'row'}}>
-        <TouchableOpacity
-          onPress={() =>
-            pressInfo(
-              'Hier kannst du angeben welche Sprache oder Sprachen in deiner Gruppe überwiegend gesprochen werden.',
-            )
-          }>
-          <Image
-            source={require('../../Assets/Images/info.png')}
+          <View
             style={{
-              width: 20,
-              height: 20,
-              resizeMode: 'cover',
-              right: 10,
-              top: 10,
-            }}
-          />
-        </TouchableOpacity>
+              width: '75%',
+              height: languageArray.length > 0 && joinLanguageFocus ? 150 : 40,
+              borderRadius: 5,
+              backgroundColor: '#fff',
+              alignItems: 'flex-start',
+            }}>
+            <Input
+              onFocus={() => {
+                setJoinLanguageFocus(true), setGroupLanguageFocus(false);
+              }}
+              inputWidth={'100%'}
+              height={50}
+              placeholder="Sprache auswählen..."
+              placeholderTextColor="#BECCD6"
+              bgColor="#fff"
+              icon="available"
+              iconPress={() => addJoinedLanguage()}
+              imageSource1={
+                joinedLanguage == ''
+                  ? require('../../Assets/Images/plusGrey.png')
+                  : require('../../Assets/Images/plusOrange.png')
+              }
+              bdWidth={0.1}
+              iconName={'plus'}
+              borderColor="#fff"
+              iconColor="#beccd7"
+              onChangeText={text => checkLanguage(text)}
+              value={joinedLanguage.language}
+            />
+            {languageArray.length > 0 && joinLanguageFocus ? (
+              <ScrollView>
+                {languageArray.map(item => {
+                  return (
+                    <TouchableOpacity
+                      onPress={() => selectJoinLanguage(item)}
+                      style={{
+                        height: 20,
+                        paddingHorizontal: '10%',
+                        marginTop: 5,
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: FontStyle.MontBold,
+                          color: '#82C2F1',
+                          fontSize: 13,
+                        }}>
+                        {item.language}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })}
+              </ScrollView>
+            ) : null}
+          </View>
+        </View>
         <View
           style={{
             width: '75%',
-            height: languageArray.length > 0 && groupLanguage ? 150 : 40,
-            borderRadius: 5,
-            backgroundColor: '#fff',
-            alignItems: 'flex-start',
+            alignSelf: 'flex-start',
+            marginLeft: '7%',
+            marginVertical: 7,
           }}>
-          <Input
-            onFocus={() => {
-              setJoinLanguageFocus(false), setGroupLanguageFocus(true);
-            }}
-            inputWidth={'100%'}
-            height={languageArray.length > 0 && groupLanguage ? 150 : null}
-            placeholder="Sprache auswählen"
-            placeholderTextColor="#BECCD6"
-            icon="available"
-            iconPress={() => addSelectLanguage()}
-            imageSource1={
-              spokenLanguage == ''
-                ? require('../../Assets/Images/plusGrey.png')
-                : require('../../Assets/Images/plusOrange.png')
-            }
-            bgColor="#fff"
-            bdWidth={0.1}
-            iconName={'plus'}
-            iconColor="#beccd7"
-            onChangeText={text => checkLanguage(text)}
-            value={spokenLanguage.language}
-          />
-          {languageArray.length > 0 && groupLanguage ? (
-            <ScrollView>
-              {languageArray.map(item => {
-                return (
-                  <TouchableOpacity
-                    onPress={() => selectLanguage(item)}
+          <FlatList
+            data={joinLanguage}
+            horizontal={true}
+            scrollEnabled={true}
+            showsHorizontalScrollIndicator={false}
+            renderItem={({item: language}) => {
+              return (
+                <View style={styles.languageContainer}>
+                  <Text
                     style={{
-                      height: 20,
-                      paddingHorizontal: '10%',
-                      marginTop: 5,
+                      fontFamily: FontStyle.MontRegular,
+                      color: '#fff',
+                      fontSize: 10,
+                    }}>
+                    {language.language}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => deleteJoinLanguage(language)}
+                    style={{
+                      width: 15,
+                      alignItems: 'flex-end',
+                      justifyContent: 'center',
+                      height: '100%',
                     }}>
                     <Text
                       style={{
-                        fontFamily: FontStyle.MontBold,
-                        color: '#82C2F1',
-                        fontSize: 13,
+                        fontFamily: FontStyle.MontMedium,
+                        color: '#fff',
+                        fontSize: 12,
                       }}>
-                      {item.language}
+                      X
                     </Text>
                   </TouchableOpacity>
-                );
-              })}
-            </ScrollView>
-          ) : null}
-        </View>
-      </View>
-
-      <View
-        style={{
-          width: '75%',
-          alignSelf: 'flex-start',
-          marginLeft: '7%',
-          marginVertical: 7,
-        }}>
-        <FlatList
-          data={selectedLanguage}
-          horizontal={true}
-          scrollEnabled={true}
-          showsHorizontalScrollIndicator={false}
-          renderItem={({item: language}) => {
-            return (
-              <View style={styles.languageContainer}>
-                <Text
-                  style={{
-                    fontFamily: FontStyle.MontRegular,
-                    color: '#fff',
-                    fontSize: 10,
-                  }}>
-                  {language.language}
-                </Text>
-                <TouchableOpacity
-                  onPress={() => deleteSelectLanguage(language)}
-                  style={{
-                    width: 15,
-                    alignItems: 'flex-end',
-                    justifyContent: 'center',
-                    height: '100%',
-                  }}>
-                  <Text
-                    style={{
-                      fontFamily: FontStyle.MontMedium,
-                      color: '#fff',
-                      fontSize: 12,
-                    }}>
-                    X
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            );
-          }}
-        />
-      </View>
-      <View style={{width: '80%', alignSelf: 'center', marginBottom: 10}}>
-        <Text
-          style={{
-            color: '#fff',
-            textAlign: 'center',
-            fontFamily: FontStyle.MontSemiBold,
-            fontSize: 17,
-          }}>
-          Dürfen andere der Gruppe beitreten, egal welche Sprache sie sprechen?
-        </Text>
-      </View>
-      <View style={{width: '100%', flexDirection: 'row', left: 7}}>
-        <TouchableOpacity
-          onPress={() =>
-            selectJoinLanguage(
-              {language: 'all', code: 'all'},
-              setJoinSelection('all'),
-            )
-          }
-          style={[
-            styles.buttonView,
-            joinSelection == 'limited' ? {backgroundColor: '#beccd6'} : null,
-          ]}>
-          <Text
-            style={{
-              fontSize: 14,
-              fontFamily: FontStyle.MontBold,
-              color: '#fff',
-              textAlign: 'center',
-            }}>
-            Alle dürfen beitreten
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setJoinSelection('limited')}
-          style={[
-            styles.buttonView,
-            joinSelection == 'all' ? {backgroundColor: '#beccd6'} : null,
-          ]}>
-          <Text
-            style={{
-              fontSize: 14,
-              fontFamily: FontStyle.MontBold,
-              color: '#fff',
-              textAlign: 'center',
-            }}>
-            Nur folgende Sprachen:
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <View style={{flexDirection: 'row', marginTop: 10}}>
-        <TouchableOpacity
-          onPress={() =>
-            pressInfo(
-              'Wenn du nicht willst, dass Personen mit anderen Sprachen deiner Gruppe beitreten können dann kannst du dir hier Sprachen auswählen und nur Personen die deine ausgewählte Sprache sprechen, können deiner Gruppe beitreten. Alle anderen, die nicht die ausgewählte Sprache sprechen, wird diese Gruppe nicht angezeigt.',
-            )
-          }>
-          <Image
-            source={require('../../Assets/Images/info.png')}
-            style={{
-              width: 20,
-              height: 20,
-              resizeMode: 'cover',
-              right: 10,
-              top: 10,
+                </View>
+              );
             }}
           />
-        </TouchableOpacity>
+        </View>
         <View
           style={{
-            width: '75%',
-            height: languageArray.length > 0 && joinLanguageFocus ? 150 : 40,
-            borderRadius: 5,
-            backgroundColor: '#fff',
-            alignItems: 'flex-start',
+            flexDirection: 'row',
+            width: '58%',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: 10,
           }}>
-          <Input
-            onFocus={() => {
-              setJoinLanguageFocus(true), setGroupLanguageFocus(false);
-            }}
-            inputWidth={'100%'}
-            height={languageArray.length > 0 && joinLanguageFocus ? 150 : null}
-            placeholder="Sprache auswählen..."
-            placeholderTextColor="#BECCD6"
-            bgColor="#fff"
-            icon="available"
-            iconPress={() => addJoinedLanguage()}
-            imageSource1={
-              joinedLanguage == ''
-                ? require('../../Assets/Images/plusGrey.png')
-                : require('../../Assets/Images/plusOrange.png')
-            }
-            bdWidth={0.1}
-            iconName={'plus'}
-            iconColor="#beccd7"
-            onChangeText={text => checkLanguage(text)}
-            value={joinedLanguage.language}
-          />
-          {languageArray.length > 0 && joinLanguageFocus ? (
-            <ScrollView>
-              {languageArray.map(item => {
-                return (
-                  <TouchableOpacity
-                    onPress={() => selectJoinLanguage(item)}
-                    style={{
-                      height: 20,
-                      paddingHorizontal: '10%',
-                      marginTop: 5,
-                    }}>
-                    <Text
-                      style={{
-                        fontFamily: FontStyle.MontBold,
-                        color: '#82C2F1',
-                        fontSize: 13,
-                      }}>
-                      {item.language}
-                    </Text>
-                  </TouchableOpacity>
-                );
-              })}
-            </ScrollView>
-          ) : null}
-        </View>
-      </View>
-      <View
-        style={{
-          width: '75%',
-          alignSelf: 'flex-start',
-          marginLeft: '7%',
-          marginVertical: 7,
-        }}>
-        <FlatList
-          data={joinLanguage}
-          horizontal={true}
-          scrollEnabled={true}
-          showsHorizontalScrollIndicator={false}
-          renderItem={({item: language}) => {
-            return (
-              <View style={styles.languageContainer}>
-                <Text
-                  style={{
-                    fontFamily: FontStyle.MontRegular,
-                    color: '#fff',
-                    fontSize: 10,
-                  }}>
-                  {language.language}
-                </Text>
-                <TouchableOpacity
-                  onPress={() => deleteJoinLanguage(language)}
-                  style={{
-                    width: 15,
-                    alignItems: 'flex-end',
-                    justifyContent: 'center',
-                    height: '100%',
-                  }}>
-                  <Text
-                    style={{
-                      fontFamily: FontStyle.MontMedium,
-                      color: '#fff',
-                      fontSize: 12,
-                    }}>
-                    X
-                  </Text>
-                </TouchableOpacity>
+          {checkedTerms ? (
+            <TouchableOpacity onPress={() => setCheckedTerms(false)}>
+              <View
+                style={{
+                  width: 20,
+                  height: 20,
+                  borderRadius: 10,
+                  backgroundColor: '#06BA63',
+
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Icon name="check" color="#fff" />
               </View>
-            );
-          }}
-        />
-      </View>
-      <View
-        style={{
-          flexDirection: 'row',
-          width: '58%',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: 10,
-        }}>
-        {checkedTerms ? (
-          <TouchableOpacity onPress={() => setCheckedTerms(false)}>
-            <View
-              style={{
-                width: 20,
-                height: 20,
-                borderRadius: 10,
-                backgroundColor: '#06BA63',
-
-                alignItems: 'center',
-                justifyContent: 'center',
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              onPress={() => {
+                setCheckedTerms(true), setTermsError(false);
               }}>
-              <Icon name="check" color="#fff" />
-            </View>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            onPress={() => {
-              setCheckedTerms(true), setTermsError(false);
+              <View
+                style={{
+                  width: 20,
+                  height: 20,
+                  borderRadius: 10,
+                  borderColor: termsError ? '#EF3E36' : '#205072',
+                  borderWidth: 2,
+                }}
+              />
+            </TouchableOpacity>
+          )}
+
+          <Text
+            style={{
+              fontFamily: FontStyle.MontMedium,
+              fontSize: 14,
+              color: termsError ? '#EF3E36' : '#205072',
+              textAlign: 'left',
+              width: '85%',
             }}>
-            <View
-              style={{
-                width: 20,
-                height: 20,
-                borderRadius: 10,
-                borderColor: termsError ? '#EF3E36' : '#205072',
-                borderWidth: 2,
-              }}
-            />
-          </TouchableOpacity>
-        )}
-
-        <Text
+            Mit dem Posten der Gruppe bestätigst du, dass diese nicht gegen
+            unsere
+            <Text style={{color: '#5c6bdb'}}> AGB</Text> und oder die geltenden
+            Gesetzen verstößt
+          </Text>
+        </View>
+        <View
           style={{
-            fontFamily: FontStyle.MontMedium,
-            fontSize: 14,
-            color: termsError ? '#EF3E36' : '#205072',
-            textAlign: 'left',
-            width: '85%',
+            flexDirection: 'row',
+            width: '58%',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: 10,
           }}>
-          Mit dem Posten der Gruppe bestätigst du, dass diese nicht gegen unsere
-          <Text style={{color: '#5c6bdb'}}> AGB</Text> und oder die geltenden
-          Gesetzen verstößt
-        </Text>
-      </View>
-      <View
-        style={{
-          flexDirection: 'row',
-          width: '58%',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: 10,
-        }}>
-        {checkedConductRules ? (
-          <TouchableOpacity onPress={() => setConductRules(false)}>
-            <View
-              style={{
-                width: 20,
-                height: 20,
-                borderRadius: 10,
-                backgroundColor: '#06BA63',
+          {checkedConductRules ? (
+            <TouchableOpacity onPress={() => setConductRules(false)}>
+              <View
+                style={{
+                  width: 20,
+                  height: 20,
+                  borderRadius: 10,
+                  backgroundColor: '#06BA63',
 
-                alignItems: 'center',
-                justifyContent: 'center',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Icon name="check" color="#fff" />
+              </View>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              onPress={() => {
+                setConductRules(true), setConductRulesError(false);
               }}>
-              <Icon name="check" color="#fff" />
-            </View>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            onPress={() => {
-              setConductRules(true), setConductRulesError(false);
-            }}>
-            <View
-              style={{
-                width: 20,
-                height: 20,
-                borderRadius: 10,
-                borderColor: conductRulesError ? '#EF3E36' : '#205072',
-                borderWidth: 2,
-              }}
-            />
-          </TouchableOpacity>
-        )}
+              <View
+                style={{
+                  width: 20,
+                  height: 20,
+                  borderRadius: 10,
+                  borderColor: conductRulesError ? '#EF3E36' : '#205072',
+                  borderWidth: 2,
+                }}
+              />
+            </TouchableOpacity>
+          )}
 
-        <Text
-          style={{
-            fontFamily: FontStyle.MontMedium,
-            fontSize: 14,
-            color: conductRulesError ? '#EF3E36' : '#205072',
-            textAlign: 'left',
-            width: '85%',
-          }}>
-          Ich verspreche, dass sich diese Gruppe an die
-          <Text style={{color: '#5c6bdb'}}> Verhaltensregeln </Text>von
-          everygroup hält
-        </Text>
-      </View>
-      <TouchableOpacity onPress={submitButton} style={styles.submitButton}>
-        <Text
-          style={{fontFamily: FontStyle.MontBold, color: '#fff', fontSize: 16}}>
-          Gruppe posten
-        </Text>
-      </TouchableOpacity>
-    </KeyboardAwareScrollView>
+          <Text
+            style={{
+              fontFamily: FontStyle.MontMedium,
+              fontSize: 14,
+              color: conductRulesError ? '#EF3E36' : '#205072',
+              textAlign: 'left',
+              width: '85%',
+            }}>
+            Ich verspreche, dass sich diese Gruppe an die
+            <Text style={{color: '#5c6bdb'}}> Verhaltensregeln </Text>von
+            everygroup hält
+          </Text>
+        </View>
+        <TouchableOpacity onPress={submitButton} style={styles.submitButton}>
+          <Text
+            style={{
+              fontFamily: FontStyle.MontBold,
+              color: '#fff',
+              fontSize: 16,
+            }}>
+            Gruppe posten
+          </Text>
+        </TouchableOpacity>
+      </KeyboardAwareScrollView>
+    </View>
   );
 };
 

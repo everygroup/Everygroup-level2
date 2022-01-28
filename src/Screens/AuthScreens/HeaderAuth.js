@@ -13,6 +13,7 @@ const HeaderAuth = ({currentRoute, prevRoute}) => {
         alignItems: 'center',
         backgroundColor: '#fff',
         width: '100%',
+        paddingTop: '5%',
       }}>
       <View
         style={{

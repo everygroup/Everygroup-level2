@@ -8,6 +8,7 @@ import Button from '../../Common/Button';
 import {HelperText} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import {checkPassword} from '../../../Slice/CheckReducer';
+import Spinner from '../../Common/Spinner';
 
 const CheckPassword = ({route}) => {
   const dispatch = useDispatch();
@@ -107,7 +108,12 @@ const CheckPassword = ({route}) => {
       </View>
       <View
         style={{marginVertical: '10%', width: '100%', alignItems: 'center'}}>
-        <Button buttonText="Weiter" onPress={submit} />
+        {loading ? (
+          <Spinner />
+        ) : (
+          <Button onPress={submit} buttonText="Weiter" />
+        )}
+
         <Text
           onPress={() => navigation.navigate('ForgotPassword')}
           style={{

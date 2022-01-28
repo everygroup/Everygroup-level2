@@ -69,7 +69,7 @@ const DeletePage = () => {
     }
   };
 
-  const {deleteAccount} = useSelector(state => {
+  const {deleteAccount, error} = useSelector(state => {
     console.log(state.DeleteUserReducer);
     return state.DeleteUserReducer;
   });
@@ -94,6 +94,7 @@ const DeletePage = () => {
         selectionOption={selectionOption}
         closeAddGroup={() => setSelectionOption('')}
       />
+      {error != '' ? alert(error) : null}
       <DeleteModal
         modalValue={deleteModalValue}
         message="Account wirklich löschen?"

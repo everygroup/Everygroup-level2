@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, SafeAreaView} from 'react-native';
+import {View, Text, SafeAreaView, Dimensions} from 'react-native';
 import Button from '../../Common/Button';
 import Input from '../../Common/Input';
 import {useNavigation} from '@react-navigation/native';
@@ -12,7 +12,7 @@ import Spinner from '../../Common/Spinner';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import {resetForgotResponse} from '../../../Slice/AuthReducer';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-
+const {height} = Dimensions.get('window');
 const SignIn = () => {
   const dispatch = useDispatch();
   const [emailError, setEmailError] = useState(false);
@@ -69,15 +69,13 @@ const SignIn = () => {
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{
-          flexGrow: 1,
           alignItems: 'center',
         }}>
         <View
           style={{
             width: '100%',
             alignItems: 'center',
-            height: '30%',
-            justifyContent: 'center',
+            height: height * 0.3,
           }}>
           <View style={Styles.errorContainer}>
             {emailError == true ? (

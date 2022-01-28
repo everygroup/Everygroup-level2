@@ -7,6 +7,7 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   Animated,
+  Platform,
 } from 'react-native';
 import Icons from 'react-native-vector-icons/Fontisto';
 import AddGroup from './HeaderPages/AddGroup';
@@ -64,7 +65,7 @@ const Header = ({selectionOption, closeAddGroup}) => {
         borderBottomLeftRadius: 10,
         borderBottomRightRadius: 10,
         position: 'absolute',
-        marginTop: 35,
+        marginTop: Platform.OS == 'ios' ? 35 : 0,
         zIndex: 10,
       }}>
       <View

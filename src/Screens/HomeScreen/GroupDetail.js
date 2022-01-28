@@ -9,6 +9,7 @@ import {
   FlatList,
   TouchableWithoutFeedback,
   Animated,
+  Linking,
 } from 'react-native';
 import Header from '../../Common/Header';
 import {useNavigation} from '@react-navigation/native';
@@ -29,18 +30,31 @@ import {resetFavouriteValue} from '../../../Slice/FavouriteUserReducer';
 import Share from 'react-native-share';
 import {getSimilarGroupList} from '../../../Slice/AllGroupListReducer';
 import MainLoader from '../../Common/MainLoader';
+import {updateGroup} from '../../../Slice/UserGroupReducer';
+import BoosterModal from '../../Common/BoosterModal';
+import {boostGroup, resetBoostValue} from '../../../Slice/BoosterGroupReducer';
 
 const GroupDetail = ({route}) => {
   const {groupId} = route.params;
 
   const dispatch = useDispatch();
   const [bouncy, setBouncy] = useState(new Animated.Value(0));
+  const [oneBoost, setOneBoost] = useState(new Animated.Value(0));
+  const [fiveBoost, setFiveBoost] = useState(new Animated.Value(0));
+  const [oneXValue, setOneXValue] = useState(false);
+  const [fiveXValue, setFiveXValue] = useState(false);
+  const [boosterModalValue, setBoosterModalValue] = useState(false);
+  const [messengerUrl, setMessengerUrl] = useState('');
   const [SuccessModalValue, setSuccessModalValue] = useState(false);
   const [reportModal, setReportModal] = useState(false);
   const [flagValue, setFlagValue] = useState(false);
   const navigation = useNavigation();
   const [bellValue, setBellValue] = useState(false);
-  const [groupType] = useState('snapchat');
+
+  const {groupDetail, error, loading} = useSelector(state => {
+    console.log(state.GroupDetailReducer);
+    return state.GroupDetailReducer;
+  });
 
   const url = 'https://everygroup.com/';
   const title = 'Awesome';
@@ -55,30 +69,26 @@ const GroupDetail = ({route}) => {
   const openShare = async (customOptions = options) => {
     try {
       await Share.open(customOptions);
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
-  // const [otherGroup, setOtherGroup] = useState([
-  //   {
-  //     description: 'Eine coole Gruppe',
-  //     socialGroup: 'snapchat',
-  //   },
-  // ]);
-
-  // const handleLoadMore = () => {
-  //   setOtherGroup(prevValue => [...prevValue, ...otherGroup]);
-  // };
-
   useEffect(() => {
+    dispatch(resetBoostValue());
+    if (groupDetail.group_type == 'snapchat') {
+      setMessengerUrl(require('../../Assets/Images/snapchatLine.png'));
+    } else if (groupDetail.group_type == 'line') {
+      setMessengerUrl(require('../../Assets/Images/lineLine.png'));
+    } else if (groupDetail.group_type == 'whatsapp') {
+      setMessengerUrl(require('../../Assets/Images/whatsappLine.png'));
+    } else if (groupDetail.group_type == 'telegram') {
+      setMessengerUrl(require('../../Assets/Images/telegramLine.png'));
+    } else {
+      setMessengerUrl();
+    }
+
     dispatch(resetFavouriteValue());
     dispatch(getGroupDetail(groupId));
   }, []);
-
-  const {groupDetail, error, loading} = useSelector(state => {
-    return state.GroupDetailReducer;
-  });
 
   const submitReport = useCallback(value => {
     setReportModal(false);
@@ -134,9 +144,66 @@ const GroupDetail = ({route}) => {
   }, [value]);
 
   const {similarGroupList} = useSelector(state => {
-    console.log(state.AllGroupListReducer, 'rohit reducer');
     return state.AllGroupListReducer;
   });
+
+  const boostGroupValue = (oneX, fiveX) => {
+    dispatch(boostGroup({oneX, fiveX, groupId}));
+  };
+
+  const {boostError, boostLoading, oneXStatus, fiveXStatus} = useSelector(
+    state => {
+      return state.BoosterGroupReducer;
+    },
+  );
+
+  const oneXBouncyfunc = () => {
+    setOneXValue(true);
+    Animated.spring(oneBoost, {
+      toValue: 2,
+      friction: 3,
+      useNativeDriver: true,
+    }).start(() => {
+      oneBoost.setValue(0);
+    });
+  };
+
+  const oneXBouncyView = oneBoost.interpolate({
+    inputRange: [0, 1, 2],
+    outputRange: [1, 0.7, 1],
+  });
+
+  useEffect(() => {
+    if (oneXStatus > 0) {
+      oneXBouncyfunc();
+    }
+  }, [oneXStatus]);
+
+  const fiveXBouncyfunc = () => {
+    setFiveXValue(true);
+    Animated.spring(fiveBoost, {
+      toValue: 2,
+      friction: 3,
+      useNativeDriver: true,
+    }).start(() => {
+      fiveBoost.setValue(0);
+    });
+  };
+
+  const fiveXBouncyView = fiveBoost.interpolate({
+    inputRange: [0, 1, 2],
+    outputRange: [1, 0.7, 1],
+  });
+
+  useEffect(() => {
+    if (fiveXStatus > 0) {
+      fiveXBouncyfunc();
+    }
+  }, [fiveXStatus]);
+
+  const openLink = link => {
+    Linking.openURL(link);
+  };
 
   return (
     <View style={{paddingTop: '21%', height: '100%', backgroundColor: '#fff'}}>
@@ -147,6 +214,10 @@ const GroupDetail = ({route}) => {
         modalValue={reportModal}
         closeModal={() => setReportModal(false)}
         parentCallBack={submitReport}
+      />
+      <BoosterModal
+        modalValue={boosterModalValue}
+        closeModal={() => setBoosterModalValue(false)}
       />
 
       {loading ? (
@@ -163,7 +234,9 @@ const GroupDetail = ({route}) => {
                 ? ['#08C719', '#9dfba5']
                 : groupDetail.group_type == 'telegram'
                 ? ['#058acd', '#9cdcfc']
-                : ['#FFFC00', '#ffffb3']
+                : groupDetail.group_type == 'viber'
+                ? ['#665CAC', '#F6FEF9']
+                : ['#7289DA', '#F6FEF9']
             }
             style={styles.titelContainer}>
             <View
@@ -188,7 +261,19 @@ const GroupDetail = ({route}) => {
                 {groupDetail.title}
               </Text>
               <Image
-                source={require('../../Assets/Images/snapchatLine.png')}
+                source={
+                  groupDetail.group_type == 'whatsapp'
+                    ? require('../../Assets/Images/whatsappLine.png')
+                    : groupDetail.group_type == 'snapchat'
+                    ? require('../../Assets/Images/snapchatLine.png')
+                    : groupDetail.group_type == 'viber'
+                    ? require('../../Assets/Images/viberLine.png')
+                    : groupDetail.group_type == 'discord'
+                    ? require('../../Assets/Images/discordLine.png')
+                    : groupDetail.group_type == 'telegram'
+                    ? require('../../Assets/Images/telegramLine.png')
+                    : require('../../Assets/Images/lineLine.png')
+                }
                 style={{height: 44, width: 44, bottom: 30}}
               />
             </View>
@@ -320,7 +405,8 @@ const GroupDetail = ({route}) => {
                 }}>
                 {groupDetail.description}
               </Text>
-              <View
+              <TouchableOpacity
+                onPress={() => openLink(groupDetail.group_link)}
                 style={{
                   backgroundColor:
                     groupDetail.group_type == 'snapchat'
@@ -331,6 +417,10 @@ const GroupDetail = ({route}) => {
                       ? 'green'
                       : groupDetail.group_type == 'telegram'
                       ? '#0088CC'
+                      : groupDetail.group_type == 'discord'
+                      ? '#7289DA'
+                      : groupDetail.group_type == 'viber'
+                      ? '#665CAC'
                       : 'black',
                   width: '90%',
                   height: 29,
@@ -348,7 +438,7 @@ const GroupDetail = ({route}) => {
                   }}>
                   BEITRETEN
                 </Text>
-              </View>
+              </TouchableOpacity>
               <View
                 style={{
                   flexDirection: 'row',
@@ -427,10 +517,13 @@ const GroupDetail = ({route}) => {
                   }}>
                   <View />
                   <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <Image
-                      source={require('../../Assets/Images/infoBlue.png')}
-                      style={{width: 11, height: 11, right: 5}}
-                    />
+                    <TouchableOpacity
+                      onPress={() => setBoosterModalValue(true)}>
+                      <Image
+                        source={require('../../Assets/Images/infoBlue.png')}
+                        style={{width: 11, height: 11, right: 5}}
+                      />
+                    </TouchableOpacity>
                     <Text
                       style={{
                         fontSize: 23,
@@ -461,10 +554,24 @@ const GroupDetail = ({route}) => {
                     width: '100%',
                   }}>
                   <View style={{alignItems: 'center'}}>
-                    <Image
-                      source={require('../../Assets/Images/arrowBlank.png')}
-                      style={{width: 22, height: 26, resizeMode: 'contain'}}
-                    />
+                    {!groupDetail.booster_points_1x_status || oneXValue ? (
+                      <Animated.View
+                        style={{transform: [{scale: oneXBouncyView}]}}>
+                        <Image
+                          source={require('../../Assets/Images/arrowYellow.png')}
+                          style={{width: 22, height: 26, resizeMode: 'contain'}}
+                        />
+                      </Animated.View>
+                    ) : (
+                      <TouchableWithoutFeedback
+                        onPress={() => boostGroupValue(1, 0)}>
+                        <Image
+                          source={require('../../Assets/Images/arrowBlank.png')}
+                          style={{width: 22, height: 26, resizeMode: 'contain'}}
+                        />
+                      </TouchableWithoutFeedback>
+                    )}
+
                     <Text
                       style={{
                         fontFamily: FontStyle.MontBold,
@@ -474,11 +581,39 @@ const GroupDetail = ({route}) => {
                       1x Boost
                     </Text>
                   </View>
+
                   <View style={{alignItems: 'center'}}>
-                    <Image
-                      source={require('../../Assets/Images/booster5.png')}
-                      style={{width: 22, height: 26, resizeMode: 'contain'}}
-                    />
+                    {!groupDetail.booster_points_5x_status || fiveXValue ? (
+                      <Animated.View
+                        style={{transform: [{scale: fiveXBouncyView}]}}>
+                        <Image
+                          source={require('../../Assets/Images/arrowOrangeBooster.png')}
+                          style={{width: 22, height: 26, resizeMode: 'contain'}}
+                        />
+                      </Animated.View>
+                    ) : (
+                      <TouchableWithoutFeedback
+                        onPress={() => boostGroupValue(0, 5)}>
+                        <Image
+                          source={require('../../Assets/Images/booster5.png')}
+                          style={{width: 22, height: 26, resizeMode: 'contain'}}
+                        />
+                      </TouchableWithoutFeedback>
+                    )}
+                    {/* {groupDetail.booster_points_5x_status ? (
+                      <TouchableWithoutFeedback
+                        onPress={() => boostGroupValue(0, 5)}>
+                        <Image
+                          source={require('../../Assets/Images/booster5.png')}
+                          style={{width: 22, height: 26, resizeMode: 'contain'}}
+                        />
+                      </TouchableWithoutFeedback>
+                    ) : (
+                      <Image
+                        source={require('../../Assets/Images/arrowOrangeBooster.png')}
+                        style={{width: 28, height: 26, resizeMode: 'contain'}}
+                      />
+                    )} */}
                     <Text
                       style={{
                         fontFamily: FontStyle.MontBold,

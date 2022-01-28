@@ -1,6 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import AsyncStorageLib from '@react-native-async-storage/async-storage';
 
 const baseUrl = 'http://203.190.153.22:1639/api/v1';
@@ -85,7 +84,7 @@ export const forgotPassword = createAsyncThunk(
 export const updateRememberSnapChat = createAsyncThunk(
   'UpdateRememberSnapChat',
   async (data, {rejectWithValue}) => {
-    const token = await AsyncStorage.getItem('token');
+    const token = await AsyncStorageLib.getItem('token');
     try {
       const response = await axios({
         headers: {Authorization: `Bearer ${token}`},

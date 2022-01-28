@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -11,10 +11,29 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import Button from '../../Common/Button';
 import {useNavigation} from '@react-navigation/native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
+import {useDispatch, useSelector} from 'react-redux';
+import {ActivateUser} from '../../../Slice/ActivateUserReducer';
 
-const ConfirmationScreen = () => {
+const ConfirmationScreen = ({route}) => {
+  const {userId} = route.params;
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const [checked, setChecked] = useState(false);
+
+  const confirmationPress = () => {
+    dispatch(ActivateUser(userId));
+  };
+
+  const {token, error} = useSelector(state => {
+    return state.ActivateUserReducer;
+  });
+
+  useEffect(() => {
+    if (token != '') {
+      navigation.navigate('HomeNavigator');
+    }
+  }, [token]);
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
       <View
@@ -105,10 +124,7 @@ const ConfirmationScreen = () => {
           </Text>
         </View>
         {checked ? (
-          <Button
-            buttonText="Los geht´s"
-            onPress={() => navigation.navigate('HomeNavigator')}
-          />
+          <Button buttonText="Los geht´s" onPress={() => confirmationPress()} />
         ) : (
           <View style={styles.buttonStyle}>
             <Text style={styles.buttonText}>Los geht´s</Text>

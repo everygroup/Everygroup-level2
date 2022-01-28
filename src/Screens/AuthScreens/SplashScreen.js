@@ -12,6 +12,7 @@ import Button from '../../Common/Button';
 import {useNavigation} from '@react-navigation/native';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import FontStyle from '../../Assets/Fonts/FontStyle';
+import LottieView from 'lottie-react-native';
 
 const {width, height} = Dimensions.get('window');
 
@@ -39,8 +40,13 @@ const SplashScreen = () => {
   return (
     <View style={{flex: 1, alignItems: 'center', backgroundColor: '#fff'}}>
       <SafeAreaView />
-      <View style={{height: height / 1.7}}>
-        <SwiperFlatList
+      <View style={{height: height / 1.6}}>
+        {/* <LottieView
+          autoPlay
+          style={{height: height * 0.6}}
+          source={require('../../Assets/animation/SplashAnimation.json')}
+        /> */}
+        {/* <SwiperFlatList
           autoplay
           autoplayDelay={2}
           autoplayLoop
@@ -68,7 +74,7 @@ const SplashScreen = () => {
               </Text>
             </View>
           )}
-        />
+        /> */}
       </View>
       <Button
         onPress={() => navigation.navigate('SignIn')}
@@ -81,6 +87,7 @@ const SplashScreen = () => {
             color: '#FFA420',
             marginVertical: '7%',
             fontFamily: FontStyle.MontExtBold,
+
             fontSize: 21,
           }}>
           Registrieren

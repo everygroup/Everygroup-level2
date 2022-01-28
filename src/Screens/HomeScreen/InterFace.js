@@ -9,6 +9,7 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Animated,
+  Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -19,14 +20,21 @@ import MessangerModal from './MessangerModal';
 import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorageLib from '@react-native-async-storage/async-storage';
 import {updateTutorialStatus} from '../../../Slice/AuthReducer';
-import {getRandomeList} from '../../../Slice/RandomeReducer';
+import {
+  getRandomeList,
+  resetErrorValue,
+  seenGroup,
+} from '../../../Slice/RandomeReducer';
+import ErrorModal from '../../Common/ErrorModal';
 
 function Interface(props) {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [modalValue, setModalValue] = useState(false);
+  const [errorModalValue, setErrorModalValue] = useState(false);
   const [tutorialStatus, setTutorialStatus] = useState('');
   const [systemLang, setSystemLang] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [animation] = useState(new Animated.Value(1));
 
   const startAnimation = () => {
@@ -60,35 +68,63 @@ function Interface(props) {
     setSystemLang(await AsyncStorageLib.getItem('systemLang'));
   };
 
-  useEffect(() => {
-    dispatch(getRandomeList());
-  }, []);
-
-  const {randomeList, error, loading} = useSelector(state => {
+  const {randomeList, error, loading, fromDate} = useSelector(state => {
     return state.RandomeReducer;
   });
+
+  useEffect(() => {
+    console.log(error);
+    if (error != '') {
+      setTimeout(() => {
+        setErrorModalValue(true);
+      }, 1000);
+      setTimeout(() => {
+        setErrorModalValue(false);
+        dispatch(resetErrorValue());
+      }, 1800);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    dispatch(getRandomeList({selectedMessenger: [], systemLang, fromDate}));
+  }, []);
 
   const updateStatus = async () => {
     setTutorialStatus('True');
     dispatch(updateTutorialStatus());
     await AsyncStorageLib.setItem('tutorial', 'True');
   };
+  useEffect(() => {
+    if (currentIndex != '') {
+      const groupId = randomeList[currentIndex].id;
+      dispatch(seenGroup(groupId));
+    }
+  }, [currentIndex]);
 
-  console.log(randomeList, 'lang');
+  const scrolling = event => {
+    setCurrentIndex(
+      parseInt(
+        event.nativeEvent.contentOffset.y / Dimensions.get('window').height,
+      ),
+    );
+
+    if (event.nativeEvent.contentOffset.y > 250) {
+      updateStatus();
+    }
+  };
 
   return (
     <View style={{flex: 1, backgroundColor: '#dcdcdc'}}>
       <MessangerModal
         modalValue={modalValue}
         closeModal={() => setModalValue(false)}
+        systemLang={systemLang}
       />
+      <ErrorModal modalValue={errorModalValue} message={error} />
+
       <ScrollView
         onScroll={event => {
-          const scrolling = event.nativeEvent.contentOffset.y;
-
-          if (scrolling > 250) {
-            updateStatus();
-          }
+          scrolling(event);
         }}
         scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}

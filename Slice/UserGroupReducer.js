@@ -66,9 +66,11 @@ export const updateGroup = createAsyncThunk(
           visible_status: data.visible,
         },
       });
+      console.log(response, 'response update');
 
       return response.data;
     } catch (err) {
+      console.log(err.response, 'error update');
       return rejectWithValue(err.response.data.detail);
     }
   },

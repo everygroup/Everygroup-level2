@@ -70,6 +70,7 @@
 		1F38E3A227959D3000D7B7CB /* Futura-PT-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Futura-PT-Bold.ttf"; path = "../src/Assets/Fonts/Futura-PT-Bold.ttf"; sourceTree = "<group>"; };
 		1F829C31275A505B00E21328 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Poppins-Medium.ttf"; path = "../src/Assets/Fonts/Poppins-Medium.ttf"; sourceTree = "<group>"; };
 		1F829C34275A597E00E21328 /* Montserrat-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Montserrat-ExtraBold.ttf"; path = "../src/Assets/Fonts/Montserrat-ExtraBold.ttf"; sourceTree = "<group>"; };
+		1F8DC602279FF40200E917D4 /* Everygroup.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Everygroup.entitlements; path = Everygroup/Everygroup.entitlements; sourceTree = "<group>"; };
 		1FA01EBE2797DA19009A52D8 /* Futura-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Futura-Bold.ttf"; path = "../src/Assets/Fonts/Futura-Bold.ttf"; sourceTree = "<group>"; };
 		1FDE89C8275B353200F186D0 /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Montserrat-Medium.ttf"; path = "../src/Assets/Fonts/Montserrat-Medium.ttf"; sourceTree = "<group>"; };
 		1FDE89C9275B353200F186D0 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Montserrat-Bold.ttf"; path = "../src/Assets/Fonts/Montserrat-Bold.ttf"; sourceTree = "<group>"; };
@@ -138,6 +139,7 @@
 		13B07FAE1A68108700A75B9A /* Everygroup */ = {
 			isa = PBXGroup;
 			children = (
+				1F8DC602279FF40200E917D4 /* Everygroup.entitlements */,
 				1F15ABB92761EB38003119FE /* Montserrat-Regular.ttf */,
 				1FFBD9302782FF9E000D4A68 /* Montserrat-MediumItalic.ttf */,
 				1F1FE95227609772006F4136 /* Poppins-Bold.ttf */,
@@ -594,6 +596,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Everygroup/Everygroup.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BMMQKTP9LH;
 				ENABLE_BITCODE = NO;
@@ -621,6 +624,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Everygroup/Everygroup.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BMMQKTP9LH;
 				INFOPLIST_FILE = Everygroup/Info.plist;

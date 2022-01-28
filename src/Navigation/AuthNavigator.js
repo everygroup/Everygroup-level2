@@ -1,5 +1,5 @@
-import React from 'react';
-import {View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Alert, Linking} from 'react-native';
 import {
   CardStyleInterpolators,
   createStackNavigator,
@@ -23,6 +23,7 @@ const AuthStackScreen = createStackNavigator();
 
 export const AuthNavigator = () => {
   const navigation = useNavigation();
+  const [initialUrl, setInitialUrl] = useState('');
   const current = useNavigationState(state => state);
 
   const routes = navigation.getState()?.routes
@@ -30,6 +31,22 @@ export const AuthNavigator = () => {
     : [];
   const currentRoute = routes[routes.length - 1];
   const prevRoute = routes[routes.length - 2];
+
+  useEffect(() => {
+    getUrlAsync();
+    if (initialUrl === null) {
+      return;
+    }
+    if (initialUrl.includes('ConfirmationScreen')) {
+      const userId = initialUrl.split('=')[1];
+      navigation.navigate('ConfirmationScreen', {userId});
+    }
+  }, [initialUrl]);
+
+  const getUrlAsync = async () => {
+    // Get the deep link used to open the app
+    setInitialUrl(await Linking.getInitialURL());
+  };
 
   return (
     <View style={{flex: 1}}>

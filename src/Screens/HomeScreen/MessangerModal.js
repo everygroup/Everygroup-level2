@@ -11,8 +11,11 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import Modal from 'react-native-modal';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import Button from '../../Common/Button';
+import {getRandomeList} from '../../../Slice/RandomeReducer';
+import {dispatch, useDispatch} from 'react-redux';
 
-const MessangerModal = ({modalValue, closeModal}) => {
+const MessangerModal = ({modalValue, closeModal, systemLang}) => {
+  const dispatch = useDispatch();
   const [selectedMessenger, setSelectedMessenger] = useState([]);
   const [dataArray] = useState([
     'Whatsapp',
@@ -32,6 +35,13 @@ const MessangerModal = ({modalValue, closeModal}) => {
       setSelectedMessenger(prevValue => [...prevValue, messenger]);
     }
   };
+
+  const getFilterData = filterData => {
+    const groupType = filterData.toString();
+    dispatch(getRandomeList({groupType, systemLang}));
+    closeModal();
+  };
+
   return (
     <View>
       <Modal
@@ -88,7 +98,10 @@ const MessangerModal = ({modalValue, closeModal}) => {
             }}
           />
           <View style={{alignSelf: 'center'}}>
-            <Button onPress={closeModal} buttonText="Anwenden" />
+            <Button
+              onPress={() => getFilterData(selectedMessenger)}
+              buttonText="Anwenden"
+            />
           </View>
         </View>
       </Modal>

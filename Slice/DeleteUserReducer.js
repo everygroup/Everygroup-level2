@@ -6,6 +6,7 @@ const baseUrl = 'http://203.190.153.22:1639/api/v1';
 
 const initialState = {
   deleteAccount: '',
+  error: '',
 };
 
 export const deleteUser = createAsyncThunk(
@@ -23,10 +24,11 @@ export const deleteUser = createAsyncThunk(
           other_reason_description: data.otherText,
         },
       });
-
+      console.log(response, 'delete user');
       return response.status;
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      console.log(err.response, 'error delete');
+      return rejectWithValue(Object.values(err.response.data).toString());
     }
   },
 );
@@ -40,7 +42,9 @@ export const DeleteUserReducer = createSlice({
       state.deleteAccount = 'success';
     },
     [deleteUser.pending]: (state, action) => {},
-    [deleteUser.rejected]: (state, action) => {},
+    [deleteUser.rejected]: (state, action) => {
+      state.error = action.payload;
+    },
   },
 });
 

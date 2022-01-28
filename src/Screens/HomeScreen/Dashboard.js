@@ -73,12 +73,21 @@ const Dashboard = () => {
   const {groupData, error, loading} = useSelector(state => {
     return state.AllGroupListReducer;
   });
+
+  const {createSuccess} = useSelector(state => {
+    return state.createGroup;
+  });
+  useEffect(() => {
+    if (createSuccess != '') {
+      dispatch(getAllGroup());
+    }
+  }, [createSuccess]);
   //////////////////////////////
 
   return (
     <View
       style={{
-        paddingTop: '25%',
+        paddingTop: Platform.OS == 'ios' ? '25%' : '15%',
         height: '100%',
         backgroundColor: '#fff',
       }}>

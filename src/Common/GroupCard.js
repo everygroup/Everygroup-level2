@@ -35,10 +35,18 @@ const GroupCard = ({
   const [deleteModal, setDeleteModal] = useState(false);
   const [modalValue, setModalValue] = useState(false);
   const visibleUnvisible = () => {
-    if (group.visible_status == true) {
+    if (group.is_link_expire == true) {
       setModalValue(true);
     }
-    dispatch(updateGroup({groupId: group.id, visible: !group.visible_status}));
+    dispatch(updateGroup({groupId: group.id, visible: group.is_link_expire}));
+  };
+
+  const openLink = link => {
+    if (group.is_link_expire) {
+      dispatch(deleteGroup(group.id));
+    } else {
+      Linking.openURL(link);
+    }
   };
 
   return (
@@ -64,16 +72,20 @@ const GroupCard = ({
         <View style={[styles.containerStyle, {borderBottomRightRadius: 0}]}>
           <View
             style={{
-              backgroundColor:
-                group.group_type == 'snapchat'
-                  ? '#FFFC00'
-                  : group.group_type == 'whatsapp'
-                  ? 'lightgreen'
-                  : group.group_type == 'line'
-                  ? 'green'
-                  : group.group_type == 'telegram'
-                  ? '#0088CC'
-                  : 'black',
+              backgroundColor: group.is_link_expire
+                ? '#C3C5C7'
+                : group.group_type == 'snapchat'
+                ? '#FFFC00'
+                : group.group_type == 'whatsapp'
+                ? 'lightgreen'
+                : group.group_type == 'line'
+                ? 'green'
+                : group.group_type == 'telegram'
+                ? '#0088CC'
+                : group.group_type == 'viber'
+                ? '#665CAC'
+                : '#7289DA',
+
               height: 30,
               width: 30,
               borderTopLeftRadius: 7,
@@ -101,9 +113,14 @@ const GroupCard = ({
                 source={require('../Assets/Images/whatsappLine.png')}
                 style={styles.imageStyle}
               />
+            ) : group.group_type == 'viber' ? (
+              <Image
+                source={require('../Assets/Images/viber.png')}
+                style={styles.imageStyle}
+              />
             ) : (
               <Image
-                source={require('../Assets/Images/orangeLogo.png')}
+                source={require('../Assets/Images/discord.png')}
                 style={styles.imageStyle}
               />
             )}
@@ -116,123 +133,137 @@ const GroupCard = ({
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                height: 30,
                 paddingHorizontal: '5%',
               }}>
               <Text
                 style={{
                   fontSize: 18,
                   marginVertical: 5,
-                  color: '#205072',
+                  color: group.is_link_expire ? '#C4C6C8' : '#205072',
                   fontFamily: FontStyle.MontExtBold,
                 }}>
                 {group.title}
               </Text>
-              <TouchableWithoutFeedback onPress={removeFavourite}>
-                <Icon
-                  name="bookmark"
-                  color={
-                    group.group_favourite_status || favourite
-                      ? '#FFA420'
-                      : '#B9B9B9'
-                  }
-                  size={22}
-                  solid={
-                    group.group_favourite_status || favourite ? true : false
-                  }
-                />
-              </TouchableWithoutFeedback>
+              {!group.is_link_expire ? (
+                <TouchableWithoutFeedback onPress={removeFavourite}>
+                  <Icon
+                    name="bookmark"
+                    color={
+                      group.group_favourite_status || favourite
+                        ? '#FFA420'
+                        : '#B9B9B9'
+                    }
+                    size={22}
+                    solid={
+                      group.group_favourite_status || favourite ? true : false
+                    }
+                  />
+                </TouchableWithoutFeedback>
+              ) : null}
             </View>
 
-            <FlatList
-              keyExtractor={(item, index) => item.slug}
-              horizontal={true}
-              contentContainerStyle={{
-                height: 22,
-                width: '90%',
-                paddingHorizontal: '5%',
-              }}
-              data={group.categories}
-              renderItem={({item}) => {
-                return (
-                  <View
-                    style={{
-                      backgroundColor: '#205072',
-                      marginHorizontal: 5,
-                      height: 20,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      minWidth: 80,
-                      maxWidth: 'auto',
-                      borderRadius: 5,
-                      paddingHorizontal: 5,
-                    }}>
-                    <Text
+            {!group.is_link_expire ? (
+              <FlatList
+                keyExtractor={(item, index) => item.slug}
+                horizontal={true}
+                contentContainerStyle={{
+                  height: 22,
+                  width: '90%',
+                  paddingHorizontal: '5%',
+                }}
+                data={group.categories}
+                renderItem={({item}) => {
+                  return (
+                    <View
                       style={{
-                        color: '#fff',
-                        fontSize: 11,
-                        fontFamily: FontStyle.MontBold,
+                        backgroundColor: '#205072',
+                        marginHorizontal: 5,
+                        height: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        minWidth: 80,
+                        maxWidth: 'auto',
+                        borderRadius: 5,
+                        paddingHorizontal: 5,
                       }}>
-                      {item.category}
-                    </Text>
-                  </View>
-                );
-              }}
-            />
+                      <Text
+                        style={{
+                          color: '#fff',
+                          fontSize: 11,
+                          fontFamily: FontStyle.MontBold,
+                        }}>
+                        {item.category}
+                      </Text>
+                    </View>
+                  );
+                }}
+              />
+            ) : null}
 
-            <FlatList
-              keyExtractor={(item, index) => item}
-              horizontal={true}
-              contentContainerStyle={{
-                width: '95%',
-                height: 22,
-                minHeight: 20,
-                maxHeight: 40,
-                paddingHorizontal: '8%',
-              }}
-              data={group.tags}
-              renderItem={({item}) => {
-                return (
-                  <View style={{minWidth: 38, maxWidth: 'auto'}}>
-                    <Text
-                      style={{
-                        color: '#FFA420',
-                        fontSize: 13,
-                        fontFamily: FontStyle.MontMedium,
-                      }}>
-                      {item}
-                    </Text>
-                  </View>
-                );
-              }}
-            />
+            {!group.is_link_expire ? (
+              <FlatList
+                keyExtractor={(item, index) => item}
+                horizontal={true}
+                contentContainerStyle={{
+                  width: '95%',
+                  height: 22,
+                  minHeight: 20,
+                  maxHeight: 40,
+                  paddingHorizontal: '8%',
+                }}
+                data={group.tags}
+                renderItem={({item}) => {
+                  return (
+                    <View style={{minWidth: 38, maxWidth: 'auto'}}>
+                      <Text
+                        style={{
+                          color: '#FFA420',
+                          fontSize: 13,
+                          fontFamily: FontStyle.MontMedium,
+                        }}>
+                        {item}
+                      </Text>
+                    </View>
+                  );
+                }}
+              />
+            ) : null}
             <Text
               style={{
                 fontFamily: FontStyle.MontSemiBold,
-                fontSize: 15,
+                fontSize: group.is_link_expire ? 18 : 15,
                 color: '#205072',
                 paddingHorizontal: '8%',
+                textAlign: 'center',
               }}>
-              {group.description}
+              {group.is_link_expire
+                ? 'Der Link dieser Gruppe ist nicht mehr gültig.'
+                : group.description}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => Linking.openURL(group.group_link)}
+            onPress={() => openLink(group.group_link)}
             style={{
-              backgroundColor:
-                group.group_type == 'snapchat'
-                  ? '#FFFC00'
-                  : group.group_type == 'whatsapp'
-                  ? 'lightgreen'
-                  : group.group_type == 'line'
-                  ? 'green'
-                  : group.group_type == 'telegram'
-                  ? '#0088CC'
-                  : 'black',
-              width: '90%',
+              backgroundColor: group.is_link_expire
+                ? '#EF3E36'
+                : group.group_type == 'snapchat'
+                ? '#FFFC00'
+                : group.group_type == 'whatsapp'
+                ? 'lightgreen'
+                : group.group_type == 'line'
+                ? 'green'
+                : group.group_type == 'telegram'
+                ? '#0088CC'
+                : group.group_type == 'viber'
+                ? '#665CAC'
+                : group.group_type == 'discord'
+                ? '#7289DA'
+                : 'black',
+
+              width: group.is_link_expire ? '30%' : '90%',
               height: 34,
               alignSelf: 'center',
-              borderRadius: 15,
+              borderRadius: group.is_link_expire ? 5 : 15,
               marginVertical: 15,
 
               alignItems: 'center',
@@ -244,7 +275,7 @@ const GroupCard = ({
                 fontFamily: FontStyle.MontBold,
                 fontSize: 16,
               }}>
-              BEITRETEN
+              {group.is_link_expire ? 'Ok' : 'BEITRETEN'}
             </Text>
           </TouchableOpacity>
         </View>
@@ -277,7 +308,7 @@ const GroupCard = ({
               style={{
                 fontFamily: FontStyle.MontExtBold,
                 fontSize: 9,
-                color: '#205072',
+                color: group.is_link_expire ? '#C4C6C8' : '#205072',
               }}>
               {group.languages[0].language}
             </Text>
@@ -302,7 +333,7 @@ const GroupCard = ({
                 <Icon name={'redo-alt'} size={21} color="#C4C6C8" />
 
                 <TouchableWithoutFeedback onPress={() => visibleUnvisible()}>
-                  {group.visible_status ? (
+                  {group.is_link_expire ? (
                     <Image
                       source={require('../Assets/Images/openEye.png')}
                       style={styles.iconStyle}

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, SafeAreaView, StyleSheet} from 'react-native';
+import {View, Text, SafeAreaView, StyleSheet, Dimensions} from 'react-native';
 import Button from '../../Common/Button';
 import Input from '../../Common/Input';
 import SwitchToggle from 'react-native-switch-toggle';
@@ -12,7 +12,7 @@ import {HelperText} from 'react-native-paper';
 import Styles from '../UserScreens/Style';
 import Spinner from '../../Common/Spinner';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-
+const {height} = Dimensions.get('window');
 const SignUp = () => {
   const dispatch = useDispatch();
   const [promotional, setPromotional] = useState(false);
@@ -86,14 +86,13 @@ const SignUp = () => {
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{
-          flexGrow: 1,
           alignItems: 'center',
         }}>
         <View
           style={{
             width: '100%',
             alignItems: 'center',
-            height: '40%',
+            height: height * 0.4,
             justifyContent: 'center',
           }}>
           <View style={Styles.errorContainer}>

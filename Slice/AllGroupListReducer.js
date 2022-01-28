@@ -33,10 +33,8 @@ export const getAllGroup = createAsyncThunk(
 export const getSimilarGroupList = createAsyncThunk(
   'getSimilarGroup',
   async (data, {rejectWithValue}) => {
-    console.log(data, 'data');
     const token = await AsyncStorageLib.getItem('token');
     const cat = data.map(value => value.slug);
-    console.log(cat.toString(), 'cat', token);
 
     try {
       const response = await axios({
@@ -44,10 +42,9 @@ export const getSimilarGroupList = createAsyncThunk(
         headers: {Authorization: `Bearer ${token}`},
         url: `${baseUrl}/group/similar-category?q=${cat.toString()}`,
       });
-      console.log(response, 'similar result');
+
       return response.data.results;
     } catch (err) {
-      console.log(err, 'similar error');
       return rejectWithValue(err.response.data);
     }
   },

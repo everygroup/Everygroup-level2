@@ -110,7 +110,7 @@ const LoadingModal = ({
             <LottieView
               autoPlay
               loop={false}
-              style={{height: 8}}
+              style={{height: 16}}
               source={source}
             />
           )}

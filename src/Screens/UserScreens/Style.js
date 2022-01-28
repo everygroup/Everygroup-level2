@@ -33,7 +33,7 @@ const Styles = StyleSheet.create({
   errorContainer: {
     width: '100%',
     alignItems: 'flex-start',
-    height: 20,
+    height: 30,
   },
 });
 

@@ -8,6 +8,7 @@ const initialState = {
   randomeList: [],
   loading: false,
   error: '',
+  fromDate: '',
 };
 
 export const getRandomeList = createAsyncThunk(
@@ -17,14 +18,42 @@ export const getRandomeList = createAsyncThunk(
 
     try {
       const response = await axios({
+        params: {
+          from_date: data.fromDate,
+          language: data.systemLang,
+          group_type: data.groupType,
+        },
         method: 'get',
         headers: {Authorization: `Bearer ${token}`},
         url: `${baseUrl}/group/feed`,
       });
-
-      return response.data.results;
+      console.log(response, 'feed page');
+      return response.data;
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      console.log(err.response, 'error page');
+      return rejectWithValue(err.response.data.message);
+    }
+  },
+);
+
+export const seenGroup = createAsyncThunk(
+  'seenGroup',
+  async (data, {rejectWithValue}) => {
+    const token = await AsyncStorage.getItem('token');
+
+    try {
+      const response = await axios({
+        method: 'post',
+        headers: {Authorization: `Bearer ${token}`},
+        url: `${baseUrl}/group/seen-feed`,
+        data: {
+          group: data,
+        },
+      });
+
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
     }
   },
 );
@@ -32,23 +61,29 @@ export const getRandomeList = createAsyncThunk(
 export const RandomeReducer = createSlice({
   name: 'RandomeReducer',
   initialState,
-  reducers: {},
+  reducers: {
+    resetErrorValue(state, action) {
+      state.error = '';
+    },
+  },
   extraReducers: {
     [getRandomeList.fulfilled]: (state, action) => {
-      state.randomeList = action.payload;
+      state.randomeList = action.payload.result;
       state.loading = false;
+      state.fromDate = action.payload.from_date;
+      state.error = '';
     },
     [getRandomeList.pending]: (state, action) => {
-      state.randomeList = [];
       state.loading = true;
       state.error = '';
     },
     [getRandomeList.rejected]: (state, action) => {
       state.error = action.payload;
       state.loading = false;
-      state.randomeList = [];
     },
   },
 });
+
+export const {resetErrorValue} = RandomeReducer.actions;
 
 export default RandomeReducer.reducer;
