@@ -35,7 +35,12 @@ const MyGroup = () => {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     }
   };
-  console.log(userGroupData, 'data');
+
+  const {boostError} = useSelector(state => {
+    console.log(state.UserGroupReducer);
+    return state.UserGroupReducer;
+  });
+
   return (
     <View style={[Styles.mainContainer, {paddingTop: '25%'}]}>
       <Header
@@ -47,6 +52,8 @@ const MyGroup = () => {
         modalValue={infoModalValue}
         message={`Mit dem Booster wird deine Gruppe 5 Tage lang alle 8 Stunden automatisch wieder hoch geladen ohne, dass du dafür ein Video schauen musst.\n \n Um einen Booster zu erhalten, muss deine Gruppe genug Boosts von anderen Nutzern sammeln.`}
       />
+
+      {boostError ? alert(boostError) : null}
 
       {loading ? (
         <MainLoader heightValue={1.1} />

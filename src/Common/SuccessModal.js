@@ -4,7 +4,13 @@ import Modal from 'react-native-modal';
 import FontStyle from '../Assets/Fonts/FontStyle';
 import Button from './Button';
 
-const SuccessModal = ({modalValue, closeModal, message}) => {
+const SuccessModal = ({
+  modalValue,
+  closeModal,
+  message,
+  reuploads,
+  booster,
+}) => {
   return (
     <View>
       <Modal
@@ -36,12 +42,19 @@ const SuccessModal = ({modalValue, closeModal, message}) => {
               fontFamily: FontStyle.MontBold,
               fontSize: 18,
               color: '#205072',
-              width: '70%',
+              width: '95%',
               textAlign: 'center',
               marginVertical: '2.5%',
             }}>
-            Glückwunsch! Du hast{' '}
-            <Text style={{color: '#004EF8'}}>9x Reuploads</Text> erhalten!
+            {`Glückwunsch!\n Du hast`}{' '}
+            {reuploads > 0 ? (
+              <Text style={{color: '#004EF8'}}>{reuploads}X Reuploads</Text>
+            ) : null}
+            {reuploads > 0 && booster > 0 ? <Text> und </Text> : null}
+            {booster > 0 ? (
+              <Text style={{color: '#004EF8'}}>{booster}X Booster</Text>
+            ) : null}{' '}
+            erhalten!
           </Text>
           <Button buttonText="Alles klar" onPress={closeModal} />
         </View>

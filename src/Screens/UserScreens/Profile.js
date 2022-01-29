@@ -6,6 +6,7 @@ import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch} from 'react-redux';
 import {resetToken} from '../../../Slice/AuthReducer';
+import {resetCouponValue} from '../../../Slice/UserGroupReducer';
 
 const Profile = () => {
   const navigation = useNavigation();
@@ -22,6 +23,7 @@ const Profile = () => {
       await AsyncStorage.clear();
       dispatch(resetToken());
     }
+    dispatch(resetCouponValue());
     navigation.navigate(navigatePage);
   };
 

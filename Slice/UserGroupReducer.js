@@ -9,6 +9,11 @@ const initialState = {
   error: '',
   loading: false,
   updateGroup: '',
+  boostSuccess: '',
+  boostError: '',
+  boostGroupId: '',
+  couponResError: '',
+  couponSuccess: '',
 };
 
 export const getUserGroup = createAsyncThunk(
@@ -49,7 +54,6 @@ export const deleteGroup = createAsyncThunk(
 export const updateGroup = createAsyncThunk(
   'updateGroup',
   async (data, {rejectWithValue}) => {
-    console.log(data, 'data');
     const token = await AsyncStorage.getItem('token');
     try {
       const response = await axios({
@@ -66,12 +70,52 @@ export const updateGroup = createAsyncThunk(
           visible_status: data.visible,
         },
       });
-      console.log(response, 'response update');
 
       return response.data;
     } catch (err) {
       console.log(err.response, 'error update');
       return rejectWithValue(err.response.data.detail);
+    }
+  },
+);
+
+export const boostOwnGroup = createAsyncThunk(
+  'boostOwnGroup',
+  async (data, {rejectWithValue}) => {
+    const token = await AsyncStorage.getItem('token');
+    console.log(data, 'own data');
+    try {
+      const response = await axios({
+        method: 'post',
+        headers: {Authorization: `Bearer ${token}`},
+        url: `${baseUrl}/group/boost/${data}`,
+      });
+      console.log(response, 'boost data');
+      return {result: response.data, id: data};
+    } catch (err) {
+      console.log(err.response);
+      return rejectWithValue(Object.values(err.response.data).toString());
+    }
+  },
+);
+export const applyCoupon = createAsyncThunk(
+  'applyCoupon',
+  async (data, {rejectWithValue}) => {
+    const token = await AsyncStorage.getItem('token');
+    console.log(data, 'coupon data');
+    try {
+      const response = await axios({
+        method: 'post',
+        headers: {Authorization: `Bearer ${token}`},
+        url: `${baseUrl}/coupon/`,
+        data: {
+          coupon_no: data,
+        },
+      });
+
+      return response.data.result[0];
+    } catch (err) {
+      return rejectWithValue(Object.values(err.response.data).toString());
     }
   },
 );
@@ -82,6 +126,9 @@ export const UserGroupReducer = createSlice({
   reducers: {
     updateSuccessValue(state, action) {
       state.updateGroup = '';
+    },
+    resetCouponValue(state, action) {
+      (state.couponResError = ''), (state.couponSuccess = '');
     },
   },
   extraReducers: {
@@ -112,7 +159,32 @@ export const UserGroupReducer = createSlice({
       state.loading = false;
       state.updateGroup = 'success';
     },
+    [boostOwnGroup.fulfilled]: (state, action) => {
+      const index = state.userGroupData.findIndex(
+        el => el.id == action.payload.id,
+      );
+      state.userGroupData[index] = action.payload.result.result[0];
+    },
+    [boostOwnGroup.pending]: (state, action) => {
+      state.boostSuccess = '';
+      state.boostError = '';
+    },
+    [boostOwnGroup.rejected]: (state, action) => {
+      state.boostError = action.payload;
+    },
+
+    [applyCoupon.fulfilled]: (state, action) => {
+      state.couponSuccess = action.payload;
+      state.couponResError = '';
+    },
+    [applyCoupon.pending]: (state, action) => {
+      state.couponSuccess = '';
+      state.couponResError = '';
+    },
+    [applyCoupon.rejected]: (state, action) => {
+      state.couponResError = action.payload;
+    },
   },
 });
-export const {updateSuccessValue} = UserGroupReducer.actions;
+export const {updateSuccessValue, resetCouponValue} = UserGroupReducer.actions;
 export default UserGroupReducer.reducer;

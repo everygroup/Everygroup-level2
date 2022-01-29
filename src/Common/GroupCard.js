@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -14,9 +14,16 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import Button from './Button';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {deleteGroup, updateGroup} from '../../Slice/UserGroupReducer';
+import {
+  boostOwnGroup,
+  deleteGroup,
+  updateGroup,
+} from '../../Slice/UserGroupReducer';
 import InfoModal from './InfoModal';
 import DeleteModal from '../Screens/UserScreens/deleteModal';
+import ProgressCircle from 'react-native-progress-circle';
+import moment from 'moment';
+
 const GroupCard = ({
   group,
   boosterValue,
@@ -32,14 +39,20 @@ const GroupCard = ({
 }) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [percentageValue, setPercentageValue] = useState(0);
   const [deleteModal, setDeleteModal] = useState(false);
   const [modalValue, setModalValue] = useState(false);
+  const [time, setTime] = useState(0);
   const visibleUnvisible = () => {
     if (group.is_link_expire == true) {
       setModalValue(true);
     }
     dispatch(updateGroup({groupId: group.id, visible: group.is_link_expire}));
   };
+
+  useEffect(() => {
+    Value();
+  }, []);
 
   const openLink = link => {
     if (group.is_link_expire) {
@@ -49,6 +62,16 @@ const GroupCard = ({
     }
   };
 
+  const Value = () => {
+    setPercentageValue(
+      (group.remaining_points_from_x_times_of_boost_points * 100) / 120,
+    );
+  };
+
+  useEffect(() => {
+    setTime(group.remaining_booster_time, 'hh:mm');
+  }, []);
+  // console.log(time);
   return (
     <View>
       <InfoModal
@@ -68,6 +91,7 @@ const GroupCard = ({
         buttonRightColor={'#EF3E36'}
         closeModal={() => setDeleteModal(false)}
       />
+
       <View style={{position: 'relative', zIndex: 99999}}>
         <View style={[styles.containerStyle, {borderBottomRightRadius: 0}]}>
           <View
@@ -320,7 +344,7 @@ const GroupCard = ({
           style={[
             styles.boostContainerStyle,
 
-            {height: group.id == selectedGroupName ? 240 : 50},
+            {height: group.id == selectedGroupName ? 270 : 50},
           ]}>
           {selectedGroupName == group.id ? (
             <View style={{width: '100%', alignItems: 'center'}}>
@@ -329,9 +353,39 @@ const GroupCard = ({
                   flexDirection: 'row',
                   justifyContent: 'space-around',
                   width: '100%',
+                  marginTop: 10,
                 }}>
-                <Icon name={'redo-alt'} size={21} color="#C4C6C8" />
-
+                <View>
+                  <View style={{flexDirection: 'row'}}>
+                    <Icon
+                      name={'redo-alt'}
+                      size={21}
+                      color={
+                        group.remaining_booster_duration != null
+                          ? '#FFBC20'
+                          : '#C4C6C8'
+                      }
+                    />
+                    <Text
+                      style={{
+                        fontFamily: FontStyle.MontExtBold,
+                        fontSize: 13,
+                        color: '#205072',
+                        bottom: 8,
+                        left: 2,
+                      }}>
+                      {time ? time : null}
+                    </Text>
+                  </View>
+                  <Text
+                    style={{
+                      fontFamily: FontStyle.MontExtBold,
+                      fontSize: 13,
+                      color: '#FFBC20',
+                    }}>
+                    {group.remaining_booster_duration}
+                  </Text>
+                </View>
                 <TouchableWithoutFeedback onPress={() => visibleUnvisible()}>
                   {group.is_link_expire ? (
                     <Image
@@ -390,16 +444,55 @@ const GroupCard = ({
                     }}
                   />
                 </TouchableOpacity>
-                <Image
-                  source={require('../Assets/Images/boost.png')}
-                  style={{
-                    height: 61,
-                    width: 61,
-                    marginRight: 20,
-                  }}
-                />
+                <ProgressCircle
+                  percent={percentageValue}
+                  radius={50}
+                  borderWidth={8}
+                  color="#FFBC20"
+                  shadowColor="#cbcbcb"
+                  bgColor="#fff">
+                  {group.x_times_of_boost_points < 1 ? (
+                    <Image
+                      source={require('../Assets/Images/arrowGrey.png')}
+                      style={{height: 24, width: 24, resizeMode: 'contain'}}
+                    />
+                  ) : (
+                    <Image
+                      source={require('../Assets/Images/arrowOrange.png')}
+                      style={{height: 24, width: 24, resizeMode: 'contain'}}
+                    />
+                  )}
+                  <Text
+                    style={{
+                      fontFamily: FontStyle.MontExtBold,
+                      fontSize: 13,
+                      color:
+                        group.x_times_of_boost_points > 0
+                          ? '#FFBC20'
+                          : '#CBCBCB',
+                      marginTop: 5,
+                    }}>
+                    {group.x_times_of_boost_points
+                      ? group.x_times_of_boost_points
+                      : 0}
+                    X
+                  </Text>
+                </ProgressCircle>
               </View>
-              <Button width={103} buttonText="Booster" />
+              {group.x_times_of_boost_points < 1 ? (
+                <Button
+                  width={110}
+                  buttonText="Booster"
+                  buttonColor1={'#CBCBCB'}
+                  buttonColor2={'#CBCBCB'}
+                />
+              ) : (
+                <Button
+                  width={110}
+                  buttonText="Booster"
+                  onPress={() => dispatch(boostOwnGroup(group.id))}
+                />
+              )}
             </View>
           ) : null}
           <Icon

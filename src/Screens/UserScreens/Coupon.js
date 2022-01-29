@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import Header from '../../Common/Header';
 import Styles from './Style';
@@ -8,10 +8,14 @@ import Button from '../../Common/Button';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import {HelperText} from 'react-native-paper';
 import SuccessModal from '../../Common/SuccessModal';
+import {useDispatch, useSelector} from 'react-redux';
+import {applyCoupon, resetCouponValue} from '../../../Slice/UserGroupReducer';
 
 const Coupon = () => {
+  const dispatch = useDispatch();
   const [coupon, setCoupon] = useState('');
   const [couponError, setCouponError] = useState(false);
+  const [couponErrorMessage, setCouponErrorMessage] = useState();
   const [modalValue, setModalValue] = useState(false);
   const navigation = useNavigation();
 
@@ -19,8 +23,30 @@ const Coupon = () => {
     if (coupon == '') {
       setCouponError(true);
     } else {
+      dispatch(applyCoupon(coupon));
+    }
+  };
+
+  const {couponResError, couponSuccess} = useSelector(state => {
+    return state.UserGroupReducer;
+  });
+
+  useEffect(() => {
+    if (couponResError != '') {
+      setCouponError(true);
+      setCouponErrorMessage(couponResError);
+    }
+  }, [couponResError]);
+
+  useEffect(() => {
+    if (couponSuccess != '') {
       setModalValue(true);
     }
+  }, [couponSuccess]);
+
+  const closeModal = () => {
+    setModalValue(false);
+    dispatch(resetCouponValue());
   };
 
   return (
@@ -28,7 +54,9 @@ const Coupon = () => {
       <Header />
       <SuccessModal
         modalValue={modalValue}
-        closeModal={() => setModalValue(false)}
+        closeModal={() => closeModal()}
+        reuploads={couponSuccess.reuploads}
+        booster={couponSuccess.boost_points}
       />
       <View
         style={{
@@ -47,11 +75,13 @@ const Coupon = () => {
         <View />
       </View>
       <View style={{alignItems: 'center', marginTop: '10%'}}>
-        {couponError == true ? (
-          <HelperText style={[Styles.helperText, {left: '8%'}]} type="error">
-            Gruppentitel eingeben
-          </HelperText>
-        ) : null}
+        <View style={Styles.errorContainer}>
+          {couponError == true ? (
+            <HelperText style={[Styles.helperText, {left: '8%'}]} type="error">
+              {couponErrorMessage}
+            </HelperText>
+          ) : null}
+        </View>
         <Input
           placeholder="Gutschein"
           placeholderTextColor="#205072"

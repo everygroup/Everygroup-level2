@@ -35,7 +35,7 @@ var styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: {
-    fontSize: 21,
+    fontSize: 19,
     fontFamily: FontStyle.MontExtBold,
     textAlign: 'center',
     color: '#ffffff',
