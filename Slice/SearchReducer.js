@@ -74,7 +74,11 @@ export const deleteSearch = createAsyncThunk(
 export const SearchReducer = createSlice({
   name: 'SearchReducer',
   initialState,
-  reducers: {},
+  reducers: {
+    resetSearchValue(state, action) {
+      state.error = [];
+    },
+  },
   extraReducers: {
     [saveSearch.fulfilled]: (state, action) => {
       state.categoryArray = action.payload;
@@ -118,5 +122,5 @@ export const SearchReducer = createSlice({
     },
   },
 });
-
+export const {resetSearchValue} = SearchReducer.actions;
 export default SearchReducer.reducer;

@@ -32,7 +32,7 @@ import {getSimilarGroupList} from '../../../Slice/AllGroupListReducer';
 import MainLoader from '../../Common/MainLoader';
 import {updateGroup} from '../../../Slice/UserGroupReducer';
 import BoosterModal from '../../Common/BoosterModal';
-import {boostGroup, resetBoostValue} from '../../../Slice/BoosterGroupReducer';
+import {boostGroup, resetBoostValue} from '../../../Slice/RandomeReducer';
 
 const GroupDetail = ({route}) => {
   const {groupId} = route.params;
@@ -56,8 +56,8 @@ const GroupDetail = ({route}) => {
     return state.GroupDetailReducer;
   });
 
-  const url = 'https://everygroup.com/';
-  const title = 'Awesome';
+  const url = 'digimonk.net://';
+  const title = 'Everygroup';
   const message = 'Please check this out.';
 
   const options = {
@@ -148,12 +148,13 @@ const GroupDetail = ({route}) => {
   });
 
   const boostGroupValue = (oneX, fiveX) => {
+    console.log('hi hih');
     dispatch(boostGroup({oneX, fiveX, groupId}));
   };
 
   const {boostError, boostLoading, oneXStatus, fiveXStatus} = useSelector(
     state => {
-      return state.BoosterGroupReducer;
+      return state.RandomeReducer;
     },
   );
 
@@ -600,20 +601,7 @@ const GroupDetail = ({route}) => {
                         />
                       </TouchableWithoutFeedback>
                     )}
-                    {/* {groupDetail.booster_points_5x_status ? (
-                      <TouchableWithoutFeedback
-                        onPress={() => boostGroupValue(0, 5)}>
-                        <Image
-                          source={require('../../Assets/Images/booster5.png')}
-                          style={{width: 22, height: 26, resizeMode: 'contain'}}
-                        />
-                      </TouchableWithoutFeedback>
-                    ) : (
-                      <Image
-                        source={require('../../Assets/Images/arrowOrangeBooster.png')}
-                        style={{width: 28, height: 26, resizeMode: 'contain'}}
-                      />
-                    )} */}
+
                     <Text
                       style={{
                         fontFamily: FontStyle.MontBold,

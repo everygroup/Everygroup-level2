@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -41,11 +41,11 @@ const SplashScreen = () => {
     <View style={{flex: 1, alignItems: 'center', backgroundColor: '#fff'}}>
       <SafeAreaView />
       <View style={{height: height / 1.6}}>
-        <LottieView
+        {/* <LottieView
           autoPlay
           style={{height: height * 0.6}}
           source={require('../../Assets/animation/SplashAnimation.json')}
-        />
+        /> */}
         {/* <SwiperFlatList
           autoplay
           autoplayDelay={2}

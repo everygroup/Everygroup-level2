@@ -11,11 +11,18 @@ const initialState = {
   register: '',
   forgotResponse: '',
   remember_snapchat: true,
+  internet: true,
 };
 
 export const signInUser = createAsyncThunk(
   'signIn',
   async (data, {rejectWithValue}) => {
+    const deviceToken = await AsyncStorageLib.getItem('deviceToken');
+    console.log({
+      email: data.email,
+      password: data.password,
+      device_token: deviceToken,
+    });
     try {
       const response = await axios({
         method: 'post',
@@ -23,10 +30,12 @@ export const signInUser = createAsyncThunk(
         data: {
           email: data.email,
           password: data.password,
+          device_token: deviceToken,
         },
       });
       console.log(response, 'signin Response');
       await AsyncStorageLib.setItem('token', response.data.access);
+
       await AsyncStorageLib.setItem(
         'tutorial',
         response.data.random_mode_tutorial_status.toString(),
@@ -123,6 +132,9 @@ export const authReducer = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    checkInternet(state, action) {
+      state.internet = action.payload;
+    },
     resetToken(state, action) {
       state.token = '';
     },
@@ -178,6 +190,7 @@ export const authReducer = createSlice({
   },
 });
 
-export const {resetToken, resetForgotResponse} = authReducer.actions;
+export const {resetToken, resetForgotResponse, checkInternet} =
+  authReducer.actions;
 
 export default authReducer.reducer;

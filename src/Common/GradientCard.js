@@ -3,36 +3,39 @@ import {View, Text, Image, StyleSheet, FlatList} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import FontStyle from '../Assets/Fonts/FontStyle';
 const GradientCard = ({group}) => {
+  console.log(group);
   return (
     <LinearGradient
       colors={
-        group.socialGroup == 'line'
+        group.group_type == 'line'
           ? ['#08C719', '#adebad']
-          : group.socialGroup == 'snapchat'
+          : group.group_type == 'snapchat'
           ? ['#FFFC00', '#ffffb3']
-          : group.socialGroup == 'whatsapp'
+          : group.group_type == 'whatsapp'
           ? ['#08C719', '#9dfba5']
-          : group.socialGroup == 'telegram'
+          : group.group_type == 'telegram'
+          ? ['#058acd', '#9cdcfc']
+          : group.group_type == 'viber'
           ? ['#058acd', '#9cdcfc']
           : ['#08C719', '#adebad']
       }
       style={[styles.containerStyle]}>
-      {group.socialGroup == 'snapchat' ? (
+      {group.group_type == 'snapchat' ? (
         <Image
           source={require('../Assets/Images/snapchatLine.png')}
           style={styles.imageStyle}
         />
-      ) : group.socialGroup == 'line' ? (
+      ) : group.group_type == 'line' ? (
         <Image
           source={require('../Assets/Images/lineLine.png')}
           style={styles.imageStyle}
         />
-      ) : group.socialGroup == 'telegram' ? (
+      ) : group.group_type == 'telegram' ? (
         <Image
           source={require('../Assets/Images/telegramLine.png')}
           style={styles.imageStyle}
         />
-      ) : group.socialGroup == 'whatsapp' ? (
+      ) : group.group_type == 'whatsapp' ? (
         <Image
           source={require('../Assets/Images/whatsappLine.png')}
           style={styles.imageStyle}
@@ -47,7 +50,7 @@ const GradientCard = ({group}) => {
         style={{
           fontSize: 15,
           fontFamily: FontStyle.MontBold,
-          color: group.socialGroup == 'snapchat' ? '#205072' : '#fff',
+          color: group.group_type == 'snapchat' ? '#205072' : '#fff',
           textAlign: 'center',
           width: '80%',
         }}>
@@ -56,7 +59,7 @@ const GradientCard = ({group}) => {
       <View
         style={[
           styles.buttonStyle,
-          group.socialGroup == 'snapchat'
+          group.group_type == 'snapchat'
             ? {borderColor: '#205072'}
             : {borderColor: '#fff'},
         ]}>
@@ -64,7 +67,7 @@ const GradientCard = ({group}) => {
           style={{
             fontSize: 15,
             fontFamily: FontStyle.MontBold,
-            color: group.socialGroup == 'snapchat' ? '#205072' : '#fff',
+            color: group.group_type == 'snapchat' ? '#205072' : '#fff',
           }}>
           Mehr sehen
         </Text>

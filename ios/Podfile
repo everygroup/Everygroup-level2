@@ -11,9 +11,9 @@ target 'Everygroup' do
     # to enable hermes on iOS, change `false` to `true` and then install pods
     :hermes_enabled => false
   )
-
+  pod 'Firebase/Core'
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
-
+  pod 'RNCPushNotificationIOS', :path => '../node_modules/@react-native-community/push-notification-ios'
   pod 'lottie-react-native', :path => '../node_modules/lottie-react-native'
 
   target 'EverygroupTests' do

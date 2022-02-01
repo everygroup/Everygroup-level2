@@ -10,12 +10,14 @@ import {HelperText} from 'react-native-paper';
 import Styles from '../UserScreens/Style';
 import Spinner from '../../Common/Spinner';
 import FontStyle from '../../Assets/Fonts/FontStyle';
-import {resetForgotResponse} from '../../../Slice/AuthReducer';
+import {resetForgotResponse, checkInternet} from '../../../Slice/AuthReducer';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+
 const {height} = Dimensions.get('window');
 const SignIn = () => {
   const dispatch = useDispatch();
   const [emailError, setEmailError] = useState(false);
+
   const [emailErrorMessage, setEmailErrorMessage] = useState('');
   const [passwordError, setPasswordError] = useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
@@ -40,7 +42,7 @@ const SignIn = () => {
       dispatch(signInUser({email, password}));
     }
   };
-  const {loading, error, token} = useSelector(state => {
+  const {loading, error, token, internet} = useSelector(state => {
     return state.user;
   });
 
@@ -61,7 +63,7 @@ const SignIn = () => {
     await dispatch(resetForgotResponse());
     navigation.navigate('ForgotPassword');
   };
-
+  console.log(internet, 'sign internet');
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
       <KeyboardAwareScrollView

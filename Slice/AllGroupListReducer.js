@@ -20,7 +20,7 @@ export const getAllGroup = createAsyncThunk(
       const response = await axios({
         method: 'get',
         headers: {Authorization: `Bearer ${token}`},
-        url: `${baseUrl}/group/all`,
+        url: `${baseUrl}/group/all?limit=8`,
       });
 
       return response.data.results;

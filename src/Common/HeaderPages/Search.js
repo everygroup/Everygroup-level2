@@ -24,6 +24,7 @@ import AdultModal from '../AdultModal';
 import AsyncStorageLib from '@react-native-async-storage/async-storage';
 
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import MainErrorModal from '../MainErrorModal';
 
 const Search = ({starPress, filterValue, filterPress, parentCallBack}) => {
   const navigation = useNavigation();
@@ -181,7 +182,8 @@ const Search = ({starPress, filterValue, filterPress, parentCallBack}) => {
 
   return (
     <View style={{flex: 1, top: 20}}>
-      {error.length > 0 ? alert(error) : null}
+      {/* {error.length > 0 ? alert(error) : null} */}
+      <MainErrorModal modalValue={error.length > 0} />
       <InfoModal
         modalValue={modalValue}
         message={infoMessage}
@@ -234,21 +236,6 @@ const Search = ({starPress, filterValue, filterPress, parentCallBack}) => {
               <Icon name="star" size={30} color={'#FFCC00'} solid={liked} />
             </Animated.View>
           </TouchableWithoutFeedback>
-          {/* {searchSuccess == 'success' ? (
-            <TouchableWithoutFeedback onPress={starPress}>
-              <Image
-                source={require('../../Assets/Images/starFill.png')}
-                style={{height: 24, width: 24}}
-              />
-            </TouchableWithoutFeedback>
-          ) : (
-            <TouchableWithoutFeedback onPress={searchSave}>
-              <Image
-                source={require('../../Assets/Images/star.png')}
-                style={{height: 24, width: 24}}
-              />
-            </TouchableWithoutFeedback>
-          )} */}
         </View>
       </View>
       {filterValue ? (

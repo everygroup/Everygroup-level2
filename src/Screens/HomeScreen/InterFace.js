@@ -20,6 +20,8 @@ import MessangerModal from './MessangerModal';
 import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorageLib from '@react-native-async-storage/async-storage';
 import {updateTutorialStatus} from '../../../Slice/AuthReducer';
+import {boostGroup, resetBoostValue} from '../../../Slice/RandomeReducer';
+import Share from 'react-native-share';
 import {
   getRandomeList,
   resetErrorValue,
@@ -31,6 +33,11 @@ function Interface(props) {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [modalValue, setModalValue] = useState(false);
+  const [oneBoost, setOneBoost] = useState(new Animated.Value(0));
+  const [fiveBoost, setFiveBoost] = useState(new Animated.Value(0));
+  const [fiveXValue, setFiveXValue] = useState(false);
+  const [oneXValue, setOneXValue] = useState(false);
+
   const [errorModalValue, setErrorModalValue] = useState(false);
   const [tutorialStatus, setTutorialStatus] = useState('');
   const [systemLang, setSystemLang] = useState('');
@@ -68,12 +75,20 @@ function Interface(props) {
     setSystemLang(await AsyncStorageLib.getItem('systemLang'));
   };
 
-  const {randomeList, error, loading, fromDate} = useSelector(state => {
+  const {
+    randomeList,
+    error,
+    loading,
+    fromDate,
+    boostError,
+    boostLoading,
+    oneXStatus,
+    fiveXStatus,
+  } = useSelector(state => {
     return state.RandomeReducer;
   });
 
   useEffect(() => {
-    console.log(error);
     if (error != '') {
       setTimeout(() => {
         setErrorModalValue(true);
@@ -112,6 +127,75 @@ function Interface(props) {
       updateStatus();
     }
   };
+  const url = 'https://everygroup.com/';
+  const title = 'Awesome';
+  const message = 'Please check this out.';
+
+  const options = {
+    title,
+    url,
+    message,
+  };
+
+  const openShare = async (customOptions = options) => {
+    try {
+      await Share.open(customOptions);
+    } catch (err) {}
+  };
+  const boostGroupValue = (oneX, fiveX, groupId) => {
+    dispatch(boostGroup({oneX, fiveX, groupId}));
+  };
+  // const {} = useSelector(
+  //   state => {
+  //     return state.RandomeReducer;
+  //   },
+  // );
+
+  const fiveXBouncyfunc = () => {
+    setFiveXValue(true);
+    Animated.spring(fiveBoost, {
+      toValue: 2,
+      friction: 3,
+      useNativeDriver: true,
+    }).start(() => {
+      fiveBoost.setValue(0);
+    });
+  };
+
+  const fiveXBouncyView = fiveBoost.interpolate({
+    inputRange: [0, 1, 2],
+    outputRange: [1, 0.7, 1],
+  });
+
+  useEffect(() => {
+    if (fiveXStatus > 0) {
+      fiveXBouncyfunc();
+    }
+  }, [fiveXStatus]);
+
+  useEffect(() => {
+    if (oneXStatus > 0) {
+      oneXBouncyfunc();
+    }
+  }, [oneXStatus]);
+
+  const oneXBouncyfunc = () => {
+    setOneXValue(true);
+    Animated.spring(oneBoost, {
+      toValue: 2,
+      friction: 3,
+      useNativeDriver: true,
+    }).start(() => {
+      oneBoost.setValue(0);
+    });
+  };
+
+  const oneXBouncyView = oneBoost.interpolate({
+    inputRange: [0, 1, 2],
+    outputRange: [1, 0.7, 1],
+  });
+
+  console.log(randomeList, 'list');
 
   return (
     <View style={{flex: 1, backgroundColor: '#dcdcdc'}}>
@@ -280,7 +364,7 @@ function Interface(props) {
                   </View>
                 ) : null}
                 <View style={styles.verticalIcons}>
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={() => openShare()}>
                     <Image
                       source={require('../../Assets/Images/share.png')}
                       style={{
@@ -293,29 +377,62 @@ function Interface(props) {
                     />
                   </TouchableOpacity>
 
-                  <TouchableOpacity>
-                    <Image
-                      source={require('../../Assets/Images/arrowBlank.png')}
-                      style={{
-                        height: 22,
-                        width: 22,
-                        resizeMode: 'contain',
-                        right: 5,
-                        marginVertical: 10,
-                      }}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity>
-                    <Image
-                      source={require('../../Assets/Images/mediaArrow.png')}
-                      style={{
-                        height: 38,
-                        width: 34,
-                        resizeMode: 'contain',
-                        marginVertical: 10,
-                      }}
-                    />
-                  </TouchableOpacity>
+                  {!item.booster_points_1x_status || oneXValue ? (
+                    <Animated.View
+                      style={{transform: [{scale: oneXBouncyView}]}}>
+                      <Image
+                        source={require('../../Assets/Images/arrowYellow.png')}
+                        style={{
+                          height: 22,
+                          width: 22,
+                          resizeMode: 'contain',
+                          right: 5,
+                          marginVertical: 10,
+                        }}
+                      />
+                    </Animated.View>
+                  ) : (
+                    <TouchableWithoutFeedback
+                      onPress={() => boostGroupValue(1, 0, item.id)}>
+                      <Image
+                        source={require('../../Assets/Images/arrowBlank.png')}
+                        style={{
+                          height: 22,
+                          width: 22,
+                          resizeMode: 'contain',
+                          right: 5,
+                          marginVertical: 10,
+                        }}
+                      />
+                    </TouchableWithoutFeedback>
+                  )}
+                  {!item.booster_points_5x_status || fiveXValue ? (
+                    <Animated.View
+                      style={{transform: [{scale: fiveXBouncyView}]}}>
+                      <Image
+                        source={require('../../Assets/Images/arrowOrangeBooster.png')}
+                        style={{
+                          height: 38,
+                          width: 34,
+                          resizeMode: 'contain',
+                          marginVertical: 10,
+                        }}
+                      />
+                    </Animated.View>
+                  ) : (
+                    <TouchableWithoutFeedback
+                      onPress={() => boostGroupValue(0, 5, item.id)}>
+                      <Image
+                        source={require('../../Assets/Images/mediaArrow.png')}
+                        style={{
+                          height: 38,
+                          width: 34,
+                          resizeMode: 'contain',
+                          marginVertical: 10,
+                        }}
+                      />
+                    </TouchableWithoutFeedback>
+                  )}
                   <TouchableOpacity>
                     <Image
                       source={require('../../Assets/Images/setting.png')}

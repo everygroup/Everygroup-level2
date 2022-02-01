@@ -83,7 +83,7 @@ const Dashboard = () => {
     }
   }, [createSuccess]);
   //////////////////////////////
-
+  console.log(groupData, 'groupData');
   return (
     <View
       style={{
@@ -139,7 +139,7 @@ const Dashboard = () => {
                   return {length: 131, offset: 131 * index, index};
                 }}
                 horizontal={true}
-                data={trendingGroup}
+                data={groupData}
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={{
                   backgroundColor: '#fff',

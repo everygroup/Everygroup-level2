@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorageLib from '@react-native-async-storage/async-storage';
 
 const baseUrl = 'http://203.190.153.22:1639/api/v1';
 
@@ -19,7 +19,7 @@ const initialState = {
 export const getUserGroup = createAsyncThunk(
   'getUserGroup',
   async (data, {rejectWithValue}) => {
-    const token = await AsyncStorage.getItem('token');
+    const token = await AsyncStorageLib.getItem('token');
 
     try {
       const response = await axios({
@@ -37,7 +37,7 @@ export const getUserGroup = createAsyncThunk(
 export const deleteGroup = createAsyncThunk(
   'deleteGroup',
   async (data, {rejectWithValue}) => {
-    const token = await AsyncStorage.getItem('token');
+    const token = await AsyncStorageLib.getItem('token');
     try {
       const response = await axios({
         method: 'delete',
@@ -54,7 +54,7 @@ export const deleteGroup = createAsyncThunk(
 export const updateGroup = createAsyncThunk(
   'updateGroup',
   async (data, {rejectWithValue}) => {
-    const token = await AsyncStorage.getItem('token');
+    const token = await AsyncStorageLib.getItem('token');
     try {
       const response = await axios({
         method: 'patch',
@@ -82,7 +82,7 @@ export const updateGroup = createAsyncThunk(
 export const boostOwnGroup = createAsyncThunk(
   'boostOwnGroup',
   async (data, {rejectWithValue}) => {
-    const token = await AsyncStorage.getItem('token');
+    const token = await AsyncStorageLib.getItem('token');
     console.log(data, 'own data');
     try {
       const response = await axios({
@@ -101,7 +101,7 @@ export const boostOwnGroup = createAsyncThunk(
 export const applyCoupon = createAsyncThunk(
   'applyCoupon',
   async (data, {rejectWithValue}) => {
-    const token = await AsyncStorage.getItem('token');
+    const token = await AsyncStorageLib.getItem('token');
     console.log(data, 'coupon data');
     try {
       const response = await axios({

@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1015187978976",
+    "project_id": "everygroup-c997e",
+    "storage_bucket": "everygroup-c997e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1015187978976:android:5c09dcaa723d9bd9daae85",
+        "android_client_info": {
+          "package_name": "com.everygroup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1015187978976-0v2fcs9k7t82lu7kqn3b9u5v3gvdu83a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcFR-q0E2fAD_ZGEGG85CpEKqiZ9Q9zz8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1015187978976-0v2fcs9k7t82lu7kqn3b9u5v3gvdu83a.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1015187978976-57vp3fdq556ajrsq86r7759nikt0a8ma.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.Everygroup"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

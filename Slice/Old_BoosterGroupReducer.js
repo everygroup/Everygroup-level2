@@ -28,9 +28,10 @@ export const boostGroup = createAsyncThunk(
           group: data.groupId,
         },
       });
-
+      console.log(response, 'resposne');
       return data;
     } catch (err) {
+      console.log(err.response, 'erroro boost');
       return rejectWithValue(err.response.data);
     }
   },

@@ -4,12 +4,13 @@ import Button from '../../Common/Button';
 import Input from '../../Common/Input';
 import {useNavigation} from '@react-navigation/native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
-import {forgotPassword} from '../../../Slice/AuthReducer';
+import {checkInternet, forgotPassword} from '../../../Slice/AuthReducer';
 import {useDispatch, useSelector} from 'react-redux';
 import {HelperText} from 'react-native-paper';
 import Styles from '../UserScreens/Style';
 import Spinner from '../../Common/Spinner';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+
 const {height} = Dimensions.get('window');
 const ForgotPassword = () => {
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ const ForgotPassword = () => {
   const [emailErrorMessage, setEmailErrorMessage] = useState('');
   const navigation = useNavigation();
 
-  const {loading, error, forgotResponse} = useSelector(state => {
+  const {loading, error, forgotResponse, internet} = useSelector(state => {
     return state.user;
   });
 

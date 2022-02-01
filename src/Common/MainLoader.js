@@ -13,7 +13,7 @@ const MainLoader = ({heightValue, Spinnerheight, Spinnerwidth}) => {
       }}>
       <Image
         source={require('../Assets/animation/350.gif')}
-        style={{height: 100, width: 100, resizeMon: 'contain'}}
+        style={{height: 50, width: 50, resizeMon: 'contain'}}
       />
     </View>
   );
