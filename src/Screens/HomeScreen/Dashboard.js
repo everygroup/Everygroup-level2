@@ -19,7 +19,10 @@ import {useNavigation} from '@react-navigation/native';
 import {getCategory} from '../../../Slice/CategoryReducer';
 import {useSelector, useDispatch} from 'react-redux';
 import AsyncStorageLib from '@react-native-async-storage/async-storage';
-import {getAllGroup} from '../../../Slice/AllGroupListReducer';
+import {
+  getAllGroup,
+  getTrendingGroup,
+} from '../../../Slice/AllGroupListReducer';
 import MainLoader from '../../Common/MainLoader';
 
 const {width, height} = Dimensions.get('screen');
@@ -27,27 +30,10 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const [trendingGroup, setTrengingGroup] = useState([
-    {
-      description: 'Die Masterchill Gruppe zu plappern',
-      socialGroup: 'snapchat',
-    },
-    {
-      description: 'Die Masterchill Gruppe zu plappern',
-      socialGroup: 'whatsapp',
-    },
-    {
-      description: 'Die Masterchill Gruppe zu plappern',
-      socialGroup: 'line',
-    },
-    {
-      description: 'Die Masterchill Gruppe zu plappern',
-      socialGroup: 'telegram',
-    },
-  ]);
+  const [trendingGroup, setTrendingGroup] = useState([]);
 
   const handleLoadMore = () => {
-    setTrengingGroup(prevValue => [...prevValue, ...trendingGroup]);
+    setTrendingGroup(prevValue => [...prevValue, ...trendingData]);
   };
 
   const la =
@@ -70,7 +56,7 @@ const Dashboard = () => {
   }, []);
 
   // Redux code
-  const {groupData, error, loading} = useSelector(state => {
+  const {groupData, trendingData, error, loading} = useSelector(state => {
     return state.AllGroupListReducer;
   });
 
@@ -78,12 +64,16 @@ const Dashboard = () => {
     return state.createGroup;
   });
   useEffect(() => {
+    dispatch(getTrendingGroup());
     if (createSuccess != '') {
       dispatch(getAllGroup());
     }
   }, [createSuccess]);
+  useEffect(() => {
+    setTrendingGroup(trendingData);
+  }, [trendingData]);
   //////////////////////////////
-  console.log(groupData, 'groupData');
+  console.log(trendingData, 'groupData');
   return (
     <View
       style={{
@@ -139,7 +129,7 @@ const Dashboard = () => {
                   return {length: 131, offset: 131 * index, index};
                 }}
                 horizontal={true}
-                data={groupData}
+                data={trendingGroup}
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={{
                   backgroundColor: '#fff',

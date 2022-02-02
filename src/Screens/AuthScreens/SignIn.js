@@ -94,6 +94,7 @@ const SignIn = () => {
             onChangeText={text => {
               setEmail(text), setEmailError(false);
             }}
+            height={50}
           />
           <View style={Styles.errorContainer}>
             {passwordError == true ? (
@@ -115,6 +116,7 @@ const SignIn = () => {
             onChangeText={text => {
               setPassword(text), setPasswordError(false);
             }}
+            height={50}
           />
         </View>
         {loading ? (

@@ -79,7 +79,7 @@ export const boostGroup = createAsyncThunk(
           group: data.groupId,
         },
       });
-
+      console.log(response, 'boost response');
       return data;
     } catch (err) {
       console.log(err.response, 'erroro boost');
@@ -116,13 +116,21 @@ export const RandomeReducer = createSlice({
     },
 
     [boostGroup.fulfilled]: (state, action) => {
+      console.log(action, 'action');
       state.boostLoading = false;
       state.oneXStatus = action.payload.oneX;
       state.fiveXStatus = action.payload.fiveX;
 
-      // const index = state.randomeList.findIndex(el => el.id === action.groupId);
-
-      // state.randomeList[index].push({booster_points_1x_status: false});
+      state.randomeList = state.randomeList.map(el => {
+        if (el.id === action.payload.groupId) {
+          if (action.payload.oneX > 0) {
+            el.booster_points_1x_status = false;
+          } else if (action.payload.fiveX > 0) {
+            el.booster_points_5x_status = false;
+          }
+        }
+        return el;
+      });
     },
     [boostGroup.pending]: (state, action) => {
       state.boostloading = true;

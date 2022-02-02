@@ -257,7 +257,7 @@ const AddGroup = () => {
         contentContainerStyle={{
           alignItems: 'center',
           alignSelf: 'center',
-          paddingBottom: '20%',
+          paddingBottom: 100,
         }}>
         <Text
           style={{

@@ -1,9 +1,19 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet, FlatList} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import FontStyle from '../Assets/Fonts/FontStyle';
+
+import {useNavigation} from '@react-navigation/native';
+
 const GradientCard = ({group}) => {
-  console.log(group);
+  const navigation = useNavigation();
   return (
     <LinearGradient
       colors={
@@ -16,37 +26,30 @@ const GradientCard = ({group}) => {
           : group.group_type == 'telegram'
           ? ['#058acd', '#9cdcfc']
           : group.group_type == 'viber'
-          ? ['#058acd', '#9cdcfc']
-          : ['#08C719', '#adebad']
+          ? ['#665CAC', '#b0aad4']
+          : ['#7289DA', '#aebbea']
       }
       style={[styles.containerStyle]}>
-      {group.group_type == 'snapchat' ? (
-        <Image
-          source={require('../Assets/Images/snapchatLine.png')}
-          style={styles.imageStyle}
-        />
-      ) : group.group_type == 'line' ? (
-        <Image
-          source={require('../Assets/Images/lineLine.png')}
-          style={styles.imageStyle}
-        />
-      ) : group.group_type == 'telegram' ? (
-        <Image
-          source={require('../Assets/Images/telegramLine.png')}
-          style={styles.imageStyle}
-        />
-      ) : group.group_type == 'whatsapp' ? (
-        <Image
-          source={require('../Assets/Images/whatsappLine.png')}
-          style={styles.imageStyle}
-        />
-      ) : (
-        <Image
-          source={require('../Assets/Images/orangeLogo.png')}
-          style={styles.imageStyle}
-        />
-      )}
+      <Image
+        source={
+          group.group_type == 'whatsapp'
+            ? require('../Assets/Images/whatsappLine.png')
+            : group.group_type == 'snapchat'
+            ? require('../Assets/Images/snapchatLine.png')
+            : group.group_type == 'viber'
+            ? require('../Assets/Images/viberLine.png')
+            : group.group_type == 'discord'
+            ? require('../Assets/Images/discordLine.png')
+            : group.group_type == 'telegram'
+            ? require('../Assets/Images/telegramLine.png')
+            : require('../Assets/Images/lineLine.png')
+        }
+        style={styles.imageStyle}
+      />
+
       <Text
+        ellipsizeMode={'tail'}
+        numberOfLines={4}
         style={{
           fontSize: 15,
           fontFamily: FontStyle.MontBold,
@@ -56,23 +59,27 @@ const GradientCard = ({group}) => {
         }}>
         {group.description}
       </Text>
-      <View
-        style={[
-          styles.buttonStyle,
-          group.group_type == 'snapchat'
-            ? {borderColor: '#205072'}
-            : {borderColor: '#fff'},
-        ]}>
-        <Text
-          style={{
-            fontSize: 15,
-            fontFamily: FontStyle.MontBold,
-            color: group.group_type == 'snapchat' ? '#205072' : '#fff',
-          }}>
-          Mehr sehen
-        </Text>
-      </View>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('GroupDetail', {groupId: group.id})}>
+        <View
+          style={[
+            styles.buttonStyle,
+            group.group_type == 'snapchat'
+              ? {borderColor: '#205072'}
+              : {borderColor: '#fff'},
+          ]}>
+          <Text
+            style={{
+              fontSize: 15,
+              fontFamily: FontStyle.MontBold,
+              color: group.group_type == 'snapchat' ? '#205072' : '#fff',
+            }}>
+            Mehr sehen
+          </Text>
+        </View>
+      </TouchableOpacity>
     </LinearGradient>
+
     // </View>
   );
 };

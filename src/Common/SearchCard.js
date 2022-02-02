@@ -7,6 +7,7 @@ import {
   FlatList,
   Animated,
   Easing,
+  Platform,
 } from 'react-native';
 import FontStyle from '../Assets/Fonts/FontStyle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -126,7 +127,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#205072',
     fontFamily: FontStyle.MontBold,
-    textDecorationLine: 1,
+    textDecorationLine: 'underline',
+    textDecorationStyle: 'solid',
+    textDecorationColor: '#205072',
   },
   descriptionText: {
     fontSize: 17,

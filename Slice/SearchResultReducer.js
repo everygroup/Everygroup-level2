@@ -14,12 +14,7 @@ export const getSearchResult = createAsyncThunk(
   'getResult',
   async (data, {rejectWithValue}) => {
     const token = await AsyncStorageLib.getItem('token');
-    console.log({
-      query: data.query,
-      group_type: data.selectedMessenger,
-      group_category: data.shortCategory,
-      group_language: data.shortLanguage,
-    });
+
     try {
       const response = await axios({
         method: 'post',

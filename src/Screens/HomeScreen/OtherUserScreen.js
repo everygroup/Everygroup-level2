@@ -17,22 +17,13 @@ import {FlatList} from 'react-native-gesture-handler';
 import {useDispatch, useSelector} from 'react-redux';
 import {favouriteUser} from '../../../Slice/FavouriteUserReducer';
 import {getOtherUserGroup} from '../../../Slice/OtherUserGroupReducer';
-import {updateOtherUserFavStatus} from '../../../Slice/GroupDetailReducer';
+
 import MainLoader from '../../Common/MainLoader';
 const OtherUserScreen = ({route}) => {
   const {otherUserId, otherUserName, userStatus} = route.params;
   const dispatch = useDispatch();
   const [bouncy, setBouncy] = useState(new Animated.Value(0));
   const [starValue, setStarValue] = useState();
-  const [groupArray] = useState([
-    {
-      groupName: 'Nordsee Gruppe',
-      category: ['Dienstleistungen', 'Interessen', 'Unterhaltung'],
-      hashtagData: ['#test', '#test', '#test', '#test', '#test'],
-      description: 'Hey, wir sind eine nette Gruppe',
-      socialGroup: 'snapchat',
-    },
-  ]);
 
   useEffect(() => {
     setStarValue(userStatus);
@@ -45,19 +36,24 @@ const OtherUserScreen = ({route}) => {
   };
 
   const {loading, error, value} = useSelector(state => {
+    console.log(state.FavouriteUserReducer, 'fav reducer');
     return state.FavouriteUserReducer;
   });
 
-  const {otherUserGroupList, dataLoading} = useSelector(state => {
+  const {otherUserGroupList, loader} = useSelector(state => {
+    console.log(state.OtherUserGroupReducer, 'rohit reducer');
     return state.OtherUserGroupReducer;
   });
 
   useEffect(() => {
-    dispatch(getOtherUserGroup(otherUserId));
     if (value == 'success') {
       triggerBouncy();
     }
   }, [value]);
+
+  useEffect(() => {
+    dispatch(getOtherUserGroup(otherUserId));
+  }, []);
 
   const triggerBouncy = () => {
     setStarValue(true);
@@ -74,11 +70,12 @@ const OtherUserScreen = ({route}) => {
     inputRange: [0, 1, 2],
     outputRange: [1, 0.8, 1],
   });
+  console.log(loader, 'loading');
   return (
     <View style={{paddingTop: '21%', height: '100%', backgroundColor: '#fff'}}>
       <Header />
-      {/* {error ? alert(error) : null} */}
-      {dataLoading ? (
+
+      {loader ? (
         <MainLoader heightValue={1.1} />
       ) : (
         <>

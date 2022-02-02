@@ -9,6 +9,8 @@ const initialState = {
   error: '',
   loading: false,
   similarGroupList: [],
+  trendingData: [],
+  trendingError: '',
 };
 
 export const getAllGroup = createAsyncThunk(
@@ -25,6 +27,27 @@ export const getAllGroup = createAsyncThunk(
 
       return response.data.results;
     } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  },
+);
+export const getTrendingGroup = createAsyncThunk(
+  'getTrendingGroup',
+  async (data, {rejectWithValue}) => {
+    const token = await AsyncStorageLib.getItem('token');
+
+    try {
+      const response = await axios({
+        method: 'get',
+        headers: {Authorization: `Bearer ${token}`},
+        url: `${baseUrl}/group/all`,
+      });
+      const array = response.data.results.filter(el => {
+        return el.trend_status !== false;
+      });
+      return array;
+    } catch (err) {
+      console.log(err);
       return rejectWithValue(err.response.data);
     }
   },
@@ -62,15 +85,24 @@ export const AllGroupListReducer = createSlice({
     [getAllGroup.pending]: (state, action) => {
       state.loading = true;
       state.error = '';
-      state.groupData = [];
     },
     [getAllGroup.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
-      state.groupData = [];
     },
     [getSimilarGroupList.fulfilled]: (state, action) => {
       state.similarGroupList = action.payload;
+    },
+    [getTrendingGroup.fulfilled]: (state, action) => {
+      console.log(action.payload, 'action');
+      // state.loading = false;
+      state.trendingData = action.payload;
+    },
+    [getTrendingGroup.pending]: (state, action) => {
+      state.trendingError = '';
+    },
+    [getTrendingGroup.rejected]: (state, action) => {
+      state.trendingError = action.payload;
     },
   },
 });

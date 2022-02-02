@@ -7,7 +7,7 @@ const baseUrl = 'http://203.190.153.22:1639/api/v1';
 const initialState = {
   otherUserGroupList: [],
   error: '',
-  dataLoading: false,
+  loader: false,
 };
 
 export const getOtherUserGroup = createAsyncThunk(
@@ -34,17 +34,18 @@ export const OtherUserGroupReducer = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
-    [getOtherUserGroup.fulfilled]: (state, action) => {
-      state.otherUserGroupList = action.payload;
-      state.dataLoading = false;
-    },
     [getOtherUserGroup.pending]: (state, action) => {
-      state.dataLoading = true;
+      state.loader = true;
       state.error = '';
     },
+    [getOtherUserGroup.fulfilled]: (state, action) => {
+      state.otherUserGroupList = action.payload;
+      state.loader = false;
+    },
+
     [getOtherUserGroup.rejected]: (state, action) => {
       state.error = action.payload;
-      state.dataLoading = false;
+      state.loader = false;
     },
   },
 });

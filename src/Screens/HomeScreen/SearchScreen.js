@@ -20,7 +20,6 @@ import AsyncStorageLib from '@react-native-async-storage/async-storage';
 
 const {width, height} = Dimensions.get('screen');
 const SearchScreen = () => {
-  const [groupArray] = useState([]);
   const [selectionOption, setSelectionOption] = useState('');
 
   const {searchResult, error, loading} = useSelector(state => {

@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   StyleSheet,
   Dimensions,
+  Platform,
 } from 'react-native';
 import Button from '../../Common/Button';
 import {useNavigation} from '@react-navigation/native';
@@ -41,40 +42,43 @@ const SplashScreen = () => {
     <View style={{flex: 1, alignItems: 'center', backgroundColor: '#fff'}}>
       <SafeAreaView />
       <View style={{height: height / 1.6}}>
-        {/* <LottieView
-          autoPlay
-          style={{height: height * 0.6}}
-          source={require('../../Assets/animation/SplashAnimation.json')}
-        /> */}
-        {/* <SwiperFlatList
-          autoplay
-          autoplayDelay={2}
-          autoplayLoop
-          index={0}
-          showPagination
-          paginationActiveColor="#1F4D6E"
-          paginationDefaultColor="lightgrey"
-          data={images}
-          renderItem={({item}) => (
-            <View style={{alignItems: 'center'}}>
-              <Image
-                source={item.img}
-                style={{width: width, height: height / 2}}
-                resizeMode="contain"
-              />
-              <Text
-                style={{
-                  width: '70%',
-                  textAlign: 'center',
-                  color: '#205072',
-                  fontSize: 18,
-                  fontFamily: FontStyle.MontExtBold,
-                }}>
-                {item.description}
-              </Text>
-            </View>
-          )}
-        /> */}
+        {Platform.OS == 'ios' ? (
+          <LottieView
+            autoPlay
+            style={{height: height * 0.6}}
+            source={require('../../Assets/animation/SplashAnimation.json')}
+          />
+        ) : (
+          <SwiperFlatList
+            autoplay
+            autoplayDelay={2}
+            autoplayLoop
+            index={0}
+            showPagination
+            paginationActiveColor="#1F4D6E"
+            paginationDefaultColor="lightgrey"
+            data={images}
+            renderItem={({item}) => (
+              <View style={{alignItems: 'center'}}>
+                <Image
+                  source={item.img}
+                  style={{width: width, height: height / 2}}
+                  resizeMode="contain"
+                />
+                <Text
+                  style={{
+                    width: '70%',
+                    textAlign: 'center',
+                    color: '#205072',
+                    fontSize: 18,
+                    fontFamily: FontStyle.MontExtBold,
+                  }}>
+                  {item.description}
+                </Text>
+              </View>
+            )}
+          />
+        )}
       </View>
       <Button
         onPress={() => navigation.navigate('SignIn')}

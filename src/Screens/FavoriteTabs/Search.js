@@ -25,6 +25,7 @@ const Search = () => {
         data={getAllSearch}
         listKey={getAllSearch.id}
         renderItem={({item: data}) => {
+          console.log(data, 'dat');
           return (
             <SearchCard
               data={data}

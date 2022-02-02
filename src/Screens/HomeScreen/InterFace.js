@@ -255,7 +255,14 @@ function Interface(props) {
                   </View>
                   <View style={[styles.subHeader]}>
                     <TouchableOpacity
-                      onPress={() => navigation.navigate('OtherUserScreen')}
+                      // onPress={() => navigation.navigate('OtherUserScreen')}
+                      onPress={() =>
+                        navigation.navigate('OtherUserScreen', {
+                          otherUserId: item.user,
+                          otherUserName: item.owner_name,
+                          userStatus: item.is_group_owner_favourite,
+                        })
+                      }
                       style={{
                         backgroundColor: '#FF6600',
                         padding: 10,
@@ -377,7 +384,7 @@ function Interface(props) {
                     />
                   </TouchableOpacity>
 
-                  {!item.booster_points_1x_status || oneXValue ? (
+                  {!item.booster_points_1x_status ? (
                     <Animated.View
                       style={{transform: [{scale: oneXBouncyView}]}}>
                       <Image
@@ -406,7 +413,7 @@ function Interface(props) {
                       />
                     </TouchableWithoutFeedback>
                   )}
-                  {!item.booster_points_5x_status || fiveXValue ? (
+                  {!item.booster_points_5x_status ? (
                     <Animated.View
                       style={{transform: [{scale: fiveXBouncyView}]}}>
                       <Image

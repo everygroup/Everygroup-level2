@@ -111,6 +111,7 @@ const SignUp = () => {
               setEmail(text);
               setEmailError(false);
             }}
+            height={50}
           />
 
           <View style={Styles.errorContainer}>
@@ -129,6 +130,7 @@ const SignUp = () => {
               setUserName(text);
               setUserError(false);
             }}
+            height={50}
           />
 
           <View style={Styles.errorContainer}>
@@ -151,6 +153,7 @@ const SignUp = () => {
               setPassword(text);
               setPasswordError(false);
             }}
+            height={50}
           />
 
           <View style={{width: '78%', flexDirection: 'row'}}>

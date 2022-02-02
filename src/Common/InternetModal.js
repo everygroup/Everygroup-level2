@@ -10,14 +10,14 @@ const InternetModal = ({modalValue, closeModal, internetStatus}) => {
         isVisible={modalValue}
         onBackButtonPress={closeModal}
         onBackdropPress={closeModal}
-        animationInTiming={0}
-        animationOutTiming={0}
+        animationIn={'fadeIn'}
+        animationOut={'fadeOut'}
         style={{
           alignItems: 'center',
           flex: 1,
           margin: 0,
           paddingTop: '10%',
-          backgroundColor: 'transparent',
+          backgroundColor: 'rgba(52, 52, 52, 0.1)',
           opacity: 2,
           justifyContent: 'flex-start',
         }}>

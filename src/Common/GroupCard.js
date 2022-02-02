@@ -71,7 +71,7 @@ const GroupCard = ({
   useEffect(() => {
     setTime(group.remaining_booster_time, 'hh:mm');
   }, []);
-  // console.log(time);
+  console.log(group);
   return (
     <View>
       <InfoModal
@@ -334,7 +334,7 @@ const GroupCard = ({
                 fontSize: 9,
                 color: group.is_link_expire ? '#C4C6C8' : '#205072',
               }}>
-              {group.languages[0].language}
+              {group.languages ? group.languages[0].language : null}
             </Text>
           </View>
         </View>

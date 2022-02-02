@@ -153,11 +153,11 @@ const App = () => {
 
   return (
     <Provider store={store}>
+      <InternetModal
+        modalValue={internetStatus}
+        internetStatus={networkStatus}
+      />
       <View style={{flex: 1}}>
-        <InternetModal
-          modalValue={internetStatus}
-          internetStatus={networkStatus}
-        />
         <RootNavigator />
       </View>
     </Provider>
