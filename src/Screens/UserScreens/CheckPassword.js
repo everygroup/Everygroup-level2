@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  Platform,
+  Dimensions,
+} from 'react-native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import Styles from '../UserScreens/Style';
 import {useNavigation} from '@react-navigation/core';
@@ -9,14 +16,16 @@ import {HelperText} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import {checkPassword} from '../../../Slice/CheckReducer';
 import Spinner from '../../Common/Spinner';
-
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+const {height} = Dimensions.get('window');
 const CheckPassword = ({route}) => {
   const dispatch = useDispatch();
   const {description, toNavigate} = route.params;
 
   const navigation = useNavigation();
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(true);
   const [passwordError, setPasswordError] = useState(false);
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [passwordText, setPasswordText] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -26,7 +35,6 @@ const CheckPassword = ({route}) => {
       setErrorMessage('Passwort wird benötigt');
     } else {
       dispatch(checkPassword({passwordText}));
-      // navigation.navigate(toNavigate);
     }
   };
 
@@ -35,25 +43,32 @@ const CheckPassword = ({route}) => {
   });
 
   useEffect(() => {
-    passwordCheck();
+    if (value == 'success') {
+      setPasswordText('');
+      passwordCheck();
+    }
   }, [value]);
 
   useEffect(() => {
-    setPasswordError(true);
-    setErrorMessage(error.toString());
+    if (error != '') {
+      setPasswordError(true);
+      setErrorMessage(error.toString());
+    }
   }, [error]);
 
   const passwordCheck = async () => {
-    if (value == 'success') {
-      navigation.navigate(toNavigate);
-    }
+    navigation.navigate(toNavigate);
+  };
+
+  const iconPress = () => {
+    setShowPassword(!showPassword), setSecureTextEntry(!secureTextEntry);
   };
 
   return (
     <View
       style={{
-        paddingTop: '25%',
-        height: '100%',
+        paddingTop: Platform.OS == 'ios' ? '25%' : '15%',
+        height: height,
         backgroundColor: '#fff',
         alignItems: 'center',
       }}>
@@ -73,58 +88,72 @@ const CheckPassword = ({route}) => {
           }}
         />
       </TouchableOpacity>
-      <Text
-        style={{
-          fontFamily: FontStyle.MontSemiBold,
-          fontSize: 20,
-          color: '#205072',
-          width: '75%',
-          textAlign: 'center',
-          marginVertical: '10%',
-        }}>
-        {description}
-      </Text>
-      <View style={{width: '100%', alignItems: 'center'}}>
-        <View style={Styles.errorContainer}>
-          {passwordError == true ? (
-            <HelperText
-              style={[Styles.helperText, {paddingLeft: '10%'}]}
-              type="error">
-              {errorMessage}
-            </HelperText>
-          ) : null}
-        </View>
-        <Input
-          placeholder="Passwort"
-          placeholderTextColor="#205072"
-          iconName={showPassword ? 'eye' : 'eye-with-line'}
-          iconPress={() => setShowPassword(!showPassword)}
-          secureTextEntry={!showPassword}
-          onChangeText={text => {
-            setPasswordText(text);
-            setPasswordError(false);
-          }}
-        />
-      </View>
-      <View
-        style={{marginVertical: '10%', width: '100%', alignItems: 'center'}}>
-        {loading ? (
-          <Spinner />
-        ) : (
-          <Button onPress={submit} buttonText="Weiter" />
-        )}
-
+      <KeyboardAwareScrollView
+        style={{width: '100%'}}
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{alignItems: 'center'}}>
         <Text
-          onPress={() => navigation.navigate('ForgotPassword')}
           style={{
-            fontSize: 16,
-            color: '#0A49E0',
-            marginVertical: '2.5%',
             fontFamily: FontStyle.MontSemiBold,
+            fontSize: 20,
+            color: '#205072',
+            width: '85%',
+            textAlign: 'center',
+            marginVertical: '10%',
           }}>
-          Passwort vergessen
+          {description}
         </Text>
-      </View>
+        <View style={{width: '100%', alignItems: 'center'}}>
+          <View style={Styles.errorContainer}>
+            {passwordError == true ? (
+              <HelperText
+                style={[Styles.helperText, {paddingLeft: '10%'}]}
+                type="error">
+                {errorMessage}
+              </HelperText>
+            ) : null}
+          </View>
+          <Input
+            placeholder="Passwort"
+            placeholderTextColor="#205072"
+            iconName={showPassword ? 'eye' : 'eye-with-line'}
+            iconPress={iconPress}
+            showPassword={showPassword}
+            onChangeText={text => {
+              setPasswordText(text);
+              setPasswordError(false);
+            }}
+            height={50}
+            icon={'available'}
+            secureTextEntry={secureTextEntry}
+            imageSource={require('../../Assets/Images/closeEye.png')}
+            imageSource1={require('../../Assets/Images/openEye.png')}
+            borderColor={passwordError ? '#FF3434' : null}
+            value={passwordText}
+          />
+        </View>
+        <View
+          style={{marginVertical: '10%', width: '100%', alignItems: 'center'}}>
+          {loading ? (
+            <Spinner />
+          ) : (
+            <Button onPress={submit} buttonText="Weiter" />
+          )}
+
+          <Text
+            onPress={() => {
+              setPasswordError(false), navigation.navigate('ForgotPassword');
+            }}
+            style={{
+              fontSize: 16,
+              color: '#0A49E0',
+              marginVertical: '2.5%',
+              fontFamily: FontStyle.MontSemiBold,
+            }}>
+            Passwort vergessen
+          </Text>
+        </View>
+      </KeyboardAwareScrollView>
       <View
         style={{
           justifyContent: 'flex-end',

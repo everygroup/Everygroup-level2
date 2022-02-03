@@ -116,7 +116,6 @@ export const RandomeReducer = createSlice({
     },
 
     [boostGroup.fulfilled]: (state, action) => {
-      console.log(action, 'action');
       state.boostLoading = false;
       state.oneXStatus = action.payload.oneX;
       state.fiveXStatus = action.payload.fiveX;

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import {View, Text, TouchableOpacity, Image, Platform} from 'react-native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import {useNavigation} from '@react-navigation/core';
 import Input from '../../Common/Input';
@@ -8,6 +8,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {changeProfile} from '../../../Slice/ProfileReducer';
 import {HelperText} from 'react-native-paper';
 import Styles from './Style';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const UpdatePassword = () => {
   const dispatch = useDispatch();
@@ -59,7 +60,7 @@ const UpdatePassword = () => {
   return (
     <View
       style={{
-        paddingTop: '25%',
+        paddingTop: Platform.OS == 'ios' ? '25%' : '15%',
         height: '100%',
         backgroundColor: '#fff',
         alignItems: 'center',
@@ -80,69 +81,78 @@ const UpdatePassword = () => {
           }}
         />
       </TouchableOpacity>
-      <Text
-        style={{
-          fontFamily: FontStyle.MontSemiBold,
-          fontSize: 20,
-          color: '#205072',
-          width: '75%',
-          textAlign: 'center',
-          marginVertical: '5%',
-        }}>
-        Gib dein neues Passwort ein
-      </Text>
-      <View style={Styles.errorContainer}>
-        {passwordError == true ? (
-          <HelperText
-            style={[Styles.helperText, {paddingLeft: '10%'}]}
-            type="error">
-            {passwordErrorMessage}
-          </HelperText>
-        ) : null}
-      </View>
-      <Input
-        placeholder="Neues Passwort"
-        placeholderTextColor="#205072"
-        iconName={showPassword ? 'eye' : 'eye-with-line'}
-        iconPress={() => setShowPassword(!showPassword)}
-        secureTextEntry={!showPassword}
-        onChangeText={text => {
-          setPassword(text), setPasswordError(false);
-        }}
-      />
-      <View style={Styles.errorContainer}>
-        {confirmPasswordError == true ? (
-          <HelperText
-            style={[Styles.helperText, {paddingLeft: '10%'}]}
-            type="error">
-            {confirmPasswordErrorMessage}
-          </HelperText>
-        ) : null}
-      </View>
-      <Input
-        placeholder="Passwort wiederholen"
-        placeholderTextColor="#205072"
-        iconName={showConfirmPassword ? 'eye' : 'eye-with-line'}
-        iconPress={() => setShowConfirmPassword(!showConfirmPassword)}
-        secureTextEntry={!showConfirmPassword}
-        onChangeText={text => {
-          setConfirmPassword(text), setConfirmPasswordError(false);
-        }}
-      />
-      <View style={{marginVertical: '5%', width: '100%', alignItems: 'center'}}>
-        <Button onPress={submit} buttonText="passwort ändern" />
-      </View>
-      {successMessage != '' ? (
+      <KeyboardAwareScrollView
+        showsVerticalScrollIndicator={false}
+        style={{width: '100%'}}
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{alignItems: 'center'}}>
         <Text
           style={{
-            alignSelf: 'center',
-            fontFamily: FontStyle.poppinsMedium,
-            fontSize: 11,
-            color: '#06BA63',
+            fontFamily: FontStyle.MontSemiBold,
+            fontSize: 20,
+            color: '#205072',
+            width: '75%',
+            textAlign: 'center',
+            marginVertical: '5%',
           }}>
-          {successMessage}
+          Gib dein neues Passwort ein
         </Text>
-      ) : null}
+        <View style={Styles.errorContainer}>
+          {passwordError == true ? (
+            <HelperText
+              style={[Styles.helperText, {paddingLeft: '10%'}]}
+              type="error">
+              {passwordErrorMessage}
+            </HelperText>
+          ) : null}
+        </View>
+        <Input
+          placeholder="Neues Passwort"
+          placeholderTextColor="#205072"
+          iconName={showPassword ? 'eye' : 'eye-with-line'}
+          iconPress={() => setShowPassword(!showPassword)}
+          secureTextEntry={!showPassword}
+          onChangeText={text => {
+            setPassword(text), setPasswordError(false);
+          }}
+          height={50}
+        />
+        <View style={Styles.errorContainer}>
+          {confirmPasswordError == true ? (
+            <HelperText
+              style={[Styles.helperText, {paddingLeft: '10%'}]}
+              type="error">
+              {confirmPasswordErrorMessage}
+            </HelperText>
+          ) : null}
+        </View>
+        <Input
+          placeholder="Passwort wiederholen"
+          placeholderTextColor="#205072"
+          iconName={showConfirmPassword ? 'eye' : 'eye-with-line'}
+          iconPress={() => setShowConfirmPassword(!showConfirmPassword)}
+          secureTextEntry={!showConfirmPassword}
+          onChangeText={text => {
+            setConfirmPassword(text), setConfirmPasswordError(false);
+          }}
+          height={50}
+        />
+        <View
+          style={{marginVertical: '5%', width: '100%', alignItems: 'center'}}>
+          <Button onPress={submit} buttonText="passwort ändern" />
+        </View>
+        {successMessage != '' ? (
+          <Text
+            style={{
+              alignSelf: 'center',
+              fontFamily: FontStyle.poppinsMedium,
+              fontSize: 11,
+              color: '#06BA63',
+            }}>
+            {successMessage}
+          </Text>
+        ) : null}
+      </KeyboardAwareScrollView>
       <View
         style={{
           justifyContent: 'flex-end',

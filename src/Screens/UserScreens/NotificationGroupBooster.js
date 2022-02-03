@@ -12,7 +12,7 @@ import Header from '../../Common/Header';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import {useNavigation} from '@react-navigation/native';
 import SwitchToggle from 'react-native-switch-toggle';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+
 const NotificationGroupBooster = () => {
   const [groupArray] = useState([
     {

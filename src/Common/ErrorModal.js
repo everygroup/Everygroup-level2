@@ -1,13 +1,9 @@
-import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import React from 'react';
+import {View, Text, StyleSheet} from 'react-native';
 
 import Modal from 'react-native-modal';
-import Button from './Button';
-
-import {useDispatch} from 'react-redux';
 
 const ErrorModal = ({modalValue, closeModal, message}) => {
-  console.log(message);
   return (
     <View>
       <Modal

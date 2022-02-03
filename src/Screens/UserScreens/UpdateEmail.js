@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import {View, Text, TouchableOpacity, Image, Dimensions} from 'react-native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 
 import Styles from '../UserScreens/Style';
@@ -9,7 +9,9 @@ import Button from '../../Common/Button';
 import {HelperText} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import {changeProfile} from '../../../Slice/ProfileReducer';
-
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import Spinner from '../../Common/Spinner';
+const {height} = Dimensions.get('window');
 const UpdateEmail = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -28,7 +30,6 @@ const UpdateEmail = () => {
       setErrorMessage('E-Mail nicht gültig');
     } else {
       dispatch(changeProfile({emailText}));
-      // navigation.navigate('SentEmail');
     }
   };
 
@@ -50,8 +51,8 @@ const UpdateEmail = () => {
   return (
     <View
       style={{
-        paddingTop: '25%',
-        height: '100%',
+        paddingTop: Platform.OS == 'ios' ? '25%' : '15%',
+        height: height,
         backgroundColor: '#fff',
         alignItems: 'center',
       }}>
@@ -71,39 +72,49 @@ const UpdateEmail = () => {
           }}
         />
       </TouchableOpacity>
-      <Text
-        style={{
-          fontFamily: FontStyle.MontSemiBold,
-          fontSize: 20,
-          color: '#205072',
-          width: '60%',
-          textAlign: 'center',
-          marginVertical: '10%',
-        }}>
-        Gib deine neue E-Mail ein
-      </Text>
-      <View style={Styles.errorContainer}>
-        {emailError == true ? (
-          <HelperText
-            style={[Styles.helperText, {paddingLeft: '10%'}]}
-            type="error">
-            {errorMessage}
-          </HelperText>
-        ) : null}
-      </View>
-      <Input
-        placeholder="E-mail"
-        placeholderTextColor="#205072"
-        onChangeText={text => {
-          setEmailText(text);
-          setEmailError(false);
-        }}
-      />
+      <KeyboardAwareScrollView
+        style={{width: '100%'}}
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{alignItems: 'center'}}>
+        <Text
+          style={{
+            fontFamily: FontStyle.MontSemiBold,
+            fontSize: 20,
+            color: '#205072',
+            width: '85%',
+            textAlign: 'center',
+            marginVertical: '10%',
+          }}>
+          Gib deine neue E-Mail ein
+        </Text>
+        <View style={Styles.errorContainer}>
+          {emailError == true ? (
+            <HelperText
+              style={[Styles.helperText, {paddingLeft: '10%'}]}
+              type="error">
+              {errorMessage}
+            </HelperText>
+          ) : null}
+        </View>
+        <Input
+          placeholder="E-mail"
+          placeholderTextColor="#205072"
+          onChangeText={text => {
+            setEmailText(text);
+            setEmailError(false);
+          }}
+          height={50}
+        />
 
-      <View
-        style={{marginVertical: '10%', width: '100%', alignItems: 'center'}}>
-        <Button buttonText="E-Mail ändern" onPress={submit} />
-      </View>
+        <View
+          style={{marginVertical: '10%', width: '100%', alignItems: 'center'}}>
+          {loading ? (
+            <Spinner />
+          ) : (
+            <Button buttonText="E-Mail ändern" onPress={submit} />
+          )}
+        </View>
+      </KeyboardAwareScrollView>
       <View
         style={{
           justifyContent: 'flex-end',

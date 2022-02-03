@@ -76,7 +76,15 @@ export const getSimilarGroupList = createAsyncThunk(
 export const AllGroupListReducer = createSlice({
   name: 'AllGroupListReducer',
   initialState,
-  reducers: {},
+
+  reducers: {
+    updateUserFavStatusInlist(state, action) {
+      const index = state.groupData.findIndex(
+        el => el.id == action.payload.groupId,
+      );
+      state.groupData[index].group_favourite_status = true;
+    },
+  },
   extraReducers: {
     [getAllGroup.fulfilled]: (state, action) => {
       state.loading = false;
@@ -94,8 +102,6 @@ export const AllGroupListReducer = createSlice({
       state.similarGroupList = action.payload;
     },
     [getTrendingGroup.fulfilled]: (state, action) => {
-      console.log(action.payload, 'action');
-      // state.loading = false;
       state.trendingData = action.payload;
     },
     [getTrendingGroup.pending]: (state, action) => {
@@ -106,5 +112,7 @@ export const AllGroupListReducer = createSlice({
     },
   },
 });
+
+export const {updateUserFavStatusInlist} = AllGroupListReducer.actions;
 
 export default AllGroupListReducer.reducer;

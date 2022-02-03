@@ -28,7 +28,10 @@ import {favouriteGroup} from '../../../Slice/FavouriteGroupReducer';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {resetFavouriteValue} from '../../../Slice/FavouriteUserReducer';
 import Share from 'react-native-share';
-import {getSimilarGroupList} from '../../../Slice/AllGroupListReducer';
+import {
+  getSimilarGroupList,
+  updateUserFavStatusInlist,
+} from '../../../Slice/AllGroupListReducer';
 import MainLoader from '../../Common/MainLoader';
 import {updateGroup} from '../../../Slice/UserGroupReducer';
 import BoosterModal from '../../Common/BoosterModal';
@@ -138,8 +141,10 @@ const GroupDetail = ({route}) => {
   };
   useEffect(() => {
     dispatch(getSimilarGroupList(groupDetail.categories));
+
     if (value == 'success') {
       dispatch(updateOtherUserFavStatus(true));
+      dispatch(updateUserFavStatusInlist({groupId: groupId, data: true}));
     }
   }, [value]);
 

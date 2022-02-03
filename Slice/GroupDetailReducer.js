@@ -33,10 +33,9 @@ export const GroupDetailReducer = createSlice({
   name: 'GroupDetailReducer',
   initialState,
   reducers: {
-    // updateOtherUserFavStatus(state, action) {
-    //   state.groupDetail.group_favourite_status = action.payload;
-    //   // state.groupDetail = action.payload;
-    // },
+    updateOtherUserFavStatus(state, action) {
+      state.groupDetail.group_favourite_status = action.payload;
+    },
   },
   extraReducers: {
     [getGroupDetail.fulfilled]: (state, action) => {
@@ -55,6 +54,6 @@ export const GroupDetailReducer = createSlice({
   },
 });
 
-// export const {updateOtherUserFavStatus} = GroupDetailReducer.actions;
+export const {updateOtherUserFavStatus} = GroupDetailReducer.actions;
 
 export default GroupDetailReducer.reducer;

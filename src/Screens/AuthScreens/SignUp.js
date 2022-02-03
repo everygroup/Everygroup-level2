@@ -85,6 +85,7 @@ const SignUp = () => {
         showsVerticalScrollIndicator={false}
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"
+        enableOnAndroid={true}
         contentContainerStyle={{
           alignItems: 'center',
         }}>

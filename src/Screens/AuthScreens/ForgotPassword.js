@@ -4,7 +4,7 @@ import Button from '../../Common/Button';
 import Input from '../../Common/Input';
 import {useNavigation} from '@react-navigation/native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
-import {checkInternet, forgotPassword} from '../../../Slice/AuthReducer';
+import {forgotPassword} from '../../../Slice/AuthReducer';
 import {useDispatch, useSelector} from 'react-redux';
 import {HelperText} from 'react-native-paper';
 import Styles from '../UserScreens/Style';
@@ -19,9 +19,11 @@ const ForgotPassword = () => {
   const [emailErrorMessage, setEmailErrorMessage] = useState('');
   const navigation = useNavigation();
 
-  const {loading, error, forgotResponse, internet} = useSelector(state => {
-    return state.user;
-  });
+  const {loading, forgotError, forgotResponse, internet} = useSelector(
+    state => {
+      return state.user;
+    },
+  );
 
   const submit = () => {
     if (email == '') {
@@ -33,12 +35,15 @@ const ForgotPassword = () => {
   };
 
   useEffect(() => {
-    setEmailError(true);
-    setEmailErrorMessage(error);
-  }, [error]);
+    if (forgotError != '') {
+      setEmailError(true);
+      setEmailErrorMessage(forgotError);
+    }
+  }, [forgotError]);
 
   useEffect(() => {
     if (forgotResponse != '') {
+      setEmailError(false);
       navigation.navigate('ForgotMailVerify');
     }
   }, [forgotResponse]);
@@ -81,7 +86,11 @@ const ForgotPassword = () => {
           <Input
             placeholder="E-Mail"
             placeholderTextColor="#205072"
-            onChangeText={text => setEmail(text)}
+            onChangeText={text => {
+              setEmail(text), setEmailError(false);
+            }}
+            height={50}
+            borderColor={emailError ? '#FF2020' : null}
           />
         </View>
         {loading ? (

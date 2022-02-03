@@ -12,17 +12,14 @@ const initialState = {
   forgotResponse: '',
   remember_snapchat: true,
   internet: true,
+  forgotError: '',
 };
 
 export const signInUser = createAsyncThunk(
   'signIn',
   async (data, {rejectWithValue}) => {
     const deviceToken = await AsyncStorageLib.getItem('deviceToken');
-    console.log({
-      email: data.email,
-      password: data.password,
-      device_token: deviceToken,
-    });
+
     try {
       const response = await axios({
         method: 'post',
@@ -85,6 +82,7 @@ export const forgotPassword = createAsyncThunk(
         },
       });
     } catch (err) {
+      console.log(err.response);
       return rejectWithValue(Object.values(err.response.data).toString());
     }
   },
@@ -140,6 +138,7 @@ export const authReducer = createSlice({
     },
     resetForgotResponse(state, action) {
       state.forgotResponse = '';
+      state.error = '';
     },
   },
   extraReducers: {
@@ -173,15 +172,15 @@ export const authReducer = createSlice({
     },
     [forgotPassword.fulfilled]: (state, action) => {
       state.loading = false;
-      state.error = [];
+      state.forgotError = '';
       state.forgotResponse = 'success';
     },
     [forgotPassword.pending]: (state, action) => {
       state.loading = true;
-      state.error = [];
+      state.forgotError = '';
     },
     [forgotPassword.rejected]: (state, action) => {
-      state.error = action.payload;
+      state.forgotError = action.payload;
       state.loading = false;
     },
     [updateRememberSnapChat.fulfilled]: (state, action) => {

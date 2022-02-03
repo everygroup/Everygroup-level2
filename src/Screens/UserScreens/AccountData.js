@@ -1,20 +1,28 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, FlatList, TouchableOpacity, Image} from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  Image,
+  Platform,
+} from 'react-native';
 import Styles from './Style';
 import Header from '../../Common/Header';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import {useNavigation} from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {resetValue} from '../../../Slice/ProfileReducer';
 import {resetPassword} from '../../../Slice/CheckReducer';
+import Icon from 'react-native-vector-icons/Feather';
 
 const AccountData = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const [pageOption, setPageOption] = useState([
+  const [pageOption] = useState([
     {
       displayName: 'Passwort ändern',
-      description: 'Gib dein Passwort ein, um deinen Account löschen zu können',
+      description: 'Gib dein aktuelles Passwort ein, um ein neues festzulegen',
       toNavigate: 'UpdatePassword',
     },
     {
@@ -23,14 +31,19 @@ const AccountData = () => {
       toNavigate: 'UpdateEmail',
     },
     {
-      displayName: 'Nutzername ändern',
+      displayName: 'Nutzernamen ändern',
       description: ' Gib dein Passwort ein, um deinen Nutzernamen zu ändern',
       toNavigate: 'UpdateUserName',
     },
   ]);
 
   return (
-    <View style={{paddingTop: '25%', height: '100%', backgroundColor: '#fff'}}>
+    <View
+      style={{
+        paddingTop: Platform.OS == 'ios' ? '25%' : '15%',
+        height: '100%',
+        backgroundColor: '#fff',
+      }}>
       <Header />
       <View
         style={{
@@ -40,15 +53,12 @@ const AccountData = () => {
           paddingHorizontal: '5%',
         }}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image
-            source={require('../../Assets/Images/back.png')}
-            style={{width: 23, height: 23, resizeMode: 'contain'}}
-          />
+          <Icon name="chevron-left" size={38} color="#205072" />
         </TouchableOpacity>
         <Text style={Styles.headingText}>Accountdaten</Text>
         <View />
       </View>
-      <View style={{height: '65%'}}>
+      <View style={{height: '65%', marginLeft: 15}}>
         <FlatList
           data={pageOption}
           renderItem={({item}) => {

@@ -9,7 +9,6 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Animated,
-  Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -20,8 +19,9 @@ import MessangerModal from './MessangerModal';
 import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorageLib from '@react-native-async-storage/async-storage';
 import {updateTutorialStatus} from '../../../Slice/AuthReducer';
-import {boostGroup, resetBoostValue} from '../../../Slice/RandomeReducer';
+import {boostGroup} from '../../../Slice/RandomeReducer';
 import Share from 'react-native-share';
+import SettingModal from '../../Common/SettingModal';
 import {
   getRandomeList,
   resetErrorValue,
@@ -37,7 +37,7 @@ function Interface(props) {
   const [fiveBoost, setFiveBoost] = useState(new Animated.Value(0));
   const [fiveXValue, setFiveXValue] = useState(false);
   const [oneXValue, setOneXValue] = useState(false);
-
+  const [settingModal, setSettingModal] = useState(false);
   const [errorModalValue, setErrorModalValue] = useState(false);
   const [tutorialStatus, setTutorialStatus] = useState('');
   const [systemLang, setSystemLang] = useState('');
@@ -195,10 +195,12 @@ function Interface(props) {
     outputRange: [1, 0.7, 1],
   });
 
-  console.log(randomeList, 'list');
-
   return (
     <View style={{flex: 1, backgroundColor: '#dcdcdc'}}>
+      <SettingModal
+        modalValue={settingModal}
+        closeModal={() => setSettingModal(false)}
+      />
       <MessangerModal
         modalValue={modalValue}
         closeModal={() => setModalValue(false)}
@@ -440,7 +442,7 @@ function Interface(props) {
                       />
                     </TouchableWithoutFeedback>
                   )}
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={() => setSettingModal(true)}>
                     <Image
                       source={require('../../Assets/Images/setting.png')}
                       style={{

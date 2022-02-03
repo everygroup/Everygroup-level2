@@ -8,6 +8,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getUserGroup} from '../../../Slice/UserGroupReducer';
 import MainLoader from '../../Common/MainLoader';
 import FontStyle from '../../Assets/Fonts/FontStyle';
+import BoosterModal from '../../Common/BoosterModal';
 
 const MyGroup = () => {
   const dispatch = useDispatch();
@@ -37,7 +38,6 @@ const MyGroup = () => {
   };
 
   const {boostError} = useSelector(state => {
-    console.log(state.UserGroupReducer);
     return state.UserGroupReducer;
   });
 
@@ -59,6 +59,15 @@ const MyGroup = () => {
         <MainLoader heightValue={1.1} />
       ) : (
         <>
+          <BoosterModal
+            modalValue={false}
+            title={`Easy Gruppen\nhochladen`}
+            image1={require('../../Assets/Images/reupload.png')}
+            image2={require('../../Assets/Images/arrowOrange.png')}
+            message1={`Lade deine Gruppe ganz einfach mit einem Klick erneut wieder hoch.`}
+            message2={`Erhalte einen Booster und deine Gruppe wird 5 Tage lang von selbst automatisch wieder hoch geladen.`}
+            message3={`Lass dich von uns benachrichtigen, wenn deine Gruppe wieder hochgeladen werden kann oder du einen Booster erhalten hast.`}
+          />
           <Text style={Styles.headingText}>Meine Gruppen</Text>
           {userGroupData.length > 0 ? (
             <FlatList

@@ -48,22 +48,28 @@ const SignIn = () => {
 
   useEffect(() => {
     tokenFunc();
-    setEmailError(true);
-    setEmailErrorMessage(error);
+    if (error != '') {
+      setEmailError(true);
+      setEmailErrorMessage(error);
+    }
   }, [error, token]);
 
   const tokenFunc = async () => {
     const successToken = await AsyncStorageLib.getItem('token');
     if (successToken || token) {
+      setEmailError(false);
+      setPasswordError(false);
       navigation.navigate('HomeNavigator');
     }
   };
 
   const forgotPasswordPage = async () => {
+    setEmailError(false);
+    setPassword(false);
     await dispatch(resetForgotResponse());
     navigation.navigate('ForgotPassword');
   };
-  console.log(internet, 'sign internet');
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
       <KeyboardAwareScrollView
@@ -95,6 +101,7 @@ const SignIn = () => {
               setEmail(text), setEmailError(false);
             }}
             height={50}
+            borderColor={emailError ? '#FF2020' : null}
           />
           <View style={Styles.errorContainer}>
             {passwordError == true ? (
@@ -110,6 +117,8 @@ const SignIn = () => {
             placeholderTextColor="#205072"
             icon={'available'}
             imageSource={require('../../Assets/Images/closeEye.png')}
+            imageSource1={require('../../Assets/Images/openEye.png')}
+            iconPress={() => setShowPassword(!showPassword)}
             showPassword={showPassword}
             iconPress={iconPress}
             secureTextEntry={secureTextEntry}
@@ -117,6 +126,7 @@ const SignIn = () => {
               setPassword(text), setPasswordError(false);
             }}
             height={50}
+            borderColor={passwordError ? '#FF2020' : null}
           />
         </View>
         {loading ? (

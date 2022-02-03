@@ -5,6 +5,7 @@ import {
   TextInput,
   Image,
   TouchableOpacity,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import FontStyle from '../Assets/Fonts/FontStyle';
 import Icon from 'react-native-vector-icons/Entypo';
@@ -62,7 +63,7 @@ const Input = ({
         ]}
       />
       {icon == 'available' ? (
-        <TouchableOpacity onPress={iconPress}>
+        <TouchableWithoutFeedback onPress={iconPress}>
           {showPassword ? (
             <Image
               source={imageSource}
@@ -74,7 +75,7 @@ const Input = ({
               style={{height: 18, width: 18, resizeMode: 'contain'}}
             />
           )}
-        </TouchableOpacity>
+        </TouchableWithoutFeedback>
       ) : null}
     </View>
   );
