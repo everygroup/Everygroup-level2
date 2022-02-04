@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, Image, Platform} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  Platform,
+  Dimensions,
+} from 'react-native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import {useNavigation} from '@react-navigation/core';
 import Input from '../../Common/Input';
@@ -9,7 +16,7 @@ import {changeProfile} from '../../../Slice/ProfileReducer';
 import {HelperText} from 'react-native-paper';
 import Styles from './Style';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-
+const {height} = Dimensions.get('window');
 const UpdatePassword = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -61,7 +68,7 @@ const UpdatePassword = () => {
     <View
       style={{
         paddingTop: Platform.OS == 'ios' ? '25%' : '15%',
-        height: '100%',
+        height: height,
         backgroundColor: '#fff',
         alignItems: 'center',
       }}>

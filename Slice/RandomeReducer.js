@@ -98,6 +98,15 @@ export const RandomeReducer = createSlice({
     resetBoostValue(state, action) {
       (state.oneXStatus = 0), (state.fiveXStatus = 0);
     },
+
+    updateUserFavStatusInRandomeList(state, action) {
+      state.randomeList = state.randomeList.map(el => {
+        if (el.id == action.payload.groupId) {
+          el.group_favourite_status = true;
+        }
+        return el;
+      });
+    },
   },
   extraReducers: {
     [getRandomeList.fulfilled]: (state, action) => {
@@ -144,6 +153,10 @@ export const RandomeReducer = createSlice({
   },
 });
 
-export const {resetErrorValue, resetBoostValue} = RandomeReducer.actions;
+export const {
+  resetErrorValue,
+  resetBoostValue,
+  updateUserFavStatusInRandomeList,
+} = RandomeReducer.actions;
 
 export default RandomeReducer.reducer;

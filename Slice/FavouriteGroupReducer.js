@@ -25,9 +25,10 @@ export const favouriteGroup = createAsyncThunk(
           group_id: data,
         },
       });
-
+      console.log(response, 'response');
       return response.data.favourite_group;
     } catch (err) {
+      console.log(err.response, 'erro alsdjkf');
       return rejectWithValue(Object.values(err.response.data));
     }
   },

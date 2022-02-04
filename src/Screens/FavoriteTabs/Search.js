@@ -5,8 +5,6 @@ import {useSelector, useDispatch} from 'react-redux';
 import {getSearch} from '../../../Slice/SearchReducer';
 
 const Search = () => {
-  // const [animatedHeight, setAnimatedHeight] = useState(new Animated.Value(310));
-  // const [deleteId, setDeleteId] = useState();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -25,7 +23,6 @@ const Search = () => {
         data={getAllSearch}
         listKey={getAllSearch.id}
         renderItem={({item: data}) => {
-          console.log(data, 'dat');
           return (
             <SearchCard
               data={data}

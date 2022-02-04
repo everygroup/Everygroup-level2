@@ -10,6 +10,7 @@ import {
   TouchableWithoutFeedback,
   Animated,
   Linking,
+  Platform,
 } from 'react-native';
 import Header from '../../Common/Header';
 import {useNavigation} from '@react-navigation/native';
@@ -55,7 +56,6 @@ const GroupDetail = ({route}) => {
   const [bellValue, setBellValue] = useState(false);
 
   const {groupDetail, error, loading} = useSelector(state => {
-    console.log(state.GroupDetailReducer);
     return state.GroupDetailReducer;
   });
 
@@ -153,7 +153,6 @@ const GroupDetail = ({route}) => {
   });
 
   const boostGroupValue = (oneX, fiveX) => {
-    console.log('hi hih');
     dispatch(boostGroup({oneX, fiveX, groupId}));
   };
 
@@ -212,7 +211,12 @@ const GroupDetail = ({route}) => {
   };
 
   return (
-    <View style={{paddingTop: '21%', height: '100%', backgroundColor: '#fff'}}>
+    <View
+      style={{
+        paddingTop: Platform.OS == 'ios' ? '21%' : '13%',
+        height: '100%',
+        backgroundColor: '#fff',
+      }}>
       <Header />
 
       <SuccessModal modalValue={SuccessModalValue} />

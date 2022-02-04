@@ -8,6 +8,7 @@ const initialState = {
   loading: false,
   error: '',
   value: '',
+  userName: {},
 };
 
 export const changeProfile = createAsyncThunk(
@@ -25,7 +26,7 @@ export const changeProfile = createAsyncThunk(
           username: data.userNameText,
         },
       });
-
+      console.log(response, 'response');
       return response.data;
     } catch (err) {
       return rejectWithValue(Object.values(err.response.data));
@@ -46,6 +47,7 @@ export const ProfileReducer = createSlice({
     [changeProfile.fulfilled]: (state, action) => {
       state.loading = false;
       state.value = 'success';
+      state.userName = action.payload;
     },
     [changeProfile.pending]: (state, action) => {
       state.loading = true;

@@ -45,7 +45,7 @@ export const getSearch = createAsyncThunk(
         headers: {Authorization: `Bearer ${token}`},
         url: `${baseUrl}/favourite-search`,
       });
-      console.log(response, 'get all search');
+
       return response.data.results;
     } catch (err) {
       return rejectWithValue(Object.values(err.response.data));
@@ -76,7 +76,9 @@ export const SearchReducer = createSlice({
   initialState,
   reducers: {
     resetSearchValue(state, action) {
+      console.log();
       state.error = [];
+      state.searchSuccess = false;
     },
   },
   extraReducers: {

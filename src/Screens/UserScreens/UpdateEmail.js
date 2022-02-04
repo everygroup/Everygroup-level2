@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, Image, Dimensions} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  Dimensions,
+  Platform,
+} from 'react-native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 
 import Styles from '../UserScreens/Style';
@@ -10,6 +17,7 @@ import {HelperText} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import {changeProfile} from '../../../Slice/ProfileReducer';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import Icon from 'react-native-vector-icons/Feather';
 import Spinner from '../../Common/Spinner';
 const {height} = Dimensions.get('window');
 const UpdateEmail = () => {
@@ -63,14 +71,7 @@ const UpdateEmail = () => {
           marginTop: '5%',
         }}
         onPress={() => navigation.goBack()}>
-        <Image
-          source={require('../../Assets/Images/back.png')}
-          style={{
-            width: 23,
-            height: 23,
-            resizeMode: 'contain',
-          }}
-        />
+        <Icon name="chevron-left" size={38} color="#205072" />
       </TouchableOpacity>
       <KeyboardAwareScrollView
         style={{width: '100%'}}

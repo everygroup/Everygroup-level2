@@ -79,10 +79,12 @@ export const AllGroupListReducer = createSlice({
 
   reducers: {
     updateUserFavStatusInlist(state, action) {
-      const index = state.groupData.findIndex(
-        el => el.id == action.payload.groupId,
-      );
-      state.groupData[index].group_favourite_status = true;
+      state.groupData = state.groupData.map(el => {
+        if (el.id == action.payload.groupId) {
+          el.group_favourite_status = true;
+        }
+        return el;
+      });
     },
   },
   extraReducers: {

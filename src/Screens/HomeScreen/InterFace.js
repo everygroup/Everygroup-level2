@@ -19,7 +19,10 @@ import MessangerModal from './MessangerModal';
 import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorageLib from '@react-native-async-storage/async-storage';
 import {updateTutorialStatus} from '../../../Slice/AuthReducer';
-import {boostGroup} from '../../../Slice/RandomeReducer';
+import {
+  boostGroup,
+  updateUserFavStatusInRandomeList,
+} from '../../../Slice/RandomeReducer';
 import Share from 'react-native-share';
 import SettingModal from '../../Common/SettingModal';
 import {
@@ -28,11 +31,13 @@ import {
   seenGroup,
 } from '../../../Slice/RandomeReducer';
 import ErrorModal from '../../Common/ErrorModal';
+import {updateUserFavStatusInlist} from '../../../Slice/AllGroupListReducer';
 
 function Interface(props) {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [modalValue, setModalValue] = useState(false);
+  const [flagStatus, setFlagStatus] = useState(false);
   const [oneBoost, setOneBoost] = useState(new Animated.Value(0));
   const [fiveBoost, setFiveBoost] = useState(new Animated.Value(0));
   const [fiveXValue, setFiveXValue] = useState(false);
@@ -43,6 +48,8 @@ function Interface(props) {
   const [systemLang, setSystemLang] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [animation] = useState(new Animated.Value(1));
+  const [groupId, setGroupId] = useState(0);
+  const [favouriteStatus, setFavouriteStatus] = useState(false);
 
   const startAnimation = () => {
     Animated.loop(
@@ -195,11 +202,28 @@ function Interface(props) {
     outputRange: [1, 0.7, 1],
   });
 
+  const {value, favouriteError} = useSelector(state => {
+    return state.FavouriteGroupReducer;
+  });
+
+  useEffect(() => {
+    if (value == 'success') {
+      setFavouriteStatus(true);
+      dispatch(updateUserFavStatusInlist({groupId: groupId, data: true}));
+      dispatch(
+        updateUserFavStatusInRandomeList({groupId: groupId, data: true}),
+      );
+    }
+  }, [value]);
+
   return (
     <View style={{flex: 1, backgroundColor: '#dcdcdc'}}>
       <SettingModal
         modalValue={settingModal}
         closeModal={() => setSettingModal(false)}
+        groupId={groupId}
+        favouriteStatus={favouriteStatus}
+        flagStatus={flagStatus}
       />
       <MessangerModal
         modalValue={modalValue}
@@ -442,7 +466,13 @@ function Interface(props) {
                       />
                     </TouchableWithoutFeedback>
                   )}
-                  <TouchableOpacity onPress={() => setSettingModal(true)}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setSettingModal(true),
+                        setGroupId(item.id),
+                        setFavouriteStatus(item.group_favourite_status);
+                      setFlagStatus(item.group_report_status);
+                    }}>
                     <Image
                       source={require('../../Assets/Images/setting.png')}
                       style={{

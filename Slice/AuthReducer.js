@@ -31,8 +31,9 @@ export const signInUser = createAsyncThunk(
         },
       });
       console.log(response, 'signin Response');
-      await AsyncStorageLib.setItem('token', response.data.access);
 
+      await AsyncStorageLib.setItem('token', response.data.access);
+      await AsyncStorageLib.setItem('userName', response.data.username);
       await AsyncStorageLib.setItem(
         'tutorial',
         response.data.random_mode_tutorial_status.toString(),
@@ -60,9 +61,7 @@ export const registerUser = createAsyncThunk(
           promotable: data.promotional,
         },
       });
-      console.log(response, 'auth resposne');
     } catch (err) {
-      console.log(err.response, 'error');
       const errorr = err.response.data;
 
       return rejectWithValue(errorr);
@@ -82,7 +81,6 @@ export const forgotPassword = createAsyncThunk(
         },
       });
     } catch (err) {
-      console.log(err.response);
       return rejectWithValue(Object.values(err.response.data).toString());
     }
   },

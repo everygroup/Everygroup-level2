@@ -16,7 +16,12 @@ const Spinner = ({
       colors={['#FFA420', '#FE7027']}
       style={[
         styles.linearGradient,
-        {width: width || 206, borderRadius: borderRadius || 20},
+        {
+          width: width || 206,
+          borderRadius: borderRadius || 20,
+          minHeight: height || 40,
+          maxHeight: 'auto',
+        },
       ]}>
       <ActivityIndicator
         size={size || 'large'}
@@ -28,8 +33,6 @@ const Spinner = ({
 
 var styles = StyleSheet.create({
   linearGradient: {
-    minHeight: 40,
-    maxHeight: 'auto',
     justifyContent: 'center',
     alignItems: 'center',
   },

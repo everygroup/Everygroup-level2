@@ -17,6 +17,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {checkPassword} from '../../../Slice/CheckReducer';
 import Spinner from '../../Common/Spinner';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {resetValue} from '../../../Slice/ProfileReducer';
+import Icon from 'react-native-vector-icons/Feather';
 const {height} = Dimensions.get('window');
 const CheckPassword = ({route}) => {
   const dispatch = useDispatch();
@@ -44,6 +46,7 @@ const CheckPassword = ({route}) => {
 
   useEffect(() => {
     if (value == 'success') {
+      dispatch(resetValue());
       setPasswordText('');
       passwordCheck();
     }
@@ -79,14 +82,7 @@ const CheckPassword = ({route}) => {
           marginTop: '5%',
         }}
         onPress={() => navigation.goBack()}>
-        <Image
-          source={require('../../Assets/Images/back.png')}
-          style={{
-            width: 23,
-            height: 23,
-            resizeMode: 'contain',
-          }}
-        />
+        <Icon name="chevron-left" size={38} color="#205072" />
       </TouchableOpacity>
       <KeyboardAwareScrollView
         style={{width: '100%'}}

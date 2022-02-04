@@ -612,7 +612,9 @@ const AddGroup = () => {
               placeholder="Sprache auswählen"
               placeholderTextColor="#BECCD6"
               icon="available"
-              iconPress={() => addSelectLanguage()}
+              iconPress={() =>
+                spokenLanguage != '' ? addSelectLanguage() : null
+              }
               imageSource1={
                 spokenLanguage == ''
                   ? require('../../Assets/Images/plusGrey.png')
@@ -785,7 +787,9 @@ const AddGroup = () => {
               placeholderTextColor="#BECCD6"
               bgColor="#fff"
               icon="available"
-              iconPress={() => addJoinedLanguage()}
+              iconPress={() =>
+                joinedLanguage != '' ? addJoinedLanguage() : null
+              }
               imageSource1={
                 joinedLanguage == ''
                   ? require('../../Assets/Images/plusGrey.png')

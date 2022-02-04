@@ -18,7 +18,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {getLanguage} from '../../../Slice/LanguageReducer';
-import SearchReducer, {saveSearch} from '../../../Slice/SearchReducer';
+import {resetSearchValue, saveSearch} from '../../../Slice/SearchReducer';
 import {getSearchResult} from '../../../Slice/SearchResultReducer';
 import AdultModal from '../AdultModal';
 import AsyncStorageLib from '@react-native-async-storage/async-storage';
@@ -84,11 +84,13 @@ const Search = ({starPress, filterValue, filterPress, parentCallBack}) => {
   useEffect(() => {
     if (searchSuccess) {
       triggerBouncy();
+    } else {
+      setLiked(false);
     }
-    console.log(searchSuccess, 'rrrr');
   }, [searchSuccess]);
 
   const selectMessenger = item => {
+    dispatch(resetSearchValue());
     if (selectedMessenger.some(messenger => messenger == item)) {
       setSelectedMessenger(selectedMessenger.filter(el => el !== item));
     } else {
@@ -96,6 +98,8 @@ const Search = ({starPress, filterValue, filterPress, parentCallBack}) => {
     }
   };
   const selectCategory = item => {
+    dispatch(resetSearchValue());
+
     if (selectedCategory.some(el => el.slug == item.slug)) {
       setSelectedCategory(selectedCategory.filter(el => el.slug !== item.slug));
     } else {
@@ -228,12 +232,17 @@ const Search = ({starPress, filterValue, filterPress, parentCallBack}) => {
           imageSource1={require('../../Assets/Images/searchOrange.png')}
           placeholder="Gruppe suchen"
           placeholderTextColor="#BECCD6"
-          onChangeText={text => setQuery(text)}
+          onChangeText={text => {
+            setQuery(text), dispatch(resetSearchValue());
+          }}
+          height={50}
+          borderColor="#fff"
         />
         <View style={{left: 5, top: 4}}>
-          <TouchableWithoutFeedback onPress={searchSave}>
+          <TouchableWithoutFeedback
+            onPress={() => (liked ? null : searchSave())}>
             <Animated.View style={{transform: [{scale: bouncyView}]}}>
-              <Icon name="star" size={30} color={'#FFCC00'} solid={liked} />
+              <Icon name="star" size={30} color={'#FFF'} solid={liked} />
             </Animated.View>
           </TouchableWithoutFeedback>
         </View>

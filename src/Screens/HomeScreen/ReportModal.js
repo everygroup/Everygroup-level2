@@ -12,7 +12,7 @@ import Modal from 'react-native-modal';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import Button from '../../Common/Button';
 
-const ReportModal = ({modalValue, closeModal, parentCallBack}) => {
+const ReportModal = ({modalValue, closeModal, parentCallBack, groupId}) => {
   const [otherText, setOtherText] = useState('');
   const [selectedOption, setSelectedOption] = useState([]);
   const [reportOption, setReportOption] = useState([

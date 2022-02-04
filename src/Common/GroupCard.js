@@ -71,7 +71,7 @@ const GroupCard = ({
   useEffect(() => {
     setTime(group.remaining_booster_time, 'hh:mm');
   }, []);
-  console.log(group);
+  console.log(group, 'group id');
   return (
     <View>
       <InfoModal

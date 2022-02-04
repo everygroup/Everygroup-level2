@@ -13,8 +13,13 @@ const initialState = {
 export const reportGroup = createAsyncThunk(
   'reportGroup',
   async (data, {rejectWithValue}) => {
+    console.log(data, 'arradsf data');
     const token = await AsyncStorageLib.getItem('token');
-
+    console.log({
+      report_type: data.value.selectedOption,
+      group_id: data.groupId,
+      description: data.value.otherText,
+    });
     try {
       const response = await axios({
         method: 'post',
@@ -38,7 +43,11 @@ export const reportGroup = createAsyncThunk(
 export const ReportGroupReducer = createSlice({
   name: 'ReportGroupReducer',
   initialState,
-  reducers: {},
+  reducers: {
+    resetReport(state, action) {
+      state.status = '';
+    },
+  },
   extraReducers: {
     [reportGroup.fulfilled]: (state, action) => {
       state.flagLoading = false;
@@ -56,5 +65,5 @@ export const ReportGroupReducer = createSlice({
     },
   },
 });
-
+export const {resetReport} = ReportGroupReducer.actions;
 export default ReportGroupReducer.reducer;
