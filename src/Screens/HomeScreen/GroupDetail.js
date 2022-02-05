@@ -23,7 +23,7 @@ import {
   updateOtherUserFavStatus,
 } from '../../../Slice/GroupDetailReducer';
 import ReportModal from './ReportModal';
-import {reportGroup} from '../../../Slice/ReportGroupReducer';
+import {reportGroup, resetReport} from '../../../Slice/ReportGroupReducer';
 import SuccessModal from './SuccessModal';
 import {favouriteGroup} from '../../../Slice/FavouriteGroupReducer';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -112,6 +112,7 @@ const GroupDetail = ({route}) => {
         setSuccessModalValue(false);
         setTimeout(() => {
           triggerBouncy();
+          dispatch(resetReport());
         }, 500);
       }, 2000);
     }
@@ -666,8 +667,8 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   textStyle: {
-    fontFamily: FontStyle.MontExtBold,
-    fontSize: 11,
+    fontFamily: FontStyle.MontBold,
+    fontSize: 10,
     color: '#205072',
   },
   imageStyle: {

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, Image} from 'react-native';
+import {View, Text, Image, Platform} from 'react-native';
 import Header from '../../Common/Header';
 import Styles from './Style';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
@@ -15,7 +15,10 @@ const MyFavorite = () => {
     <View
       style={[
         Styles.mainContainer,
-        {paddingTop: '25%', backgroundColor: '#fff'},
+        {
+          paddingTop: Platform.OS == 'ios' ? '25%' : '15%',
+          backgroundColor: '#fff',
+        },
       ]}>
       <Header />
       <Text style={Styles.headingText}>Favoriten</Text>
@@ -23,9 +26,6 @@ const MyFavorite = () => {
         screenOptions={{
           tabBarActiveTintColor: '#FFA420',
           tabBarInactiveTintColor: '#BECCD6',
-          indicatorStyle: {
-            backgroundColor: 'red',
-          },
           tabBarLabelStyle: {fontSize: 15, fontFamily: FontStyle.MontBold},
           tabBarIndicatorStyle: {
             backgroundColor: '#FFA420',

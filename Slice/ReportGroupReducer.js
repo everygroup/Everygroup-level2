@@ -13,13 +13,8 @@ const initialState = {
 export const reportGroup = createAsyncThunk(
   'reportGroup',
   async (data, {rejectWithValue}) => {
-    console.log(data, 'arradsf data');
     const token = await AsyncStorageLib.getItem('token');
-    console.log({
-      report_type: data.value.selectedOption,
-      group_id: data.groupId,
-      description: data.value.otherText,
-    });
+
     try {
       const response = await axios({
         method: 'post',
@@ -31,10 +26,9 @@ export const reportGroup = createAsyncThunk(
           description: data.value.otherText,
         },
       });
-      console.log(response, 'resnlasdf');
+
       return response.data;
     } catch (err) {
-      console.log(err.response, 'erora dlk');
       return rejectWithValue(err.response.data);
     }
   },

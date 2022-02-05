@@ -15,8 +15,12 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import GroupCard from '../../Common/GroupCard';
 import {FlatList} from 'react-native-gesture-handler';
 import {useDispatch, useSelector} from 'react-redux';
-import {favouriteUser} from '../../../Slice/FavouriteUserReducer';
+import {
+  favouriteUser,
+  resetFavouriteValue,
+} from '../../../Slice/FavouriteUserReducer';
 import {getOtherUserGroup} from '../../../Slice/OtherUserGroupReducer';
+import MainErrorModal from '../../Common/MainErrorModal';
 
 import MainLoader from '../../Common/MainLoader';
 const OtherUserScreen = ({route}) => {
@@ -36,12 +40,12 @@ const OtherUserScreen = ({route}) => {
   };
 
   const {loading, error, value} = useSelector(state => {
-    console.log(state.FavouriteUserReducer, 'fav reducer');
+    console.log(state.FavouriteUserReducer.error, 'fav reducer');
     return state.FavouriteUserReducer;
   });
 
   const {otherUserGroupList, loader} = useSelector(state => {
-    console.log(state.OtherUserGroupReducer, 'rohit reducer');
+    // console.log(state.OtherUserGroupReducer, 'rohit reducer');
     return state.OtherUserGroupReducer;
   });
 
@@ -70,11 +74,15 @@ const OtherUserScreen = ({route}) => {
     inputRange: [0, 1, 2],
     outputRange: [1, 0.8, 1],
   });
-  console.log(loader, 'loading');
+
   return (
     <View style={{paddingTop: '21%', height: '100%', backgroundColor: '#fff'}}>
       <Header />
-
+      <MainErrorModal
+        modalValue={error.length > 0}
+        message={error}
+        closeModal={() => dispatch(resetFavouriteValue())}
+      />
       {loader ? (
         <MainLoader heightValue={1.1} />
       ) : (

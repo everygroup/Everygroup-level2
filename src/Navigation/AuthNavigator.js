@@ -18,12 +18,14 @@ import ForgotPassword from '../Screens/AuthScreens/ForgotPassword';
 import HeaderAuth from '../Screens/AuthScreens/HeaderAuth';
 import ForgotMailVerify from '../Screens/AuthScreens/ForgotMailVerify';
 import TestPage from '../Screens/AuthScreens/TestPage';
+import AsyncStorageLib from '@react-native-async-storage/async-storage';
 
 const AuthStackScreen = createStackNavigator();
 
 export const AuthNavigator = () => {
   const navigation = useNavigation();
   const [initialUrl, setInitialUrl] = useState('');
+  const [token, setToken] = useState('');
   const current = useNavigationState(state => state);
 
   const routes = navigation.getState()?.routes
@@ -31,6 +33,16 @@ export const AuthNavigator = () => {
     : [];
   const currentRoute = routes[routes.length - 1];
   const prevRoute = routes[routes.length - 2];
+  useEffect(() => {
+    getToken();
+    if (token != '') {
+      navigation.navigate('HomeNavigator');
+    }
+  }, [token]);
+
+  const getToken = async () => {
+    setToken(await AsyncStorageLib.getItem('token'));
+  };
 
   useEffect(() => {
     getUrlAsync();

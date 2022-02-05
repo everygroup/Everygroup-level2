@@ -25,7 +25,7 @@ const MainErrorModal = ({modalValue, closeModal, message}) => {
               marginTop: '5%',
               marginBottom: '10%',
             }}>
-            {message ||
+            {message.toString() ||
               'Ein Fehler ist aufgetreten. Bitte versuche es später erneut'}
           </Text>
           <Button

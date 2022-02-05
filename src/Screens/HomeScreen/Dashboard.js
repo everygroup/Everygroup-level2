@@ -73,7 +73,7 @@ const Dashboard = () => {
     setTrendingGroup(trendingData);
   }, [trendingData]);
   //////////////////////////////
-  console.log(trendingData, 'groupData');
+
   return (
     <View
       style={{

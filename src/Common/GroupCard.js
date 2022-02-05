@@ -17,12 +17,15 @@ import {useDispatch, useSelector} from 'react-redux';
 import {
   boostOwnGroup,
   deleteGroup,
+  resetBoostValue,
+  resetVisible,
   updateGroup,
 } from '../../Slice/UserGroupReducer';
 import InfoModal from './InfoModal';
 import DeleteModal from '../Screens/UserScreens/deleteModal';
 import ProgressCircle from 'react-native-progress-circle';
 import moment from 'moment';
+import {getAllGroup} from '../../Slice/AllGroupListReducer';
 
 const GroupCard = ({
   group,
@@ -43,11 +46,12 @@ const GroupCard = ({
   const [deleteModal, setDeleteModal] = useState(false);
   const [modalValue, setModalValue] = useState(false);
   const [time, setTime] = useState(0);
+
   const visibleUnvisible = () => {
-    if (group.is_link_expire == true) {
+    if (group.visible_status == true) {
       setModalValue(true);
     }
-    dispatch(updateGroup({groupId: group.id, visible: group.is_link_expire}));
+    dispatch(updateGroup({groupId: group.id, visible: group.visible_status}));
   };
 
   useEffect(() => {
@@ -68,10 +72,24 @@ const GroupCard = ({
     );
   };
 
+  const {boostSuccess, visibleSuccess} = useSelector(state => {
+    return state.UserGroupReducer;
+  });
+
   useEffect(() => {
-    setTime(group.remaining_booster_time, 'hh:mm');
-  }, []);
-  console.log(group, 'group id');
+    if (boostSuccess == 'success') {
+      dispatch(getAllGroup());
+      dispatch(resetBoostValue());
+    }
+  }, [boostSuccess]);
+
+  useEffect(() => {
+    if (visibleSuccess == 'success') {
+      dispatch(getAllGroup());
+      dispatch(resetVisible());
+    }
+  }, [visibleSuccess]);
+
   return (
     <View>
       <InfoModal
@@ -374,7 +392,7 @@ const GroupCard = ({
                         bottom: 8,
                         left: 2,
                       }}>
-                      {time ? time : null}
+                      {group.remaining_booster_time}
                     </Text>
                   </View>
                   <Text
@@ -387,7 +405,7 @@ const GroupCard = ({
                   </Text>
                 </View>
                 <TouchableWithoutFeedback onPress={() => visibleUnvisible()}>
-                  {group.is_link_expire ? (
+                  {group.visible_status ? (
                     <Image
                       source={require('../Assets/Images/openEye.png')}
                       style={styles.iconStyle}

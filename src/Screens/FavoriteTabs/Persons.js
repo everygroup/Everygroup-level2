@@ -18,6 +18,7 @@ const Persons = () => {
   useEffect(() => {
     dispatch(getFavouriteUsers());
   }, []);
+
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <FlatList

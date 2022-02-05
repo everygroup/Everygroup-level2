@@ -1,11 +1,35 @@
-import React from 'react';
-import {View, Text, SafeAreaView, Image, TouchableOpacity} from 'react-native';
+import React, {useState, useEffect, useRef} from 'react';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  Image,
+  TouchableOpacity,
+  Linking,
+  AppState,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const VerifyMail = () => {
   const navigation = useNavigation();
+  // const appState = useRef(AppState.currentState);
+
+  // const [appStateVisible, setAppStateVisible] = useState(appState.current);
+  // useEffect(() => {
+  //   AppState.addEventListener('change', handleChange);
+
+  //   return () => {
+  //     AppState.removeEventListener('change', handleChange);
+  //   };
+  // }, []);
+  // const handleChange = async newState => {
+  //   if (newState === 'active') {
+  //     console.log('ready', initialUrl);
+  //   }
+  // };
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
       <View style={{alignItems: 'center', height: '70%'}}>

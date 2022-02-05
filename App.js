@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
 import RootNavigator from './src/Navigation/RootNavigator';
 import {configureStore} from '@reduxjs/toolkit';
 import {Provider} from 'react-redux';
@@ -79,15 +79,16 @@ const store = configureStore({
 const App = () => {
   const [networkStatus, setNetworkStatus] = useState();
   const [internetStatus, setInternetStatus] = useState(true);
+
   useEffect(() => {
     NetInfo.addEventListener(networkState => {
-      // console.log('Connection type - ', networkState.type);
+      console.log('Connection type - ', networkState.type);
       setNetworkStatus(networkState.isConnected);
     });
     requestUserPermission();
     // createNotificationListeners();
     messaging().onNotificationOpenedApp(remoteMessage => {
-      console.log('FIREBASE IOS Background', remoteMessage);
+      // console.log('FIREBASE IOS Background', remoteMessage);
       // PushNotification.localNotification({
       //   title: data.title,
       //   message: data.message,
@@ -97,7 +98,7 @@ const App = () => {
     PushNotification.configure({
       // (optional) Called when Token is generated (iOS and Android)
       onRegister: function (token) {
-        console.log('TOKEN:', token);
+        // console.log('TOKEN:', token);
       },
       onNotification: function (notification) {
         console.log('NOTIFICATION:', notification);
@@ -126,7 +127,7 @@ const App = () => {
       authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
     if (enabled) {
-      console.log('Authorization status:', authStatus);
+      // console.log('Authorization status:', authStatus);
     }
   };
 

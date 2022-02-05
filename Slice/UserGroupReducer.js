@@ -14,6 +14,7 @@ const initialState = {
   boostGroupId: '',
   couponResError: '',
   couponSuccess: '',
+  visibleSuccess: '',
 };
 
 export const getUserGroup = createAsyncThunk(
@@ -67,10 +68,10 @@ export const updateGroup = createAsyncThunk(
           categories: data.selectedCategory,
           tags: data.tags,
           description: data.description,
-          visible_status: data.visible,
+          visible_status: !data.visible,
         },
       });
-
+      console.log(response, 'response');
       return response.data;
     } catch (err) {
       console.log(err.response, 'error update');
@@ -83,6 +84,7 @@ export const boostOwnGroup = createAsyncThunk(
   'boostOwnGroup',
   async (data, {rejectWithValue}) => {
     const token = await AsyncStorageLib.getItem('token');
+
     console.log(data, 'own data');
     try {
       const response = await axios({
@@ -91,6 +93,7 @@ export const boostOwnGroup = createAsyncThunk(
         url: `${baseUrl}/group/boost/${data}`,
       });
       console.log(response, 'boost data');
+
       return {result: response.data, id: data};
     } catch (err) {
       console.log(err.response);
@@ -130,6 +133,12 @@ export const UserGroupReducer = createSlice({
     resetCouponValue(state, action) {
       (state.couponResError = ''), (state.couponSuccess = '');
     },
+    resetBoostValue(state, action) {
+      state.boostSuccess = '';
+    },
+    resetVisible(state, action) {
+      state.visibleSuccess = '';
+    },
   },
   extraReducers: {
     [getUserGroup.fulfilled]: (state, action) => {
@@ -158,12 +167,14 @@ export const UserGroupReducer = createSlice({
       state.userGroupData[updateIndex] = action.payload;
       state.loading = false;
       state.updateGroup = 'success';
+      state.visibleSuccess = 'success';
     },
     [boostOwnGroup.fulfilled]: (state, action) => {
       const index = state.userGroupData.findIndex(
         el => el.id == action.payload.id,
       );
       state.userGroupData[index] = action.payload.result.result[0];
+      state.boostSuccess = 'success';
     },
     [boostOwnGroup.pending]: (state, action) => {
       state.boostSuccess = '';
@@ -186,5 +197,10 @@ export const UserGroupReducer = createSlice({
     },
   },
 });
-export const {updateSuccessValue, resetCouponValue} = UserGroupReducer.actions;
+export const {
+  updateSuccessValue,
+  resetCouponValue,
+  resetBoostValue,
+  resetVisible,
+} = UserGroupReducer.actions;
 export default UserGroupReducer.reducer;
