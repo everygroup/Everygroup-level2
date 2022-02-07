@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -12,8 +12,11 @@ import Header from '../../Common/Header';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import {useNavigation} from '@react-navigation/native';
 import SwitchToggle from 'react-native-switch-toggle';
+import {useDispatch, useSelector} from 'react-redux';
+import {getNotification} from '../../../Slice/NotificationReducer';
 
 const NotificationGroupBooster = () => {
+  const dispatch = useDispatch();
   const [groupArray] = useState([
     {
       groupName: 'Nordsee Gruppe',
@@ -24,9 +27,17 @@ const NotificationGroupBooster = () => {
       groupType: 'telegram',
     },
   ]);
-  const [uploadSwitch, setUploadSwitch] = useState(true);
-  const [boostSwitch, setBoostSwitch] = useState(true);
+
   const navigation = useNavigation();
+
+  useEffect(() => {
+    dispatch(getNotification());
+  }, []);
+
+  const {loading, notificationData, error} = useSelector(state => {
+    return state.NotificationReducer;
+  });
+  console.log(notificationData, 'notify');
 
   return (
     <View style={{paddingTop: '25%', height: '100%', backgroundColor: '#fff'}}>
@@ -56,8 +67,10 @@ const NotificationGroupBooster = () => {
           </Text>
         </View>
         <SwitchToggle
-          switchOn={uploadSwitch}
-          onPress={() => setUploadSwitch(!uploadSwitch)}
+          switchOn={
+            notificationData.is_group_notification_activate_automatically
+          }
+          // onPress={() => setUploadSwitch(!uploadSwitch)}
           circleColorOff="#fff"
           circleColorOn="#fff"
           backgroundColorOff="#BECCD6"

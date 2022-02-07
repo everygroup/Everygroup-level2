@@ -71,10 +71,9 @@ export const updateGroup = createAsyncThunk(
           visible_status: !data.visible,
         },
       });
-      console.log(response, 'response');
+
       return response.data;
     } catch (err) {
-      console.log(err.response, 'error update');
       return rejectWithValue(err.response.data.detail);
     }
   },
@@ -85,18 +84,15 @@ export const boostOwnGroup = createAsyncThunk(
   async (data, {rejectWithValue}) => {
     const token = await AsyncStorageLib.getItem('token');
 
-    console.log(data, 'own data');
     try {
       const response = await axios({
         method: 'post',
         headers: {Authorization: `Bearer ${token}`},
         url: `${baseUrl}/group/boost/${data}`,
       });
-      console.log(response, 'boost data');
 
       return {result: response.data, id: data};
     } catch (err) {
-      console.log(err.response);
       return rejectWithValue(Object.values(err.response.data).toString());
     }
   },
@@ -105,7 +101,7 @@ export const applyCoupon = createAsyncThunk(
   'applyCoupon',
   async (data, {rejectWithValue}) => {
     const token = await AsyncStorageLib.getItem('token');
-    console.log(data, 'coupon data');
+
     try {
       const response = await axios({
         method: 'post',
@@ -117,6 +113,46 @@ export const applyCoupon = createAsyncThunk(
       });
 
       return response.data.result[0];
+    } catch (err) {
+      return rejectWithValue(Object.values(err.response.data).toString());
+    }
+  },
+);
+
+export const firstGroupPopup = createAsyncThunk(
+  'firstGroupPopup',
+  async (data, {rejectWithValue}) => {
+    const token = await AsyncStorageLib.getItem('token');
+
+    try {
+      const response = await axios({
+        method: 'post',
+        headers: {Authorization: `Bearer ${token}`},
+        url: `${baseUrl}/group/instruction`,
+        data: {
+          value: false,
+        },
+      });
+
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(Object.values(err.response.data).toString());
+    }
+  },
+);
+export const reuploadGroup = createAsyncThunk(
+  'reuploadGroup',
+  async (data, {rejectWithValue}) => {
+    const token = await AsyncStorageLib.getItem('token');
+
+    try {
+      const response = await axios({
+        method: 'post',
+        headers: {Authorization: `Bearer ${token}`},
+        url: `${baseUrl}/group/reupload/${data}`,
+      });
+
+      return {groupId: data, result: response.data.result[0]};
     } catch (err) {
       return rejectWithValue(Object.values(err.response.data).toString());
     }
@@ -194,6 +230,15 @@ export const UserGroupReducer = createSlice({
     },
     [applyCoupon.rejected]: (state, action) => {
       state.couponResError = action.payload;
+    },
+    [firstGroupPopup.fulfilled]: (state, action) => {
+      state.userGroupData = state.userGroupData[0].is_very_first_group = false;
+    },
+    [reuploadGroup.fulfilled]: (state, action) => {
+      const index = state.userGroupData.findIndex(
+        el => el.id == action.payload.groupId,
+      );
+      state.userGroupData[index] = action.payload.result;
     },
   },
 });

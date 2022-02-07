@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View} from 'react-native';
+import {View, Platform, NativeModules, Linking} from 'react-native';
 import RootNavigator from './src/Navigation/RootNavigator';
 import {configureStore} from '@reduxjs/toolkit';
 import {Provider} from 'react-redux';
@@ -22,11 +22,15 @@ import GetDeleteUserOptionReducer from './Slice/GetDeleteUserOptionReducer';
 import DeleteUserReducer from './Slice/DeleteUserReducer';
 import RandomeReducer from './Slice/RandomeReducer';
 import ActivateUserReducer from './Slice/ActivateUserReducer';
+import CommonReducer from './Slice/CommonReducer';
+import NotificationReducer from './Slice/NotificationReducer';
 import messaging from '@react-native-firebase/messaging';
 import AsyncStorageLib from '@react-native-async-storage/async-storage';
 import PushNotification from 'react-native-push-notification';
 import NetInfo from '@react-native-community/netinfo';
 import InternetModal from './src/Common/InternetModal';
+import {checkVersion} from 'react-native-check-version';
+import VersionCheckModal from './src/Common/VersionCheckModal';
 
 messaging()
   .hasPermission()
@@ -73,19 +77,37 @@ const store = configureStore({
     DeleteUserReducer,
     RandomeReducer,
     ActivateUserReducer,
+    CommonReducer,
+    NotificationReducer,
   },
 });
 
 const App = () => {
   const [networkStatus, setNetworkStatus] = useState();
   const [internetStatus, setInternetStatus] = useState(true);
+  const [versionCheckValue, setVersionCheckValue] = useState(false);
+  const [versionDownloadValue, setVersionDownLoadValue] = useState(false);
+
+  // useEffect(() => {
+  //   appVersioncheck();
+  // }, []);
+
+  // const appVersioncheck = async () => {
+  //   const version = await checkVersion();
+  //   console.log('Got version info:', version);
+  //   setVersionCheckValue(true);
+
+  //   if (version.needsUpdate) {
+  //     console.log(`App has a ${version.updateType} update pending.`);
+  //   }
+  // };
 
   useEffect(() => {
+    requestUserPermission();
     NetInfo.addEventListener(networkState => {
       console.log('Connection type - ', networkState.type);
       setNetworkStatus(networkState.isConnected);
     });
-    requestUserPermission();
     // createNotificationListeners();
     messaging().onNotificationOpenedApp(remoteMessage => {
       // console.log('FIREBASE IOS Background', remoteMessage);
@@ -152,12 +174,38 @@ const App = () => {
     }, 2000);
   }, [networkStatus]);
 
+  const updateVersion = () => {
+    setVersionCheckValue(false);
+    setTimeout(() => {
+      setVersionDownLoadValue(true);
+    }, 500);
+  };
   return (
     <Provider store={store}>
-      <InternetModal
-        modalValue={internetStatus}
-        internetStatus={networkStatus}
+      <VersionCheckModal
+        modalValue={versionCheckValue}
+        buttonText={'Update downloaden'}
+        description={
+          'Wir hatten ein freies Wochende, viele Ideen und eine menge Energydrinks. Heraus kam ein Update für everygroup!'
+        }
+        closeModal={updateVersion}
       />
+      <VersionCheckModal
+        modalValue={versionDownloadValue}
+        buttonText={'Update downloaden'}
+        description={
+          'Wir hatten ein freies Wochende, viele Ideen und eine menge Energydrinks. Heraus kam ein Update für everygroup!'
+        }
+        apiDetail={'Ab sofort haben wir auch Gruppen von Signal!'}
+        closeModal={() => Linking.openURL('https://digimonk.net')}
+      />
+
+      {versionCheckValue ? (
+        <InternetModal
+          modalValue={internetStatus}
+          internetStatus={networkStatus}
+        />
+      ) : null}
       <View style={{flex: 1}}>
         <RootNavigator />
       </View>

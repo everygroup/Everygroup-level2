@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
 import Styles from './Style';
 import Header from '../../Common/Header';
@@ -6,15 +6,29 @@ import FontStyle from '../../Assets/Fonts/FontStyle';
 import SwitchToggle from 'react-native-switch-toggle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  getNotification,
+  updateNotification,
+} from '../../../Slice/NotificationReducer';
 
 const Notification = () => {
-  const [generallySwitch, setGenerallySwitch] = useState(true);
-  const [personSwitch, setPersonSwitch] = useState(true);
-  const [searchSwitch, setSearchSwitch] = useState(true);
-  const [emailSwitch, setEmailSwitch] = useState(true);
+  const dispatch = useDispatch();
+  // const [generallySwitch, setGenerallySwitch] = useState(true);
+  // const [personSwitch, setPersonSwitch] = useState(true);
+  // const [searchSwitch, setSearchSwitch] = useState(true);
+  // const [emailSwitch, setEmailSwitch] = useState(true);
 
   const navigation = useNavigation();
 
+  useEffect(() => {
+    dispatch(getNotification());
+  }, []);
+
+  const {loading, notificationData, error} = useSelector(state => {
+    return state.NotificationReducer;
+  });
+  console.log(notificationData, 'notititi');
   return (
     <View style={[Styles.mainContainer, {paddingTop: '25%'}]}>
       <Header />
@@ -38,8 +52,15 @@ const Notification = () => {
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Text style={styles.titleText}>Allgemein</Text>
           <SwitchToggle
-            switchOn={generallySwitch}
-            onPress={() => setGenerallySwitch(!generallySwitch)}
+            switchOn={notificationData.is_general_notification}
+            onPress={() =>
+              dispatch(
+                updateNotification({
+                  is_general_notification:
+                    !notificationData.is_general_notification,
+                }),
+              )
+            }
             circleColorOff="#fff"
             circleColorOn="#fff"
             backgroundColorOff="#BECCD6"
@@ -72,8 +93,15 @@ const Notification = () => {
           <Text style={styles.titleText}>Personen</Text>
 
           <SwitchToggle
-            switchOn={personSwitch}
-            onPress={() => setPersonSwitch(!personSwitch)}
+            switchOn={notificationData.is_favourite_person_notification}
+            onPress={() =>
+              dispatch(
+                updateNotification({
+                  is_favourite_person_notification:
+                    !notificationData.is_favourite_person_notification,
+                }),
+              )
+            }
             circleColorOff="#fff"
             circleColorOn="#fff"
             backgroundColorOff="#BECCD6"
@@ -93,8 +121,15 @@ const Notification = () => {
           <Text style={styles.titleText}>Suche</Text>
 
           <SwitchToggle
-            switchOn={searchSwitch}
-            onPress={() => setSearchSwitch(!searchSwitch)}
+            switchOn={notificationData.is_favourite_search_notification}
+            onPress={() =>
+              dispatch(
+                updateNotification({
+                  is_favourite_search_notification:
+                    !notificationData.is_favourite_search_notification,
+                }),
+              )
+            }
             circleColorOff="#fff"
             circleColorOn="#fff"
             backgroundColorOff="#BECCD6"
@@ -126,8 +161,14 @@ const Notification = () => {
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Text style={styles.titleText}>E-Mail</Text>
           <SwitchToggle
-            switchOn={emailSwitch}
-            onPress={() => setEmailSwitch(!emailSwitch)}
+            switchOn={notificationData.is_email_receive}
+            onPress={() =>
+              dispatch(
+                updateNotification({
+                  is_email_receive: !notificationData.is_email_receive,
+                }),
+              )
+            }
             circleColorOff="#fff"
             circleColorOn="#fff"
             backgroundColorOff="#BECCD6"

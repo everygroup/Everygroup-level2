@@ -19,6 +19,7 @@ import {
   deleteGroup,
   resetBoostValue,
   resetVisible,
+  reuploadGroup,
   updateGroup,
 } from '../../Slice/UserGroupReducer';
 import InfoModal from './InfoModal';
@@ -374,27 +375,42 @@ const GroupCard = ({
                   marginTop: 10,
                 }}>
                 <View>
-                  <View style={{flexDirection: 'row'}}>
-                    <Icon
-                      name={'redo-alt'}
-                      size={21}
-                      color={
-                        group.remaining_booster_duration != null
-                          ? '#FFBC20'
-                          : '#C4C6C8'
-                      }
-                    />
-                    <Text
-                      style={{
-                        fontFamily: FontStyle.MontExtBold,
-                        fontSize: 13,
-                        color: '#205072',
-                        bottom: 8,
-                        left: 2,
-                      }}>
-                      {group.remaining_booster_time}
-                    </Text>
-                  </View>
+                  <TouchableWithoutFeedback
+                    onPress={() =>
+                      group.remaining_booster_time == null &&
+                      group.reupload_points > 0
+                        ? dispatch(reuploadGroup(group.id))
+                        : null
+                    }>
+                    <View style={{flexDirection: 'row'}}>
+                      <Icon
+                        name={'redo-alt'}
+                        size={21}
+                        color={
+                          group.remaining_booster_duration != null
+                            ? '#FFBC20'
+                            : group.reupload_points
+                            ? '#205072'
+                            : '#C4C6C8'
+                        }
+                      />
+                      <Text
+                        style={{
+                          fontFamily: FontStyle.MontExtBold,
+                          fontSize: 13,
+                          color: '#205072',
+                          bottom: 8,
+                          left: 2,
+                        }}>
+                        {group.remaining_booster_time &&
+                        group.remaining_booster_time != '0:0'
+                          ? group.remaining_booster_time
+                          : group.reupload_points > 0
+                          ? `${group.reupload_points}X`
+                          : null}
+                      </Text>
+                    </View>
+                  </TouchableWithoutFeedback>
                   <Text
                     style={{
                       fontFamily: FontStyle.MontExtBold,

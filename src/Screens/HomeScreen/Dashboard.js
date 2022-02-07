@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState, useRef, version} from 'react';
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
   StyleSheet,
   NativeModules,
   Platform,
+  Linking,
 } from 'react-native';
 import Header from '../../Common/Header';
 import GroupCard from '../../Common/GroupCard';
@@ -24,6 +25,8 @@ import {
   getTrendingGroup,
 } from '../../../Slice/AllGroupListReducer';
 import MainLoader from '../../Common/MainLoader';
+import {setSystemLang} from '../../../Slice/CommonReducer';
+import VersionCheckModal from '../../Common/VersionCheckModal';
 
 const {width, height} = Dimensions.get('screen');
 const Dashboard = () => {
@@ -44,13 +47,18 @@ const Dashboard = () => {
 
   useEffect(() => {
     dispatch(getAllGroup());
-    AsyncStorageLib.setItem(
-      'systemLang',
-      Platform.OS === 'ios'
-        ? NativeModules.SettingsManager.settings.AppleLocale ||
-            NativeModules.SettingsManager.settings.AppleLanguages[0] // iOS 13
-        : NativeModules.I18nManager.localeIdentifier,
+    // AsyncStorageLib.setItem(
+    //   'systemLang',
+    dispatch(
+      setSystemLang(
+        Platform.OS === 'ios'
+          ? NativeModules.SettingsManager.settings.AppleLocale ||
+              NativeModules.SettingsManager.settings.AppleLanguages[0] // iOS 13
+          : NativeModules.I18nManager.localeIdentifier,
+      ),
     );
+
+    // );
 
     dispatch(getCategory());
   }, []);

@@ -10,6 +10,7 @@ const Button = ({
   borderRadius,
   buttonColor1,
   buttonColor2,
+  fontSize,
 }) => {
   return (
     <TouchableOpacity onPress={onPress}>
@@ -21,7 +22,9 @@ const Button = ({
           styles.linearGradient,
           {width: width || 206, borderRadius: borderRadius || 20},
         ]}>
-        <Text style={styles.buttonText}>{buttonText}</Text>
+        <Text style={[styles.buttonText, {fontSize: fontSize || 19}]}>
+          {buttonText}
+        </Text>
       </LinearGradient>
     </TouchableOpacity>
   );
@@ -35,7 +38,6 @@ var styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: {
-    fontSize: 19,
     fontFamily: FontStyle.MontExtBold,
     textAlign: 'center',
     color: '#ffffff',

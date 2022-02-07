@@ -31,6 +31,7 @@ import LottieView from 'lottie-react-native';
 const AddGroup = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [joinOption, setJoinOption] = useState('all');
   const [createLoading, setcreateLoading] = useState(false);
   const [joinedLanguage, setJoinedLanguage] = useState('');
   const [spokenLanguage, setSpokenLanguage] = useState('');
@@ -41,6 +42,7 @@ const AddGroup = () => {
   const [joinLanguage, setJoinLanguage] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState([]);
   const [selectedLanguage, setSelectedLanguage] = useState([]);
+  const [allJoin, setAllJoin] = useState([{language: 'all', code: 'all'}]);
   const [selectedInfo, setSelectInfo] = useState('');
   const [modalValue, setModalValue] = useState(false);
   const [titel, setTitel] = useState('');
@@ -58,6 +60,8 @@ const AddGroup = () => {
   const [groupLink, setGroupLink] = useState('');
   const [spokenError, setSpokenError] = useState(false);
   const [spokenErrorMessage, setSpokenErrorMessage] = useState('');
+  const [joinError, setJoinError] = useState(false);
+  const [joinErrorMessage, setJoinErrorMessage] = useState('');
   const [groupLinkError, setGroupLinkError] = useState(false);
   const [groupLinkMessage, setGroupLinkMessage] = useState('');
   const [hashValue, setHashValue] = useState(['latest']);
@@ -101,6 +105,9 @@ const AddGroup = () => {
     } else if (selectedLanguage.length < 1) {
       setSpokenError(true);
       setSpokenErrorMessage('Wähle eine Sprache');
+    } else if (joinLanguage.length < 1) {
+      setJoinError(true);
+      setJoinErrorMessage('Sprache auswählen..');
     } else if (checkedTerms == false) {
       setTermsError(true);
     } else if (checkedConductRules == false) {
@@ -114,9 +121,30 @@ const AddGroup = () => {
     }
   };
 
+  const {systemLang} = useSelector(state => {
+    return state.CommonReducer;
+  });
+
+  useEffect(() => {
+    setSelectedLanguage([systemLang]);
+    setJoinLanguage([systemLang]);
+  }, [systemLang]);
+
   const CreateGroup = () => {
     const hashArray = hashText.split(' ');
+    const finalJoinLanguage = joinOption == 'all' ? allJoin : joinLanguage;
     setcreateLoading(true);
+    console.log({
+      titel,
+      groupLink,
+      selectedCategory,
+      description,
+      hashArray,
+      selectedLanguage,
+      finalJoinLanguage,
+      checkedTerms,
+      checkedConductRules,
+    });
     setTimeout(() => {
       dispatch(
         createGroup({
@@ -126,7 +154,7 @@ const AddGroup = () => {
           description,
           hashArray,
           selectedLanguage,
-          joinLanguage,
+          finalJoinLanguage,
           checkedTerms,
           checkedConductRules,
         }),
@@ -304,11 +332,11 @@ const AddGroup = () => {
               bgColor="#fff"
               height={50}
               bdWidth={titelError ? 2 : 0.1}
-              borderColor={titelError ? 'red' : '#fff'}
               onChangeText={text => {
                 setTitel(text);
                 setTitelError(false);
               }}
+              borderColor={titelError ? '#FF2020' : null}
             />
           </View>
         </View>
@@ -346,17 +374,17 @@ const AddGroup = () => {
               bgColor="#fff"
               height={50}
               bdWidth={groupLinkError ? 2 : 0.1}
-              borderColor={groupLinkError ? 'red' : '#fff'}
               onChangeText={text => {
                 setGroupLink(text);
                 setGroupLinkError(false);
               }}
+              borderColor={groupLinkError ? '#FF2020' : null}
             />
           </View>
         </View>
         <View style={Styles.errorContainer}>
           {categoryError == true ? (
-            <HelperText style={[Styles.helperText, {left: '5%'}]} type="error">
+            <HelperText style={[Styles.helperText, {left: -50}]} type="error">
               {categoryErrorMessage}
             </HelperText>
           ) : null}
@@ -379,7 +407,12 @@ const AddGroup = () => {
               }}
             />
           </TouchableOpacity>
-          <View style={[styles.insideContainer, {height: expand ? 500 : 39}]}>
+          <View
+            style={[
+              styles.insideContainer,
+              {height: expand ? 500 : 39},
+              categoryError ? {borderColor: 'red', borderWidth: 2} : null,
+            ]}>
             <TouchableOpacity
               onPress={expandOption}
               style={{
@@ -460,7 +493,7 @@ const AddGroup = () => {
         </View>
         <View style={Styles.errorContainer}>
           {descriptionError == true ? (
-            <HelperText style={[Styles.helperText, {left: '5%'}]} type="error">
+            <HelperText style={[Styles.helperText, {left: -50}]} type="error">
               {descriptionErrorMessage}
             </HelperText>
           ) : null}
@@ -500,12 +533,13 @@ const AddGroup = () => {
               height: 100,
               justifyContent: 'center',
               paddingTop: 10,
+              borderWidth: descriptionError ? 2 : 2,
+              borderColor: descriptionError ? '#FF2020' : '#FFF',
             }}>
             <Input
               placeholder="Beschreibung"
               placeholderTextColor="#BECCD6"
               bgColor="#fff"
-              borderColor="#fff"
               bdWidth={0.1}
               height={100}
               multiline={true}
@@ -571,7 +605,7 @@ const AddGroup = () => {
         </View>
         <View style={Styles.errorContainer}>
           {spokenError == true ? (
-            <HelperText style={[Styles.helperText, {left: '5%'}]} type="error">
+            <HelperText style={[Styles.helperText, {left: -50}]} type="error">
               {spokenErrorMessage}
             </HelperText>
           ) : null}
@@ -598,17 +632,19 @@ const AddGroup = () => {
           <View
             style={{
               width: '75%',
-              height: languageArray.length > 0 && groupLanguage ? 150 : 40,
+              height: languageArray.length > 0 && groupLanguage ? 150 : 45,
               borderRadius: 5,
               backgroundColor: '#fff',
               alignItems: 'flex-start',
+              borderWidth: spokenError ? 2 : 1,
+              borderColor: spokenError ? '#FF2020' : '#FFF',
             }}>
             <Input
               onFocus={() => {
                 setJoinLanguageFocus(false), setGroupLanguageFocus(true);
               }}
               inputWidth={'100%'}
-              height={50}
+              height={45}
               placeholder="Sprache auswählen"
               placeholderTextColor="#BECCD6"
               icon="available"
@@ -625,7 +661,9 @@ const AddGroup = () => {
               bdWidth={0.1}
               iconName={'plus'}
               iconColor="#beccd7"
-              onChangeText={text => checkLanguage(text)}
+              onChangeText={text => {
+                checkLanguage(text), setSpokenError(false);
+              }}
               value={spokenLanguage.language}
             />
             {languageArray.length > 0 && groupLanguage ? (
@@ -714,15 +752,10 @@ const AddGroup = () => {
         </View>
         <View style={{width: '100%', flexDirection: 'row', left: 7}}>
           <TouchableOpacity
-            onPress={() =>
-              selectJoinLanguage(
-                {language: 'all', code: 'all'},
-                setJoinSelection('all'),
-              )
-            }
+            onPress={() => setJoinOption('all')}
             style={[
               styles.buttonView,
-              joinSelection == 'limited' ? {backgroundColor: '#beccd6'} : null,
+              joinOption == 'limited' ? {backgroundColor: '#beccd6'} : null,
             ]}>
             <Text
               style={{
@@ -735,10 +768,10 @@ const AddGroup = () => {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => setJoinSelection('limited')}
+            onPress={() => setJoinOption('limited')}
             style={[
               styles.buttonView,
-              joinSelection == 'all' ? {backgroundColor: '#beccd6'} : null,
+              joinOption == 'all' ? {backgroundColor: '#beccd6'} : null,
             ]}>
             <Text
               style={{
@@ -750,6 +783,13 @@ const AddGroup = () => {
               Nur folgende Sprachen:
             </Text>
           </TouchableOpacity>
+        </View>
+        <View style={Styles.errorContainer}>
+          {joinError == true ? (
+            <HelperText style={[Styles.helperText, {left: -50}]} type="error">
+              {joinErrorMessage}
+            </HelperText>
+          ) : null}
         </View>
         <View style={{flexDirection: 'row', marginTop: 10}}>
           <TouchableOpacity

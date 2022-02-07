@@ -1,30 +1,25 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {NativeModules, Platform} from 'react-native';
-const initialState = {systemLang: ''};
-
-const getSystemLang = () => {
-  value =
-    Platform.OS === 'ios'
-      ? NativeModules.SettingsManager.settings.AppleLocale ||
-        NativeModules.SettingsManager.settings.AppleLanguages[0] // iOS 13
-      : NativeModules.I18nManager.localeIdentifier;
-
-  //   return value;
+const initialState = {
+  allLang: [
+    {code: 'en', language: 'English'},
+    {code: 'de', language: 'Deutsch'},
+    {code: 'hi', language: 'Hindi'},
+    ,
+  ],
+  systemLang: {code: 'hi', language: 'Hindi'},
 };
 
 export const CommonReducer = createSlice({
   name: 'CommonReducer',
   initialState,
-  reducers: {},
-  extraReducers: {
-    [getSystemLang.fulfilled]: (state, action) => {
-      state.systemLang = action.payload;
-    },
-
-    [getSystemLang.rejected]: (state, action) => {
-      state.systemLang = action.payload;
+  reducers: {
+    setSystemLang(state, action) {
+      state.systemLang = state.allLang.find(el => el.code == action.payload);
     },
   },
+  extraReducers: {},
 });
 
+export const {setSystemLang} = CommonReducer.actions;
 export default CommonReducer.reducer;

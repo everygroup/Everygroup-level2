@@ -1,14 +1,24 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
 import Styles from './Style';
 import Header from '../../Common/Header';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import {useNavigation} from '@react-navigation/native';
 import SwitchToggle from 'react-native-switch-toggle';
+import {useDispatch, useSelector} from 'react-redux';
+import {getNotification} from '../../../Slice/NotificationReducer';
 const NotificationOwnGroup = () => {
-  const [uploadSwitch, setUploadSwitch] = useState(true);
-  const [boostSwitch, setBoostSwitch] = useState(true);
+  const dispatch = useDispatch();
+
   const navigation = useNavigation();
+
+  useEffect(() => {
+    dispatch(getNotification());
+  }, []);
+
+  const {loading, notificationData, error} = useSelector(state => {
+    return state.NotificationReducer;
+  });
 
   return (
     <View style={{paddingTop: '25%', height: '100%', backgroundColor: '#fff'}}>
@@ -38,8 +48,8 @@ const NotificationOwnGroup = () => {
           </Text>
         </View>
         <SwitchToggle
-          switchOn={uploadSwitch}
-          onPress={() => setUploadSwitch(!uploadSwitch)}
+          switchOn={notificationData.is_own_group_reupload_notification}
+          // onPress={() => setUploadSwitch(!uploadSwitch)}
           circleColorOff="#fff"
           circleColorOn="#fff"
           backgroundColorOff="#BECCD6"
@@ -57,8 +67,8 @@ const NotificationOwnGroup = () => {
           </Text>
         </View>
         <SwitchToggle
-          switchOn={boostSwitch}
-          onPress={() => setBoostSwitch(!boostSwitch)}
+          switchOn={notificationData.is_own_group_boost_notification}
+          // onPress={() => setBoostSwitch(!boostSwitch)}
           circleColorOff="#fff"
           circleColorOn="#fff"
           backgroundColorOff="#BECCD6"
