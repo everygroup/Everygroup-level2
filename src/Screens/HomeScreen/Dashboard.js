@@ -11,6 +11,7 @@ import {
   NativeModules,
   Platform,
   Linking,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import Header from '../../Common/Header';
 import GroupCard from '../../Common/GroupCard';
@@ -29,6 +30,7 @@ import {setSystemLang} from '../../../Slice/CommonReducer';
 import VersionCheckModal from '../../Common/VersionCheckModal';
 
 const {width, height} = Dimensions.get('screen');
+const scroll = React.createRef();
 const Dashboard = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -39,11 +41,11 @@ const Dashboard = () => {
     setTrendingGroup(prevValue => [...prevValue, ...trendingData]);
   };
 
-  const la =
-    Platform.OS === 'ios'
-      ? NativeModules.SettingsManager.settings.AppleLocale ||
-        NativeModules.SettingsManager.settings.AppleLanguages[0] // iOS 13
-      : NativeModules.I18nManager.localeIdentifier;
+  // const la =
+  //   Platform.OS === 'ios'
+  //     ? NativeModules.SettingsManager.settings.AppleLocale ||
+  //       NativeModules.SettingsManager.settings.AppleLanguages[0] // iOS 13
+  //     : NativeModules.I18nManager.localeIdentifier;
 
   useEffect(() => {
     dispatch(getAllGroup());
@@ -64,9 +66,10 @@ const Dashboard = () => {
   }, []);
 
   // Redux code
-  const {groupData, trendingData, error, loading} = useSelector(state => {
-    return state.AllGroupListReducer;
-  });
+  const {groupData, trendingData, error, loading, nextUrl, previousUrl} =
+    useSelector(state => {
+      return state.AllGroupListReducer;
+    });
 
   const {createSuccess} = useSelector(state => {
     return state.createGroup;
@@ -96,6 +99,7 @@ const Dashboard = () => {
       ) : (
         <>
           <ScrollView
+            ref={scroll}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{paddingBottom: '10%'}}>
             <View style={{height: height * 0.3, backgroundColor: '#fff'}}>
@@ -171,19 +175,55 @@ const Dashboard = () => {
               </Text>
               <ScrollView style={{paddingBottom: 20}}>
                 {groupData.map(group => {
-                  return <GroupCard group={group} />;
+                  return <GroupCard group={group} key={group.id} />;
                 })}
               </ScrollView>
-              <TouchableOpacity style={styles.moreGroupButton}>
-                <Text
+              {previousUrl != null ? (
+                <View
                   style={{
-                    fontFamily: FontStyle.MontBold,
-                    fontSize: 14,
-                    color: '#fff',
+                    flexDirection: 'row',
+                    width: '100%',
+                    justifyContent: 'space-evenly',
                   }}>
-                  Mehr Gruppen
-                </Text>
-              </TouchableOpacity>
+                  <TouchableWithoutFeedback
+                    onPress={() => {
+                      dispatch(getAllGroup(previousUrl)),
+                        scroll.current.scrollTo(0);
+                    }}>
+                    <Image
+                      source={require('../../Assets/Images/orangeCircleLeft.png')}
+                      style={{height: 52, width: 52, resizeMode: 'contain'}}
+                    />
+                  </TouchableWithoutFeedback>
+                  <TouchableWithoutFeedback
+                    onPress={() => {
+                      dispatch(
+                        getAllGroup(nextUrl != null ? nextUrl : undefined),
+                      ),
+                        scroll.current.scrollTo(0);
+                    }}>
+                    <Image
+                      source={require('../../Assets/Images/orangeCircleRight.png')}
+                      style={{height: 52, width: 52, resizeMode: 'contain'}}
+                    />
+                  </TouchableWithoutFeedback>
+                </View>
+              ) : (
+                <TouchableOpacity
+                  onPress={() => {
+                    dispatch(getAllGroup(nextUrl)), scroll.current.scrollTo(0);
+                  }}
+                  style={styles.moreGroupButton}>
+                  <Text
+                    style={{
+                      fontFamily: FontStyle.MontBold,
+                      fontSize: 14,
+                      color: '#fff',
+                    }}>
+                    Mehr Gruppen
+                  </Text>
+                </TouchableOpacity>
+              )}
             </View>
           </ScrollView>
           <TouchableOpacity

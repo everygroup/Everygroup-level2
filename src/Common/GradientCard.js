@@ -16,6 +16,7 @@ const GradientCard = ({group}) => {
   const navigation = useNavigation();
   return (
     <LinearGradient
+      key={group.id}
       colors={
         group.group_type == 'line'
           ? ['#08C719', '#adebad']

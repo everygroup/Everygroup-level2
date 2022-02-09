@@ -215,7 +215,7 @@ function Interface(props) {
       );
     }
   }, [value]);
-
+  console.log(randomeList, 'randomeList');
   return (
     <View style={{flex: 1, backgroundColor: '#dcdcdc'}}>
       <SettingModal
@@ -243,6 +243,7 @@ function Interface(props) {
         {randomeList.map(item => {
           return (
             <View
+              key={item.id}
               style={{height: height}}
               pointerEvents={tutorialStatus == 'False' ? 'none' : 'auto'}>
               <View
@@ -322,6 +323,7 @@ function Interface(props) {
                 <View style={styles.categoryContainer}>
                   {item.categories.map((categories, index) => (
                     <View
+                      key={index.toString()}
                       style={{
                         backgroundColor: '#205072',
                         height: 20,
@@ -340,8 +342,9 @@ function Interface(props) {
                   ))}
                 </View>
                 <View style={styles.hashtagContainer}>
-                  {item.tags.map(tags => (
+                  {item.tags.map((tags, index) => (
                     <Text
+                      key={index.toString()}
                       style={{
                         color: '#FFA420',
                         margin: 3,

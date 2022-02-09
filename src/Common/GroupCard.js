@@ -15,8 +15,11 @@ import Button from './Button';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
+  boostNotificationStatus,
   boostOwnGroup,
   deleteGroup,
+  getUserGroup,
+  muteStatus,
   resetBoostValue,
   resetVisible,
   reuploadGroup,
@@ -27,6 +30,7 @@ import DeleteModal from '../Screens/UserScreens/deleteModal';
 import ProgressCircle from 'react-native-progress-circle';
 import moment from 'moment';
 import {getAllGroup} from '../../Slice/AllGroupListReducer';
+import {removeBoostNotificationList} from '../../Slice/NotificationReducer';
 
 const GroupCard = ({
   group,
@@ -47,6 +51,7 @@ const GroupCard = ({
   const [deleteModal, setDeleteModal] = useState(false);
   const [modalValue, setModalValue] = useState(false);
   const [time, setTime] = useState(0);
+  const [readMoreId, setReadMoreId] = useState('');
 
   const visibleUnvisible = () => {
     if (group.visible_status == true) {
@@ -91,6 +96,14 @@ const GroupCard = ({
     }
   }, [visibleSuccess]);
 
+  const readMore = groupId => {
+    if (groupId == readMoreId) {
+      setReadMoreId('');
+    } else {
+      setReadMoreId(groupId);
+    }
+  };
+
   return (
     <View>
       <InfoModal
@@ -113,61 +126,119 @@ const GroupCard = ({
 
       <View style={{position: 'relative', zIndex: 99999}}>
         <View style={[styles.containerStyle, {borderBottomRightRadius: 0}]}>
-          <View
-            style={{
-              backgroundColor: group.is_link_expire
-                ? '#C3C5C7'
-                : group.group_type == 'snapchat'
-                ? '#FFFC00'
-                : group.group_type == 'whatsapp'
-                ? 'lightgreen'
-                : group.group_type == 'line'
-                ? 'green'
-                : group.group_type == 'telegram'
-                ? '#0088CC'
-                : group.group_type == 'viber'
-                ? '#665CAC'
-                : '#7289DA',
-
-              height: 30,
-              width: 30,
-              borderTopLeftRadius: 7,
-              borderBottomRightRadius: 5,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            {group.group_type == 'snapchat' ? (
-              <Image
-                source={require('../Assets/Images/snapchatLine.png')}
-                style={styles.imageStyle}
-              />
-            ) : group.group_type == 'line' ? (
-              <Image
-                source={require('../Assets/Images/lineLine.png')}
-                style={styles.imageStyle}
-              />
-            ) : group.group_type == 'telegram' ? (
-              <Image
-                source={require('../Assets/Images/telegramLine.png')}
-                style={styles.imageStyle}
-              />
-            ) : group.group_type == 'whatsapp' ? (
-              <Image
-                source={require('../Assets/Images/whatsappLine.png')}
-                style={styles.imageStyle}
-              />
-            ) : group.group_type == 'viber' ? (
-              <Image
-                source={require('../Assets/Images/viber.png')}
-                style={styles.imageStyle}
-              />
-            ) : (
-              <Image
-                source={require('../Assets/Images/discord.png')}
-                style={styles.imageStyle}
-              />
-            )}
+          <View style={{flexDirection: 'row'}}>
+            <View
+              style={{
+                backgroundColor: group.is_link_expire
+                  ? '#C3C5C7'
+                  : group.group_type == 'snapchat'
+                  ? '#FFFC00'
+                  : group.group_type == 'whatsapp'
+                  ? 'lightgreen'
+                  : group.group_type == 'line'
+                  ? 'green'
+                  : group.group_type == 'telegram'
+                  ? '#0088CC'
+                  : group.group_type == 'viber'
+                  ? '#665CAC'
+                  : '#7289DA',
+                zIndex: 99999,
+                height: 30,
+                width: 30,
+                borderTopLeftRadius: 7,
+                borderBottomRightRadius: 5,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              {group.group_type == 'snapchat' ? (
+                <Image
+                  source={require('../Assets/Images/snapchatLine.png')}
+                  style={styles.imageStyle}
+                />
+              ) : group.group_type == 'line' ? (
+                <Image
+                  source={require('../Assets/Images/lineLine.png')}
+                  style={styles.imageStyle}
+                />
+              ) : group.group_type == 'telegram' ? (
+                <Image
+                  source={require('../Assets/Images/telegramLine.png')}
+                  style={styles.imageStyle}
+                />
+              ) : group.group_type == 'whatsapp' ? (
+                <Image
+                  source={require('../Assets/Images/whatsappLine.png')}
+                  style={styles.imageStyle}
+                />
+              ) : group.group_type == 'viber' ? (
+                <Image
+                  source={require('../Assets/Images/viber.png')}
+                  style={styles.imageStyle}
+                />
+              ) : (
+                <Image
+                  source={require('../Assets/Images/discord.png')}
+                  style={styles.imageStyle}
+                />
+              )}
+            </View>
+            {group.categories.some(el => el.slug == '18') ? (
+              <View
+                style={[
+                  styles.badgeContainer,
+                  {
+                    left: -5,
+                    zIndex: 9999,
+                    backgroundColor: '#FF0000',
+                    width: 43,
+                  },
+                ]}>
+                <Text style={[styles.badgeText, {fontSize: 10}]}>18</Text>
+                <Text style={[styles.badgeText, {fontSize: 12}]}>+</Text>
+              </View>
+            ) : null}
+            {group.trend_status ? (
+              <View style={[styles.badgeContainer, {left: -8, zIndex: 999}]}>
+                <Text style={styles.badgeText}>Trends</Text>
+                <Image
+                  source={require('../Assets/Images/starFill.png')}
+                  style={styles.badgeImage}
+                />
+              </View>
+            ) : null}
+            {group.instagram_badge_status ? (
+              <View
+                style={[
+                  styles.badgeContainer,
+                  {
+                    backgroundColor: '#C13584',
+                    width: 86,
+                    left: -10,
+                    zIndex: 99,
+                  },
+                ]}>
+                <Text style={styles.badgeText}>Instagram</Text>
+                <Image
+                  source={require('../Assets/Images/instagramWhiteIcon.png')}
+                  style={styles.badgeImage}
+                />
+              </View>
+            ) : null}
+            {group.categories.some(el => el.slug == 'creator') ? (
+              <View
+                style={[
+                  styles.badgeContainer,
+                  {backgroundColor: '#0600AF', width: 86, left: -15, zIndex: 9},
+                ]}>
+                <Text style={styles.badgeText}>Creator</Text>
+                <Image
+                  source={require('../Assets/Images/creatorWhiteIcon.png')}
+                  style={styles.badgeImage}
+                />
+              </View>
+            ) : null}
           </View>
+
           <TouchableOpacity
             onPress={() =>
               navigation.navigate('GroupDetail', {groupId: group.id})
@@ -207,7 +278,6 @@ const GroupCard = ({
 
             {!group.is_link_expire ? (
               <FlatList
-                keyExtractor={(item, index) => item.slug}
                 horizontal={true}
                 contentContainerStyle={{
                   height: 22,
@@ -218,6 +288,7 @@ const GroupCard = ({
                 renderItem={({item}) => {
                   return (
                     <View
+                      key={item.slug}
                       style={{
                         backgroundColor: '#205072',
                         marginHorizontal: 5,
@@ -245,7 +316,6 @@ const GroupCard = ({
 
             {!group.is_link_expire ? (
               <FlatList
-                keyExtractor={(item, index) => item}
                 horizontal={true}
                 contentContainerStyle={{
                   width: '95%',
@@ -257,7 +327,7 @@ const GroupCard = ({
                 data={group.tags}
                 renderItem={({item}) => {
                   return (
-                    <View style={{minWidth: 38, maxWidth: 'auto'}}>
+                    <View key={item} style={{minWidth: 38, maxWidth: 'auto'}}>
                       <Text
                         style={{
                           color: '#FFA420',
@@ -272,18 +342,45 @@ const GroupCard = ({
               />
             ) : null}
             <Text
+              ellipsizeMode={'tail'}
+              numberOfLines={readMoreId !== group.id ? 5 : 12}
               style={{
                 fontFamily: FontStyle.MontSemiBold,
                 fontSize: group.is_link_expire ? 18 : 15,
                 color: '#205072',
                 paddingHorizontal: '8%',
-                textAlign: 'center',
+                textAlign: 'left',
               }}>
               {group.is_link_expire
                 ? 'Der Link dieser Gruppe ist nicht mehr gültig.'
                 : group.description}
             </Text>
           </TouchableOpacity>
+          {group.description.length > 160 ? (
+            <View
+              style={{
+                height: 20,
+                backgroundColor: '#fff',
+                opacity: 0.6,
+                marginTop: readMoreId === group.id ? 0 : -20,
+              }}
+            />
+          ) : null}
+          {group.description.length > 150 ? (
+            <TouchableWithoutFeedback onPress={() => readMore(group.id)}>
+              <View
+                style={{
+                  width: '100%',
+                  alignItems: 'center',
+                }}>
+                <Icon
+                  name={readMoreId !== group.id ? 'chevron-down' : 'chevron-up'}
+                  size={30}
+                  color="#205072"
+                />
+              </View>
+            </TouchableWithoutFeedback>
+          ) : null}
           <TouchableOpacity
             onPress={() => openLink(group.group_link)}
             style={{
@@ -443,19 +540,27 @@ const GroupCard = ({
                   }
                 />
 
-                <TouchableOpacity onPress={bellPress}>
-                  {bellValue ? (
-                    <Image
-                      source={require('../Assets/Images/bell.png')}
-                      style={{height: 24, width: 24}}
-                    />
-                  ) : (
+                <TouchableWithoutFeedback
+                  onPress={() =>
+                    dispatch(
+                      boostNotificationStatus({
+                        groupId: group.id,
+                        status: !group.mute_status,
+                      }),
+                    )
+                  }>
+                  {group.mute_status ? (
                     <Image
                       source={require('../Assets/Images/closebell.png')}
                       style={{height: 24, width: 24}}
                     />
+                  ) : (
+                    <Image
+                      source={require('../Assets/Images/bell.png')}
+                      style={{height: 24, width: 24}}
+                    />
                   )}
-                </TouchableOpacity>
+                </TouchableWithoutFeedback>
                 <Icon
                   name={'trash'}
                   size={21}
@@ -590,6 +695,26 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     resizeMode: 'contain',
+  },
+  badgeImage: {
+    height: 10,
+    width: 10,
+    resizeMode: 'contain',
+    left: 2,
+  },
+  badgeText: {
+    fontFamily: FontStyle.MontExtBold,
+    fontSize: 9,
+    color: '#fff',
+  },
+  badgeContainer: {
+    backgroundColor: '#FBD30D',
+    height: 30,
+    width: 63,
+    borderBottomRightRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
   },
 });
 

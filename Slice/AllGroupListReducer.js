@@ -11,21 +11,23 @@ const initialState = {
   similarGroupList: [],
   trendingData: [],
   trendingError: '',
+  nextUrl: '',
+  previousUrl: '',
 };
 
 export const getAllGroup = createAsyncThunk(
   'getAllGroup',
   async (data, {rejectWithValue}) => {
     const token = await AsyncStorageLib.getItem('token');
-
+    console.log(data, 'dat');
     try {
       const response = await axios({
         method: 'get',
         headers: {Authorization: `Bearer ${token}`},
-        url: `${baseUrl}/group/all?limit=8`,
+        url: data != undefined ? data : `${baseUrl}/group/all?limit=8`,
       });
 
-      return response.data.results;
+      return response.data;
     } catch (err) {
       return rejectWithValue(err.response.data);
     }
@@ -47,7 +49,6 @@ export const getTrendingGroup = createAsyncThunk(
       });
       return array;
     } catch (err) {
-      console.log(err);
       return rejectWithValue(err.response.data);
     }
   },
@@ -89,15 +90,17 @@ export const AllGroupListReducer = createSlice({
   },
   extraReducers: {
     [getAllGroup.fulfilled]: (state, action) => {
-      state.loading = false;
-      state.groupData = action.payload;
+      // state.loading = false;
+      (state.nextUrl = action.payload.next),
+        (state.previousUrl = action.payload.previous),
+        (state.groupData = action.payload.results);
     },
     [getAllGroup.pending]: (state, action) => {
-      state.loading = true;
+      // state.loading = true;
       state.error = '';
     },
     [getAllGroup.rejected]: (state, action) => {
-      state.loading = false;
+      // state.loading = false;
       state.error = action.payload;
     },
     [getSimilarGroupList.fulfilled]: (state, action) => {
@@ -105,12 +108,15 @@ export const AllGroupListReducer = createSlice({
     },
     [getTrendingGroup.fulfilled]: (state, action) => {
       state.trendingData = action.payload;
+      state.loading = false;
     },
     [getTrendingGroup.pending]: (state, action) => {
       state.trendingError = '';
+      state.loading = true;
     },
     [getTrendingGroup.rejected]: (state, action) => {
       state.trendingError = action.payload;
+      state.loading = false;
     },
   },
 });

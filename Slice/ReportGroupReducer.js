@@ -26,7 +26,7 @@ export const reportGroup = createAsyncThunk(
           description: data.value.otherText,
         },
       });
-
+      console.log(response, 'flagres');
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response.data);

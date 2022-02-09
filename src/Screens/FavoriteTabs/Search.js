@@ -21,10 +21,11 @@ const Search = () => {
         contentContainerStyle={{paddingBottom: 100}}
         showsVerticalScrollIndicator={false}
         data={getAllSearch}
-        listKey={getAllSearch.id}
+        listKey={(item, index) => index.toString()}
         renderItem={({item: data}) => {
           return (
             <SearchCard
+              key={data.id}
               data={data}
               onPress={data.id}
               bellPress={() => bellPress(data.id)}

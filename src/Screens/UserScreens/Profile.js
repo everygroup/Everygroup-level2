@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, FlatList, Image} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList,
+  Image,
+  Platform,
+} from 'react-native';
 import Header from '../../Common/Header';
 import Styles from './Style';
 import {useNavigation} from '@react-navigation/native';
@@ -30,7 +37,11 @@ const Profile = () => {
   };
 
   return (
-    <View style={[Styles.mainContainer, {paddingTop: '25%'}]}>
+    <View
+      style={[
+        Styles.mainContainer,
+        {paddingTop: Platform.OS == 'ios' ? '25%' : '15%'},
+      ]}>
       <Header />
       <Text style={Styles.headingText}>Profil</Text>
       <FlatList

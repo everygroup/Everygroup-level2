@@ -46,7 +46,7 @@ const ReportModal = ({modalValue, closeModal, parentCallBack, groupId}) => {
   // const submitData = () => {
   //   parentCallBack(selectedOption);
   // };
-
+  console.log(groupId, 'report modal');
   return (
     <View>
       <Modal
@@ -112,7 +112,9 @@ const ReportModal = ({modalValue, closeModal, parentCallBack, groupId}) => {
               buttonText="Melden"
               buttonColor1={selectedOption.length > 0 ? '#FFA420' : '#f1f3f5'}
               buttonColor2={selectedOption.length > 0 ? '#FE7027' : '#f1f3f5'}
-              onPress={() => parentCallBack({selectedOption, otherText})}
+              onPress={() =>
+                parentCallBack({selectedOption, otherText, groupId})
+              }
             />
           </View>
         </View>

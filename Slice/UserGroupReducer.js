@@ -15,6 +15,7 @@ const initialState = {
   couponResError: '',
   couponSuccess: '',
   visibleSuccess: '',
+  boostNotifyStatus: '',
 };
 
 export const getUserGroup = createAsyncThunk(
@@ -159,6 +160,29 @@ export const reuploadGroup = createAsyncThunk(
   },
 );
 
+export const boostNotificationStatus = createAsyncThunk(
+  'boostNotificationStatus',
+  async (data, {rejectWithValue}) => {
+    const token = await AsyncStorageLib.getItem('token');
+    try {
+      const response = await axios({
+        method: 'post',
+        headers: {Authorization: `Bearer ${token}`},
+        url: `${baseUrl}/group/mute`,
+        data: {
+          group: data.groupId,
+          status: data.status,
+        },
+      });
+      console.log(response, 'response');
+      return response.data;
+    } catch (err) {
+      console.log(err.response, 'error asdf');
+      return rejectWithValue(Object.values(err.response.data));
+    }
+  },
+);
+
 export const UserGroupReducer = createSlice({
   name: 'UserGroupReducer',
   initialState,
@@ -240,6 +264,19 @@ export const UserGroupReducer = createSlice({
       );
       state.userGroupData[index] = action.payload.result;
     },
+
+    [boostNotificationStatus.fulfilled]: (state, action) => {
+      const index = state.userGroupData.findIndex(
+        el => el.id == action.payload.group,
+      );
+      state.userGroupData[index].mute_status = action.payload.status;
+    },
+    [boostNotificationStatus.pending]: (state, action) => {
+      state.boostNotifyStatus = '';
+    },
+    [boostNotificationStatus.rejected]: (state, action) => {
+      state.boostNotifyStatus = '';
+    },
   },
 });
 export const {
@@ -247,5 +284,6 @@ export const {
   resetCouponValue,
   resetBoostValue,
   resetVisible,
+  muteStatus,
 } = UserGroupReducer.actions;
 export default UserGroupReducer.reducer;

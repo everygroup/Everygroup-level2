@@ -14,10 +14,6 @@ import {
 
 const Notification = () => {
   const dispatch = useDispatch();
-  // const [generallySwitch, setGenerallySwitch] = useState(true);
-  // const [personSwitch, setPersonSwitch] = useState(true);
-  // const [searchSwitch, setSearchSwitch] = useState(true);
-  // const [emailSwitch, setEmailSwitch] = useState(true);
 
   const navigation = useNavigation();
 
@@ -28,7 +24,7 @@ const Notification = () => {
   const {loading, notificationData, error} = useSelector(state => {
     return state.NotificationReducer;
   });
-  console.log(notificationData, 'notititi');
+
   return (
     <View style={[Styles.mainContainer, {paddingTop: '25%'}]}>
       <Header />
@@ -206,7 +202,9 @@ const Notification = () => {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: '5%',
-    height: '10%',
+    minHeight: '10%',
+    maxHeight: 'auto',
+    paddingVertical: '1%',
   },
   titleText: {
     color: '#FFA420',

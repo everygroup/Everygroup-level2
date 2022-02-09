@@ -9,6 +9,8 @@ const initialState = {
   loading: false,
   notificationData: {},
   error: '',
+  boostListNotify: [],
+  muteSuccess: '',
 };
 
 export const getNotification = createAsyncThunk(
@@ -41,10 +43,50 @@ export const updateNotification = createAsyncThunk(
         url: `${baseUrl}/notifications`,
         data,
       });
-      console.log(response, 'no');
+
       return data;
     } catch (err) {
-      console.log(err.response, 'error');
+      return rejectWithValue(Object.values(err.response.data));
+    }
+  },
+);
+
+export const boostNotificationList = createAsyncThunk(
+  'boostNotificationList',
+  async (data, {rejectWithValue}) => {
+    const token = await AsyncStorageLib.getItem('token');
+    try {
+      const response = await axios({
+        method: 'get',
+        headers: {Authorization: `Bearer ${token}`},
+        url: `${baseUrl}/group/boosted`,
+      });
+
+      return response.data.results;
+    } catch (err) {
+      return rejectWithValue(Object.values(err.response.data));
+    }
+  },
+);
+
+export const removeBoostNotificationList = createAsyncThunk(
+  'removeBoostNotificationList',
+  async (data, {rejectWithValue}) => {
+    const token = await AsyncStorageLib.getItem('token');
+    try {
+      const response = await axios({
+        method: 'post',
+        headers: {Authorization: `Bearer ${token}`},
+        url: `${baseUrl}/group/mute`,
+        data: {
+          group: data.groupId,
+          status: data.status,
+        },
+      });
+      console.log(response, 'response');
+      return response.data;
+    } catch (err) {
+      console.log(err.response, 'error asdf');
       return rejectWithValue(Object.values(err.response.data));
     }
   },
@@ -63,11 +105,26 @@ export const NotificationReducer = createSlice({
     [updateNotification.fulfilled]: (state, action) => {
       const value = Object.keys(action.payload);
       const value2 = Object.values(action.payload);
-      console.log(value[0]);
+
       state.notificationData[value[0]] = value2[0];
     },
     [updateNotification.pending]: (state, action) => {},
     [updateNotification.rejected]: (state, action) => {},
+    [boostNotificationList.fulfilled]: (state, action) => {
+      state.boostListNotify = action.payload;
+    },
+    [removeBoostNotificationList.fulfilled]: (state, action) => {
+      state.muteSuccess = 'success';
+      state.boostListNotify.splice(
+        state.boostListNotify.findIndex(el => el.id == action.payload.group),
+      );
+    },
+    [removeBoostNotificationList.pending]: (state, action) => {
+      state.muteSuccess = '';
+    },
+    [removeBoostNotificationList.rejected]: (state, action) => {
+      state.muteSuccess = '';
+    },
   },
 });
 

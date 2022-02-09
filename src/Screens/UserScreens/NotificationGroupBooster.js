@@ -6,6 +6,7 @@ import {
   Image,
   StyleSheet,
   FlatList,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import Styles from './Style';
 import Header from '../../Common/Header';
@@ -13,7 +14,12 @@ import FontStyle from '../../Assets/Fonts/FontStyle';
 import {useNavigation} from '@react-navigation/native';
 import SwitchToggle from 'react-native-switch-toggle';
 import {useDispatch, useSelector} from 'react-redux';
-import {getNotification} from '../../../Slice/NotificationReducer';
+import {
+  boostNotificationList,
+  getNotification,
+  removeBoostNotificationList,
+  updateNotification,
+} from '../../../Slice/NotificationReducer';
 
 const NotificationGroupBooster = () => {
   const dispatch = useDispatch();
@@ -32,12 +38,15 @@ const NotificationGroupBooster = () => {
 
   useEffect(() => {
     dispatch(getNotification());
+    dispatch(boostNotificationList());
   }, []);
 
-  const {loading, notificationData, error} = useSelector(state => {
-    return state.NotificationReducer;
-  });
-  console.log(notificationData, 'notify');
+  const {loading, notificationData, error, boostListNotify} = useSelector(
+    state => {
+      return state.NotificationReducer;
+    },
+  );
+  console.log(boostListNotify, 'notify');
 
   return (
     <View style={{paddingTop: '25%', height: '100%', backgroundColor: '#fff'}}>
@@ -70,7 +79,14 @@ const NotificationGroupBooster = () => {
           switchOn={
             notificationData.is_group_notification_activate_automatically
           }
-          // onPress={() => setUploadSwitch(!uploadSwitch)}
+          onPress={() =>
+            dispatch(
+              updateNotification({
+                is_group_notification_activate_automatically:
+                  !notificationData.is_group_notification_activate_automatically,
+              }),
+            )
+          }
           circleColorOff="#fff"
           circleColorOn="#fff"
           backgroundColorOff="#BECCD6"
@@ -91,78 +107,120 @@ const NotificationGroupBooster = () => {
           erhältst, sobald du sie wieder boosten kannst.
         </Text>
       </View>
-      <FlatList
-        data={groupArray}
-        showsVerticalScrollIndicator={false}
-        renderItem={({item}) => {
-          return (
-            <View style={[styles.shadowContainer]}>
-              <View style={{flexDirection: 'row', width: '90%'}}>
-                <View
-                  style={{
-                    backgroundColor:
-                      item.groupType == 'snapchat'
-                        ? '#FFFC00'
-                        : item.groupType == 'whatsapp'
-                        ? 'lightgreen'
-                        : item.groupType == 'line'
-                        ? 'green'
-                        : item.groupType == 'telegram'
-                        ? '#0088CC'
-                        : 'black',
-                    height: 30,
-                    width: 30,
-                    top: -20,
-                    borderTopLeftRadius: 7,
-                    borderBottomRightRadius: 5,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                  {item.groupType == 'snapchat' ? (
-                    <Image
-                      source={require('../../Assets/Images/snapchatLine.png')}
-                      style={styles.imageStyle}
-                    />
-                  ) : item.groupType == 'line' ? (
-                    <Image
-                      source={require('../../Assets/Images/lineLine.png')}
-                      style={styles.imageStyle}
-                    />
-                  ) : item.groupType == 'telegram' ? (
-                    <Image
-                      source={require('../../Assets/Images/telegramLine.png')}
-                      style={styles.imageStyle}
-                    />
-                  ) : item.groupType == 'whatsapp' ? (
-                    <Image
-                      source={require('../../Assets/Images/whatsappLine.png')}
-                      style={styles.imageStyle}
-                    />
-                  ) : (
-                    <Image
-                      source={require('../../Assets/Images/orangeLogo.png')}
-                      style={styles.imageStyle}
-                    />
-                  )}
+      {boostListNotify.length < 1 ? (
+        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          <Image
+            source={require('../../Assets/Images/hand.png')}
+            style={{
+              height: 160,
+              width: 160,
+              resizeMode: 'contain',
+              marginVertical: '5%',
+            }}
+          />
+          <Text
+            style={{
+              fontFamily: FontStyle.MontBold,
+              color: '#205072',
+              fontSize: 19,
+              textAlign: 'center',
+            }}>
+            {`Welche Gruppe sollen wir\n hier zeigen, wenn du bei\n keiner die Benachrichtigung\n aktiviert hast?`}
+          </Text>
+        </View>
+      ) : (
+        <FlatList
+          data={boostListNotify}
+          showsVerticalScrollIndicator={false}
+          renderItem={({item}) => {
+            return (
+              <View style={[styles.shadowContainer]}>
+                <View style={{flexDirection: 'row', width: '90%'}}>
+                  <View
+                    style={{
+                      backgroundColor:
+                        item.group_type == 'snapchat'
+                          ? '#FFFC00'
+                          : item.group_type == 'whatsapp'
+                          ? 'lightgreen'
+                          : item.group_type == 'line'
+                          ? 'green'
+                          : item.group_type == 'telegram'
+                          ? '#0088CC'
+                          : item.group_type == 'viber'
+                          ? '#665CAC'
+                          : item.group_type == 'discord'
+                          ? '#7289DA'
+                          : 'black',
+                      height: 30,
+                      width: 30,
+                      top: -20,
+                      borderTopLeftRadius: 7,
+                      borderBottomRightRadius: 5,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    {item.group_type == 'snapchat' ? (
+                      <Image
+                        source={require('../../Assets/Images/snapchatLine.png')}
+                        style={styles.imageStyle}
+                      />
+                    ) : item.group_type == 'line' ? (
+                      <Image
+                        source={require('../../Assets/Images/lineLine.png')}
+                        style={styles.imageStyle}
+                      />
+                    ) : item.group_type == 'telegram' ? (
+                      <Image
+                        source={require('../../Assets/Images/telegramLine.png')}
+                        style={styles.imageStyle}
+                      />
+                    ) : item.group_type == 'whatsapp' ? (
+                      <Image
+                        source={require('../../Assets/Images/whatsappLine.png')}
+                        style={styles.imageStyle}
+                      />
+                    ) : item.group_type == 'viber' ? (
+                      <Image
+                        source={require('../../Assets/Images/viberLine.png')}
+                        style={styles.imageStyle}
+                      />
+                    ) : (
+                      <Image
+                        source={require('../../Assets/Images/discordLine.png')}
+                        style={styles.imageStyle}
+                      />
+                    )}
+                  </View>
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      fontFamily: FontStyle.MontExtBold,
+                      color: '#205072',
+                      paddingLeft: 20,
+                    }}>
+                    {item.title}
+                  </Text>
                 </View>
-                <Text
-                  style={{
-                    fontSize: 18,
-                    fontFamily: FontStyle.MontExtBold,
-                    color: '#205072',
-                    paddingLeft: 20,
-                  }}>
-                  {item.groupName}
-                </Text>
+                <TouchableWithoutFeedback
+                  onPress={() =>
+                    dispatch(
+                      removeBoostNotificationList({
+                        groupId: item.id,
+                        status: false,
+                      }),
+                    )
+                  }>
+                  <Image
+                    source={require('../../Assets/Images/bell.png')}
+                    style={{width: 24, height: 24, resizeMode: 'contain'}}
+                  />
+                </TouchableWithoutFeedback>
               </View>
-              <Image
-                source={require('../../Assets/Images/bell.png')}
-                style={{width: 24, height: 24, resizeMode: 'contain'}}
-              />
-            </View>
-          );
-        }}
-      />
+            );
+          }}
+        />
+      )}
       <View
         style={{
           justifyContent: 'flex-end',

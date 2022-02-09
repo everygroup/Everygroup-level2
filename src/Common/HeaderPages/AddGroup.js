@@ -27,10 +27,14 @@ import SnapChatModal from './SnapChatModal';
 import LoadingModal from '../LoadingModal';
 import {resetErroLoading} from '../../../Slice/CreateGroupReducer';
 import LottieView from 'lottie-react-native';
+import LinkAvailableModal from '../LinkAvailableModal';
 
 const AddGroup = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [faqValue, setFaqValue] = useState(false);
+  const [linkAvailable, setLinkAvailable] = useState(false);
+  const [linkAvailableMessage, setLinkAvailableMessage] = useState('');
   const [joinOption, setJoinOption] = useState('all');
   const [createLoading, setcreateLoading] = useState(false);
   const [joinedLanguage, setJoinedLanguage] = useState('');
@@ -130,21 +134,12 @@ const AddGroup = () => {
     setJoinLanguage([systemLang]);
   }, [systemLang]);
 
-  const CreateGroup = () => {
+  const CreateGroup = async () => {
     const hashArray = hashText.split(' ');
-    const finalJoinLanguage = joinOption == 'all' ? allJoin : joinLanguage;
+    const finalJoinLanguage =
+      (await joinOption) == 'all' ? allJoin : joinLanguage;
     setcreateLoading(true);
-    console.log({
-      titel,
-      groupLink,
-      selectedCategory,
-      description,
-      hashArray,
-      selectedLanguage,
-      finalJoinLanguage,
-      checkedTerms,
-      checkedConductRules,
-    });
+
     setTimeout(() => {
       dispatch(
         createGroup({
@@ -173,10 +168,24 @@ const AddGroup = () => {
   useEffect(() => {
     if (error.group_link) {
       setGroupLinkError(true);
-      setGroupLinkMessage('Link nicht gültig');
+      if (
+        error.group_link.type == 'other_link' ||
+        error.group_link.type == 'self_link' ||
+        error.group_link.type == 'just_posted'
+      ) {
+        setTimeout(() => {
+          setLinkAvailable(true);
+          setLinkAvailableMessage(error.group_link.error);
+        }, 600);
+      } else {
+        setGroupLinkMessage(error.group_link);
+      }
+    } else if (error.join_languages) {
+      setJoinError(true);
+      setJoinErrorMessage(error.join_languages);
     }
   }, [error]);
-
+  console.log(error, 'error');
   const expandOption = () => {
     setExpand(!expand);
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -251,7 +260,7 @@ const AddGroup = () => {
       selectedLanguage.filter(el => el.language !== item.language),
     );
   };
-
+  console.log(linkAvailable, 'link');
   return (
     <View>
       <LoadingModal
@@ -262,12 +271,18 @@ const AddGroup = () => {
         closeModal={() => setcreateLoading(false)}
         source={require('../../Assets/animation/orangeLoader.json')}
       />
-
+      <LinkAvailableModal
+        modalValue={linkAvailable}
+        message={linkAvailableMessage}
+        closeModal={() => {
+          setLinkAvailable(false), dispatch(resetErroLoading());
+        }}
+      />
       <InfoModal
         modalValue={modalValue}
         message={selectedInfo}
         closeModal={() => setModalValue(false)}
-        closeModal={() => setModalValue(false)}
+        Faq={faqValue}
       />
       <SnapChatModal
         rememberValue={remember_snapchat}
@@ -313,6 +328,7 @@ const AddGroup = () => {
               onPress={() =>
                 pressInfo(
                   'Wähle einen aussagekräftigen Titel, damit jeder sofort auf einen Blick weiß, worum es in deiner Gruppe geht.',
+                  setFaqValue(false),
                 )
               }>
               <Image
@@ -355,6 +371,7 @@ const AddGroup = () => {
               onPress={() =>
                 pressInfo(
                   `Mit dem Gruppenlink können andere deiner Gruppe beitreten. Durch den Link erkennen wir auch automatisch um welchen Messanger es sich handelt und ordnen den passenden Messanger deiner Gruppe zu. Du kannst bei uns Gruppen von WhatsApp, Discord, Snapchat, Telegram, Viber, Line und hochladen \n   \n In unseren FAQ zeigen wir dir für jeden Messanger jeweils, wo dieser Link zu finden ist :)`,
+                  setFaqValue(true),
                 )
               }>
               <Image
@@ -394,6 +411,7 @@ const AddGroup = () => {
             onPress={() =>
               pressInfo(
                 'Mit der Kategorie kannst du passende Themen deiner Gruppe zuordnen. Tipp: So mehr Kategorien du deiner Gruppe zuordnest, desto besser kann sie gefunden werden.',
+                setFaqValue(false),
               )
             }>
             <Image
@@ -428,7 +446,7 @@ const AddGroup = () => {
                     fontSize: 16,
                   }}>
                   {selectedCategory.map(el => {
-                    return <Text>{el.category} ,</Text>;
+                    return <Text key={el.slug}>{el.category} ,</Text>;
                   })}
                 </Text>
               ) : (
@@ -447,7 +465,7 @@ const AddGroup = () => {
               <ScrollView showsVerticalScrollIndicator={false}>
                 {categoryArray.map(el => {
                   return (
-                    <View>
+                    <View key={el.slug}>
                       <TouchableOpacity
                         onPress={() => categroySelection(el)}
                         style={{
@@ -511,6 +529,7 @@ const AddGroup = () => {
             onPress={() =>
               pressInfo(
                 'Durch die Beschreibung hast du die Möglichkeit deine Gruppe detaillierter zu beschreiben \n \n Tipp: Mit einer ansprechenden Beschreibung, kannst du deine Chancen erhöhen, dass mehr Leute deiner Gruppe beitreten.',
+                setFaqValue(false),
               )
             }>
             <Image
@@ -565,6 +584,7 @@ const AddGroup = () => {
               onPress={() =>
                 pressInfo(
                   'Durch Hashtags kannst du deiner Gruppe passende Schlagwörter zuordnen. \n \n  Tipp: Du kannst bis zu 5 Hashtags deiner Gruppe zuordnen. So mehr Hashtags deine Gruppe hat, umso besser kann sie gefunden werden',
+                  setFaqValue(false),
                 )
               }>
               <Image
@@ -616,6 +636,7 @@ const AddGroup = () => {
             onPress={() =>
               pressInfo(
                 'Hier kannst du angeben welche Sprache oder Sprachen in deiner Gruppe überwiegend gesprochen werden.',
+                setFaqValue(false),
               )
             }>
             <Image
@@ -671,6 +692,7 @@ const AddGroup = () => {
                 {languageArray.map(item => {
                   return (
                     <TouchableOpacity
+                      key={item.code}
                       onPress={() => selectLanguage(item)}
                       style={{
                         height: 20,
@@ -796,6 +818,7 @@ const AddGroup = () => {
             onPress={() =>
               pressInfo(
                 'Wenn du nicht willst, dass Personen mit anderen Sprachen deiner Gruppe beitreten können dann kannst du dir hier Sprachen auswählen und nur Personen die deine ausgewählte Sprache sprechen, können deiner Gruppe beitreten. Alle anderen, die nicht die ausgewählte Sprache sprechen, wird diese Gruppe nicht angezeigt.',
+                setFaqValue(false),
               )
             }>
             <Image
@@ -847,6 +870,7 @@ const AddGroup = () => {
                 {languageArray.map(item => {
                   return (
                     <TouchableOpacity
+                      key={item.code}
                       onPress={() => selectJoinLanguage(item)}
                       style={{
                         height: 20,

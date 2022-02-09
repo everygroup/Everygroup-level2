@@ -14,6 +14,8 @@ const initialState = {
   boostStatus: '',
   oneXStatus: 0,
   fiveXStatus: 0,
+  reportStatus: '',
+  reportId: '',
 };
 
 export const getRandomeList = createAsyncThunk(
@@ -79,10 +81,33 @@ export const boostGroup = createAsyncThunk(
           group: data.groupId,
         },
       });
-      console.log(response, 'boost response');
+
       return data;
     } catch (err) {
-      console.log(err.response, 'erroro boost');
+      return rejectWithValue(err.response.data);
+    }
+  },
+);
+
+export const reportGroupRandomeList = createAsyncThunk(
+  'reportGroupRandomeList',
+  async (data, {rejectWithValue}) => {
+    const token = await AsyncStorageLib.getItem('token');
+
+    try {
+      const response = await axios({
+        method: 'post',
+        headers: {Authorization: `Bearer ${token}`},
+        url: `${baseUrl}/group/report`,
+        data: {
+          report_type: data.value.selectedOption,
+          group_id: data.groupId,
+          description: data.value.otherText,
+        },
+      });
+      console.log(response, 'flagres');
+      return response.data;
+    } catch (err) {
       return rejectWithValue(err.response.data);
     }
   },
@@ -92,6 +117,9 @@ export const RandomeReducer = createSlice({
   name: 'RandomeReducer',
   initialState,
   reducers: {
+    resetReportRandomeList(state, action) {
+      state.reportStatus = '';
+    },
     resetErrorValue(state, action) {
       state.error = '';
     },
@@ -150,6 +178,30 @@ export const RandomeReducer = createSlice({
       state.boostLoading = false;
       state.boostStatus = 'failure';
     },
+
+    [reportGroupRandomeList.fulfilled]: (state, action) => {
+      console.log(action, 'acion');
+      // const index = state.randomeList.findIndex(el=>el.id==action.payload.group_id)
+      // state.randomeList[index]=state.randomeList.group_report_status
+      state.randomeList.map(el => {
+        if (el.id == action.payload.group_id) {
+          el.group_report_status = true;
+        }
+        return el;
+      });
+      state.reportStatus = 'success';
+      state.reportId = action.payload.group_id;
+    },
+    [reportGroupRandomeList.pending]: (state, action) => {
+      state.flagLoading = true;
+      state.flagError = '';
+      state.reportStatus = '';
+    },
+    [reportGroupRandomeList.rejected]: (state, action) => {
+      state.flagError = action.payload;
+      state.flagLoading = false;
+      state.reportStatus = '';
+    },
   },
 });
 
@@ -157,6 +209,7 @@ export const {
   resetErrorValue,
   resetBoostValue,
   updateUserFavStatusInRandomeList,
+  resetReportRandomeList,
 } = RandomeReducer.actions;
 
 export default RandomeReducer.reducer;

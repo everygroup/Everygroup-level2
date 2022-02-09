@@ -6,7 +6,11 @@ import FontStyle from '../../Assets/Fonts/FontStyle';
 import {useNavigation} from '@react-navigation/native';
 import SwitchToggle from 'react-native-switch-toggle';
 import {useDispatch, useSelector} from 'react-redux';
-import {getNotification} from '../../../Slice/NotificationReducer';
+
+import {
+  getNotification,
+  updateNotification,
+} from '../../../Slice/NotificationReducer';
 const NotificationOwnGroup = () => {
   const dispatch = useDispatch();
 
@@ -49,7 +53,14 @@ const NotificationOwnGroup = () => {
         </View>
         <SwitchToggle
           switchOn={notificationData.is_own_group_reupload_notification}
-          // onPress={() => setUploadSwitch(!uploadSwitch)}
+          onPress={() =>
+            dispatch(
+              updateNotification({
+                is_own_group_reupload_notification:
+                  !notificationData.is_own_group_reupload_notification,
+              }),
+            )
+          }
           circleColorOff="#fff"
           circleColorOn="#fff"
           backgroundColorOff="#BECCD6"
@@ -68,7 +79,14 @@ const NotificationOwnGroup = () => {
         </View>
         <SwitchToggle
           switchOn={notificationData.is_own_group_boost_notification}
-          // onPress={() => setBoostSwitch(!boostSwitch)}
+          onPress={() =>
+            dispatch(
+              updateNotification({
+                is_own_group_boost_notification:
+                  !notificationData.is_own_group_boost_notification,
+              }),
+            )
+          }
           circleColorOff="#fff"
           circleColorOn="#fff"
           backgroundColorOff="#BECCD6"

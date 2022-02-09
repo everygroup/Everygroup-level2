@@ -54,33 +54,40 @@ const SearchCard = ({data, onPress, bellPress}) => {
       <View style={styles.spacing}>
         <Text style={styles.titleText}>Messenger:</Text>
         <FlatList
-          listKey="1.1"
           numColumns={4}
           data={data.group_type}
-          renderItem={({item}) => {
-            return <Text style={styles.descriptionText}>{item},</Text>;
+          renderItem={({item: groupType}) => {
+            return (
+              <Text key={groupType} style={styles.descriptionText}>
+                {groupType},
+              </Text>
+            );
           }}
         />
       </View>
       <View style={styles.spacing}>
         <Text style={styles.titleText}>Kategorie:</Text>
         <FlatList
-          listKey="1.2"
           numColumns={4}
           data={data.group_category}
-          renderItem={({item}) => {
-            return <Text style={styles.descriptionText}>{item},</Text>;
+          listKey={(item, index) => index.toString()}
+          renderItem={({item: groupCategory}) => {
+            return (
+              <Text key={groupCategory} style={styles.descriptionText}>
+                {groupCategory},
+              </Text>
+            );
           }}
         />
       </View>
       <View style={styles.spacing}>
         <Text style={styles.titleText}>Sprache:</Text>
         <FlatList
-          listKey="1.3"
           numColumns={4}
           data={data.group_language}
-          renderItem={({item}) => {
-            return <Text style={styles.descriptionText}>{item},</Text>;
+          listKey={(item, index) => index.toString()}
+          renderItem={({item: language}) => {
+            return <Text style={styles.descriptionText}>{language},</Text>;
           }}
         />
       </View>

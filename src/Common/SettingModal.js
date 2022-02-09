@@ -15,8 +15,12 @@ import {useDispatch} from 'react-redux';
 import {favouriteGroup} from '../../Slice/FavouriteGroupReducer';
 import {useSelector} from 'react-redux';
 import ReportModal from '../Screens/HomeScreen/ReportModal';
-import {reportGroup, resetReport} from '../../Slice/ReportGroupReducer';
+
 import SuccessModal from '../Screens/HomeScreen/SuccessModal';
+import {
+  reportGroupRandomeList,
+  resetReportRandomeList,
+} from '../../Slice/RandomeReducer';
 
 const SettingModal = ({
   modalValue,
@@ -26,30 +30,34 @@ const SettingModal = ({
   flagStatus,
 }) => {
   const dispatch = useDispatch();
-  const [flagValue, setFlagValue] = useState(false);
+  const [flagId, setFlagId] = useState('');
   const [reportModal, setReportModal] = useState(false);
 
   const [bouncy, setBouncy] = useState(new Animated.Value(0));
+  const [SuccessModalValue, setSuccessModalValue] = useState(false);
   const updateFavouriteGroup = () => {
     dispatch(favouriteGroup(groupId));
   };
 
-  const {status} = useSelector(state => {
-    return state.ReportGroupReducer;
+  const {reportStatus, reportId} = useSelector(state => {
+    return state.RandomeReducer;
   });
 
   useEffect(() => {
-    if (status == 'success') {
+    if (reportStatus == 'success') {
+      setSuccessModalValue(true);
       setTimeout(() => {
-        triggerBouncy();
-
-        resetReport();
-      }, 500);
+        setSuccessModalValue(false);
+        setTimeout(() => {
+          triggerBouncy();
+          dispatch(resetReportRandomeList());
+        }, 500);
+      }, 2000);
     }
-  }, [status]);
+  }, [reportStatus]);
 
   const triggerBouncy = () => {
-    setFlagValue(true);
+    setFlagId(reportId);
     Animated.spring(bouncy, {
       toValue: 2,
       friction: 3,
@@ -66,15 +74,13 @@ const SettingModal = ({
 
   const submitReport = useCallback(value => {
     setReportModal(false);
+    console.log(value, 'value');
     setTimeout(() => {
-      runFunction(value);
+      dispatch(reportGroupRandomeList({value: value, groupId: value.groupId}));
     }, 500);
   }, []);
 
-  const runFunction = value => {
-    dispatch(reportGroup({value, groupId}));
-  };
-  // console.log(status, groupId);
+  console.log(reportStatus, groupId);
   return (
     <View>
       <Modal
@@ -87,7 +93,8 @@ const SettingModal = ({
           parentCallBack={submitReport}
           groupId={groupId}
         />
-        {/* <SuccessModal modalValue={SuccessModalValue} /> */}
+        <SuccessModal modalValue={SuccessModalValue} />
+
         <View style={styles.container}>
           <TouchableWithoutFeedback onPress={() => updateFavouriteGroup()}>
             <View style={styles.insideContainer}>
@@ -103,7 +110,7 @@ const SettingModal = ({
           </TouchableWithoutFeedback>
 
           <View style={styles.insideContainer}>
-            {flagStatus || flagValue ? (
+            {flagStatus || flagId == groupId ? (
               <Animated.View style={{transform: [{scale: bouncyView}]}}>
                 <Image
                   source={require('../Assets/Images/flagRed.png')}

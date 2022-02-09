@@ -7,7 +7,7 @@ const baseUrl = 'http://203.190.153.22:1639/api/v1';
 const initialState = {
   createGroupLoading: false,
   errorLoading: false,
-  error: '',
+  error: {},
   data: '',
   createSuccess: '',
 };
@@ -26,7 +26,7 @@ export const createGroup = createAsyncThunk(
           title: data.titel,
           group_link: data.groupLink,
           languages: data.selectedLanguage,
-          join_languages: data.joinLanguage,
+          join_languages: data.finalJoinLanguage,
           categories: data.selectedCategory,
           tags: data.hashArray,
           confirm_rules: data.checkedConductRules,
@@ -37,6 +37,7 @@ export const createGroup = createAsyncThunk(
 
       return response.data;
     } catch (err) {
+      console.log(err.response, 'create group response');
       return rejectWithValue(err.response.data);
     }
   },
@@ -47,7 +48,9 @@ export const CreateGroupReducer = createSlice({
   initialState,
   reducers: {
     resetErroLoading(state, action) {
-      (state.errorLoading = false), (state.createSuccess = '');
+      (state.errorLoading = false),
+        (state.createSuccess = ''),
+        (state.error = '');
     },
   },
   extraReducers: {

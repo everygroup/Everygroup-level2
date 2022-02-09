@@ -1,9 +1,9 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text} from 'react-native';
 import Modal from 'react-native-modal';
 import FontStyle from '../Assets/Fonts/FontStyle';
 import Button from './Button';
-const InfoModal = ({modalValue, closeModal, message, Faq, titel}) => {
+const LinkAvailableModal = ({modalValue, closeModal, message}) => {
   return (
     <View>
       <Modal
@@ -26,21 +26,10 @@ const InfoModal = ({modalValue, closeModal, message, Faq, titel}) => {
             borderRadius: 10,
             alignItems: 'center',
           }}>
-          {titel ? (
-            <Text
-              style={{
-                fontSize: 19,
-                fontFamily: FontStyle.MontExtBold,
-                color: '#205072',
-                marginVertical: '2.5%',
-              }}>
-              {titel}
-            </Text>
-          ) : null}
           <Text
             style={{
               color: '#205072',
-              fontSize: 14,
+              fontSize: 15,
               fontFamily: FontStyle.MontSemiBold,
               textAlign: 'center',
               width: '80%',
@@ -48,17 +37,17 @@ const InfoModal = ({modalValue, closeModal, message, Faq, titel}) => {
             {message}
           </Text>
 
-          {Faq ? (
-            <Text
-              style={{
-                fontFamily: FontStyle.MontSemiBold,
-                fontSize: 15,
-                color: '#FFA420',
-                marginTop: '5%',
-              }}>
-              Zu den FAQ
-            </Text>
-          ) : null}
+          <Text
+            style={{
+              fontFamily: FontStyle.MontSemiBold,
+              fontSize: 12,
+              color: '#205072',
+              marginTop: '5%',
+            }}>
+            Weitere Infos findest du in den{' '}
+            <Text style={{color: '#FFA420'}}>FAQ</Text>
+          </Text>
+
           <View style={{marginVertical: '5%'}}>
             <Button onPress={closeModal} buttonText="Alles klar" />
           </View>
@@ -68,4 +57,4 @@ const InfoModal = ({modalValue, closeModal, message, Faq, titel}) => {
   );
 };
 
-export default InfoModal;
+export default LinkAvailableModal;
