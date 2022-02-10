@@ -45,7 +45,7 @@ const MyGroup = () => {
   const {boostError} = useSelector(state => {
     return state.UserGroupReducer;
   });
-
+  console.log(userGroupData, 'group');
   return (
     <View style={[Styles.mainContainer, {paddingTop: '25%'}]}>
       <Header

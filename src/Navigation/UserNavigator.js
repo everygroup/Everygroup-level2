@@ -23,79 +23,38 @@ export const UserNavigator = () => {
       <UserStackScreen.Navigator
         screenOptions={{
           headerShown: false,
+          gestureEnabled: false,
         }}>
-        <UserStackScreen.Screen
-          name="Profile"
-          component={Profile}
-          options={{gestureEnabled: false}}
-        />
-        <UserStackScreen.Screen
-          name="AccountData"
-          component={AccountData}
-          options={{gestureEnabled: false}}
-        />
-        {/* <UserStackScreen.Screen
-          name="ChangePassword"
-          component={ChangePassword}
-          options={{gestureEnabled: false}}
-        /> */}
+        <UserStackScreen.Screen name="Profile" component={Profile} />
+        <UserStackScreen.Screen name="AccountData" component={AccountData} />
 
         <UserStackScreen.Screen
           name="UpdatePassword"
           component={UpdatePassword}
-          options={{gestureEnabled: false}}
-        />
-        {/* <UserStackScreen.Screen
-          name="ChangeUserName"
-          component={ChangeUserName}
-          options={{gestureEnabled: false}}
-        /> */}
-        <UserStackScreen.Screen
-          name="UpdateUserName"
-          component={UpdateUserName}
-          options={{gestureEnabled: false}}
-        />
-        {/* <UserStackScreen.Screen
-          name="ChangeEmail"
-          component={ChangeEmail}
-          options={{gestureEnabled: false}}
-        /> */}
-        <UserStackScreen.Screen
-          name="UpdateEmail"
-          component={UpdateEmail}
-          options={{gestureEnabled: false}}
-        />
-        <UserStackScreen.Screen
-          name="SentEmail"
-          component={SentEmail}
-          options={{gestureEnabled: false}}
         />
 
         <UserStackScreen.Screen
-          name="Notification"
-          component={Notification}
-          options={{gestureEnabled: false}}
+          name="UpdateUserName"
+          component={UpdateUserName}
         />
+
+        <UserStackScreen.Screen name="UpdateEmail" component={UpdateEmail} />
+        <UserStackScreen.Screen name="SentEmail" component={SentEmail} />
+
+        <UserStackScreen.Screen name="Notification" component={Notification} />
         <UserStackScreen.Screen
           name="NotificationOwnGroup"
           component={NotificationOwnGroup}
-          options={{gestureEnabled: false}}
         />
         <UserStackScreen.Screen
           name="NotificationGroupBooster"
           component={NotificationGroupBooster}
-          options={{gestureEnabled: false}}
         />
 
-        <UserStackScreen.Screen
-          name="Coupon"
-          component={Coupon}
-          options={{gestureEnabled: false}}
-        />
+        <UserStackScreen.Screen name="Coupon" component={Coupon} />
         <UserStackScreen.Screen
           name="CheckPassword"
           component={CheckPassword}
-          options={{gestureEnabled: false}}
         />
       </UserStackScreen.Navigator>
     </View>

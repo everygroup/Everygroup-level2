@@ -1,5 +1,4 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {NativeModules, Platform} from 'react-native';
 import AsyncStorageLib from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
@@ -42,15 +41,9 @@ export const setSystemLang = createAsyncThunk(
 export const CommonReducer = createSlice({
   name: 'CommonReducer',
   initialState,
-  reducers: {
-    // setSystemLang(state, action) {
-    //   console.log(action, 'action');
-    //   state.systemLang = state.allLang.find(el => el.code == action.payload);
-    // },
-  },
+  reducers: {},
   extraReducers: {
     [setSystemLang.fulfilled]: (state, action) => {
-      console.log(action, 'action');
       state.loading = false;
       state.systemLang = state.allLang.find(el => el.code == action.payload);
     },
@@ -67,5 +60,4 @@ export const CommonReducer = createSlice({
   },
 });
 
-// export const {setSystemLang} = CommonReducer.actions;
 export default CommonReducer.reducer;

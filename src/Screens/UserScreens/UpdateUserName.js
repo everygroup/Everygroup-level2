@@ -24,6 +24,7 @@ const {height} = Dimensions.get('window');
 const UpdateUserName = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [placeHolderText, setPlaceHolderText] = useState('');
   const [userNameText, setUserNameText] = useState('');
 
   const [modalValue, setModalValue] = useState(false);
@@ -69,9 +70,9 @@ const UpdateUserName = () => {
   };
 
   const getUserName = async () => [
-    setUserNameText(await AsyncStorageLib.getItem('userName')),
+    setPlaceHolderText(await AsyncStorageLib.getItem('userName')),
   ];
-  console.log(userName, 'name');
+  console.log(placeHolderText, 'name');
   return (
     <View
       style={{
@@ -121,14 +122,14 @@ const UpdateUserName = () => {
           ) : null}
         </View>
         <Input
-          placeholder="SuperMan98"
-          placeholderTextColor="#205072"
+          placeholder={placeHolderText}
+          placeholderTextColor="#BCBCBC"
           onChangeText={text => {
             setUserNameText(text);
             setUserError(false);
           }}
           height={50}
-          value={userNameText}
+          // value={userNameText}
         />
         <Text
           style={{
@@ -144,7 +145,12 @@ const UpdateUserName = () => {
           {loading ? (
             <Spinner height={50} />
           ) : (
-            <Button buttonText="Nutzernamen ändern" onPress={submit} />
+            <Button
+              buttonText="Nutzernamen ändern"
+              onPress={userNameText != '' ? submit : null}
+              buttonColor1={userNameText == '' ? '#BCBCBC' : null}
+              buttonColor2={userNameText == '' ? '#BCBCBC' : null}
+            />
           )}
         </View>
         {value == 'success' ? (

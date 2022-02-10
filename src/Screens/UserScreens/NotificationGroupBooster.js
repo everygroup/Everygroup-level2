@@ -207,7 +207,7 @@ const NotificationGroupBooster = () => {
                     dispatch(
                       removeBoostNotificationList({
                         groupId: item.id,
-                        status: false,
+                        status: true,
                       }),
                     )
                   }>

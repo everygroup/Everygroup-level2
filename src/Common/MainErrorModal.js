@@ -2,13 +2,11 @@ import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
 import Modal from 'react-native-modal';
-import {resetSearchValue} from '../../Slice/SearchReducer';
+
 import FontStyle from '../Assets/Fonts/FontStyle';
 import Button from './Button';
-import {useDispatch} from 'react-redux';
 
 const MainErrorModal = ({modalValue, closeModal, message}) => {
-  const dispatch = useDispatch();
   return (
     <View>
       <Modal
@@ -28,10 +26,7 @@ const MainErrorModal = ({modalValue, closeModal, message}) => {
             {message ||
               'Ein Fehler ist aufgetreten. Bitte versuche es später erneut'}
           </Text>
-          <Button
-            buttonText="Alles klar"
-            onPress={() => dispatch(resetSearchValue())}
-          />
+          <Button buttonText="Alles klar" onPress={closeModal} />
         </View>
       </Modal>
     </View>

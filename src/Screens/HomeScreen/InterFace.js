@@ -9,6 +9,7 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Animated,
+  Linking,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -82,18 +83,11 @@ function Interface(props) {
     setSystemLang(await AsyncStorageLib.getItem('systemLang'));
   };
 
-  const {
-    randomeList,
-    error,
-    loading,
-    fromDate,
-    boostError,
-    boostLoading,
-    oneXStatus,
-    fiveXStatus,
-  } = useSelector(state => {
-    return state.RandomeReducer;
-  });
+  const {randomeList, error, fromDate, oneXStatus, fiveXStatus} = useSelector(
+    state => {
+      return state.RandomeReducer;
+    },
+  );
 
   useEffect(() => {
     if (error != '') {
@@ -215,7 +209,11 @@ function Interface(props) {
       );
     }
   }, [value]);
-  console.log(randomeList, 'randomeList');
+  const openLink = link => {
+    Linking.openURL(link);
+  };
+
+  console.log(randomeList, 'list');
   return (
     <View style={{flex: 1, backgroundColor: '#dcdcdc'}}>
       <SettingModal
@@ -312,6 +310,10 @@ function Interface(props) {
                             ? require('../../Assets/Images/telegram.png')
                             : item.group_type === 'line'
                             ? require('../../Assets/Images/line.png')
+                            : item.group_type == 'discord'
+                            ? require('../../Assets/Images/discord.png')
+                            : item.group_type == 'viber'
+                            ? require('../../Assets/Images/viber.png')
                             : null
                         }
                       />
@@ -489,28 +491,32 @@ function Interface(props) {
                   </TouchableOpacity>
                 </View>
               </View>
-              <LinearGradient
-                colors={
-                  item.group_type == 'line'
-                    ? ['#08C719', '#adebad']
-                    : item.group_type == 'snapchat'
-                    ? ['#FFFC00', '#ffffb3']
-                    : item.group_type == 'whatsapp'
-                    ? ['#08C719', '#9dfba5']
-                    : item.group_type == 'telegram'
-                    ? ['#058acd', '#9cdcfc']
-                    : ['#FFFC00', '#ffffb3']
-                }
-                style={styles.button}>
-                <Text
-                  style={{
-                    color: item.group_type == 'snapchat' ? '#205072' : '#fff',
-                    fontFamily: FontStyle.MontBold,
-                    fontSize: 19,
-                  }}>
-                  Beitreten
-                </Text>
-              </LinearGradient>
+              <TouchableOpacity onPress={() => openLink(item.group_link)}>
+                <LinearGradient
+                  colors={
+                    item.group_type == 'line'
+                      ? ['#08C719', '#adebad']
+                      : item.group_type == 'snapchat'
+                      ? ['#FFFC00', '#ffffb3']
+                      : item.group_type == 'whatsapp'
+                      ? ['#08C719', '#9dfba5']
+                      : item.group_type == 'telegram'
+                      ? ['#058acd', '#9cdcfc']
+                      : item.group_type == 'viber'
+                      ? ['#665CAC', '#c0bbdd']
+                      : ['#7289DA', '#c3ccef']
+                  }
+                  style={styles.button}>
+                  <Text
+                    style={{
+                      color: item.group_type == 'snapchat' ? '#205072' : '#fff',
+                      fontFamily: FontStyle.MontBold,
+                      fontSize: 19,
+                    }}>
+                    Beitreten
+                  </Text>
+                </LinearGradient>
+              </TouchableOpacity>
             </View>
           );
         })}

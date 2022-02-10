@@ -618,7 +618,8 @@ const GroupCard = ({
                   </Text>
                 </ProgressCircle>
               </View>
-              {group.x_times_of_boost_points < 1 ? (
+              {group.x_times_of_boost_points < 1 ||
+              group.remaining_booster_time != '' ? (
                 <Button
                   width={110}
                   buttonText="Booster"

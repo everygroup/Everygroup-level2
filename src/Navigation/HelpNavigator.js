@@ -16,32 +16,16 @@ export const HelpNavigator = () => {
       <HelpStackScreen.Navigator
         screenOptions={{
           headerShown: false,
+          gestureEnabled: false,
         }}
         initialRouteName="Help">
-        <HelpStackScreen.Screen
-          name="Help"
-          component={Help}
-          options={{gestureEnabled: false}}
-        />
-        <HelpStackScreen.Screen
-          name="Contact"
-          component={Contact}
-          options={{gestureEnabled: false}}
-        />
-        <HelpStackScreen.Screen
-          name="Imprint"
-          component={Imprint}
-          options={{gestureEnabled: false}}
-        />
-        <HelpStackScreen.Screen
-          name="Privacy"
-          component={Privacy}
-          options={{gestureEnabled: false}}
-        />
+        <HelpStackScreen.Screen name="Help" component={Help} />
+        <HelpStackScreen.Screen name="Contact" component={Contact} />
+        <HelpStackScreen.Screen name="Imprint" component={Imprint} />
+        <HelpStackScreen.Screen name="Privacy" component={Privacy} />
         <HelpStackScreen.Screen
           name="TermsCondition"
           component={TermsCondition}
-          options={{gestureEnabled: false}}
         />
       </HelpStackScreen.Navigator>
     </View>

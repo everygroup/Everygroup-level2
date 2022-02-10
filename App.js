@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, Platform, NativeModules, Linking} from 'react-native';
+import 'react-native-gesture-handler';
 import RootNavigator from './src/Navigation/RootNavigator';
 import {configureStore} from '@reduxjs/toolkit';
 import {Provider} from 'react-redux';
@@ -24,6 +25,7 @@ import RandomeReducer from './Slice/RandomeReducer';
 import ActivateUserReducer from './Slice/ActivateUserReducer';
 import CommonReducer from './Slice/CommonReducer';
 import NotificationReducer from './Slice/NotificationReducer';
+import ContactReducer from './Slice/ContactReducer';
 import messaging from '@react-native-firebase/messaging';
 import AsyncStorageLib from '@react-native-async-storage/async-storage';
 import PushNotification from 'react-native-push-notification';
@@ -35,7 +37,6 @@ import VersionCheckModal from './src/Common/VersionCheckModal';
 messaging()
   .hasPermission()
   .then(async enabled => {
-    console.log(enabled, 'enable');
     if (enabled) {
       await messaging()
         .getToken()
@@ -48,7 +49,6 @@ messaging()
   .catch(error => {});
 
 messaging().onMessage(async remoteMessage => {
-  // console.log('A new FCM message arrived!', remoteMessage.notification);
   const {body, title} = remoteMessage.notification;
   PushNotification.localNotification({
     title: title,
@@ -79,6 +79,7 @@ const store = configureStore({
     ActivateUserReducer,
     CommonReducer,
     NotificationReducer,
+    ContactReducer,
   },
 });
 
@@ -180,6 +181,7 @@ const App = () => {
       setVersionDownLoadValue(true);
     }, 500);
   };
+
   return (
     <Provider store={store}>
       <VersionCheckModal
@@ -200,12 +202,12 @@ const App = () => {
         closeModal={() => Linking.openURL('https://digimonk.net')}
       />
 
-      {versionCheckValue ? (
-        <InternetModal
-          modalValue={internetStatus}
-          internetStatus={networkStatus}
-        />
-      ) : null}
+      {/* {versionCheckValue ? ( */}
+      <InternetModal
+        modalValue={internetStatus}
+        internetStatus={networkStatus}
+      />
+      {/* ) : null} */}
       <View style={{flex: 1}}>
         <RootNavigator />
       </View>

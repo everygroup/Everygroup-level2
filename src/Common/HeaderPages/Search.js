@@ -8,11 +8,12 @@ import {
   TouchableWithoutFeedback,
   FlatList,
   Animated,
+  ScrollView,
 } from 'react-native';
 import Input from '../Input';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import SwitchToggle from 'react-native-switch-toggle';
-import {ScrollView} from 'react-native-gesture-handler';
+
 import InfoModal from '../InfoModal';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useNavigation} from '@react-navigation/native';
@@ -187,7 +188,10 @@ const Search = ({starPress, filterValue, filterPress, parentCallBack}) => {
   return (
     <View style={{flex: 1, top: 20}}>
       {/* {error.length > 0 ? alert(error) : null} */}
-      <MainErrorModal modalValue={error.length > 0} />
+      <MainErrorModal
+        modalValue={error.length > 0}
+        closeModal={dispatch(resetSearchValue())}
+      />
       <InfoModal
         modalValue={modalValue}
         message={infoMessage}
@@ -249,6 +253,7 @@ const Search = ({starPress, filterValue, filterPress, parentCallBack}) => {
       </View>
       {filterValue ? (
         <KeyboardAwareScrollView
+          nestedScrollEnabled
           extraScrollHeight={150}
           showsVerticalScrollIndicator={false}
           // keyboardDismissMode="on-drag"
@@ -292,6 +297,7 @@ const Search = ({starPress, filterValue, filterPress, parentCallBack}) => {
                 alignSelf: 'center',
                 alignItems: 'center',
               }}
+              listKey={(item, index) => index.toString()}
               scrollEnabled={false}
               renderItem={({item}) => {
                 return (
@@ -355,6 +361,7 @@ const Search = ({starPress, filterValue, filterPress, parentCallBack}) => {
                 alignItems: 'center',
               }}
               scrollEnabled={false}
+              listKey={(item, index) => index.toString()}
               renderItem={({item}) => {
                 return (
                   <TouchableOpacity
@@ -526,6 +533,7 @@ const Search = ({starPress, filterValue, filterPress, parentCallBack}) => {
                 horizontal={true}
                 scrollEnabled={true}
                 showsHorizontalScrollIndicator={false}
+                listKey={(item, index) => index.toString()}
                 renderItem={({item: language}) => {
                   return (
                     <View style={styles.languageContainer}>

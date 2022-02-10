@@ -21,12 +21,19 @@ const EditInput = ({
   iconPress,
   imageSource1,
   onFocus,
+  borderWidth,
+  borderColor,
 }) => {
   return (
     <View
       style={[
         styles.inputContainer,
-        {backgroundColor: editable ? '#F9F9F9' : '#fff', height: height || 42},
+        {
+          backgroundColor: editable ? '#F9F9F9' : '#fff',
+          height: height || 42,
+          borderWidth: borderWidth ? borderWidth : null,
+          borderColor: borderColor ? borderColor : null,
+        },
       ]}>
       <TextInput
         placeholder={placeholder}

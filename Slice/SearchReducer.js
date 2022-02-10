@@ -31,6 +31,7 @@ export const saveSearch = createAsyncThunk(
 
       return response.status;
     } catch (err) {
+      console.log(err.response, 'save search');
       return rejectWithValue(Object.values(err.response.data));
     }
   },

@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {View, Text, FlatList, TouchableOpacity, Image} from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  Image,
+  Linking,
+} from 'react-native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import Styles from '../UserScreens/Style';
 import {useNavigation} from '@react-navigation/native';
@@ -7,8 +14,8 @@ import {useNavigation} from '@react-navigation/native';
 const Help = () => {
   const navigation = useNavigation();
   const [pageOption, setPageOption] = useState([
-    {displayName: 'FAQ', navigationName: 'Help'},
-    {displayName: 'BLOG', navigationName: 'Help'},
+    {displayName: 'FAQ', navigationName: 'http://digimonk.co:1611/faq'},
+    {displayName: 'BLOG', navigationName: 'http://digimonk.co:1611/blog'},
     {displayName: 'Kontakt', navigationName: 'Contact'},
     {displayName: 'Verhaltensregeln', navigationName: 'Help'},
     {displayName: 'Impressum', navigationName: 'Help'},
@@ -19,6 +26,14 @@ const Help = () => {
     },
   ]);
 
+  const selectPage = page => {
+    if (page == 'Contact') {
+      navigation.navigate(item.navigationName);
+    } else {
+      Linking.openURL(page);
+    }
+  };
+
   return (
     <View style={[Styles.mainContainer, {paddingTop: '25%'}]}>
       <Text style={Styles.headingText}>Hilfe</Text>
@@ -27,7 +42,7 @@ const Help = () => {
         renderItem={({item}) => {
           return (
             <TouchableOpacity
-              onPress={() => navigation.navigate(item.navigationName)}
+              onPress={() => selectPage(item.navigationName)}
               style={Styles.textContainer}>
               <Text style={[Styles.textStyle, {width: '80%'}]}>
                 {item.displayName}

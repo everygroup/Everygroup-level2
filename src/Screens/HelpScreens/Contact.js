@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, ScrollView, Image, TouchableOpacity} from 'react-native';
 import Styles from '../UserScreens/Style';
 import Button from '../../Common/Button';
@@ -6,12 +6,57 @@ import EditInput from '../../Common/EditInput';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 import {useNavigation} from '@react-navigation/native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {useDispatch, useSelector} from 'react-redux';
+import {resetError, sendMessage} from '../../../Slice/ContactReducer';
+import MainErrorModal from '../../Common/MainErrorModal';
 
 const Contact = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [reference, setReference] = useState('');
+  const [news, setNews] = useState('');
+  const [errorValue, setErrorValue] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [referenceError, setReferenceError] = useState(false);
+  const [newsError, setNewsError] = useState(false);
+
+  const submit = () => {
+    if (email == '') {
+      setEmailError(true);
+    } else if (reference == '') {
+      setReferenceError(true);
+    } else if (news == '') {
+      setNewsError(true);
+    } else {
+      dispatch(sendMessage({name, email, reference, news}));
+    }
+  };
+
+  const {error, loading, status} = useSelector(state => {
+    return state.ContactReducer;
+  });
+
+  useEffect(() => {
+    if (error.length > 0) {
+      setErrorValue(true);
+    }
+    return () => {
+      setErrorValue(false);
+    };
+  }, [error]);
+
+  console.log(status, 'error');
+
+  useEffect(() => {
+    dispatch(resetError());
+  }, []);
+
   return (
     <View style={{paddingTop: '25%', height: '100%', backgroundColor: '#fff'}}>
       <KeyboardAwareScrollView
+        extraScrollHeight={150}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
         showsVerticalScrollIndicator={false}
@@ -20,6 +65,13 @@ const Contact = () => {
           paddingBottom: '20%',
           alignItems: 'center',
         }}>
+        <MainErrorModal
+          modalValue={errorValue}
+          message={error}
+          closeModal={() => {
+            setErrorValue(false), dispatch(resetError());
+          }}
+        />
         <View
           style={{
             flexDirection: 'row',
@@ -48,21 +100,56 @@ const Contact = () => {
         <EditInput
           placeholder="Name (optional)"
           placeholderTextColor="#B5B5B5"
+          onChangeText={text => setName(text)}
         />
 
-        <EditInput placeholder="E-Mail" placeholderTextColor="#B5B5B5" />
+        <EditInput
+          placeholder="E-Mail"
+          placeholderTextColor="#B5B5B5"
+          onChangeText={text => {
+            setEmail(text), setEmailError(false);
+          }}
+          borderWidth={emailError ? 2 : null}
+          borderColor={emailError ? '#FF0000' : null}
+        />
 
-        <EditInput placeholder="Betreff" placeholderTextColor="#B5B5B5" />
+        <EditInput
+          placeholder="Betreff"
+          placeholderTextColor="#B5B5B5"
+          onChangeText={text => {
+            setReference(text), setReferenceError(false);
+          }}
+          borderWidth={referenceError ? 2 : null}
+          borderColor={referenceError ? '#FF0000' : null}
+        />
 
         <EditInput
           placeholder="Nachricht"
           placeholderTextColor="#B5B5B5"
           height={144}
           multiline={true}
+          onChangeText={text => {
+            setNews(text), setNewsError(false);
+          }}
+          borderWidth={newsError ? 2 : null}
+          borderColor={newsError ? '#FF0000' : null}
         />
         <View style={{marginVertical: '10%'}}>
-          <Button borderRadius={10} buttonText="Abschicken" />
+          <Button
+            borderRadius={10}
+            buttonText="Abschicken"
+            onPress={() => submit()}
+          />
         </View>
+
+        <Text
+          style={{
+            color: '#06BA63',
+            fontFamily: FontStyle.poppinsMedium,
+            fontSize: 17,
+          }}>
+          {status}
+        </Text>
         <View
           style={{
             height: 100,

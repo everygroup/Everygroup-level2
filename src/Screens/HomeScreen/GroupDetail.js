@@ -210,7 +210,7 @@ const GroupDetail = ({route}) => {
   const openLink = link => {
     Linking.openURL(link);
   };
-
+  console.log(groupDetail, 'group');
   return (
     <View
       style={{
@@ -296,47 +296,67 @@ const GroupDetail = ({route}) => {
                 right: 10,
                 alignItems: 'center',
               }}>
-              <Text style={[styles.textStyle, {color: '#FF0000'}]}>18+ </Text>
-              <View
-                style={{
-                  width: 1,
-                  height: 15,
-                  marginLeft: 5,
-                  backgroundColor: '#205072',
-                }}
-              />
-              <Text style={styles.textStyle}> Trends </Text>
+              {groupDetail.categories ? (
+                groupDetail.categories.some(el => el.slug == '18') ? (
+                  <>
+                    <Text style={[styles.textStyle, {color: '#FF0000'}]}>
+                      18+{' '}
+                    </Text>
+                    <View
+                      style={{
+                        width: 1,
+                        height: 15,
+                        marginLeft: 5,
+                        backgroundColor: '#205072',
+                      }}
+                    />
+                  </>
+                ) : null
+              ) : null}
+              {groupDetail.trend_status ? (
+                <>
+                  <Text style={styles.textStyle}> Trends </Text>
 
-              <Image
-                source={require('../../Assets/Images/starBlue.png')}
-                style={styles.imageStyle}
-              />
-              <View
-                style={{
-                  width: 1,
-                  height: 15,
-                  marginLeft: 5,
-                  backgroundColor: '#205072',
-                }}
-              />
-              <Text style={styles.textStyle}> Instagram </Text>
-              <Image
-                source={require('../../Assets/Images/instaBlue.png')}
-                style={styles.imageStyle}
-              />
-              <View
-                style={{
-                  width: 1,
-                  height: 15,
-                  marginLeft: 5,
-                  backgroundColor: '#205072',
-                }}
-              />
-              <Text style={styles.textStyle}> Influencer</Text>
-              <Image
-                source={require('../../Assets/Images/starMenBlue.png')}
-                style={styles.imageStyle}
-              />
+                  <Image
+                    source={require('../../Assets/Images/starBlue.png')}
+                    style={styles.imageStyle}
+                  />
+                  <View
+                    style={{
+                      width: 1,
+                      height: 15,
+                      marginLeft: 5,
+                      backgroundColor: '#205072',
+                    }}
+                  />
+                </>
+              ) : null}
+              {groupDetail.instagram_badge_status ? (
+                <>
+                  <Text style={styles.textStyle}> Instagram </Text>
+                  <Image
+                    source={require('../../Assets/Images/instaBlue.png')}
+                    style={styles.imageStyle}
+                  />
+                  <View
+                    style={{
+                      width: 1,
+                      height: 15,
+                      marginLeft: 5,
+                      backgroundColor: '#205072',
+                    }}
+                  />
+                </>
+              ) : null}
+              {groupDetail.creator_badge_status ? (
+                <>
+                  <Text style={styles.textStyle}> Creator</Text>
+                  <Image
+                    source={require('../../Assets/Images/starMenBlue.png')}
+                    style={styles.imageStyle}
+                  />
+                </>
+              ) : null}
             </View>
           </LinearGradient>
           <View style={{paddingHorizontal: '1.5%'}}>
@@ -349,6 +369,7 @@ const GroupDetail = ({route}) => {
                 data={groupDetail.categories}
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
+                listKey={(item, index) => index.toString()}
                 renderItem={({item: category}) => {
                   return (
                     <View style={styles.categoryContainer}>
@@ -384,14 +405,16 @@ const GroupDetail = ({route}) => {
               {groupDetail.languages ? (
                 <Text style={[styles.textStyle, {fontSize: 13}]}>
                   {groupDetail.languages.map(el => (
-                    <Text>{el.language},</Text>
+                    <Text key={el.code}>{el.language},</Text>
                   ))}
                 </Text>
               ) : null}
               <FlatList
                 data={groupDetail.tags}
                 horizontal={true}
+                scrollEnabled={false}
                 showsHorizontalScrollIndicator={false}
+                listKey={(item, index) => index.toString()}
                 renderItem={({item: tags}) => {
                   return (
                     <View style={{width: 36, height: 20}}>
@@ -642,6 +665,7 @@ const GroupDetail = ({route}) => {
             showsHorizontalScrollIndicator={false}
             horizontal={true}
             // onEndReached={handleLoadMore}
+            listKey={(item, index) => index.toString()}
             onEndThreshold={0}
             renderItem={({item}) => {
               return (

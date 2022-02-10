@@ -75,6 +75,7 @@ export const AuthNavigator = () => {
       <AuthStackScreen.Navigator
         screenOptions={{
           headerShown: false,
+          gestureEnabled: false,
         }}
         initialRouteName="SplashScreen">
         <AuthStackScreen.Screen
@@ -86,51 +87,34 @@ export const AuthNavigator = () => {
               CardStyleInterpolators.forFadeFromBottomAndroid,
           }}
         />
-        <AuthStackScreen.Screen
-          name="SplashScreen"
-          component={SplashScreen}
-          options={{gestureEnabled: false}}
-        />
+        <AuthStackScreen.Screen name="SplashScreen" component={SplashScreen} />
         <AuthStackScreen.Screen
           name="SignUp"
           component={SingUp}
           options={{
-            gestureEnabled: false,
             cardStyleInterpolator:
               CardStyleInterpolators.forFadeFromBottomAndroid,
           }}
         />
-        <AuthStackScreen.Screen
-          name="VerifyMail"
-          component={VerifyMail}
-          options={{gestureEnabled: false}}
-        />
+        <AuthStackScreen.Screen name="VerifyMail" component={VerifyMail} />
         <AuthStackScreen.Screen
           name="ConfirmationScreen"
           component={ConfirmationScreen}
-          options={{gestureEnabled: false}}
         />
         <AuthStackScreen.Screen
           name="BehaviourRules"
           component={BehaviourRules}
-          options={{gestureEnabled: false}}
         />
         <AuthStackScreen.Screen
           name="ForgotPassword"
           component={ForgotPassword}
-          options={{gestureEnabled: false}}
         />
         <AuthStackScreen.Screen
           name="ForgotMailVerify"
           component={ForgotMailVerify}
-          options={{gestureEnabled: false}}
         />
 
-        <AuthStackScreen.Screen
-          name="SignOut"
-          component={SignIn}
-          options={{gestureEnabled: false}}
-        />
+        <AuthStackScreen.Screen name="SignOut" component={SignIn} />
 
         <AuthStackScreen.Screen
           name="HomeNavigator"
