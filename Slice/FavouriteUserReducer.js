@@ -74,6 +74,27 @@ export const deleteFavouriteUser = createAsyncThunk(
   },
 );
 
+export const updatePersonNotification = createAsyncThunk(
+  'updatePersonNotification',
+  async (data, {rejectWithValue}) => {
+    const token = await AsyncStorageLib.getItem('token');
+    try {
+      const response = await axios({
+        method: 'patch',
+        headers: {Authorization: `Bearer ${token}`},
+        url: `${baseUrl}/favourite-person/${data.id}`,
+        data: {
+          notification: data.value,
+        },
+      });
+
+      return data;
+    } catch (err) {
+      return rejectWithValue(Object.values(err.response.data));
+    }
+  },
+);
+
 export const FavouriteUserReducer = createSlice({
   name: 'FavouriteUserReducer',
   initialState,
@@ -128,6 +149,18 @@ export const FavouriteUserReducer = createSlice({
       state.deleteError = action.payload;
       state.deleteLoading = false;
     },
+
+    [updatePersonNotification.fulfilled]: (state, action) => {
+      state.getDataLoading = false;
+      state.getFavouriteData.map(el => {
+        if (el.id == action.payload.id) {
+          el.notification = action.payload.value;
+        }
+        return el;
+      });
+    },
+    [updatePersonNotification.pending]: (state, action) => {},
+    [updatePersonNotification.rejected]: (state, action) => {},
   },
 });
 

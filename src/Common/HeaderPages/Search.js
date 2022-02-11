@@ -187,11 +187,11 @@ const Search = ({starPress, filterValue, filterPress, parentCallBack}) => {
 
   return (
     <View style={{flex: 1, top: 20}}>
-      {/* {error.length > 0 ? alert(error) : null} */}
       <MainErrorModal
-        modalValue={error.length > 0}
-        closeModal={dispatch(resetSearchValue())}
+        modalValue={error.length > 0 ? true : false}
+        closeModal={() => dispatch(resetSearchValue())}
       />
+
       <InfoModal
         modalValue={modalValue}
         message={infoMessage}

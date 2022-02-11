@@ -44,6 +44,7 @@ const GroupCard = ({
   infoPress,
   favourite,
   removeFavourite,
+  markFavourite,
 }) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -259,20 +260,23 @@ const GroupCard = ({
                 {group.title}
               </Text>
               {!group.is_link_expire ? (
-                <TouchableWithoutFeedback onPress={removeFavourite}>
-                  <Icon
-                    name="bookmark"
-                    color={
-                      group.group_favourite_status || favourite
-                        ? '#FFA420'
-                        : '#B9B9B9'
-                    }
-                    size={22}
-                    solid={
-                      group.group_favourite_status || favourite ? true : false
-                    }
-                  />
-                </TouchableWithoutFeedback>
+                <Icon
+                  name="bookmark"
+                  color={
+                    group.group_favourite_status || favourite
+                      ? '#FFA420'
+                      : '#B9B9B9'
+                  }
+                  size={22}
+                  solid={
+                    group.group_favourite_status || favourite ? true : false
+                  }
+                  onPress={
+                    group.group_favourite_status || favourite
+                      ? removeFavourite
+                      : markFavourite
+                  }
+                />
               ) : null}
             </View>
 

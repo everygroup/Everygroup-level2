@@ -59,7 +59,7 @@ export const boostNotificationList = createAsyncThunk(
       const response = await axios({
         method: 'get',
         headers: {Authorization: `Bearer ${token}`},
-        url: `${baseUrl}/group/boosted`,
+        url: `${baseUrl}/group/boost-user`,
       });
 
       return response.data.results;
@@ -75,12 +75,11 @@ export const removeBoostNotificationList = createAsyncThunk(
     const token = await AsyncStorageLib.getItem('token');
     try {
       const response = await axios({
-        method: 'post',
+        method: 'patch',
         headers: {Authorization: `Bearer ${token}`},
-        url: `${baseUrl}/group/mute`,
+        url: `${baseUrl}/group/boost-user/${data.itemId}`,
         data: {
-          group: data.groupId,
-          status: data.status,
+          notification: data.status,
         },
       });
       console.log(response, 'response');
@@ -95,7 +94,11 @@ export const removeBoostNotificationList = createAsyncThunk(
 export const NotificationReducer = createSlice({
   name: 'NotificationReducer',
   initialState,
-  reducers: {},
+  reducers: {
+    resetMuteStatus(state, action) {
+      state.muteSuccess = '';
+    },
+  },
   extraReducers: {
     [getNotification.fulfilled]: (state, action) => {
       state.notificationData = action.payload;
@@ -116,7 +119,7 @@ export const NotificationReducer = createSlice({
     [removeBoostNotificationList.fulfilled]: (state, action) => {
       state.muteSuccess = 'success';
       state.boostListNotify.splice(
-        state.boostListNotify.findIndex(el => el.id == action.payload.group),
+        state.boostListNotify.findIndex(el => el.id == action.payload.id),
       );
     },
     [removeBoostNotificationList.pending]: (state, action) => {
@@ -127,5 +130,5 @@ export const NotificationReducer = createSlice({
     },
   },
 });
-
+export const {resetMuteStatus} = NotificationReducer.actions;
 export default NotificationReducer.reducer;

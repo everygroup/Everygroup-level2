@@ -71,7 +71,11 @@ export const deleteFavouriteGroup = createAsyncThunk(
 export const FavouriteGroupReducer = createSlice({
   name: 'FavouriteGroupReducer',
   initialState,
-  reducers: {},
+  reducers: {
+    resetFavStatus(state, action) {
+      state.value = '';
+    },
+  },
   extraReducers: {
     [favouriteGroup.fulfilled]: (state, action) => {
       state.value = 'success';
@@ -110,5 +114,5 @@ export const FavouriteGroupReducer = createSlice({
     },
   },
 });
-
+export const {resetFavStatus} = FavouriteGroupReducer.actions;
 export default FavouriteGroupReducer.reducer;

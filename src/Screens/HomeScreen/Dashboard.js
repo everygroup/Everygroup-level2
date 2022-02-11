@@ -24,10 +24,17 @@ import AsyncStorageLib from '@react-native-async-storage/async-storage';
 import {
   getAllGroup,
   getTrendingGroup,
+  updateUserFavStatusInlist,
 } from '../../../Slice/AllGroupListReducer';
 import MainLoader from '../../Common/MainLoader';
 import {setSystemLang} from '../../../Slice/CommonReducer';
 import VersionCheckModal from '../../Common/VersionCheckModal';
+import {
+  deleteFavouriteGroup,
+  favouriteGroup,
+  resetFavStatus,
+} from '../../../Slice/FavouriteGroupReducer';
+import {updateOtherUserFavStatus} from '../../../Slice/GroupDetailReducer';
 
 const {width, height} = Dimensions.get('screen');
 const scroll = React.createRef();
@@ -84,6 +91,29 @@ const Dashboard = () => {
     setTrendingGroup(trendingData);
   }, [trendingData]);
   //////////////////////////////
+
+  const markFavourite = groupId => {
+    dispatch(favouriteGroup(groupId)),
+      dispatch(
+        updateUserFavStatusInlist({
+          groupId: groupId,
+          data: true,
+        }),
+      );
+    setTimeout(() => {
+      dispatch(resetFavStatus());
+    }, 500);
+  };
+
+  const removeFavourite = groupId => {
+    dispatch(deleteFavouriteGroup(groupId)),
+      dispatch(
+        updateUserFavStatusInlist({
+          groupId: groupId,
+          data: false,
+        }),
+      );
+  };
 
   return (
     <View
@@ -175,7 +205,14 @@ const Dashboard = () => {
               </Text>
               <ScrollView style={{paddingBottom: 20}}>
                 {groupData.map(group => {
-                  return <GroupCard group={group} key={group.id} />;
+                  return (
+                    <GroupCard
+                      group={group}
+                      key={group.id}
+                      markFavourite={() => markFavourite(group.id)}
+                      removeFavourite={() => removeFavourite(group.id)}
+                    />
+                  );
                 })}
               </ScrollView>
               {previousUrl != null ? (

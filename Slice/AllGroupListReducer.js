@@ -19,7 +19,7 @@ export const getAllGroup = createAsyncThunk(
   'getAllGroup',
   async (data, {rejectWithValue}) => {
     const token = await AsyncStorageLib.getItem('token');
-    console.log(data, 'dat');
+
     try {
       const response = await axios({
         method: 'get',
@@ -82,7 +82,7 @@ export const AllGroupListReducer = createSlice({
     updateUserFavStatusInlist(state, action) {
       state.groupData = state.groupData.map(el => {
         if (el.id == action.payload.groupId) {
-          el.group_favourite_status = true;
+          el.group_favourite_status = action.payload.data;
         }
         return el;
       });

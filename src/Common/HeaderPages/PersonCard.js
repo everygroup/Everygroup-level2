@@ -1,11 +1,14 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+
 import {useNavigation} from '@react-navigation/native';
 import Icons from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
-import {deleteFavouriteUser} from '../../../Slice/FavouriteUserReducer';
+import {
+  deleteFavouriteUser,
+  updatePersonNotification,
+} from '../../../Slice/FavouriteUserReducer';
 
 const PersonCard = ({data}) => {
   const dispatch = useDispatch();
@@ -14,7 +17,7 @@ const PersonCard = ({data}) => {
   const deleteUser = personId => {
     dispatch(deleteFavouriteUser(personId));
   };
-
+  console.log(data, 'personse');
   return (
     <View style={styles.containerStyle}>
       <View style={{flex: 0.5}}>
@@ -53,12 +56,27 @@ const PersonCard = ({data}) => {
           paddingHorizontal: '3%',
         }}>
         <Text style={styles.notificationText}>Benachrichtigung</Text>
-        <Icon
-          name={data.notification ? 'bell' : 'bell-slash'}
-          color="#205072"
-          solid
-          size={24}
-        />
+        <TouchableOpacity
+          onPress={() =>
+            dispatch(
+              updatePersonNotification({
+                id: data.id,
+                value: !data.notification,
+              }),
+            )
+          }>
+          {data.notification ? (
+            <Image
+              source={require('../../Assets/Images/bell.png')}
+              style={{height: 24, width: 24}}
+            />
+          ) : (
+            <Image
+              source={require('../../Assets/Images/closebell.png')}
+              style={{height: 24, width: 24}}
+            />
+          )}
+        </TouchableOpacity>
       </View>
     </View>
   );

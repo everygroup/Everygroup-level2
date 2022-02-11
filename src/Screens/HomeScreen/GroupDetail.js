@@ -20,12 +20,17 @@ import SmallCard from '../../Common/SmallCard';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   getGroupDetail,
+  updateGroupBoostNotification,
+  updateNotifyId,
   updateOtherUserFavStatus,
 } from '../../../Slice/GroupDetailReducer';
 import ReportModal from './ReportModal';
 import {reportGroup, resetReport} from '../../../Slice/ReportGroupReducer';
 import SuccessModal from './SuccessModal';
-import {favouriteGroup} from '../../../Slice/FavouriteGroupReducer';
+import {
+  favouriteGroup,
+  resetFavStatus,
+} from '../../../Slice/FavouriteGroupReducer';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {resetFavouriteValue} from '../../../Slice/FavouriteUserReducer';
 import Share from 'react-native-share';
@@ -37,6 +42,7 @@ import MainLoader from '../../Common/MainLoader';
 import {updateGroup} from '../../../Slice/UserGroupReducer';
 import BoosterModal from '../../Common/BoosterModal';
 import {boostGroup, resetBoostValue} from '../../../Slice/RandomeReducer';
+import {removeBoostNotificationList} from '../../../Slice/NotificationReducer';
 
 const GroupDetail = ({route}) => {
   const {groupId} = route.params;
@@ -53,7 +59,6 @@ const GroupDetail = ({route}) => {
   const [reportModal, setReportModal] = useState(false);
   const [flagValue, setFlagValue] = useState(false);
   const navigation = useNavigation();
-  const [bellValue, setBellValue] = useState(false);
 
   const {groupDetail, error, loading} = useSelector(state => {
     return state.GroupDetailReducer;
@@ -146,6 +151,10 @@ const GroupDetail = ({route}) => {
     if (value == 'success') {
       dispatch(updateOtherUserFavStatus(true));
       dispatch(updateUserFavStatusInlist({groupId: groupId, data: true}));
+
+      setTimeout(() => {
+        dispatch(resetFavStatus());
+      }, 500);
     }
   }, [value]);
 
@@ -157,11 +166,25 @@ const GroupDetail = ({route}) => {
     dispatch(boostGroup({oneX, fiveX, groupId}));
   };
 
-  const {boostError, boostLoading, oneXStatus, fiveXStatus} = useSelector(
-    state => {
-      return state.RandomeReducer;
-    },
-  );
+  const {
+    boostError,
+    boostLoading,
+    oneXStatus,
+    fiveXStatus,
+    boostNotifyId,
+    boostNotifyStatus,
+  } = useSelector(state => {
+    return state.RandomeReducer;
+  });
+
+  useEffect(() => {
+    dispatch(
+      updateNotifyId({
+        notifyId: boostNotifyId,
+        notifyStatus: boostNotifyStatus,
+      }),
+    );
+  }, [boostNotifyId]);
 
   const oneXBouncyfunc = () => {
     setOneXValue(true);
@@ -567,19 +590,48 @@ const GroupDetail = ({route}) => {
                       Booster
                     </Text>
                   </View>
-                  <TouchableOpacity onPress={() => setBellValue(!bellValue)}>
-                    {bellValue ? (
+                  {!groupDetail.boosted_mute_id ? (
+                    <Image
+                      source={require('../../Assets/Images/disableBell.png')}
+                      style={{height: 24, width: 24, resizeMode: 'contain'}}
+                    />
+                  ) : groupDetail.boosted_mute_status ? (
+                    <TouchableOpacity
+                      onPress={() => {
+                        dispatch(
+                          removeBoostNotificationList({
+                            itemId: groupDetail.boosted_mute_id,
+                            status: false,
+                          }),
+                        ),
+                          dispatch(
+                            updateGroupBoostNotification({status: false}),
+                          );
+                      }}>
                       <Image
                         source={require('../../Assets/Images/bell.png')}
                         style={{height: 24, width: 24}}
                       />
-                    ) : (
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity
+                      onPress={() => {
+                        dispatch(
+                          removeBoostNotificationList({
+                            itemId: groupDetail.boosted_mute_id,
+                            status: true,
+                          }),
+                        ),
+                          dispatch(
+                            updateGroupBoostNotification({status: true}),
+                          );
+                      }}>
                       <Image
                         source={require('../../Assets/Images/closebell.png')}
                         style={{height: 24, width: 24}}
                       />
-                    )}
-                  </TouchableOpacity>
+                    </TouchableOpacity>
+                  )}
                 </View>
                 <View
                   style={{

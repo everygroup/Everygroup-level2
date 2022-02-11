@@ -7,6 +7,7 @@ import {
   getFavouriteGroup,
 } from '../../../Slice/FavouriteGroupReducer';
 import MainLoader from '../../Common/MainLoader';
+import {updateUserFavStatusInlist} from '../../../Slice/AllGroupListReducer';
 
 const Groups = () => {
   const dispatch = useDispatch();
@@ -18,6 +19,8 @@ const Groups = () => {
   const {favouriteGroupList, dataLoading} = useSelector(state => {
     return state.FavouriteGroupReducer;
   });
+
+  console.log(favouriteGroupList, 'favlist');
 
   return dataLoading ? (
     <MainLoader heightValue={1.6} />
@@ -33,7 +36,15 @@ const Groups = () => {
             <GroupCard
               group={group}
               favourite={true}
-              removeFavourite={() => dispatch(deleteFavouriteGroup(group.id))}
+              removeFavourite={() => {
+                dispatch(deleteFavouriteGroup(group.id)),
+                  dispatch(
+                    updateUserFavStatusInlist({
+                      groupId: group.id,
+                      data: false,
+                    }),
+                  );
+              }}
             />
           );
         }}

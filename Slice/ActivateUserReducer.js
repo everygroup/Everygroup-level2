@@ -30,8 +30,6 @@ export const ActivateUser = createAsyncThunk(
       );
       return response.data;
     } catch (err) {
-      console.log(err.response, 'activate error');
-
       return rejectWithValue(Object.values(err.response.data).toString());
     }
   },

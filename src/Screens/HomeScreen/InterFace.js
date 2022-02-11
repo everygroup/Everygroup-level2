@@ -23,6 +23,7 @@ import {updateTutorialStatus} from '../../../Slice/AuthReducer';
 import {
   boostGroup,
   updateUserFavStatusInRandomeList,
+  updateUserNotifyStatusInRandomeList,
 } from '../../../Slice/RandomeReducer';
 import Share from 'react-native-share';
 import SettingModal from '../../Common/SettingModal';
@@ -33,6 +34,7 @@ import {
 } from '../../../Slice/RandomeReducer';
 import ErrorModal from '../../Common/ErrorModal';
 import {updateUserFavStatusInlist} from '../../../Slice/AllGroupListReducer';
+import {resetMuteStatus} from '../../../Slice/NotificationReducer';
 
 function Interface(props) {
   const dispatch = useDispatch();
@@ -50,6 +52,8 @@ function Interface(props) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [animation] = useState(new Animated.Value(1));
   const [groupId, setGroupId] = useState(0);
+  const [boosted_mute_id, setBoosted_mute_id] = useState(0);
+  const [boosted_mute_status, setBoosted_mute_status] = useState(false);
   const [favouriteStatus, setFavouriteStatus] = useState(false);
 
   const startAnimation = () => {
@@ -83,11 +87,17 @@ function Interface(props) {
     setSystemLang(await AsyncStorageLib.getItem('systemLang'));
   };
 
-  const {randomeList, error, fromDate, oneXStatus, fiveXStatus} = useSelector(
-    state => {
-      return state.RandomeReducer;
-    },
-  );
+  const {
+    randomeList,
+    error,
+    fromDate,
+    oneXStatus,
+    fiveXStatus,
+    boostNotifyId,
+    boostNotifyStatus,
+  } = useSelector(state => {
+    return state.RandomeReducer;
+  });
 
   useEffect(() => {
     if (error != '') {
@@ -213,7 +223,25 @@ function Interface(props) {
     Linking.openURL(link);
   };
 
-  console.log(randomeList, 'list');
+  const {muteSuccess} = useSelector(state => {
+    return state.NotificationReducer;
+  });
+
+  useEffect(() => {
+    if (muteSuccess == 'success') {
+      setBoosted_mute_status(!boosted_mute_status);
+      dispatch(
+        updateUserNotifyStatusInRandomeList({
+          groupId: groupId,
+          value: !boosted_mute_status,
+        }),
+      );
+      setTimeout(() => {
+        dispatch(resetMuteStatus());
+      }, 600);
+    }
+  }, [muteSuccess]);
+
   return (
     <View style={{flex: 1, backgroundColor: '#dcdcdc'}}>
       <SettingModal
@@ -222,6 +250,8 @@ function Interface(props) {
         groupId={groupId}
         favouriteStatus={favouriteStatus}
         flagStatus={flagStatus}
+        boosted_mute_id={boosted_mute_id}
+        boosted_mute_status={boosted_mute_status}
       />
       <MessangerModal
         modalValue={modalValue}
@@ -473,10 +503,12 @@ function Interface(props) {
                   )}
                   <TouchableOpacity
                     onPress={() => {
-                      setSettingModal(true),
-                        setGroupId(item.id),
-                        setFavouriteStatus(item.group_favourite_status);
+                      setSettingModal(true);
+                      setGroupId(item.id);
+                      setFavouriteStatus(item.group_favourite_status);
                       setFlagStatus(item.group_report_status);
+                      setBoosted_mute_id(item.boosted_mute_id);
+                      setBoosted_mute_status(item.boosted_mute_status);
                     }}>
                     <Image
                       source={require('../../Assets/Images/setting.png')}

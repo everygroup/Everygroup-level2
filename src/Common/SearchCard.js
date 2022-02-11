@@ -8,12 +8,15 @@ import {
   Animated,
   Easing,
   Platform,
+  TouchableOpacity,
 } from 'react-native';
 import FontStyle from '../Assets/Fonts/FontStyle';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import Icons from 'react-native-vector-icons/Ionicons';
 import {useDispatch} from 'react-redux';
-import {deleteSearch} from '../../Slice/SearchReducer';
+import {
+  deleteSearch,
+  updateSearchNotification,
+} from '../../Slice/SearchReducer';
 
 const SearchCard = ({data, onPress, bellPress}) => {
   const dispatch = useDispatch();
@@ -32,6 +35,8 @@ const SearchCard = ({data, onPress, bellPress}) => {
       dispatch(deleteSearch(searchId));
     });
   };
+
+  console.log(data, 'data');
   return (
     <Animated.View
       style={[
@@ -102,13 +107,28 @@ const SearchCard = ({data, onPress, bellPress}) => {
           width: '100%',
         }}>
         <Text style={styles.titleText}>Benachrichtigung</Text>
-        <Icon
-          name={data.notification ? 'bell' : 'bell-slash'}
-          color="#205072"
-          solid
-          size={24}
-          bellPress={bellPress}
-        />
+
+        <TouchableOpacity
+          onPress={() =>
+            dispatch(
+              updateSearchNotification({
+                id: data.id,
+                value: !data.notification,
+              }),
+            )
+          }>
+          {data.notification ? (
+            <Image
+              source={require('../Assets/Images/bell.png')}
+              style={{height: 24, width: 24}}
+            />
+          ) : (
+            <Image
+              source={require('../Assets/Images/closebell.png')}
+              style={{height: 24, width: 24}}
+            />
+          )}
+        </TouchableOpacity>
       </View>
     </Animated.View>
   );

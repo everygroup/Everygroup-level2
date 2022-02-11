@@ -26,7 +26,7 @@ export const changeProfile = createAsyncThunk(
           username: data.userNameText,
         },
       });
-      console.log(response, 'response');
+
       return response.data;
     } catch (err) {
       return rejectWithValue(Object.values(err.response.data));

@@ -235,6 +235,9 @@ const EditGroup = ({route}) => {
           onChangeText={text => {
             setTitel(text), setTitelError(false);
           }}
+          borderColor={titelError ? '#FF2020' : null}
+          bdWidth={titelError ? 2 : 0.1}
+          height={50}
         />
         <EditInput value={groupLink} editable={false} />
         <View style={Styles.errorContainer}>
@@ -244,7 +247,12 @@ const EditGroup = ({route}) => {
             </HelperText>
           ) : null}
         </View>
-        <View style={[styles.inputContainer, {height: expand ? 500 : 39}]}>
+        <View
+          style={[
+            styles.inputContainer,
+            {height: expand ? 500 : 39},
+            categoryError ? {borderColor: 'red', borderWidth: 2} : null,
+          ]}>
           <TouchableOpacity
             onPress={expandOption}
             style={{
@@ -339,7 +347,7 @@ const EditGroup = ({route}) => {
           /> */}
           {/* <Icon name={'caretdown'} size={20} color="#205072" /> */}
         </View>
-        <View style={Styles.errorContainer}>
+        <View style={[Styles.errorContainer]}>
           {descriptionError == true ? (
             <HelperText style={[Styles.helperText, {left: '5%'}]} type="error">
               {descriptionErrorMessage}
@@ -353,6 +361,8 @@ const EditGroup = ({route}) => {
           onChangeText={text => {
             setDescription(text), setDescriptionError(false);
           }}
+          borderColor={descriptionError ? '#FF2020' : null}
+          bdWidth={descriptionError ? 2 : null}
         />
         <View style={Styles.errorContainer}>
           {hashError == true ? (
@@ -366,6 +376,8 @@ const EditGroup = ({route}) => {
           onChangeText={text => {
             setHashText(text), setHashError(false);
           }}
+          borderColor={hashError ? '#FF2020' : null}
+          bdWidth={hashError ? 2 : null}
         />
         <Text
           style={{
@@ -384,15 +396,42 @@ const EditGroup = ({route}) => {
             </HelperText>
           ) : null}
         </View>
+
         <View
           style={{
-            width: '100%',
+            width: '90%',
             height: languageArray.length > 0 && groupLanguage ? 150 : 40,
             borderRadius: 5,
-            backgroundColor: '#fff',
             alignItems: 'center',
+
+            // flexDirection: 'row',
+            // alignItems: 'center',
+            borderWidth: 1,
+            borderColor: '#fff',
+            borderRadius: 7,
+            marginVertical: 10,
+            shadowOffset: {
+              width: 0,
+              height: 1,
+            },
+            shadowOpacity: 0.27,
+            shadowRadius: 2.65,
+            elevation: 2,
+            paddingHorizontal: '2.5%',
+            marginVertical: '2.5%',
           }}>
-          <EditInput
+          <View style={{flexDirection: 'row', width: '100%', padding: '5%'}}>
+            <TextInput placeholder={'asdjfl'} style={{width: '90%'}} />
+            <Image
+              source={
+                spokenLanguage == ''
+                  ? require('../../Assets/Images/plusGrey.png')
+                  : require('../../Assets/Images/plusOrange.png')
+              }
+              style={{height: 18, width: 18, resizeMode: 'contain'}}
+            />
+          </View>
+          {/* <EditInput
             onFocus={() => {
               setJoinLanguageFocus(false), setGroupLanguageFocus(true);
             }}
@@ -408,17 +447,16 @@ const EditGroup = ({route}) => {
                 : require('../../Assets/Images/plusOrange.png')
             }
             bgColor="#fff"
-            bdWidth={1}
+            // bdWidth={languageArray.length > 0 && groupLanguage ? 0.1 : null}
             iconName={'plus'}
             iconColor="#beccd7"
             onChangeText={text => {
               checkLanguage(text), setSpokenError(false);
             }}
             value={spokenLanguage.language}
-          />
-          {languageArray.length > 0 && groupLanguage ? (
-            <ScrollView style={{height: 500}}>
-              {languageArray.map(item => {
+          /> */}
+          {languageArray.length > 0 && groupLanguage
+            ? languageArray.map(item => {
                 return (
                   <TouchableOpacity
                     onPress={() => selectLanguage(item)}
@@ -426,6 +464,7 @@ const EditGroup = ({route}) => {
                       height: 20,
                       paddingHorizontal: '10%',
                       marginTop: 5,
+                      width: '100%',
                     }}>
                     <Text
                       style={{
@@ -437,9 +476,8 @@ const EditGroup = ({route}) => {
                     </Text>
                   </TouchableOpacity>
                 );
-              })}
-            </ScrollView>
-          ) : null}
+              })
+            : null}
         </View>
         <View
           style={{

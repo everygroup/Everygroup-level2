@@ -33,6 +33,15 @@ export const GroupDetailReducer = createSlice({
   name: 'GroupDetailReducer',
   initialState,
   reducers: {
+    updateNotifyId(state, action) {
+      state.groupDetail.boosted_mute_id = action.payload.notifyId;
+      state.groupDetail.boosted_mute_status = action.payload.notifyStatus;
+    },
+
+    updateGroupBoostNotification(state, action) {
+      state.groupDetail.boosted_mute_status = action.payload.status;
+    },
+
     updateOtherUserFavStatus(state, action) {
       state.groupDetail.group_favourite_status = action.payload;
     },
@@ -54,6 +63,10 @@ export const GroupDetailReducer = createSlice({
   },
 });
 
-export const {updateOtherUserFavStatus} = GroupDetailReducer.actions;
+export const {
+  updateOtherUserFavStatus,
+  updateGroupBoostNotification,
+  updateNotifyId,
+} = GroupDetailReducer.actions;
 
 export default GroupDetailReducer.reducer;

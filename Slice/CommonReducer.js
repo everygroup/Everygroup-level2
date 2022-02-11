@@ -29,10 +29,9 @@ export const setSystemLang = createAsyncThunk(
           language_code: data.substring(0, 2),
         },
       });
-      console.log(response, 'lang');
+
       return data;
     } catch (err) {
-      console.log(err.response);
       return rejectWithValue(Object.values(err.response.data));
     }
   },

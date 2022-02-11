@@ -6,6 +6,7 @@ import {
   Image,
   TouchableWithoutFeedback,
   Animated,
+  TouchableOpacity,
 } from 'react-native';
 
 import Modal from 'react-native-modal';
@@ -21,6 +22,8 @@ import {
   reportGroupRandomeList,
   resetReportRandomeList,
 } from '../../Slice/RandomeReducer';
+import {removeBoostNotificationList} from '../../Slice/NotificationReducer';
+import {updateGroupBoostNotification} from '../../Slice/GroupDetailReducer';
 
 const SettingModal = ({
   modalValue,
@@ -28,6 +31,8 @@ const SettingModal = ({
   favouriteStatus,
   groupId,
   flagStatus,
+  boosted_mute_id,
+  boosted_mute_status,
 }) => {
   const dispatch = useDispatch();
   const [flagId, setFlagId] = useState('');
@@ -128,10 +133,42 @@ const SettingModal = ({
             <Text style={styles.textStyle}>Melden</Text>
           </View>
           <View style={styles.insideContainer}>
-            <Image
-              source={require('../Assets/Images/closebell.png')}
-              style={styles.imageStyle}
-            />
+            {!boosted_mute_id ? (
+              <Image
+                source={require('../Assets/Images/disableBell.png')}
+                style={{height: 24, width: 24, resizeMode: 'contain'}}
+              />
+            ) : boosted_mute_status ? (
+              <TouchableOpacity
+                onPress={() => {
+                  dispatch(
+                    removeBoostNotificationList({
+                      itemId: boosted_mute_id,
+                      status: false,
+                    }),
+                  );
+                }}>
+                <Image
+                  source={require('../Assets/Images/bell.png')}
+                  style={{height: 24, width: 24}}
+                />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                onPress={() => {
+                  dispatch(
+                    removeBoostNotificationList({
+                      itemId: boosted_mute_id,
+                      status: true,
+                    }),
+                  );
+                }}>
+                <Image
+                  source={require('../Assets/Images/closebell.png')}
+                  style={{height: 24, width: 24}}
+                />
+              </TouchableOpacity>
+            )}
             <Text style={styles.textStyle}>Erinnerung</Text>
           </View>
         </View>

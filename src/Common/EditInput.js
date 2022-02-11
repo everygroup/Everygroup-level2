@@ -21,7 +21,7 @@ const EditInput = ({
   iconPress,
   imageSource1,
   onFocus,
-  borderWidth,
+  bdWidth,
   borderColor,
 }) => {
   return (
@@ -31,7 +31,7 @@ const EditInput = ({
         {
           backgroundColor: editable ? '#F9F9F9' : '#fff',
           height: height || 42,
-          borderWidth: borderWidth ? borderWidth : null,
+          borderWidth: bdWidth ? bdWidth : null,
           borderColor: borderColor ? borderColor : null,
         },
       ]}>

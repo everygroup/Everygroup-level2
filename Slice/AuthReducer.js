@@ -41,7 +41,6 @@ export const signInUser = createAsyncThunk(
 
       return response.data;
     } catch (err) {
-      console.log(err.response, 'signin');
       return rejectWithValue(Object.values(err.response.data).toString());
     }
   },

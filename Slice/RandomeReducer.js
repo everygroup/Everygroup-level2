@@ -16,6 +16,8 @@ const initialState = {
   fiveXStatus: 0,
   reportStatus: '',
   reportId: '',
+  boostNotifyId: '',
+  boostNotifyStatus: '',
 };
 
 export const getRandomeList = createAsyncThunk(
@@ -34,10 +36,9 @@ export const getRandomeList = createAsyncThunk(
         headers: {Authorization: `Bearer ${token}`},
         url: `${baseUrl}/group/feed`,
       });
-      console.log(response, 'feed page');
+
       return response.data;
     } catch (err) {
-      console.log(err.response, 'error page');
       return rejectWithValue(err.response.data.message);
     }
   },
@@ -82,7 +83,11 @@ export const boostGroup = createAsyncThunk(
         },
       });
 
-      return data;
+      return {
+        data: data,
+        id: response.data.id,
+        notifyStatus: response.data.notification,
+      };
     } catch (err) {
       return rejectWithValue(err.response.data);
     }
@@ -135,6 +140,15 @@ export const RandomeReducer = createSlice({
         return el;
       });
     },
+
+    updateUserNotifyStatusInRandomeList(state, action) {
+      state.randomeList = state.randomeList.map(el => {
+        if (el.id == action.payload.groupId) {
+          el.boosted_mute_status = action.payload.value;
+        }
+        return el;
+      });
+    },
   },
   extraReducers: {
     [getRandomeList.fulfilled]: (state, action) => {
@@ -154,14 +168,16 @@ export const RandomeReducer = createSlice({
 
     [boostGroup.fulfilled]: (state, action) => {
       state.boostLoading = false;
-      state.oneXStatus = action.payload.oneX;
-      state.fiveXStatus = action.payload.fiveX;
+      state.oneXStatus = action.payload.data.oneX;
+      state.fiveXStatus = action.payload.data.fiveX;
+      state.boostNotifyId = action.payload.id;
+      state.boostNotifyStatus = action.payload.notifyStatus;
 
       state.randomeList = state.randomeList.map(el => {
-        if (el.id === action.payload.groupId) {
-          if (action.payload.oneX > 0) {
+        if (el.id === action.payload.data.groupId) {
+          if (action.payload.data.oneX > 0) {
             el.booster_points_1x_status = false;
-          } else if (action.payload.fiveX > 0) {
+          } else if (action.payload.data.fiveX > 0) {
             el.booster_points_5x_status = false;
           }
         }
@@ -180,7 +196,6 @@ export const RandomeReducer = createSlice({
     },
 
     [reportGroupRandomeList.fulfilled]: (state, action) => {
-      console.log(action, 'acion');
       // const index = state.randomeList.findIndex(el=>el.id==action.payload.group_id)
       // state.randomeList[index]=state.randomeList.group_report_status
       state.randomeList.map(el => {
@@ -209,6 +224,7 @@ export const {
   resetErrorValue,
   resetBoostValue,
   updateUserFavStatusInRandomeList,
+  updateUserNotifyStatusInRandomeList,
   resetReportRandomeList,
 } = RandomeReducer.actions;
 

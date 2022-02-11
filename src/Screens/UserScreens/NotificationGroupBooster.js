@@ -199,15 +199,15 @@ const NotificationGroupBooster = () => {
                       color: '#205072',
                       paddingLeft: 20,
                     }}>
-                    {item.title}
+                    {item.group_title}
                   </Text>
                 </View>
                 <TouchableWithoutFeedback
                   onPress={() =>
                     dispatch(
                       removeBoostNotificationList({
-                        groupId: item.id,
-                        status: true,
+                        itemId: item.id,
+                        status: false,
                       }),
                     )
                   }>

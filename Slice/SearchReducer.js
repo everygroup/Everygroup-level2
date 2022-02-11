@@ -31,7 +31,6 @@ export const saveSearch = createAsyncThunk(
 
       return response.status;
     } catch (err) {
-      console.log(err.response, 'save search');
       return rejectWithValue(Object.values(err.response.data));
     }
   },
@@ -72,12 +71,33 @@ export const deleteSearch = createAsyncThunk(
   },
 );
 
+export const updateSearchNotification = createAsyncThunk(
+  'updateSearchNotification',
+  async (data, {rejectWithValue}) => {
+    const token = await AsyncStorage.getItem('token');
+
+    try {
+      const response = await axios({
+        method: 'patch',
+        headers: {Authorization: `Bearer ${token}`},
+        url: `${baseUrl}/favourite-search/${data.id}`,
+        data: {
+          notification: data.value,
+        },
+      });
+
+      return data;
+    } catch (err) {
+      return rejectWithValue(Object.values(err.response.data));
+    }
+  },
+);
+
 export const SearchReducer = createSlice({
   name: 'SearchReducer',
   initialState,
   reducers: {
     resetSearchValue(state, action) {
-      console.log();
       state.error = [];
       state.searchSuccess = false;
     },
@@ -90,7 +110,7 @@ export const SearchReducer = createSlice({
     },
     [saveSearch.pending]: (state, action) => {
       state.loading = true;
-      state.error = '';
+      state.error = [];
     },
     [saveSearch.rejected]: (state, action) => {
       state.error = action.payload;
@@ -102,7 +122,7 @@ export const SearchReducer = createSlice({
     },
     [getSearch.pending]: (state, action) => {
       state.loading = true;
-      state.error = '';
+      state.error = [];
     },
     [getSearch.rejected]: (state, action) => {
       state.error = action.payload;
@@ -117,9 +137,27 @@ export const SearchReducer = createSlice({
     },
     [deleteSearch.pending]: (state, action) => {
       state.loading = true;
-      state.error = '';
+      state.error = [];
     },
     [deleteSearch.rejected]: (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    },
+
+    [updateSearchNotification.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.getAllSearch.map(el => {
+        if (el.id == action.payload.id) {
+          el.notification = action.payload.value;
+        }
+        return el;
+      });
+    },
+    [updateSearchNotification.pending]: (state, action) => {
+      state.loading = true;
+      state.error = '';
+    },
+    [updateSearchNotification.rejected]: (state, action) => {
       state.error = action.payload;
       state.loading = false;
     },
