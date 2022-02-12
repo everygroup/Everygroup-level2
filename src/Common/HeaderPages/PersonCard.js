@@ -1,5 +1,13 @@
-import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  Animated,
+  Easing,
+} from 'react-native';
 import FontStyle from '../../Assets/Fonts/FontStyle';
 
 import {useNavigation} from '@react-navigation/native';
@@ -11,15 +19,32 @@ import {
 } from '../../../Slice/FavouriteUserReducer';
 
 const PersonCard = ({data}) => {
+  const [animatedHeight, setAnimatedHeight] = useState(new Animated.Value(140));
+  const [deleteId, setDeleteId] = useState();
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const deleteUser = personId => {
-    dispatch(deleteFavouriteUser(personId));
+  const deleteUser = async personId => {
+    await setDeleteId(personId);
+    setTimeout(() => {
+      Animated.timing(animatedHeight, {
+        toValue: 0,
+        duration: 300,
+        easing: Easing.linear,
+        useNativeDriver: false,
+      }).start(() => {
+        animatedHeight.setValue(140);
+        dispatch(deleteFavouriteUser(personId));
+      });
+    }, 500);
   };
-  console.log(data, 'personse');
+
   return (
-    <View style={styles.containerStyle}>
+    <Animated.View
+      style={[
+        styles.containerStyle,
+        {height: data.id == deleteId ? animatedHeight : 140},
+      ]}>
       <View style={{flex: 0.5}}>
         <Icons
           name={'close'}
@@ -78,7 +103,7 @@ const PersonCard = ({data}) => {
           )}
         </TouchableOpacity>
       </View>
-    </View>
+    </Animated.View>
   );
 };
 

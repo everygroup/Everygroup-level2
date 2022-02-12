@@ -23,8 +23,8 @@ export const getSearchResult = createAsyncThunk(
         data: {
           query: data.query,
           group_type: data.selectedMessenger,
-          group_category: data.shortCategory,
-          group_language: data.shortLanguage,
+          categories: data.shortCategory,
+          languages: data.shortLanguage,
         },
       });
       console.log(response, 'se resul');

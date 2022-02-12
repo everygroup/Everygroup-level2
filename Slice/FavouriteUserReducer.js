@@ -135,9 +135,7 @@ export const FavouriteUserReducer = createSlice({
       state.deleteLoading = false;
       state.deleteUser = 'success';
       state.getFavouriteData.splice(
-        state.getFavouriteData.findIndex(
-          el => el.favourite_user_id === action.payload,
-        ),
+        state.getFavouriteData.findIndex(el => el.id === action.payload),
         1,
       );
     },

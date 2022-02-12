@@ -9,17 +9,18 @@ import {
   Animated,
   Platform,
 } from 'react-native';
-import Icons from 'react-native-vector-icons/Fontisto';
+
 import AddGroup from './HeaderPages/AddGroup';
 import Menu from './HeaderPages/Menu';
 import Search from './HeaderPages/Search';
 import {useNavigation} from '@react-navigation/native';
+import LottieView from 'lottie-react-native';
 
 const {width, height} = Dimensions.get('window');
 
 const Header = ({selectionOption, closeAddGroup}) => {
   const navigation = useNavigation();
-  const [opacity] = useState(new Animated.Value(1));
+  // const [opacity] = useState(new Animated.Value(1));
   const [starValue, setStarValue] = useState(false);
   const [filterValue, setFilterValue] = useState(false);
   const [currentSelectedOption, setSelectedOption] = useState('');
@@ -95,52 +96,72 @@ const Header = ({selectionOption, closeAddGroup}) => {
             top: 15,
             justifyContent: 'space-between',
           }}>
-          {currentSelectedOption == 'plus' ? (
-            <TouchableOpacity
-              style={styles.iconContainer}
-              onPress={menuIconPress}>
-              <Icons name="close-a" size={20} color="#EF3E36" />
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              style={styles.iconContainer}
-              onPress={() => {
-                menuIconPress('plus');
-              }}>
-              <Image
-                source={require('../Assets/Images/plus.png')}
-                style={{height: 31, width: 31, resizeMode: 'contain'}}
-              />
-            </TouchableOpacity>
-          )}
-
-          <TouchableWithoutFeedback
-            style={[styles.iconContainer, opacity]}
-            onPress={startAnimation}>
-            {/* <Animated.View
-              style={{
-                height: 50,
-                width: 50,
-                backgroundColor: 'green',
-                opacity,
-              }}></Animated.View> */}
-            <Animated.Image
-              source={require('../Assets/Images/search.png')}
-              style={{height: 31, width: 31, resizeMode: 'contain', opacity}}
-            />
-          </TouchableWithoutFeedback>
-          <TouchableOpacity
-            style={styles.iconContainer}
-            onPress={() => menuIconPress('menu')}>
-            {currentSelectedOption == 'menu' ? (
-              <Icons name="close-a" size={20} color="#EF3E36" />
+          <View style={[styles.iconContainer]}>
+            {currentSelectedOption == 'plus' ? (
+              <TouchableWithoutFeedback onPress={() => menuIconPress('plus')}>
+                <LottieView
+                  autoPlay
+                  loop={false}
+                  source={require('../Assets/animation/menuCross.json')}
+                />
+              </TouchableWithoutFeedback>
             ) : (
-              <Image
-                source={require('../Assets/Images/menu.png')}
-                style={{height: 31, width: 31, resizeMode: 'contain'}}
-              />
+              <TouchableWithoutFeedback onPress={() => menuIconPress('plus')}>
+                <Image
+                  source={require('../Assets/Images/plus.png')}
+                  style={{
+                    height: 31,
+                    width: 31,
+                    resizeMode: 'contain',
+                  }}
+                />
+              </TouchableWithoutFeedback>
             )}
-          </TouchableOpacity>
+          </View>
+          <View style={[styles.iconContainer]}>
+            {currentSelectedOption == 'search' ? (
+              <TouchableWithoutFeedback onPress={() => menuIconPress('search')}>
+                <LottieView
+                  autoPlay
+                  loop={false}
+                  source={require('../Assets/animation/searchCross.json')}
+                />
+              </TouchableWithoutFeedback>
+            ) : (
+              <TouchableWithoutFeedback onPress={() => menuIconPress('search')}>
+                <Image
+                  source={require('../Assets/Images/search.png')}
+                  style={{
+                    height: 31,
+                    width: 31,
+                    resizeMode: 'contain',
+                  }}
+                />
+              </TouchableWithoutFeedback>
+            )}
+          </View>
+          <View style={[styles.iconContainer]}>
+            {currentSelectedOption == 'menu' ? (
+              <TouchableWithoutFeedback onPress={() => menuIconPress('menu')}>
+                <LottieView
+                  autoPlay
+                  loop={false}
+                  source={require('../Assets/animation/menuCross.json')}
+                />
+              </TouchableWithoutFeedback>
+            ) : (
+              <TouchableWithoutFeedback onPress={() => menuIconPress('menu')}>
+                <Image
+                  source={require('../Assets/Images/menu.png')}
+                  style={{
+                    height: 31,
+                    width: 31,
+                    resizeMode: 'contain',
+                  }}
+                />
+              </TouchableWithoutFeedback>
+            )}
+          </View>
         </View>
       </View>
       {currentSelectedOption == 'menu' ? (

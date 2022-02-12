@@ -35,7 +35,7 @@ export const AuthNavigator = () => {
   const prevRoute = routes[routes.length - 2];
   useEffect(() => {
     getToken();
-    if (token != '') {
+    if (token) {
       navigation.navigate('HomeNavigator');
     }
   }, [token]);
@@ -52,6 +52,7 @@ export const AuthNavigator = () => {
     if (initialUrl.includes('ConfirmationScreen')) {
       const userId = initialUrl.split('=')[1];
       navigation.navigate('ConfirmationScreen', {userId});
+      console.log(initialUrl, 'initialUrl');
     }
   }, [initialUrl]);
 

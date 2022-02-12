@@ -164,6 +164,10 @@ const Search = ({starPress, filterValue, filterPress, parentCallBack}) => {
       ...rest,
     }));
     const shortLanguage = language.map(el => el.code);
+    console.log(
+      {query, selectedMessenger, shortCategory, shortLanguage},
+      'console search',
+    );
     await dispatch(
       getSearchResult({query, selectedMessenger, shortCategory, shortLanguage}),
     );

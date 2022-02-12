@@ -398,63 +398,45 @@ const EditGroup = ({route}) => {
         </View>
 
         <View
-          style={{
-            width: '90%',
-            height: languageArray.length > 0 && groupLanguage ? 150 : 40,
-            borderRadius: 5,
-            alignItems: 'center',
-
-            // flexDirection: 'row',
-            // alignItems: 'center',
-            borderWidth: 1,
-            borderColor: '#fff',
-            borderRadius: 7,
-            marginVertical: 10,
-            shadowOffset: {
-              width: 0,
-              height: 1,
-            },
-            shadowOpacity: 0.27,
-            shadowRadius: 2.65,
-            elevation: 2,
-            paddingHorizontal: '2.5%',
-            marginVertical: '2.5%',
-          }}>
-          <View style={{flexDirection: 'row', width: '100%', padding: '5%'}}>
-            <TextInput placeholder={'asdjfl'} style={{width: '90%'}} />
-            <Image
-              source={
-                spokenLanguage == ''
-                  ? require('../../Assets/Images/plusGrey.png')
-                  : require('../../Assets/Images/plusOrange.png')
-              }
-              style={{height: 18, width: 18, resizeMode: 'contain'}}
+          style={[
+            styles.languageSelectionBox,
+            {height: languageArray.length > 0 && groupLanguage ? 150 : 40},
+          ]}>
+          <View
+            style={{
+              flexDirection: 'row',
+              width: '100%',
+              justifyContent: 'center',
+              height: 40,
+              alignItems: 'center',
+            }}>
+            <TextInput
+              onFocus={() => {
+                setJoinLanguageFocus(false), setGroupLanguageFocus(true);
+              }}
+              placeholder="Sprache auswählen"
+              placeholderTextColor="#BECCD6"
+              style={{width: '90%'}}
+              value={spokenLanguage.language}
+              onChangeText={text => {
+                checkLanguage(text), setSpokenError(false);
+              }}
             />
+            <TouchableOpacity
+              onPress={() =>
+                spokenLanguage != '' ? addSelectLanguage() : null
+              }>
+              <Image
+                source={
+                  spokenLanguage == ''
+                    ? require('../../Assets/Images/plusGrey.png')
+                    : require('../../Assets/Images/plusOrange.png')
+                }
+                style={{height: 18, width: 18, resizeMode: 'contain'}}
+              />
+            </TouchableOpacity>
           </View>
-          {/* <EditInput
-            onFocus={() => {
-              setJoinLanguageFocus(false), setGroupLanguageFocus(true);
-            }}
-            inputWidth={'100%'}
-            // height={languageArray.length > 0 && groupLanguage ? 150 : null}
-            placeholder="Sprache auswählen"
-            placeholderTextColor="#BECCD6"
-            icon="available"
-            iconPress={() => addSelectLanguage()}
-            imageSource1={
-              spokenLanguage == ''
-                ? require('../../Assets/Images/plusGrey.png')
-                : require('../../Assets/Images/plusOrange.png')
-            }
-            bgColor="#fff"
-            // bdWidth={languageArray.length > 0 && groupLanguage ? 0.1 : null}
-            iconName={'plus'}
-            iconColor="#beccd7"
-            onChangeText={text => {
-              checkLanguage(text), setSpokenError(false);
-            }}
-            value={spokenLanguage.language}
-          /> */}
+
           {languageArray.length > 0 && groupLanguage
             ? languageArray.map(item => {
                 return (
@@ -462,7 +444,7 @@ const EditGroup = ({route}) => {
                     onPress={() => selectLanguage(item)}
                     style={{
                       height: 20,
-                      paddingHorizontal: '10%',
+                      paddingLeft: '2%',
                       marginTop: 5,
                       width: '100%',
                     }}>
@@ -484,13 +466,14 @@ const EditGroup = ({route}) => {
             width: '100%',
             alignSelf: 'flex-start',
             marginLeft: '4%',
-            marginVertical: 7,
+            marginVertical: 2,
           }}>
           <FlatList
             data={selectedLanguage}
             horizontal={true}
             scrollEnabled={true}
             showsHorizontalScrollIndicator={false}
+            listKey={(item, index) => index.toString()}
             renderItem={({item: language}) => {
               return (
                 <View style={styles.languageContainer}>
@@ -588,45 +571,53 @@ const EditGroup = ({route}) => {
           </TouchableOpacity>
         </View>
         <View
-          style={{
-            width: '100%',
-            height: languageArray.length > 0 && joinLanguageFocus ? 150 : 40,
-            borderRadius: 5,
-            backgroundColor: '#fff',
-            alignItems: 'center',
-          }}>
-          <EditInput
-            onFocus={() => {
-              setJoinLanguageFocus(true), setGroupLanguageFocus(false);
-            }}
-            inputWidth={'100%'}
-            // height={languageArray.length > 0 && joinLanguageFocus ? 150 : null}
-            placeholder="Sprache auswählen..."
-            placeholderTextColor="#BECCD6"
-            bgColor="#fff"
-            icon="available"
-            iconPress={() => addJoinedLanguage()}
-            imageSource1={
-              joinedLanguage == ''
-                ? require('../../Assets/Images/plusGrey.png')
-                : require('../../Assets/Images/plusOrange.png')
-            }
-            bdWidth={0.1}
-            iconName={'plus'}
-            iconColor="#beccd7"
-            onChangeText={text => checkLanguage(text)}
-            value={joinedLanguage.language}
-          />
-          {languageArray.length > 0 && joinLanguageFocus ? (
-            <ScrollView>
-              {languageArray.map(item => {
+          style={[
+            styles.languageSelectionBox,
+            {height: languageArray.length > 0 && joinLanguageFocus ? 150 : 40},
+          ]}>
+          <View
+            style={{
+              flexDirection: 'row',
+              width: '100%',
+              justifyContent: 'center',
+              height: 40,
+              alignItems: 'center',
+            }}>
+            <TextInput
+              onFocus={() => {
+                setJoinLanguageFocus(true), setGroupLanguageFocus(false);
+              }}
+              placeholder="Sprache auswählen..."
+              placeholderTextColor="#BECCD6"
+              style={{width: '90%'}}
+              value={joinedLanguage.language}
+              onChangeText={text => checkLanguage(text)}
+            />
+            <TouchableOpacity
+              onPress={() =>
+                joinedLanguage != '' ? addJoinedLanguage() : null
+              }>
+              <Image
+                source={
+                  joinedLanguage == ''
+                    ? require('../../Assets/Images/plusGrey.png')
+                    : require('../../Assets/Images/plusOrange.png')
+                }
+                style={{height: 18, width: 18, resizeMode: 'contain'}}
+              />
+            </TouchableOpacity>
+          </View>
+
+          {languageArray.length > 0 && joinLanguageFocus
+            ? languageArray.map(item => {
                 return (
                   <TouchableOpacity
                     onPress={() => selectJoinLanguage(item)}
                     style={{
                       height: 20,
-                      paddingHorizontal: '10%',
+                      paddingLeft: '2%',
                       marginTop: 5,
+                      width: '100%',
                     }}>
                     <Text
                       style={{
@@ -638,22 +629,22 @@ const EditGroup = ({route}) => {
                     </Text>
                   </TouchableOpacity>
                 );
-              })}
-            </ScrollView>
-          ) : null}
+              })
+            : null}
         </View>
         <View
           style={{
             width: '100%',
             alignSelf: 'flex-start',
             marginLeft: '4%',
-            marginVertical: 7,
+            marginVertical: 2,
           }}>
           <FlatList
             data={joinLanguage}
             horizontal={true}
             scrollEnabled={true}
             showsHorizontalScrollIndicator={false}
+            listKey={(item, index) => index.toString()}
             renderItem={({item: language}) => {
               return (
                 <View style={styles.languageContainer}>
@@ -676,7 +667,7 @@ const EditGroup = ({route}) => {
                     <Text
                       style={{
                         fontFamily: FontStyle.MontMedium,
-                        color: '#20572',
+                        color: '#205072',
                         fontSize: 12,
                       }}>
                       X
@@ -749,6 +740,23 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 2.5,
     marginTop: 10,
+  },
+  languageSelectionBox: {
+    width: '90%',
+
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 7,
+    marginVertical: 10,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.27,
+    shadowRadius: 2.65,
+    elevation: 2,
+    paddingHorizontal: '2.5%',
+    marginVertical: '2.5%',
   },
 });
 

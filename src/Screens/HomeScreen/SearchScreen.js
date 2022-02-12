@@ -59,7 +59,7 @@ const SearchScreen = () => {
                   return <GroupCard group={group} />;
                 })}
               </ScrollView>
-              <TouchableOpacity style={styles.moreGroupButton}>
+              {/* <TouchableOpacity style={styles.moreGroupButton}>
                 <Text
                   style={{
                     fontFamily: FontStyle.MontBold,
@@ -68,7 +68,7 @@ const SearchScreen = () => {
                   }}>
                   Mehr Gruppen
                 </Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           ) : (
             <View

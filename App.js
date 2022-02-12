@@ -106,7 +106,6 @@ const App = () => {
   useEffect(() => {
     requestUserPermission();
     NetInfo.addEventListener(networkState => {
-      console.log('Connection type - ', networkState.type);
       setNetworkStatus(networkState.isConnected);
     });
     // createNotificationListeners();

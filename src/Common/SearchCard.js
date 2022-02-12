@@ -36,7 +36,6 @@ const SearchCard = ({data, onPress, bellPress}) => {
     });
   };
 
-  console.log(data, 'data');
   return (
     <Animated.View
       style={[

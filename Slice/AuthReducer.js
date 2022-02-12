@@ -49,6 +49,12 @@ export const signInUser = createAsyncThunk(
 export const registerUser = createAsyncThunk(
   'register',
   async (data, {rejectWithValue}) => {
+    console.log({
+      username: data.userName,
+      email: data.email,
+      password: data.password,
+      promotable: data.promotional,
+    });
     try {
       const response = await axios({
         method: 'post',
@@ -60,9 +66,11 @@ export const registerUser = createAsyncThunk(
           promotable: data.promotional,
         },
       });
+
+      console.log(response, 'signup Response');
     } catch (err) {
       const errorr = err.response.data;
-
+      console.log(errorr, 'sing up errro');
       return rejectWithValue(errorr);
     }
   },
