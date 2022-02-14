@@ -156,32 +156,36 @@ const Dashboard = () => {
                   Die beliebtesten Gruppen
                 </Text>
               </View>
-              <FlatList
-                initialScrollIndex={2}
-                onScrollToIndexFailed={info => {
-                  const wait = new Promise(resolve => setTimeout(resolve, 500));
-                  wait.then(() => {
-                    flatList.current?.scrollToIndex({
-                      index: info.index,
-                      animated: true,
+              {trendingGroup.length > 0 ? (
+                <FlatList
+                  initialScrollIndex={2}
+                  onScrollToIndexFailed={info => {
+                    const wait = new Promise(resolve =>
+                      setTimeout(resolve, 500),
+                    );
+                    wait.then(() => {
+                      flatList.current?.scrollToIndex({
+                        index: info.index,
+                        animated: true,
+                      });
                     });
-                  });
-                }}
-                getItemLayout={(data, index) => {
-                  return {length: 131, offset: 131 * index, index};
-                }}
-                horizontal={true}
-                data={trendingGroup}
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{
-                  backgroundColor: '#fff',
-                }}
-                renderItem={({item: trending}) => {
-                  return <GradientCard group={trending} />;
-                }}
-                onEndReached={handleLoadMore}
-                onEndThreshold={0}
-              />
+                  }}
+                  getItemLayout={(data, index) => {
+                    return {length: 131, offset: 131 * index, index};
+                  }}
+                  horizontal={true}
+                  data={trendingGroup}
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={{
+                    backgroundColor: '#fff',
+                  }}
+                  renderItem={({item: trending}) => {
+                    return <GradientCard group={trending} />;
+                  }}
+                  onEndReached={handleLoadMore}
+                  onEndThreshold={0}
+                />
+              ) : null}
 
               <View
                 style={{

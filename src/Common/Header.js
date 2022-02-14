@@ -8,6 +8,7 @@ import {
   TouchableWithoutFeedback,
   Animated,
   Platform,
+  Text,
 } from 'react-native';
 
 import AddGroup from './HeaderPages/AddGroup';
@@ -20,7 +21,8 @@ const {width, height} = Dimensions.get('window');
 
 const Header = ({selectionOption, closeAddGroup}) => {
   const navigation = useNavigation();
-  // const [opacity] = useState(new Animated.Value(1));
+  const [plusAnimateValue] = useState(new Animated.Value(0));
+  const [plusColorValue] = useState(new Animated.Value(0));
   const [starValue, setStarValue] = useState(false);
   const [filterValue, setFilterValue] = useState(false);
   const [currentSelectedOption, setSelectedOption] = useState('');
@@ -47,6 +49,38 @@ const Header = ({selectionOption, closeAddGroup}) => {
     menuIconPress('');
   }, []);
 
+  const rotateInterpolate = plusAnimateValue.interpolate({
+    inputRange: [0, 45],
+    outputRange: ['0deg', '-45deg'],
+  });
+
+  const colorInterpolation = plusColorValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['#fff', 'red'],
+  });
+
+  // const startPlusAnimation = () => {
+  //   Animated.timing(plusAnimateValue, {
+  //     toValue: 45,
+  //     duration: 250,
+  //     useNativeDriver: true,
+  //   }).start();
+  // };
+
+  const startPlusAnimation = () => {
+    Animated.timing(plusColorValue, {
+      toValue: 1,
+      duration: 10,
+      useNativeDriver: false,
+    }).start(() => {
+      Animated.timing(plusAnimateValue, {
+        toValue: 45,
+        duration: 250,
+        useNativeDriver: false,
+      }).start();
+    });
+  };
+  // console.log(plusAnimateValue, 'plus');
   return (
     <View
       style={{
@@ -96,28 +130,65 @@ const Header = ({selectionOption, closeAddGroup}) => {
             top: 15,
             justifyContent: 'space-between',
           }}>
-          <View style={[styles.iconContainer]}>
-            {currentSelectedOption == 'plus' ? (
-              <TouchableWithoutFeedback onPress={() => menuIconPress('plus')}>
-                <LottieView
-                  autoPlay
-                  loop={false}
-                  source={require('../Assets/animation/menuCross.json')}
-                />
-              </TouchableWithoutFeedback>
-            ) : (
-              <TouchableWithoutFeedback onPress={() => menuIconPress('plus')}>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              startPlusAnimation(), menuIconPress('plus');
+            }}>
+            <Animated.View
+              style={{
+                height: 40,
+                width: 40,
+                // backgroundColor: 'green',
+                alignItems: 'flex-start',
+                justifyContent: 'flex-start',
+              }}>
+              {currentSelectedOption == 'plus' ? (
+                <TouchableWithoutFeedback onPress={() => menuIconPress('plus')}>
+                  <LottieView
+                    autoPlay
+                    loop={false}
+                    source={require('../Assets/animation/menuCross.json')}
+                  />
+                </TouchableWithoutFeedback>
+              ) : (
+                <TouchableWithoutFeedback onPress={() => menuIconPress('plus')}>
+                  <Image
+                    source={require('../Assets/Images/plus.png')}
+                    style={{
+                      height: 31,
+                      width: 31,
+                      resizeMode: 'contain',
+                    }}
+                  />
+                </TouchableWithoutFeedback>
+              )}
+
+              {/* <Animated.Text
+                style={{
+                  color: colorInterpolation,
+                  transform: [
+                    {
+                      rotate: rotateInterpolate,
+                    },
+                  ],
+                  fontSize: 40,
+                }}>
+                +
+              </Animated.Text> */}
+
+              {/* {
                 <Image
                   source={require('../Assets/Images/plus.png')}
                   style={{
                     height: 31,
                     width: 31,
                     resizeMode: 'contain',
+                    backgroundColor: 'green',
                   }}
                 />
-              </TouchableWithoutFeedback>
-            )}
-          </View>
+              } */}
+            </Animated.View>
+          </TouchableWithoutFeedback>
           <View style={[styles.iconContainer]}>
             {currentSelectedOption == 'search' ? (
               <TouchableWithoutFeedback onPress={() => menuIconPress('search')}>
@@ -191,6 +262,7 @@ const styles = StyleSheet.create({
     width: 30,
     justifyContent: 'center',
     alignItems: 'center',
+    // backgroundColor: 'green',
   },
 });
 

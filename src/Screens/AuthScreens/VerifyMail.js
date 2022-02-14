@@ -30,6 +30,23 @@ const VerifyMail = () => {
   //   }
   // };
 
+  //   Linking.addEventListener(‘url’, (event) => {
+  //     Linking.canOpenURL(event.url).then((supported) => {
+  //         if (supported) {
+  //             yourCustomMethodToHandleUrl(event.url);
+  //         }
+  //     });
+  // });
+  Linking.addEventListener('url', event => {
+    Linking.canOpenURL(event.url).then(supported => {
+      if (supported) {
+        console.log(event.url, 'rohit event');
+        const userId = event.url.split('=')[1];
+        navigation.navigate('ConfirmationScreen', {userId});
+      }
+    });
+  });
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
       <View style={{alignItems: 'center', height: '70%'}}>
