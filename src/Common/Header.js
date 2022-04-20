@@ -76,15 +76,15 @@ const Header = ({ selectionOption, closeAddGroup }) => {
   useEffect(() => {
     if (FirstRun.current) {
       if (Animate) {
-        newanimation.current.play(97, 97);
+        newanimation.current.play(56, 56);
       } else {
-        newanimation.current.play(100, 100);
+        newanimation.current.play(68, 68);
       }
       FirstRun.current = false;
     } else if (Animate) {
       newanimation.current.play(15, 100);
     } else {
-      newanimation.current.play(0, 100);
+      newanimation.current.play(0, 68);
     }
   }, [Animate]);
 
